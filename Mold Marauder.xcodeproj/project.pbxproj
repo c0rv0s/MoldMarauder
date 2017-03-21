@@ -1,0 +1,957 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		21305B471E615C0A006343A4 /* progress_Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21305B461E615C0A006343A4 /* progress_Bar.swift */; };
+		214FB0FE1E7359A200E428AA /* LevelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214FB0FD1E7359A200E428AA /* LevelScene.swift */; };
+		214FB1001E753E4900E428AA /* worm appear.wav in Resources */ = {isa = PBXBuildFile; fileRef = 214FB0FF1E753E4900E428AA /* worm appear.wav */; };
+		215B49111E7BCA0D009107DF /* CreditsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B49101E7BCA0D009107DF /* CreditsScene.swift */; };
+		21655E0C1E6410E8003F9DB5 /* Lemondrop.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21655E0B1E64105F003F9DB5 /* Lemondrop.ttf */; };
+		217683829F8F421DA3440D29 /* Pods_Mold_MarauderUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D88F6D394688CDEFB67A89D /* Pods_Mold_MarauderUITests.framework */; };
+		217E3FD41E677CE800DC2EDB /* Mold Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E3FD31E677CE800DC2EDB /* Mold Inventory.swift */; };
+		21C16EFA1E43F6CB003D109A /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16EF91E43F6CB003D109A /* Inventory.swift */; };
+		21C16EFD1E440215003D109A /* Ka-Ching.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21C16EFC1E440215003D109A /* Ka-Ching.wav */; };
+		21C16EFF1E4408F8003D109A /* Molds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16EFE1E4408F8003D109A /* Molds.swift */; };
+		21C16F031E44F28F003D109A /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16F021E44F28F003D109A /* MenuScene.swift */; };
+		21C16F081E471C37003D109A /* Mold Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16F071E471C36003D109A /* Mold Shop.swift */; };
+		21C16F0A1E47F060003D109A /* BreedScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16F091E47F060003D109A /* BreedScene.swift */; };
+		21C16F0D1E480FBE003D109A /* SwiftySKScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16F0C1E480FBE003D109A /* SwiftySKScrollView.swift */; };
+		21CB73361E412FD500DEAF4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CB73351E412FD500DEAF4F /* AppDelegate.swift */; };
+		21CB733C1E412FD500DEAF4F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CB733B1E412FD500DEAF4F /* GameScene.swift */; };
+		21CB733E1E412FD500DEAF4F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CB733D1E412FD500DEAF4F /* GameViewController.swift */; };
+		21CB73411E412FD500DEAF4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21CB733F1E412FD500DEAF4F /* Main.storyboard */; };
+		21CB73431E412FD500DEAF4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21CB73421E412FD500DEAF4F /* Assets.xcassets */; };
+		21CB73461E412FD500DEAF4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21CB73441E412FD500DEAF4F /* LaunchScreen.storyboard */; };
+		21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D01DE71E590D85008184C4 /* GameKit.framework */; };
+		21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D01DEA1E590E14008184C4 /* StoreKit.framework */; };
+		21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E339981E5EDB3600083261 /* AchievementsScene.swift */; };
+		21EDB1981E79995B00884EA7 /* camera.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21EDB1961E79995B00884EA7 /* camera.wav */; };
+		21EDB1991E79995B00884EA7 /* select.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21EDB1971E79995B00884EA7 /* select.wav */; };
+		21EDB19B1E79E20F00884EA7 /* exit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21EDB19A1E79E20F00884EA7 /* exit.mp3 */; };
+		21F134B71E7E710300627246 /* QuestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F134B61E7E710300627246 /* QuestScene.swift */; };
+		21F488EC1E68851700D2785B /* MG Basic Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488E71E68851700D2785B /* MG Basic Math.swift */; };
+		21F488ED1E68851700D2785B /* MG Benchmark Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488E81E68851700D2785B /* MG Benchmark Tools.swift */; };
+		21F488EE1E68851700D2785B /* SMP Bignum Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488E91E68851700D2785B /* SMP Bignum Extensions.swift */; };
+		21F488EF1E68851700D2785B /* SMP Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488EA1E68851700D2785B /* SMP Core.swift */; };
+		21F488F01E68851700D2785B /* SMP String Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488EB1E68851700D2785B /* SMP String Module.swift */; };
+		21F8395D1E4B19E80071B689 /* Breeding Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F8395C1E4B19E80071B689 /* Breeding Combos.swift */; };
+		21F9B7D61E71310A004080DD /* card flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D31E71310A004080DD /* card flip.wav */; };
+		21F9B7D71E71310A004080DD /* dead.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D41E71310A004080DD /* dead.wav */; };
+		21F9B7D81E71310A004080DD /* laser.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D51E71310A004080DD /* laser.wav */; };
+		21F9B7DA1E713244004080DD /* bubble low.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D91E713244004080DD /* bubble low.wav */; };
+		21F9B7DC1E71331E004080DD /* bubble 2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7DB1E71331E004080DD /* bubble 2.wav */; };
+		21F9B7DE1E713491004080DD /* snip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7DD1E713491004080DD /* snip.wav */; };
+		21F9B7E01E713575004080DD /* kiss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7DF1E713575004080DD /* kiss.wav */; };
+		21F9B7E21E713819004080DD /* fight sound_mixdown.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E11E713819004080DD /* fight sound_mixdown.wav */; };
+		21F9B7E41E71390E004080DD /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E31E71390E004080DD /* ding.wav */; };
+		21F9B7E61E713B3A004080DD /* bad card.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E51E713B3A004080DD /* bad card.wav */; };
+		21F9B7E81E714798004080DD /* gem collect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E71E714798004080DD /* gem collect.wav */; };
+		21F9B7EA1E714BC4004080DD /* crunch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E91E714BC4004080DD /* crunch.wav */; };
+		21F9B7EC1E714DDB004080DD /* awe.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7EB1E714DDB004080DD /* awe.wav */; };
+		21F9B7EE1E714EB0004080DD /* buzzer.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7ED1E714EB0004080DD /* buzzer.wav */; };
+		21F9B7F01E714F0C004080DD /* lose.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7EF1E714F0C004080DD /* lose.wav */; };
+		21F9B7F21E71500A004080DD /* gem case.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F11E71500A004080DD /* gem case.wav */; };
+		21F9B7F41E7150EB004080DD /* chest.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F31E7150EB004080DD /* chest.wav */; };
+		21F9B7F61E715276004080DD /* achieve.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F51E715276004080DD /* achieve.wav */; };
+		21F9B7F81E715408004080DD /* cash register.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F71E715408004080DD /* cash register.wav */; };
+		21FCFDD81E5CE6C90042D55A /* ItemShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCFDD71E5CE6C90042D55A /* ItemShop.swift */; };
+		21FCFDDA1E5D19320042D55A /* PremiumShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCFDD91E5D19320042D55A /* PremiumShop.swift */; };
+		29110234EDB2D66ABF3A24EB /* Pods_Mold_MarauderTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A478527A2B2C77D2A44D9E /* Pods_Mold_MarauderTests.framework */; };
+		8786D2C392702EE61A9BD0A9 /* Pods_Mold_Marauder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C958880BD183A8354CE43D3A /* Pods_Mold_Marauder.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		21CB734D1E412FD500DEAF4F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21CB732A1E412FD400DEAF4F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 21CB73311E412FD400DEAF4F;
+			remoteInfo = "Mold Marauder";
+		};
+		21CB73581E412FD500DEAF4F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21CB732A1E412FD400DEAF4F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 21CB73311E412FD400DEAF4F;
+			remoteInfo = "Mold Marauder";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		21305B461E615C0A006343A4 /* progress_Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = progress_Bar.swift; sourceTree = "<group>"; };
+		214FB0FD1E7359A200E428AA /* LevelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelScene.swift; sourceTree = "<group>"; };
+		214FB0FF1E753E4900E428AA /* worm appear.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "worm appear.wav"; sourceTree = "<group>"; };
+		215B49101E7BCA0D009107DF /* CreditsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditsScene.swift; sourceTree = "<group>"; };
+		21655E0B1E64105F003F9DB5 /* Lemondrop.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lemondrop.ttf; sourceTree = "<group>"; };
+		217E3FD31E677CE800DC2EDB /* Mold Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mold Inventory.swift"; sourceTree = "<group>"; };
+		21C16EF91E43F6CB003D109A /* Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
+		21C16EFC1E440215003D109A /* Ka-Ching.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Ka-Ching.wav"; sourceTree = "<group>"; };
+		21C16EFE1E4408F8003D109A /* Molds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Molds.swift; sourceTree = "<group>"; };
+		21C16F021E44F28F003D109A /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
+		21C16F071E471C36003D109A /* Mold Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mold Shop.swift"; sourceTree = "<group>"; };
+		21C16F091E47F060003D109A /* BreedScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BreedScene.swift; sourceTree = "<group>"; };
+		21C16F0C1E480FBE003D109A /* SwiftySKScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftySKScrollView.swift; sourceTree = "<group>"; };
+		21CB73321E412FD500DEAF4F /* Mold Marauder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mold Marauder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21CB73351E412FD500DEAF4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		21CB733B1E412FD500DEAF4F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		21CB733D1E412FD500DEAF4F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		21CB73401E412FD500DEAF4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		21CB73421E412FD500DEAF4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		21CB73451E412FD500DEAF4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		21CB73471E412FD500DEAF4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21CB734C1E412FD500DEAF4F /* Mold MarauderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mold MarauderTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21CB73571E412FD500DEAF4F /* Mold MarauderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mold MarauderUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		21D01DE71E590D85008184C4 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		21D01DE91E590D8B008184C4 /* Mold Marauder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Mold Marauder.entitlements"; sourceTree = "<group>"; };
+		21D01DEA1E590E14008184C4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		21E339981E5EDB3600083261 /* AchievementsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsScene.swift; sourceTree = "<group>"; };
+		21EDB1961E79995B00884EA7 /* camera.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = camera.wav; sourceTree = "<group>"; };
+		21EDB1971E79995B00884EA7 /* select.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = select.wav; sourceTree = "<group>"; };
+		21EDB19A1E79E20F00884EA7 /* exit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = exit.mp3; sourceTree = "<group>"; };
+		21F134B61E7E710300627246 /* QuestScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestScene.swift; sourceTree = "<group>"; };
+		21F488E71E68851700D2785B /* MG Basic Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Basic Math.swift"; sourceTree = "<group>"; };
+		21F488E81E68851700D2785B /* MG Benchmark Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Benchmark Tools.swift"; sourceTree = "<group>"; };
+		21F488E91E68851700D2785B /* SMP Bignum Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMP Bignum Extensions.swift"; sourceTree = "<group>"; };
+		21F488EA1E68851700D2785B /* SMP Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMP Core.swift"; sourceTree = "<group>"; };
+		21F488EB1E68851700D2785B /* SMP String Module.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMP String Module.swift"; sourceTree = "<group>"; };
+		21F8395C1E4B19E80071B689 /* Breeding Combos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Breeding Combos.swift"; sourceTree = "<group>"; };
+		21F9B7D31E71310A004080DD /* card flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "card flip.wav"; sourceTree = "<group>"; };
+		21F9B7D41E71310A004080DD /* dead.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dead.wav; sourceTree = "<group>"; };
+		21F9B7D51E71310A004080DD /* laser.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = laser.wav; sourceTree = "<group>"; };
+		21F9B7D91E713244004080DD /* bubble low.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble low.wav"; sourceTree = "<group>"; };
+		21F9B7DB1E71331E004080DD /* bubble 2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble 2.wav"; sourceTree = "<group>"; };
+		21F9B7DD1E713491004080DD /* snip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snip.wav; sourceTree = "<group>"; };
+		21F9B7DF1E713575004080DD /* kiss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = kiss.wav; sourceTree = "<group>"; };
+		21F9B7E11E713819004080DD /* fight sound_mixdown.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "fight sound_mixdown.wav"; sourceTree = "<group>"; };
+		21F9B7E31E71390E004080DD /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
+		21F9B7E51E713B3A004080DD /* bad card.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bad card.wav"; sourceTree = "<group>"; };
+		21F9B7E71E714798004080DD /* gem collect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "gem collect.wav"; sourceTree = "<group>"; };
+		21F9B7E91E714BC4004080DD /* crunch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = crunch.wav; sourceTree = "<group>"; };
+		21F9B7EB1E714DDB004080DD /* awe.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = awe.wav; sourceTree = "<group>"; };
+		21F9B7ED1E714EB0004080DD /* buzzer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = buzzer.wav; sourceTree = "<group>"; };
+		21F9B7EF1E714F0C004080DD /* lose.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lose.wav; sourceTree = "<group>"; };
+		21F9B7F11E71500A004080DD /* gem case.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "gem case.wav"; sourceTree = "<group>"; };
+		21F9B7F31E7150EB004080DD /* chest.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chest.wav; sourceTree = "<group>"; };
+		21F9B7F51E715276004080DD /* achieve.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = achieve.wav; sourceTree = "<group>"; };
+		21F9B7F71E715408004080DD /* cash register.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "cash register.wav"; sourceTree = "<group>"; };
+		21FCFDD71E5CE6C90042D55A /* ItemShop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemShop.swift; sourceTree = "<group>"; };
+		21FCFDD91E5D19320042D55A /* PremiumShop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PremiumShop.swift; sourceTree = "<group>"; };
+		7A296D69940CB8E71FEC01A4 /* Pods-Mold MarauderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderTests/Pods-Mold MarauderTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9D88F6D394688CDEFB67A89D /* Pods_Mold_MarauderUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mold_MarauderUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A07A7946EEDED6823D4EFF05 /* Pods-Mold MarauderUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		BAFB501CDBFD20DF8E589CE9 /* Pods-Mold Marauder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold Marauder.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder.release.xcconfig"; sourceTree = "<group>"; };
+		BD42D5486CCE4404FD2F5271 /* Pods-Mold MarauderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderTests/Pods-Mold MarauderTests.release.xcconfig"; sourceTree = "<group>"; };
+		C89B5AF1A32B284ECB3E039E /* Pods-Mold Marauder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold Marauder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder.debug.xcconfig"; sourceTree = "<group>"; };
+		C958880BD183A8354CE43D3A /* Pods_Mold_Marauder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mold_Marauder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED559C7711CC4D8E5DEC868 /* Pods-Mold MarauderUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests.release.xcconfig"; sourceTree = "<group>"; };
+		E5A478527A2B2C77D2A44D9E /* Pods_Mold_MarauderTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mold_MarauderTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		21CB732F1E412FD400DEAF4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */,
+				21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */,
+				8786D2C392702EE61A9BD0A9 /* Pods_Mold_Marauder.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CB73491E412FD500DEAF4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29110234EDB2D66ABF3A24EB /* Pods_Mold_MarauderTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CB73541E412FD500DEAF4F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				217683829F8F421DA3440D29 /* Pods_Mold_MarauderUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		21655E0A1E641038003F9DB5 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				21655E0B1E64105F003F9DB5 /* Lemondrop.ttf */,
+			);
+			name = fonts;
+			sourceTree = "<group>";
+		};
+		21C16EFB1E4401F4003D109A /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				214FB0FF1E753E4900E428AA /* worm appear.wav */,
+				21F9B7DB1E71331E004080DD /* bubble 2.wav */,
+				21F9B7DF1E713575004080DD /* kiss.wav */,
+				21F9B7ED1E714EB0004080DD /* buzzer.wav */,
+				21F9B7F31E7150EB004080DD /* chest.wav */,
+				21F9B7EF1E714F0C004080DD /* lose.wav */,
+				21F9B7F71E715408004080DD /* cash register.wav */,
+				21F9B7F51E715276004080DD /* achieve.wav */,
+				21F9B7F11E71500A004080DD /* gem case.wav */,
+				21F9B7E71E714798004080DD /* gem collect.wav */,
+				21F9B7E91E714BC4004080DD /* crunch.wav */,
+				21EDB19A1E79E20F00884EA7 /* exit.mp3 */,
+				21F9B7EB1E714DDB004080DD /* awe.wav */,
+				21EDB1961E79995B00884EA7 /* camera.wav */,
+				21EDB1971E79995B00884EA7 /* select.wav */,
+				21F9B7DD1E713491004080DD /* snip.wav */,
+				21F9B7E31E71390E004080DD /* ding.wav */,
+				21F9B7D91E713244004080DD /* bubble low.wav */,
+				21F9B7E51E713B3A004080DD /* bad card.wav */,
+				21F9B7E11E713819004080DD /* fight sound_mixdown.wav */,
+				21F9B7D31E71310A004080DD /* card flip.wav */,
+				21F9B7D41E71310A004080DD /* dead.wav */,
+				21F9B7D51E71310A004080DD /* laser.wav */,
+				21C16EFC1E440215003D109A /* Ka-Ching.wav */,
+			);
+			name = sounds;
+			sourceTree = "<group>";
+		};
+		21C16F041E44F704003D109A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				21C16EF91E43F6CB003D109A /* Inventory.swift */,
+				21C16EFE1E4408F8003D109A /* Molds.swift */,
+				21F8395C1E4B19E80071B689 /* Breeding Combos.swift */,
+				21305B461E615C0A006343A4 /* progress_Bar.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		21C16F051E44F711003D109A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				21CB733B1E412FD500DEAF4F /* GameScene.swift */,
+				21C16F021E44F28F003D109A /* MenuScene.swift */,
+				214FB0FD1E7359A200E428AA /* LevelScene.swift */,
+				21C16F071E471C36003D109A /* Mold Shop.swift */,
+				21C16F091E47F060003D109A /* BreedScene.swift */,
+				21FCFDD71E5CE6C90042D55A /* ItemShop.swift */,
+				21FCFDD91E5D19320042D55A /* PremiumShop.swift */,
+				21E339981E5EDB3600083261 /* AchievementsScene.swift */,
+				217E3FD31E677CE800DC2EDB /* Mold Inventory.swift */,
+				21F134B61E7E710300627246 /* QuestScene.swift */,
+				215B49101E7BCA0D009107DF /* CreditsScene.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		21C16F061E44F731003D109A /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				21CB733D1E412FD500DEAF4F /* GameViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		21CB73291E412FD400DEAF4F = {
+			isa = PBXGroup;
+			children = (
+				21CB73341E412FD500DEAF4F /* Mold Marauder */,
+				21CB73331E412FD500DEAF4F /* Products */,
+				5B1F86CC0EF7B2FFCA1530CB /* Frameworks */,
+				73B59A4836671D5FD2473174 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		21CB73331E412FD500DEAF4F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21CB73321E412FD500DEAF4F /* Mold Marauder.app */,
+				21CB734C1E412FD500DEAF4F /* Mold MarauderTests.xctest */,
+				21CB73571E412FD500DEAF4F /* Mold MarauderUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		21CB73341E412FD500DEAF4F /* Mold Marauder */ = {
+			isa = PBXGroup;
+			children = (
+				21F488E61E68850300D2785B /* bigint stuff */,
+				21655E0A1E641038003F9DB5 /* fonts */,
+				21D01DE91E590D8B008184C4 /* Mold Marauder.entitlements */,
+				21CB73351E412FD500DEAF4F /* AppDelegate.swift */,
+				21C16F0C1E480FBE003D109A /* SwiftySKScrollView.swift */,
+				21C16F041E44F704003D109A /* Models */,
+				21C16F051E44F711003D109A /* Views */,
+				21C16F061E44F731003D109A /* Controllers */,
+				21CB733F1E412FD500DEAF4F /* Main.storyboard */,
+				21CB73421E412FD500DEAF4F /* Assets.xcassets */,
+				21C16EFB1E4401F4003D109A /* sounds */,
+				21CB73441E412FD500DEAF4F /* LaunchScreen.storyboard */,
+				21CB73471E412FD500DEAF4F /* Info.plist */,
+			);
+			path = "Mold Marauder";
+			sourceTree = "<group>";
+		};
+		21F488E61E68850300D2785B /* bigint stuff */ = {
+			isa = PBXGroup;
+			children = (
+				21F488E71E68851700D2785B /* MG Basic Math.swift */,
+				21F488E81E68851700D2785B /* MG Benchmark Tools.swift */,
+				21F488E91E68851700D2785B /* SMP Bignum Extensions.swift */,
+				21F488EA1E68851700D2785B /* SMP Core.swift */,
+				21F488EB1E68851700D2785B /* SMP String Module.swift */,
+			);
+			name = "bigint stuff";
+			path = ..;
+			sourceTree = "<group>";
+		};
+		5B1F86CC0EF7B2FFCA1530CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				21D01DEA1E590E14008184C4 /* StoreKit.framework */,
+				21D01DE71E590D85008184C4 /* GameKit.framework */,
+				C958880BD183A8354CE43D3A /* Pods_Mold_Marauder.framework */,
+				E5A478527A2B2C77D2A44D9E /* Pods_Mold_MarauderTests.framework */,
+				9D88F6D394688CDEFB67A89D /* Pods_Mold_MarauderUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		73B59A4836671D5FD2473174 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C89B5AF1A32B284ECB3E039E /* Pods-Mold Marauder.debug.xcconfig */,
+				BAFB501CDBFD20DF8E589CE9 /* Pods-Mold Marauder.release.xcconfig */,
+				7A296D69940CB8E71FEC01A4 /* Pods-Mold MarauderTests.debug.xcconfig */,
+				BD42D5486CCE4404FD2F5271 /* Pods-Mold MarauderTests.release.xcconfig */,
+				A07A7946EEDED6823D4EFF05 /* Pods-Mold MarauderUITests.debug.xcconfig */,
+				CED559C7711CC4D8E5DEC868 /* Pods-Mold MarauderUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		21CB73311E412FD400DEAF4F /* Mold Marauder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21CB73601E412FD500DEAF4F /* Build configuration list for PBXNativeTarget "Mold Marauder" */;
+			buildPhases = (
+				F51789E9F778BE042C50878B /* [CP] Check Pods Manifest.lock */,
+				21CB732E1E412FD400DEAF4F /* Sources */,
+				21CB732F1E412FD400DEAF4F /* Frameworks */,
+				21CB73301E412FD400DEAF4F /* Resources */,
+				15EB3333D246F671419A8257 /* [CP] Embed Pods Frameworks */,
+				2F21E23A7ABF3C597DD8D4F9 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Mold Marauder";
+			productName = "Mold Marauder";
+			productReference = 21CB73321E412FD500DEAF4F /* Mold Marauder.app */;
+			productType = "com.apple.product-type.application";
+		};
+		21CB734B1E412FD500DEAF4F /* Mold MarauderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21CB73631E412FD500DEAF4F /* Build configuration list for PBXNativeTarget "Mold MarauderTests" */;
+			buildPhases = (
+				50503FEC488ACFC07741CE63 /* [CP] Check Pods Manifest.lock */,
+				21CB73481E412FD500DEAF4F /* Sources */,
+				21CB73491E412FD500DEAF4F /* Frameworks */,
+				21CB734A1E412FD500DEAF4F /* Resources */,
+				4CD53268FAFA93F22613DB46 /* [CP] Embed Pods Frameworks */,
+				A2B5430EF9F3D686E8B6D7F6 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				21CB734E1E412FD500DEAF4F /* PBXTargetDependency */,
+			);
+			name = "Mold MarauderTests";
+			productName = "Mold MarauderTests";
+			productReference = 21CB734C1E412FD500DEAF4F /* Mold MarauderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		21CB73561E412FD500DEAF4F /* Mold MarauderUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21CB73661E412FD500DEAF4F /* Build configuration list for PBXNativeTarget "Mold MarauderUITests" */;
+			buildPhases = (
+				04CF897DE2D595FC62A15258 /* [CP] Check Pods Manifest.lock */,
+				21CB73531E412FD500DEAF4F /* Sources */,
+				21CB73541E412FD500DEAF4F /* Frameworks */,
+				21CB73551E412FD500DEAF4F /* Resources */,
+				A82704A4B1AC38FF98504D21 /* [CP] Embed Pods Frameworks */,
+				06D104C7C9085CD0CFF1B192 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				21CB73591E412FD500DEAF4F /* PBXTargetDependency */,
+			);
+			name = "Mold MarauderUITests";
+			productName = "Mold MarauderUITests";
+			productReference = 21CB73571E412FD500DEAF4F /* Mold MarauderUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		21CB732A1E412FD400DEAF4F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0820;
+				LastUpgradeCheck = 0820;
+				ORGANIZATIONNAME = "Nathan Mueller";
+				TargetAttributes = {
+					21CB73311E412FD400DEAF4F = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = PLNFCVNGS6;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplePay = {
+								enabled = 0;
+							};
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
+					};
+					21CB734B1E412FD500DEAF4F = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 21CB73311E412FD400DEAF4F;
+					};
+					21CB73561E412FD500DEAF4F = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 21CB73311E412FD400DEAF4F;
+					};
+				};
+			};
+			buildConfigurationList = 21CB732D1E412FD400DEAF4F /* Build configuration list for PBXProject "Mold Marauder" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 21CB73291E412FD400DEAF4F;
+			productRefGroup = 21CB73331E412FD500DEAF4F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				21CB73311E412FD400DEAF4F /* Mold Marauder */,
+				21CB734B1E412FD500DEAF4F /* Mold MarauderTests */,
+				21CB73561E412FD500DEAF4F /* Mold MarauderUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		21CB73301E412FD400DEAF4F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21F9B7DC1E71331E004080DD /* bubble 2.wav in Resources */,
+				21F9B7DE1E713491004080DD /* snip.wav in Resources */,
+				21655E0C1E6410E8003F9DB5 /* Lemondrop.ttf in Resources */,
+				21F9B7DA1E713244004080DD /* bubble low.wav in Resources */,
+				21F9B7D71E71310A004080DD /* dead.wav in Resources */,
+				21CB73411E412FD500DEAF4F /* Main.storyboard in Resources */,
+				21F9B7F41E7150EB004080DD /* chest.wav in Resources */,
+				21F9B7EC1E714DDB004080DD /* awe.wav in Resources */,
+				21EDB19B1E79E20F00884EA7 /* exit.mp3 in Resources */,
+				21F9B7E61E713B3A004080DD /* bad card.wav in Resources */,
+				21F9B7E21E713819004080DD /* fight sound_mixdown.wav in Resources */,
+				21F9B7E01E713575004080DD /* kiss.wav in Resources */,
+				21F9B7E41E71390E004080DD /* ding.wav in Resources */,
+				21F9B7EA1E714BC4004080DD /* crunch.wav in Resources */,
+				21F9B7EE1E714EB0004080DD /* buzzer.wav in Resources */,
+				21F9B7E81E714798004080DD /* gem collect.wav in Resources */,
+				21F9B7F61E715276004080DD /* achieve.wav in Resources */,
+				21C16EFD1E440215003D109A /* Ka-Ching.wav in Resources */,
+				21F9B7F81E715408004080DD /* cash register.wav in Resources */,
+				21F9B7F01E714F0C004080DD /* lose.wav in Resources */,
+				21EDB1991E79995B00884EA7 /* select.wav in Resources */,
+				21EDB1981E79995B00884EA7 /* camera.wav in Resources */,
+				21F9B7D81E71310A004080DD /* laser.wav in Resources */,
+				21F9B7F21E71500A004080DD /* gem case.wav in Resources */,
+				214FB1001E753E4900E428AA /* worm appear.wav in Resources */,
+				21CB73431E412FD500DEAF4F /* Assets.xcassets in Resources */,
+				21F9B7D61E71310A004080DD /* card flip.wav in Resources */,
+				21CB73461E412FD500DEAF4F /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CB734A1E412FD500DEAF4F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CB73551E412FD500DEAF4F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		04CF897DE2D595FC62A15258 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		06D104C7C9085CD0CFF1B192 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		15EB3333D246F671419A8257 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2F21E23A7ABF3C597DD8D4F9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4CD53268FAFA93F22613DB46 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold MarauderTests/Pods-Mold MarauderTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		50503FEC488ACFC07741CE63 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A2B5430EF9F3D686E8B6D7F6 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold MarauderTests/Pods-Mold MarauderTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A82704A4B1AC38FF98504D21 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F51789E9F778BE042C50878B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		21CB732E1E412FD400DEAF4F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21FCFDDA1E5D19320042D55A /* PremiumShop.swift in Sources */,
+				21C16F081E471C37003D109A /* Mold Shop.swift in Sources */,
+				21F8395D1E4B19E80071B689 /* Breeding Combos.swift in Sources */,
+				215B49111E7BCA0D009107DF /* CreditsScene.swift in Sources */,
+				21C16F0D1E480FBE003D109A /* SwiftySKScrollView.swift in Sources */,
+				21C16EFA1E43F6CB003D109A /* Inventory.swift in Sources */,
+				21F488ED1E68851700D2785B /* MG Benchmark Tools.swift in Sources */,
+				21F488EE1E68851700D2785B /* SMP Bignum Extensions.swift in Sources */,
+				21F488EC1E68851700D2785B /* MG Basic Math.swift in Sources */,
+				21F134B71E7E710300627246 /* QuestScene.swift in Sources */,
+				214FB0FE1E7359A200E428AA /* LevelScene.swift in Sources */,
+				21F488EF1E68851700D2785B /* SMP Core.swift in Sources */,
+				21C16EFF1E4408F8003D109A /* Molds.swift in Sources */,
+				21C16F0A1E47F060003D109A /* BreedScene.swift in Sources */,
+				21CB733C1E412FD500DEAF4F /* GameScene.swift in Sources */,
+				21C16F031E44F28F003D109A /* MenuScene.swift in Sources */,
+				21F488F01E68851700D2785B /* SMP String Module.swift in Sources */,
+				21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */,
+				21CB733E1E412FD500DEAF4F /* GameViewController.swift in Sources */,
+				21FCFDD81E5CE6C90042D55A /* ItemShop.swift in Sources */,
+				21CB73361E412FD500DEAF4F /* AppDelegate.swift in Sources */,
+				21305B471E615C0A006343A4 /* progress_Bar.swift in Sources */,
+				217E3FD41E677CE800DC2EDB /* Mold Inventory.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CB73481E412FD500DEAF4F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21CB73531E412FD500DEAF4F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		21CB734E1E412FD500DEAF4F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 21CB73311E412FD400DEAF4F /* Mold Marauder */;
+			targetProxy = 21CB734D1E412FD500DEAF4F /* PBXContainerItemProxy */;
+		};
+		21CB73591E412FD500DEAF4F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 21CB73311E412FD400DEAF4F /* Mold Marauder */;
+			targetProxy = 21CB73581E412FD500DEAF4F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		21CB733F1E412FD500DEAF4F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21CB73401E412FD500DEAF4F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		21CB73441E412FD500DEAF4F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				21CB73451E412FD500DEAF4F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		21CB735E1E412FD500DEAF4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		21CB735F1E412FD500DEAF4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		21CB73611E412FD500DEAF4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C89B5AF1A32B284ECB3E039E /* Pods-Mold Marauder.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = PLNFCVNGS6;
+				INFOPLIST_FILE = "Mold Marauder/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		21CB73621E412FD500DEAF4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BAFB501CDBFD20DF8E589CE9 /* Pods-Mold Marauder.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = PLNFCVNGS6;
+				INFOPLIST_FILE = "Mold Marauder/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		21CB73641E412FD500DEAF4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A296D69940CB8E71FEC01A4 /* Pods-Mold MarauderTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "Mold MarauderTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mold Marauder.app/Mold Marauder";
+			};
+			name = Debug;
+		};
+		21CB73651E412FD500DEAF4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BD42D5486CCE4404FD2F5271 /* Pods-Mold MarauderTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = "Mold MarauderTests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mold Marauder.app/Mold Marauder";
+			};
+			name = Release;
+		};
+		21CB73671E412FD500DEAF4F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A07A7946EEDED6823D4EFF05 /* Pods-Mold MarauderUITests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = "Mold MarauderUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = "Mold Marauder";
+			};
+			name = Debug;
+		};
+		21CB73681E412FD500DEAF4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CED559C7711CC4D8E5DEC868 /* Pods-Mold MarauderUITests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				INFOPLIST_FILE = "Mold MarauderUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = "Mold Marauder";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21CB732D1E412FD400DEAF4F /* Build configuration list for PBXProject "Mold Marauder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21CB735E1E412FD500DEAF4F /* Debug */,
+				21CB735F1E412FD500DEAF4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21CB73601E412FD500DEAF4F /* Build configuration list for PBXNativeTarget "Mold Marauder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21CB73611E412FD500DEAF4F /* Debug */,
+				21CB73621E412FD500DEAF4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21CB73631E412FD500DEAF4F /* Build configuration list for PBXNativeTarget "Mold MarauderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21CB73641E412FD500DEAF4F /* Debug */,
+				21CB73651E412FD500DEAF4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21CB73661E412FD500DEAF4F /* Build configuration list for PBXNativeTarget "Mold MarauderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21CB73671E412FD500DEAF4F /* Debug */,
+				21CB73681E412FD500DEAF4F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 21CB732A1E412FD400DEAF4F /* Project object */;
+}

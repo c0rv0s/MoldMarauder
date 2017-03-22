@@ -1424,6 +1424,31 @@ class GameScene: SKScene {
         }
     }
     
+    func animateSpritz() {
+        let particle = SKTexture(image: UIImage(named: "glowing particle")!)
+        for mold in moldLayer.children {
+            var counter = 0
+            while (counter < 15) {
+                var partNode = SKSpriteNode(texture: particle)
+                var size = Double.random0to1() * 0.8
+                partNode.setScale(CGFloat(size))
+                let posX = Int(arc4random_uniform(300)) - 150
+                let posY = Int(arc4random_uniform(60))
+                let ranX = Int(arc4random_uniform(40)) - 20
+                let ranY = Int(arc4random_uniform(100) + 1) + 120
+                partNode.position = CGPoint(x: mold.position.x + CGFloat(posX), y: mold.position.y + CGFloat(posY))
+                diamondLayer.addChild(partNode)
+                let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: ranY), duration: 2.0)
+               // moveAction.timingMode = .easeOut
+                
+                partNode.run(SKAction.sequence([moveAction, SKAction.fadeOut(withDuration: (1.0-size)), SKAction.removeFromParent()]))
+                counter += 1
+            }
+            
+        }
+        
+    }
+    
     //every 8 seconds trigger event
     /*
      EVENTS:
@@ -1936,3 +1961,12 @@ class GameScene: SKScene {
     
     
 }
+
+extension Double {
+    private static let arc4randomMax = Double(UInt32.max)
+    
+    static func random0to1() -> Double {
+        return Double(arc4random()) / arc4randomMax
+    }
+}
+

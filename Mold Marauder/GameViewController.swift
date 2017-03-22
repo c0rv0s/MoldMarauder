@@ -130,7 +130,9 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
 
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.myObserverMethod(notification:)), name: .UIApplicationDidEnterBackground, object: nil)
         
-        
+        if inventory.currentQuest == "" {
+            generateQuest()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -277,7 +279,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     }
     
     func questAchieved() {
-        
+        generateQuest()
     }
     
     // MARK: - HANDLERS
@@ -2707,6 +2709,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                         inventory.achieveDiamonds += 10
                     }
                 }
+                
                 let index = inventory.currentQuest.index(inventory.currentQuest.startIndex, offsetBy: 3)
                 if inventory.currentQuest.substring(to: index) == "p " {
                     var name = inventory.currentQuest.substring(from: index)
@@ -2717,6 +2720,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                         questAchieved()
                     }
                 }
+ 
             }
             updateLabels()
 
@@ -3093,6 +3097,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 incrementDiamonds(newDiamonds: -20)
                 itemShop.playSound(select: "cash register")
                 shiftTimerLabels()
+                scene.animateSpritz()
             }
         }
         if action == "laser" {

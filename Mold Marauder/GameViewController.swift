@@ -329,7 +329,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             questScene.touchHandler = questHandler
             questScene.currentQuest = inventory.currentQuest
             questScene.questGoal = inventory.questGoal
-            questScene.questAmout = inventory.questAmount
+            questScene.questAmount = inventory.questAmount
             skView.presentScene(questScene)
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()

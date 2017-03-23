@@ -287,7 +287,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     func menuHandler(action: String) {
         activateSleepTimer()
         if (action == "buy") {
-            
             moldShop = MoldShop(size: skView.bounds.size)
             moldShop.name = "moldShop"
             moldShop.unlockedMolds = inventory.unlockedMolds
@@ -299,7 +298,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             moldShop.playSound(select: "select")
         }
         if (action == "item") {
-            
             itemShop = ItemShop(size: skView.bounds.size)
             itemShop.name = "itemShop"
             itemShop.scaleMode = .resizeFill
@@ -311,7 +309,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             itemShop.playSound(select: "select")
         }
         if (action == "credits") {
-            
             creditsScene = CreditsScene(size: skView.bounds.size)
             creditsScene.name = "creditsScene"
             creditsScene.scaleMode = .resizeFill
@@ -322,7 +319,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             creditsScene.playSound(select: "select")
         }
         if (action == "quest") {
-            
             questScene = QuestScene(size: skView.bounds.size)
             questScene.name = "questScene"
             questScene.scaleMode = .resizeFill
@@ -336,7 +332,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             questScene.playSound(select: "select")
         }
         if (action == "achieve") {
-            
             achievements = AchievementsScene(size: skView.bounds.size)
             achievements.name = "achievements"
             achievements.scaleMode = .resizeFill
@@ -358,7 +353,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             achievements.playSound(select: "select")
         }
         if (action == "breed") {
-            
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             breedScene = BreedScene(size: skView.bounds.size)

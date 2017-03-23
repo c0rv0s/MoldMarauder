@@ -257,33 +257,6 @@ class MoldInventory: SKScene {
         createButton()
         erectScroll()
     }
-    /*
-    func reloadScroll() {
-        
-        self.removeAllChildren()
-        
-        scrollView?.removeFromSuperview()
-        scrollView = nil
-        
-        background.size = size
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F2")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F3")!))
-        addChild(background)
-        background.run(SKAction.repeatForever(
-            SKAction.animate(with: backframes,
-                             timePerFrame: 0.15,
-                             resize: false,
-                             restore: true)),
-                       withKey:"background")
-        addChild(cometLayer)
-        
-        moveableNode.removeAllChildren()
-        createButton()
-        nilButtons()
-        erectScroll()
-    }
-    */
     
     func erectScroll() {
         //let pages = ceil(Double(unlockedMolds.count) / 2.0)
@@ -1434,53 +1407,7 @@ class MoldInventory: SKScene {
         }
         return count
     }
-    /*
-    //used to reset the buttons so they can be reset after a mold dies
-    func nilButtons() {
-        slimeButton = nil
-        caveButton = nil
-        sadButton = nil
-        angryButton = nil
-        alienButton = nil
-        pimplyButton = nil
-        freckledButton = nil
-        hypnoButton = nil
-        rainbowButton = nil
-        aluminumButton = nil
-        circuitButton = nil
-        hologramButton = nil
-        stormButton = nil
-        bacteriaButton = nil
-        virusButton = nil
-        flowerButton = nil
-        beeButton = nil
-        xButton = nil
-        disaffectedButton = nil
-        oliveButton = nil
-        coconutButton = nil
-        sickButton = nil
-        deadButton = nil
-        zombieButton = nil
-        rockButton = nil
-        cloudButton = nil
-        waterButton = nil
-        crystalButton = nil
-        nuclearButton = nil
-        astronautButton = nil
-        sandButton = nil
-        glassButton = nil
-        coffeeButton = nil
-        slinkyButton = nil
-        magmaButton = nil
-        samuraiButton = nil
-        orangeButton = nil
-        strawberryButton = nil
-        tshirtButton = nil
-        cryptidButton = nil
-        angelButton = nil
-        invisibleButton = nil
-    }
-    */
+
     func createButton()
     {
         // BACK MENU
@@ -1490,15 +1417,7 @@ class MoldInventory: SKScene {
         backButton.position = CGPoint(x:self.frame.midX+160, y:self.frame.midY+190);
         
         self.addChild(backButton)
-        /*
-        // CLEAR
-        Texture = SKTexture(image: UIImage(named: "clear selection")!)
-        clearButton = SKSpriteNode(texture:Texture)
-        // Place in scene
-        clearButton.position = CGPoint(x:self.frame.midX+120, y:self.frame.midY+120);
-        
-        self.addChild(clearButton)
- */
+
         totalLabel = SKLabelNode(fontNamed: "Lemondrop")
         totalLabel.fontSize = 20
         totalLabel.fontColor = UIColor.black
@@ -2304,15 +2223,6 @@ class MoldInventory: SKScene {
                 handler("exit")
             }
         }
-        /*
-        if clearButton.contains(touchLocation) {
-            print("clear")
-            if let handler = touchHandler {
-                scrollView?.removeFromSuperview()
-                handler("clear")
-            }
-        }
-        */
     }
     
     func playSound(select: String) {
@@ -2345,7 +2255,7 @@ class MoldInventory: SKScene {
             scoreLabel.fontColor = UIColor.white
         }
         
-        //this signifies a new mold has been inlocked
+        //this signifies a new mold has been unlocked
         if new == 1 {
             scoreLabel.fontSize = 36
             scoreLabel.fontColor = UIColor(red: 195/255, green: 0, blue: 1, alpha: 1)

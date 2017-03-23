@@ -1444,9 +1444,7 @@ class GameScene: SKScene {
                 partNode.run(SKAction.sequence([moveAction, SKAction.fadeOut(withDuration: (1.0-size)), SKAction.removeFromParent()]))
                 counter += 1
             }
-            
         }
-        
     }
     
     //every 8 seconds trigger event
@@ -1540,25 +1538,24 @@ class GameScene: SKScene {
     
     //eat mold
     func eatMold() {
-        //for worm in wormLayer.children {
-            let index = randomInRange(lo: 0, hi: wormLayer.children.count - 1)
-            var left = true
-            if wormLayer.children[index].position.x < frame.midX {
-                left = false
-            }
-            var attackFrames = [SKTexture]()
-            if left {
-                attackFrames.append(SKTexture(image: UIImage(named: "worm prep left")!))
-                attackFrames.append(SKTexture(image: UIImage(named: "worm strike left")!))
-                attackFrames.append(SKTexture(image: UIImage(named: "worm prep left")!))
-                attackFrames.append(SKTexture(image: UIImage(named: "worm left")!))
-            }
-            else {
-                attackFrames.append(SKTexture(image: UIImage(named: "worm prep right")!))
-                attackFrames.append(SKTexture(image: UIImage(named: "worm strike right")!))
-                attackFrames.append(SKTexture(image: UIImage(named: "worm prep right")!))
-                attackFrames.append(SKTexture(image: UIImage(named: "worm right")!))
-            }
+        let index = randomInRange(lo: 0, hi: wormLayer.children.count - 1)
+        var left = true
+        if wormLayer.children[index].position.x < frame.midX {
+            left = false
+        }
+        var attackFrames = [SKTexture]()
+        if left {
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep left")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm strike left")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep left")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm left")!))
+        }
+        else {
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep right")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm strike right")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep right")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm right")!))
+        }
         let finalFrame = attackFrames[2]
         let attackPic = SKSpriteNode(texture:finalFrame)
         attackPic.position = CGPoint(x: wormLayer.children[index].position.x, y: wormLayer.children[index].position.y)//wormLayer.children[index].position
@@ -1566,14 +1563,14 @@ class GameScene: SKScene {
         wormLayer.addChild(attackPic)
         //playSound(select: "worm appear")
         attackPic.run(SKAction.animate(with: attackFrames,
-                                     timePerFrame: 0.1,
-                                     resize: false,
-                                     restore: true))
-        //}
+                                       timePerFrame: 0.1,
+                                       resize: false,
+                                       restore: true))
         if let handler = touchHandler {
             handler("eat_mold")
         }
     }
+    
     //animate the little numbers wiggling up
     func animateScore(point: CGPoint, amount: BInt, tap: Bool) {
         // Figure out what the midpoint of the chain is.
@@ -1620,8 +1617,6 @@ class GameScene: SKScene {
                                                              timePerFrame: 0.02,
                                                              resize: false,
                                                              restore: true)))
-            
-            
             coinPic.run(SKAction.sequence([SKAction.move(to: CGPoint(x: frame.midX,y: frame.maxY - 90), duration:0.9),SKAction.removeFromParent()]))
         }
  

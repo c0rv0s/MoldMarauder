@@ -438,8 +438,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
-            //_ = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(GameViewController.exitMenu), userInfo: nil, repeats: false)
-            
         }
         if (action == "cheat") {
             incrementCash(pointsToAdd: BInt("1000000000000"))
@@ -2511,9 +2509,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             exitInventory()
             scene.menuPopUp.run(action)
-            
-            //_ = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(GameViewController.exitInventory), userInfo: nil, repeats: false)
-            
         }
     }
     
@@ -2525,7 +2520,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         scene.isActive = true
         skView.presentScene(scene)
         scene.playSound(select: "exit")
-        //scene.reactivateTimer()
     }
     
     // SHOP HANDLER
@@ -3987,11 +3981,8 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
     }
     
+    //since there can be up to three timers in the game scene at the same time this method will space them correctly
     func shiftTimerLabels() {
-        //spritz - repel - xtap
-        //let moveRight = SKAction.move(to: CGPoint(x: 22,y: y), duration:0.45)
-        //let moveLeft = SKAction.move(to: CGPoint(x: -22,y: y), duration:0.45)
-        
         if scene.wormRepelCount == 0 {
             if scene.xTapCount > 0 {
                 var move = SKAction.move(to: CGPoint(x: scene.frame.midX+33,y: scene.xTapLabel.position.y), duration:0.45)
@@ -4191,12 +4182,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     //add diamonds and update the scene lable
     func incrementDiamonds(newDiamonds: Int) {
         inventory.diamonds += newDiamonds
-        //scene.diamondLabel.text = ""
-        //scene.diamondLabel.removeFromParent()
         scene.diamondCLabel.text = String(inventory.diamonds)
-        //scene.addChild(scene.diamondLabel)
-        
-        
     }
     
     //tap for cash funciotn

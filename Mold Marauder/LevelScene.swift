@@ -227,40 +227,6 @@ class LevelScene: SKScene {
             lastButton = spaceButton.position
             page1ScrollView.addChild(spaceButton)
         }
-        /*
-        
-        
-        
-        
-        if currentLevel > 40 {
-            Texture = SKTexture(image: UIImage(named: "apartment 2 button")!)
-            // slime
-            apartment2Button = SKSpriteNode(texture:Texture)
-            // Place in scene
-            apartment2Button.position = CGPoint(x: lastButton.x+120, y: lastButton.y)
-            lastButton = apartment2Button.position
-            page1ScrollView.addChild(apartment2Button)
-        }
-        if currentLevel > 48 {
-            Texture = SKTexture(image: UIImage(named: "sand castle button")!)
-            // slime
-            sandButton = SKSpriteNode(texture:Texture)
-            // Place in scene
-            sandButton.position = CGPoint(x: lastButton.x+120, y: lastButton.y)
-            lastButton = sandButton.position
-            page1ScrollView.addChild(sandButton)
-        }
-        if currentLevel > 56 {
-            Texture = SKTexture(image: UIImage(named: "space 2 button")!)
-            // slime
-            space2Button = SKSpriteNode(texture:Texture)
-            // Place in scene
-            space2Button.position = CGPoint(x: lastButton.x+120, y: lastButton.y)
-            lastButton = space2Button.position
-            page1ScrollView.addChild(space2Button)
-        }
-        
-        */
         
         if checkmark != nil {
             checkmark.removeFromParent()

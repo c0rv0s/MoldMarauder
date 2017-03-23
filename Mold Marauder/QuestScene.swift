@@ -97,7 +97,7 @@ class QuestScene: SKScene {
         progressLabel.fontSize = 18
         progressLabel.fontColor = UIColor.black
         if questAmount < questGoal {
-            progressLabel.text = "\(questAmount)/\(questGoal)"
+            progressLabel.text = "\(questAmount!)/\(questGoal!)"
         }
         else {
             progressLabel.text = "Complete!"
@@ -105,7 +105,7 @@ class QuestScene: SKScene {
         progressLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+43);
         labelLayer.addChild(progressLabel)
         let progressBar = ProgressBar(color: SKColor.green, size:CGSize(width:250, height:25))
-        var goal = Double(questAmount) / Double(questGoal)
+        var goal = Double(questAmount!) / Double(questGoal!)
         progressBar.progress = CGFloat(goal)
         progressBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY+50);
         barLayer.addChild(progressBar)

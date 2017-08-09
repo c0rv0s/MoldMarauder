@@ -9,11 +9,15 @@
 import SpriteKit
 
 class GameScene: SKScene {
+    var mute = false
     var header: SKNode! = nil
     var buyButton: SKNode! = nil
     var diamondIcon: SKNode! = nil
     var diamondCLabel: SKLabelNode! = nil
     var diamondBuy: SKNode! = nil
+    
+    var buyEnabled = true
+    var claimQuestButton: SKNode! = nil
     
     var numDiamonds: Int!
     var diamondShop = false
@@ -26,6 +30,11 @@ class GameScene: SKScene {
     var diamondLarge: SKNode! = nil
     var exitDiamond: SKNode! = nil
     var diamondShelves: SKSpriteNode!
+    
+    var tinyButton: SKSpriteNode! = nil
+    var smallButton: SKSpriteNode! = nil
+    var mediumButton: SKSpriteNode! = nil
+    var largeButton: SKSpriteNode! = nil
     
     var menuPopUp: SKSpriteNode!
     
@@ -47,6 +56,8 @@ class GameScene: SKScene {
     var deathRay = false
     var laserPower = 0
     
+    var reinvestCount = 0
+    
     //cards
     let cardLayer = SKNode()
     var card1: SKNode! = nil
@@ -62,8 +73,22 @@ class GameScene: SKScene {
     var selectedArray = [Int]()
     //card effects
     
+    //fairy
+    let fairyLayer = SKNode()
+    var fairyCounter = 0
+    var fairyTimer: Timer!
+    
+    var touchedPoints = [CGPoint]() // point history
+    var fitResult = CircleResult() // information about how circle-like is the path
+    var tolerance: CGFloat = 0.2 // circle wiggle room
+    var isCircle = false
+    var path = CGMutablePath() // running CGPath - helps with drawing
+
+    
+    //sleep
     var sleepButton: SKNode! = nil
     
+    //spritz and xtap
     var xTapCount = 0
     var xTapAmount = 100
     var spritzAmount = 1
@@ -81,6 +106,7 @@ class GameScene: SKScene {
     let deadLayer = SKNode()
     let sleepLayer = SKNode()
     let kissOrFightLayer = SKNode()
+    let tutorialLayer = SKNode()
     var deadFrames = [SKTexture]()
     var laserFrames = [SKTexture]()
     
@@ -90,6 +116,7 @@ class GameScene: SKScene {
     
     var touchHandler: ((String) -> ())?
     
+    //sounds
     let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
     let cardFlipSound = SKAction.playSoundFileNamed("card flip.wav", waitForCompletion: false)
     let laserSound = SKAction.playSoundFileNamed("laser.wav", waitForCompletion: false)
@@ -105,13 +132,20 @@ class GameScene: SKScene {
     let wormAppearSound = SKAction.playSoundFileNamed("worm appear.wav", waitForCompletion: false)
     let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
     let cameraSound = SKAction.playSoundFileNamed("camera.wav", waitForCompletion: false)
-    let exitSound = SKAction.playSoundFileNamed("exit.mp3", waitForCompletion: false)
-    
+    let exitSound = SKAction.playSoundFileNamed("exit.wav", waitForCompletion: false)
+    let fairySound = SKAction.playSoundFileNamed("sparkle.mp3", waitForCompletion: false)
+    let powerDownSound = SKAction.playSoundFileNamed("powerdown.wav", waitForCompletion: false)
+    let plinkingSound = SKAction.playSoundFileNamed("plinking.wav", waitForCompletion: false)
+    let reinvest = SKAction.playSoundFileNamed("quest complete.wav", waitForCompletion: false)
+
     var animateTimer: Timer!
     
     var selectedNode = SKNode()
     
     var isActive = true
+    
+    //tutorial
+    var tutorial = 0
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
@@ -130,20 +164,6 @@ class GameScene: SKScene {
         if ((molds) != nil) {
             updateMolds()
         }
-        
-        wormRepelLabel = SKLabelNode(fontNamed: "Lemondrop")
-        wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+190)
-        self.addChild(wormRepelLabel)
-        
-        spritzLabel = SKLabelNode(fontNamed: "Lemondrop")
-        spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+190)
-        spritzLabel.fontColor = UIColor.yellow
-        self.addChild(spritzLabel)
-        
-        xTapLabel = SKLabelNode(fontNamed: "Lemondrop")
-        xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+190)
-        xTapLabel.fontColor = UIColor.green
-        self.addChild(xTapLabel)
         
         var i = 1
         let numFrames = 3
@@ -167,6 +187,7 @@ class GameScene: SKScene {
         
         addChild(wormLayer)
         addChild(deadLayer)
+        addChild(fairyLayer)
         cardLayer.zPosition = 300
         addChild(cardLayer)
         sleepLayer.zPosition = 800
@@ -181,7 +202,9 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         //EVENT TRIGGER TIMER
         //setDiamondLabel()
-        reactivateTimer()
+        if let handler = touchHandler {
+            handler("reactivate timers")
+        }
     }
     
     func setBackground() {
@@ -228,7 +251,42 @@ class GameScene: SKScene {
         diamondBuy = SKSpriteNode(texture: Texture)
         diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+270);
         self.addChild(diamondBuy)
+        
+        // DIAMOND LABEL
+        diamondCLabel = SKLabelNode(fontNamed: "Lemondrop")
+        diamondCLabel.fontSize = 18
+        diamondCLabel.fontColor = UIColor.black
+        diamondCLabel.text = ""//String(numDiamonds)
+        diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+262);
+        self.addChild(diamondCLabel)
        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+195)
+            buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+195)
+            diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+195)
+            diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+195)
+            diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+187)
+            break
+        case .iPhone5:
+            //iPhone 5
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+230)
+            buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+230)
+            diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+230)
+            diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+230)
+            diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+222)
+            break
+        case .iPhone6Plus:
+            // Code for iPhone 6 Plus & iPhone 7 Plus
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+310)
+            buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+310)
+            diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+310)
+            diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+310)
+            diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+302)
+            break
+        default:
+            break
+        }
         //CAMERA
         Texture = SKTexture(image: UIImage(named: "camera")!)
         cameraButton = SKSpriteNode(texture: Texture)
@@ -241,18 +299,56 @@ class GameScene: SKScene {
         inventoryButton.position = CGPoint(x:self.frame.maxX - 40, y:self.frame.minY + 40);
         self.addChild(inventoryButton)
         
-        // DIAMOND LABEL
-        diamondCLabel = SKLabelNode(fontNamed: "Lemondrop")
-        diamondCLabel.fontSize = 18
-        diamondCLabel.fontColor = UIColor.black
-        diamondCLabel.text = ""//String(numDiamonds)
-        diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+262);
-        self.addChild(diamondCLabel)
+        wormRepelLabel = SKLabelNode(fontNamed: "Lemondrop")
+        wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+190)
+        self.addChild(wormRepelLabel)
+        
+        spritzLabel = SKLabelNode(fontNamed: "Lemondrop")
+        spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+190)
+        spritzLabel.fontColor = UIColor.yellow
+        self.addChild(spritzLabel)
+        
+        xTapLabel = SKLabelNode(fontNamed: "Lemondrop")
+        xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+190)
+        xTapLabel.fontColor = UIColor.green
+        self.addChild(xTapLabel)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 4
+            wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+130)
+            spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+130)
+            xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+130)
+            wormRepelLabel.setScale(0.75)
+            spritzLabel.setScale(0.75)
+            xTapLabel.setScale(0.75)
+            break
+        case .iPhone5:
+            //iPhone 5
+            wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+170)
+            spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+170)
+            xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+170)
+            wormRepelLabel.setScale(0.75)
+            spritzLabel.setScale(0.75)
+            xTapLabel.setScale(0.75)
+            break
+        default:
+            break
+        }
         
         self.diamondShop = false
     }
     
+    //MARK: - TOUCHES
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    
+        
+        // now that the user has stopped touching, figure out if the path was a circle
+        fitResult = fitCircle(touchedPoints)
+        
+        isCircle = fitResult.error <= tolerance
+        //state = isCircle ? .ended : .failed
+        
         // Stop node from moving to touch
         if let handler = touchHandler {
             handler("tap ended")
@@ -263,16 +359,26 @@ class GameScene: SKScene {
         // 1
         guard let touch = touches.first else { return }
         tapLoc = touch.location(in: gameLayer)
+
         if let handler = touchHandler {
             handler("tap")
         }
-        
-        
-        
+        if tutorial == 1 {
+            if let handler = touchHandler {
+                handler("tutorial next")
+            }
+        }
+        if tutorial > 1 && tutorial < 10 {
+            tutorial += 1
+        }
+        if tutorial == 10 {
+            buyEnabled = true
+            tutorialLayer.removeAllChildren()
+            buyMoldTutorial()
+        }
         for touch in touches {
             let location = touch.location(in: self)
             let node = atPoint(location)
-            print("tap")
             if sleepButton != nil {
                 if node == sleepButton {
                     if let handler = touchHandler {
@@ -280,7 +386,15 @@ class GameScene: SKScene {
                     }
                 }
             }
-            
+            if claimQuestButton != nil {
+                if node == claimQuestButton {
+                    eventTimer.invalidate()
+                    eventTimer = nil
+                    if let handler = touchHandler {
+                        handler("claim quest")
+                    }
+                }
+            }
             if cardsActive {
                 if cardSelected == false{
                     if card1 != nil {
@@ -429,14 +543,18 @@ class GameScene: SKScene {
                 //booping complete
                 
                 if node == buyButton {
-                    eventTimer.invalidate()
+                    if eventTimer != nil {
+                        eventTimer.invalidate()
+                    }
                     eventTimer = nil
                     if let handler = touchHandler {
                         handler("game_scene_buy")
                     }
                 }
                 if node == inventoryButton {
-                    eventTimer.invalidate()
+                    if eventTimer != nil {
+                        eventTimer.invalidate()
+                    }
                     eventTimer = nil
                     if let handler = touchHandler {
                         handler("game_scene_inventory")
@@ -448,7 +566,9 @@ class GameScene: SKScene {
                     }
                 }
                 if node == diamondBuy {
-                    eventTimer.invalidate()
+                    if eventTimer != nil {
+                        eventTimer.invalidate()
+                    }
                     eventTimer = nil
                     if let handler = touchHandler {
                         handler("diamond_buy")
@@ -465,29 +585,29 @@ class GameScene: SKScene {
                             }
                         }
                     }
-                    if diamondTiny != nil {
-                        if node == diamondTiny {
+                    if tinyButton != nil {
+                        if node == tinyButton {
                             if let handler = touchHandler {
                                 handler("diamond_tiny")
                             }
                         }
                     }
-                    if diamondSmall != nil {
-                        if node == diamondSmall {
+                    if smallButton != nil {
+                        if node == smallButton {
                             if let handler = touchHandler {
                                 handler("diamond_small")
                             }
                         }
                     }
-                    if diamondMedium != nil {
-                        if node == diamondMedium {
+                    if mediumButton != nil {
+                        if node == mediumButton {
                             if let handler = touchHandler {
                                 handler("diamond_medium")
                             }
                         }
                     }
-                    if diamondLarge != nil {
-                        if node == diamondLarge {
+                    if largeButton != nil {
+                        if node == largeButton {
                             if let handler = touchHandler {
                                 handler("diamond_large")
                             }
@@ -507,54 +627,65 @@ class GameScene: SKScene {
     }
     
     func playSound(select: String) {
-        switch select {
-        case "levelup":
-            run(levelUpSound)
-            break
-        case "card flip":
-            run(cardFlipSound)
-            break
-        case "laser":
-            run(laserSound)
-            break
-        case "dead":
-            run(deadSound)
-            break
-        case "kiss":
-            run(kissSound)
-            break
-        case "fight":
-            run(fightSound)
-            break
-        case "ding":
-            run(dingSound)
-            break
-        case "bad card":
-            run(badCardSound)
-            break
-        case "gem collect":
-            run(gemCollectSound)
-            break
-        case "crunch":
-            run(crunchSound)
-            break
-        case "gem case":
-            run(gemCaseSound)
-            break
-        case "chest":
-            run(chestSound)
-            break
-        case "worm appear":
-            run(wormAppearSound)
-            break
-        case "select":
-            run(selectSound)
-        case "camera":
-            run(cameraSound)
-        case "exit":
-            run(exitSound)
-        default:
-            run(levelUpSound)
+        if mute == false {
+            switch select {
+            case "levelup":
+                run(levelUpSound)
+                break
+            case "card flip":
+                run(cardFlipSound)
+                break
+            case "laser":
+                run(laserSound)
+                break
+            case "dead":
+                run(deadSound)
+                break
+            case "kiss":
+                run(kissSound)
+                break
+            case "fight":
+                run(fightSound)
+                break
+            case "ding":
+                run(dingSound)
+                break
+            case "bad card":
+                run(badCardSound)
+                break
+            case "gem collect":
+                run(gemCollectSound)
+                break
+            case "crunch":
+                run(crunchSound)
+                break
+            case "gem case":
+                run(gemCaseSound)
+                break
+            case "chest":
+                run(chestSound)
+                break
+            case "worm appear":
+                run(wormAppearSound)
+                break
+            case "select":
+                run(selectSound)
+            case "camera":
+                run(cameraSound)
+            case "exit":
+                run(exitSound)
+            case "powerdown":
+                run(powerDownSound)
+            case "fairy":
+                run(fairySound)
+            case "plinking":
+                //run(plinkingSound)
+                print("no")
+            case "reinvest":
+                run(reinvest)
+            default:
+                run(levelUpSound)
+            }
         }
     }
     
@@ -565,7 +696,9 @@ class GameScene: SKScene {
             timer.invalidate()
         }
         wormChompTimers = []
-        eventTimer.invalidate()
+        if eventTimer != nil {
+            eventTimer.invalidate()
+        }
         
         var texture = SKTexture(image: UIImage(named: "grey out")!)
         let greyOut = SKSpriteNode(texture:texture)
@@ -581,6 +714,23 @@ class GameScene: SKScene {
         sleepButton = SKSpriteNode(texture:texture)
         sleepButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY)
         sleepLayer.addChild(sleepButton)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            sleepMessage.setScale(0.6)
+            sleepButton.setScale(0.6)
+            break
+        case .iPhone5:
+            //iPhone 5
+            sleepMessage.setScale(0.8)
+            sleepButton.setScale(0.8)
+            break
+        
+        default:
+            break
+        }
+
     }
     
     func doDiamondShop() {
@@ -604,85 +754,180 @@ class GameScene: SKScene {
         // Place in scene
         diamondTiny.position = CGPoint(x: -75, y: 155)
         diamondLayer.addChild(diamondTiny)
-        var diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel.fontSize = 20
-        diamondLabel.text = "5 Diamonds"
+        diamondLabel.text = "10 Diamonds"
         diamondLabel.position = CGPoint(x: 30, y: 160)
         diamondLabel.color = UIColor.black
         diamondLayer.addChild(diamondLabel)
-        var priceLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 20
         priceLabel.text = "0.99$"
         priceLabel.position = CGPoint(x: 30, y: 135)
         diamondLayer.addChild(priceLabel)
         priceLabel.fontColor = UIColor.black
         diamondLabel.fontColor = UIColor.black
+        //tiny diamond button
+        tinyButton = SKSpriteNode(texture:SKTexture(image: UIImage(named: "diamond_button_invisible")!))
+        tinyButton.position = CGPoint(x: 0, y: 165)
+        //tinyButton.fillColor = SKColor.white
+        diamondLayer.addChild(tinyButton)
         
         Texture = SKTexture(image: UIImage(named: "small diamonds")!)
         diamondSmall = SKSpriteNode(texture:Texture)
         // Place in scene
         diamondSmall.position = CGPoint(x: -75, y: 45)
         diamondLayer.addChild(diamondSmall)
-        diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
-        diamondLabel.fontSize = 20
-        diamondLabel.text = "16 Diamonds"
-        diamondLabel.position = CGPoint(x: 30, y: 50)
-        diamondLabel.color = UIColor.black
-        diamondLayer.addChild(diamondLabel)
-        priceLabel = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel.fontSize = 20
-        priceLabel.text = "2.99$"
-        priceLabel.position = CGPoint(x: 30, y: 25)
-        diamondLayer.addChild(priceLabel)
-        priceLabel.fontColor = UIColor.black
-        diamondLabel.fontColor = UIColor.black
+        let diamondLabel2 = SKLabelNode(fontNamed: "Lemondrop")
+        diamondLabel2.fontSize = 20
+        diamondLabel2.text = "32 Diamonds"
+        diamondLabel2.position = CGPoint(x: 30, y: 50)
+        diamondLabel2.color = UIColor.black
+        diamondLayer.addChild(diamondLabel2)
+        let priceLabel2 = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabel2.fontSize = 20
+        priceLabel2.text = "2.99$"
+        priceLabel2.position = CGPoint(x: 30, y: 25)
+        diamondLayer.addChild(priceLabel2)
+        priceLabel2.fontColor = UIColor.black
+        diamondLabel2.fontColor = UIColor.black
+        //small diamond button
+        smallButton = SKSpriteNode(texture:SKTexture(image: UIImage(named: "diamond_button_invisible")!))
+        smallButton.position = CGPoint(x: 0, y: 55)
+        //smallButton.fillColor = SKColor.white
+        diamondLayer.addChild(smallButton)
         
         Texture = SKTexture(image: UIImage(named: "medium diamonds")!)
         diamondMedium = SKSpriteNode(texture:Texture)
         // Place in scene
         diamondMedium.position = CGPoint(x: -75, y: -65)
         diamondLayer.addChild(diamondMedium)
-        diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
-        diamondLabel.fontSize = 20
-        diamondLabel.text = "57 Diamonds"
-        diamondLabel.position = CGPoint(x: 30, y: -60)
-        diamondLabel.color = UIColor.black
-        diamondLayer.addChild(diamondLabel)
-        priceLabel = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel.fontSize = 20
-        priceLabel.text = "9.99$"
-        priceLabel.position = CGPoint(x: 30, y: -85)
-        diamondLayer.addChild(priceLabel)
-        priceLabel.fontColor = UIColor.black
-        diamondLabel.fontColor = UIColor.black
+        let diamondLabel3 = SKLabelNode(fontNamed: "Lemondrop")
+        diamondLabel3.fontSize = 20
+        diamondLabel3.text = "114 Diamonds"
+        diamondLabel3.position = CGPoint(x: 30, y: -60)
+        diamondLabel3.color = UIColor.black
+        diamondLayer.addChild(diamondLabel3)
+        let priceLabel3 = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabel3.fontSize = 20
+        priceLabel3.text = "9.99$"
+        priceLabel3.position = CGPoint(x: 30, y: -85)
+        diamondLayer.addChild(priceLabel3)
+        priceLabel3.fontColor = UIColor.black
+        diamondLabel3.fontColor = UIColor.black
+        //medium diamond button
+        mediumButton = SKSpriteNode(texture:SKTexture(image: UIImage(named: "diamond_button_invisible")!))
+        mediumButton.position = CGPoint(x: 0, y: -50)
+        //mediumButton.fillColor = SKColor.white
+        diamondLayer.addChild(mediumButton)
         
         Texture = SKTexture(image: UIImage(named: "big diamonds")!)
         diamondLarge = SKSpriteNode(texture:Texture)
         // Place in scene
         diamondLarge.position = CGPoint(x: -75, y: -175)
         diamondLayer.addChild(diamondLarge)
-        diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
-        diamondLabel.fontSize = 16
-        diamondLabel.text = "301 Diamonds"
-        diamondLabel.position = CGPoint(x: 30, y: -170)
-        diamondLabel.color = UIColor.black
-        diamondLayer.addChild(diamondLabel)
-        priceLabel = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel.fontSize = 16
-        priceLabel.text = "49.99$"
-        priceLabel.position = CGPoint(x: 30, y: -195)
-        diamondLayer.addChild(priceLabel)
-        priceLabel.fontColor = UIColor.black
-        diamondLabel.fontColor = UIColor.black
+        let diamondLabel4 = SKLabelNode(fontNamed: "Lemondrop")
+        diamondLabel4.fontSize = 16
+        diamondLabel4.text = "612 Diamonds"
+        diamondLabel4.position = CGPoint(x: 30, y: -170)
+        diamondLabel4.color = UIColor.black
+        diamondLayer.addChild(diamondLabel4)
+        let priceLabel4 = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabel4.fontSize = 16
+        priceLabel4.text = "49.99$"
+        priceLabel4.position = CGPoint(x: 30, y: -195)
+        diamondLayer.addChild(priceLabel4)
+        priceLabel4.fontColor = UIColor.black
+        diamondLabel4.fontColor = UIColor.black
+        //large diamond button
+        largeButton = SKSpriteNode(texture:SKTexture(image: UIImage(named: "diamond_button_invisible")!))
+        largeButton.position = CGPoint(x: 0, y: -160)
+        //largeButton.fillColor = SKColor.white
+        diamondLayer.addChild(largeButton)
         
-        print("diamons shop dome")
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            for child in diamondLayer.children {
+                child.setScale(0.7)
+            }
+            diamondShelves.size = background.size
+            exitDiamond.position = CGPoint(x:self.frame.midX+120, y:self.frame.midY+200)
+            
+            diamondTiny.position = CGPoint(x: -75, y: 130)
+            diamondLabel.position = CGPoint(x: 30, y: 135)
+            priceLabel.position = CGPoint(x: 30, y: 120)
+            tinyButton.position = CGPoint(x: 0, y: 140)
+            
+            diamondSmall.position = CGPoint(x: -75, y: 35)
+            diamondLabel2.position = CGPoint(x: 30, y: 40)
+            priceLabel2.position = CGPoint(x: 30, y: 25)
+            smallButton.position = CGPoint(x: 0, y: 45)
+            
+            diamondMedium.position = CGPoint(x: -75, y: -60)
+            diamondLabel3.position = CGPoint(x: 30, y: -55)
+            priceLabel3.position = CGPoint(x: 30, y: -70)
+            mediumButton.position = CGPoint(x: 0, y: -50)
+            
+            diamondLarge.position = CGPoint(x: -75, y: -155)
+            diamondLabel4.position = CGPoint(x: 30, y: -150)
+            priceLabel4.position = CGPoint(x: 30, y: -165)
+            largeButton.position = CGPoint(x: 0, y: -145)
+            break
+        case .iPhone5:
+            //iPhone 5
+            for child in diamondLayer.children {
+                child.setScale(0.9)
+            }
+            diamondShelves.size = background.size
+            exitDiamond.position = CGPoint(x:self.frame.midX+120, y:self.frame.midY+200)
+            
+            diamondTiny.position = CGPoint(x: -75, y: 130)
+            diamondLabel.position = CGPoint(x: 30, y: 135)
+            priceLabel.position = CGPoint(x: 30, y: 120)
+            tinyButton.position = CGPoint(x: 0, y: 140)
+            
+            diamondSmall.position = CGPoint(x: -75, y: 35)
+            diamondLabel2.position = CGPoint(x: 30, y: 40)
+            priceLabel2.position = CGPoint(x: 30, y: 25)
+            smallButton.position = CGPoint(x: 0, y: 45)
+            
+            diamondMedium.position = CGPoint(x: -75, y: -60)
+            diamondLabel3.position = CGPoint(x: 30, y: -55)
+            priceLabel3.position = CGPoint(x: 30, y: -70)
+            mediumButton.position = CGPoint(x: 0, y: -50)
+            
+            diamondLarge.position = CGPoint(x: -75, y: -155)
+            diamondLabel4.position = CGPoint(x: 30, y: -150)
+            priceLabel4.position = CGPoint(x: 30, y: -165)
+            largeButton.position = CGPoint(x: 0, y: -145)
+            break
+        case .iPhone6Plus:
+            // Code for iPhone 6 Plus & iPhone 7 Plus
+            for child in diamondLayer.children {
+                child.setScale(1.1)
+            }
+            diamondShelves.size = background.size
+            exitDiamond.position = CGPoint(x:self.frame.midX+150, y:self.frame.midY+245)
+            diamondTiny.position = CGPoint(x: -95, y: 165)
+            diamondLabel.position = CGPoint(x: 30, y: 180)
+            priceLabel.position = CGPoint(x: 30, y: 155)
+            diamondSmall.position = CGPoint(x: -95, y: 45)
+            diamondLabel2.position = CGPoint(x: 30, y: 50)
+            priceLabel2.position = CGPoint(x: 30, y: 25)
+            diamondMedium.position = CGPoint(x: -95, y: -75)
+            diamondLabel3.position = CGPoint(x: 30, y: -70)
+            priceLabel3.position = CGPoint(x: 30, y: -95)
+            diamondLarge.position = CGPoint(x: -95, y: -195)
+            diamondLabel4.position = CGPoint(x: 30, y: -190)
+            priceLabel4.position = CGPoint(x: 30, y: -215)
+            break
+        default:
+            break
+        }
     }
     
     func updateMolds() {
-        
-        var i = 0
-        var j = 0
-        
         var quantity = 0
         
         if molds.count != moldLayer.children.count {
@@ -690,762 +935,1242 @@ class GameScene: SKScene {
             mainLoop: while(moldLayer.children.count < molds.count){
                 quantity = moldLayer.children.count
                 let moldData = molds[quantity]
-                    //molds w/ no animation
-                    if (moldData.moldType == MoldType.invisible || moldData.moldType == MoldType.disaffected || moldData.moldType == MoldType.dead) {
-                        let imName = String(moldData.name)
-                        let Image = UIImage(named: imName!)
-                        let Texture = SKTexture(image: Image!)
-                        
-                        let moldPic = SKSpriteNode(texture:Texture)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                    }
-                        //MOLDS WITH CUSTOM ANIMATION INSTRUCTIONS
-                    else if (moldData.moldType == MoldType.circuit || moldData.moldType == MoldType.nuclear) {
-                        let textureOn = SKTexture(image: UIImage(named: moldData.name)!)
-                        let textureOff = SKTexture(image: UIImage(named: moldData.name + " Off")!)
-                        let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
-                        let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
-                        let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 2)*10
-                        while(i<numFrames) {
-                            frames.append(textureOn)
-                            frames.append(textureOff)
-                            i += 2
-                        }
-                        
-                        frames.append(textureTwo)
-                        frames.append(textureThree)
-                        frames.append(textureFour)
-                        frames.append(textureThree)
-                        frames.append(textureTwo)
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldCircuit")
-                    }
-                    else if (moldData.moldType == MoldType.samurai) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(3)) + 8)*10
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            i += 1
-                        }
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
-                        frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
-                        frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
-                        frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldSamurai")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.magma) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(3)) + 8)*10
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            i += 1
-                        }
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldMagma")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.cryptid) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(3)) + 8)*10
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            i += 1
-                        }
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
-                        
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldCryptid")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.cloud) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
-                        let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
-                        let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            var j = 1
-                            while(j <= 5) {
-                                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                                j += 1
-                            }
-                            i += 1
-                        }
-                        
-                        frames.append(textureTwo)
-                        frames.append(textureThree)
-                        frames.append(textureFour)
-                        frames.append(textureThree)
-                        frames.append(textureTwo)
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldCloud")
-                    }
-                    else if (moldData.moldType == MoldType.hologram) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            var j = 2
-                            while(j < 8) {
-                                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                                j += 1
-                            }
-                            i += 1
-                        }
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Hologram Mold F8")!))
-                        frames.append(SKTexture(image: UIImage(named: "Hologram Mold F9")!))
-                        frames.append(SKTexture(image: UIImage(named: "Hologram Mold F10")!))
-                        frames.append(SKTexture(image: UIImage(named: "Hologram Mold F11")!))
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldHologram")
-                    }
-                    else if (moldData.moldType == MoldType.storm) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            var j = 1
-                            while(j < 6) {
-                                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                                j += 1
-                            }
-                            i += 1
-                        }
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Storm Mold L1")!))
-                        frames.append(SKTexture(image: UIImage(named: "Storm Mold L2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Storm Mold L3")!))
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldStorm")
-                    }
-                    else if (moldData.moldType == MoldType.coconut) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            var j = 1
-                            while(j < 4) {
-                                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                                j += 1
-                            }
-                            i += 1
-                        }
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldCoconut")
-                    }
-                    else if (moldData.moldType == MoldType.angry) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 1
-                        let numFrames = 5
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldAngry")
-                    }
-                    else if (moldData.moldType == MoldType.bacteria || moldData.moldType == MoldType.bee) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 1
-                        let numFrames = 6
-                        while(i <= numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i += 1
-                        }
-                        i -= 1
-                        while(i > 0) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i -= 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldBacteria")
-                    }
-                    else if (moldData.moldType == MoldType.astronaut) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 1
-                        let numFrames = (Int(arc4random_uniform(5)) + 6)*10
-                        while(i <= numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
-                            i += 1
-                        }
-                        i = 1
-                        while(i < 22) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F2"))!))
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldAstronaut")
-                    }
-                    else if (moldData.moldType == MoldType.zombie) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        var numFrames = (Int(arc4random_uniform(3)) + 1)*10
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
-                            i += 1
-                        }
-                        
-                        i = 1
-                        numFrames = 8
-                        while(i <= numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i += 1
-                        }
-                        i -= 1
-                        while(i > 0) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i -= 1
-                        }
-                        
-                        i = 0
-                        numFrames = (Int(arc4random_uniform(3)) + 1)*10
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldZombie")
-                    }
-                    else if (moldData.moldType == MoldType.virus) {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        var frames = [SKTexture]()
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
-                        frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
-                        frames.append(SKTexture(image: UIImage(named: "Virus Mold F Blink")!))
-                        frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
-                        frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            var j = 1
-                            while(j < 8) {
-                                frames.append(SKTexture(image: UIImage(named: "Virus Mold F\(j)")!))
-                                j += 1
-                            }
-                            i += 1
-                        }
-                        
-                        
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldVirus")
-                    }
-                    else if (moldData.moldType == MoldType.x) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 2
-                        while(i<11) {
-                            var j = 1
-                            let numFrames = (Int(arc4random_uniform(6)) + 2)*2
-                            while(j < numFrames) {
-                                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                                j += 1
-                            }
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldX")
-                    }
-                    else if (moldData.moldType == MoldType.hypno || moldData.moldType == MoldType.flower || moldData.moldType == MoldType.water) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 2
-                        let numFrames = 21
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldHypno")
-                    }
-                    else if (moldData.moldType == MoldType.pimply) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 1
-                        let numFrames = 16
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i += 1
-                        }
-                        var j = 1
-                        let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
-                        while(j<numFrames2) {
-                            frames.append(SKTexture(image: UIImage(named: "Slime Mold")!))
-                            j += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldPimply")
-                    }
-                    else if (moldData.moldType == MoldType.crystal) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 2
-                        let numFrames = 8
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i += 1
-                        }
-                        var j = 1
-                        let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
-                        while(j<numFrames2) {
-                            frames.append(SKTexture(image: UIImage(named: "Crystal Mold")!))
-                            j += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldCrystal")
-                    }
-                    else if (moldData.moldType == MoldType.alien) {
-                        
-                        let textureOne = SKTexture(image: UIImage(named: "Alien Mold")!)
-                        let textureTwo = SKTexture(image: UIImage(named: "Alien Mold F2")!)
-                        let textureThree = SKTexture(image: UIImage(named: "Alien Mold F3")!)
-                        let textureFour = SKTexture(image: UIImage(named: "Alien Mold F4")!)
-                        var frames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 8)*10
-                        while(i<numFrames) {
-                            frames.append(textureOne)
-                            frames.append(textureTwo)
-                            frames.append(textureFour)
-                            i += 3
-                        }
-                        
-                        frames.append(textureThree)
-                        frames.append(textureFour)
-                        frames.append(textureThree)
-                        frames.append(textureFour)
-                        frames.append(textureThree)
-                        frames.append(textureFour)
-                        frames.append(textureTwo)
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldAlien")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.rainbow) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 1
-                        let numFrames = 11
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: "Rainbow Mold F\(i)")!))
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldRainbow")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.slinky) {
-                        var frames = [SKTexture]()
-                        
-                        var i = 1
-                        var numFrames = 11
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: "Slinky Mold F\(i)")!))
-                            i += 1
-                        }
-                        
-                        i = 0
-                        numFrames = (Int(arc4random_uniform(6)) + 8)*10
-                        while(i<numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: "Slinky Mold")!))
-                            i += 3
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldSlinky")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.coffee) {
-                        var frames = [SKTexture]()
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Coffee Mold F1")!))
-                        frames.append(SKTexture(image: UIImage(named: "Coffee Mold F2")!))
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldCoffee")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.angel) {
-                        var frames = [SKTexture]()
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
-                        frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
-                        frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
-                        var i = 2
-                        while(i<7) {
-                            var j = 1
-                            while(j < 4) {
-                                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                                j += 1
-                            }
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldAngel")
-                        
-                    }
-                    else if (moldData.moldType == MoldType.star) {
-                        var frames = [SKTexture]()
-                        
-                        frames.append(SKTexture(image: UIImage(named: "Star Mold")!))
-                        var i = 1
-                        while(i<8) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            i += 1
-                        }
-                        
-                        let firstFrame = frames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: frames,
-                                             timePerFrame: 0.15,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldStar")
-                        
-                    }
-                        //THIS IS FOR MOLDS THAT JUST BLINK
-                    else {
-                        let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                        let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
-                        let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
-                        let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-                        var blinkFrames = [SKTexture]()
-                        
-                        var i = 0
-                        let numFrames = (Int(arc4random_uniform(6)) + 8)*10
-                        while(i<numFrames) {
-                            blinkFrames.append(textureOne)
-                            i += 1
-                        }
-                        blinkFrames.append(textureTwo)
-                        blinkFrames.append(textureThree)
-                        blinkFrames.append(textureFour)
-                        blinkFrames.append(textureThree)
-                        blinkFrames.append(textureTwo)
-                        
-                        let firstFrame = blinkFrames[0]
-                        let moldPic = SKSpriteNode(texture:firstFrame)
-                        moldPic.position = CGPoint(x:self.frame.midX+CGFloat(i), y:self.frame.midY+CGFloat(j))
-                        moldLayer.addChild(moldPic)
-                        moldPic.run(SKAction.repeatForever(
-                            SKAction.animate(with: blinkFrames,
-                                             timePerFrame: 0.1,
-                                             resize: false,
-                                             restore: true)),
-                                    withKey:"moldBlinking")
-                        
+                
+                let ranX = randomInRange(lo: -125, hi: 125)
+                let ranY = randomInRange(lo: -200, hi: 175)
+                //molds w/ no animation
+                if (moldData.moldType == MoldType.invisible || moldData.moldType == MoldType.disaffected || moldData.moldType == MoldType.dead) {
+                    let imName = String(moldData.name)
+                    let Image = UIImage(named: imName!)
+                    let Texture = SKTexture(image: Image!)
+                    
+                    let moldPic = SKSpriteNode(texture:Texture)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                }
+                    //MOLDS WITH CUSTOM ANIMATION INSTRUCTIONS
+                else if (moldData.moldType == MoldType.circuit || moldData.moldType == MoldType.nuclear) {
+                    let textureOn = SKTexture(image: UIImage(named: moldData.name)!)
+                    let textureOff = SKTexture(image: UIImage(named: moldData.name + " Off")!)
+                    let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
+                    let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
+                    let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 2)*10
+                    while(i<numFrames) {
+                        frames.append(textureOn)
+                        frames.append(textureOff)
+                        i += 2
                     }
                     
-                    print(moldData.name + " added to scene")
-                    i = Int(arc4random_uniform(200)) - 100
-                    j = Int(arc4random_uniform(200)) - 200
-                quantity += 1
-                if quantity > 42 {
-                    break mainLoop
+                    frames.append(textureTwo)
+                    frames.append(textureThree)
+                    frames.append(textureFour)
+                    frames.append(textureThree)
+                    frames.append(textureTwo)
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldCircuit")
                 }
+                else if (moldData.moldType == MoldType.samurai) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(3)) + 8)*10
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        i += 1
+                    }
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
+                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
+                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
+                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldSamurai")
+                    
+                }
+                else if (moldData.moldType == MoldType.magma) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(3)) + 8)*10
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        i += 1
+                    }
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldMagma")
+                    
+                }
+                else if (moldData.moldType == MoldType.cryptid) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(3)) + 8)*10
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        i += 1
+                    }
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
+                    
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldCryptid")
+                    
+                }
+                else if (moldData.moldType == MoldType.cloud) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
+                    let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
+                    let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        var j = 1
+                        while(j <= 5) {
+                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                            j += 1
+                        }
+                        i += 1
+                    }
+                    
+                    frames.append(textureTwo)
+                    frames.append(textureThree)
+                    frames.append(textureFour)
+                    frames.append(textureThree)
+                    frames.append(textureTwo)
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldCloud")
+                }
+                else if (moldData.moldType == MoldType.hologram) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        var j = 2
+                        while(j < 8) {
+                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                            j += 1
+                        }
+                        i += 1
+                    }
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F8")!))
+                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F9")!))
+                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F10")!))
+                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F11")!))
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldHologram")
+                }
+                else if (moldData.moldType == MoldType.storm) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        var j = 1
+                        while(j < 6) {
+                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                            j += 1
+                        }
+                        i += 1
+                    }
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Storm Mold L1")!))
+                    frames.append(SKTexture(image: UIImage(named: "Storm Mold L2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Storm Mold L3")!))
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldStorm")
+                }
+                else if (moldData.moldType == MoldType.coconut) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        var j = 1
+                        while(j < 4) {
+                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                            j += 1
+                        }
+                        i += 1
+                    }
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldCoconut")
+                }
+                else if (moldData.moldType == MoldType.angry) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 1
+                    let numFrames = 5
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldAngry")
+                }
+                else if (moldData.moldType == MoldType.bacteria || moldData.moldType == MoldType.bee) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 1
+                    let numFrames = 6
+                    while(i <= numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i += 1
+                    }
+                    i -= 1
+                    while(i > 0) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i -= 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldBacteria")
+                }
+                else if (moldData.moldType == MoldType.astronaut) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 1
+                    let numFrames = (Int(arc4random_uniform(5)) + 6)*10
+                    while(i <= numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
+                        i += 1
+                    }
+                    i = 1
+                    while(i < 22) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F2"))!))
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldAstronaut")
+                }
+                else if (moldData.moldType == MoldType.zombie) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    var numFrames = (Int(arc4random_uniform(3)) + 1)*10
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
+                        i += 1
+                    }
+                    
+                    i = 1
+                    numFrames = 8
+                    while(i <= numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i += 1
+                    }
+                    i -= 1
+                    while(i > 0) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i -= 1
+                    }
+                    
+                    i = 0
+                    numFrames = (Int(arc4random_uniform(3)) + 1)*10
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldZombie")
+                }
+                else if (moldData.moldType == MoldType.virus) {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    var frames = [SKTexture]()
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
+                    frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
+                    frames.append(SKTexture(image: UIImage(named: "Virus Mold F Blink")!))
+                    frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
+                    frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        var j = 1
+                        while(j < 8) {
+                            frames.append(SKTexture(image: UIImage(named: "Virus Mold F\(j)")!))
+                            j += 1
+                        }
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldVirus")
+                }
+                else if (moldData.moldType == MoldType.x) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 2
+                    while(i<11) {
+                        var j = 1
+                        let numFrames = (Int(arc4random_uniform(6)) + 2)*2
+                        while(j < numFrames) {
+                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                            j += 1
+                        }
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldX")
+                }
+                else if (moldData.moldType == MoldType.hypno || moldData.moldType == MoldType.flower || moldData.moldType == MoldType.water) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 2
+                    let numFrames = 21
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldHypno")
+                }
+                else if (moldData.moldType == MoldType.pimply) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 1
+                    let numFrames = 16
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i += 1
+                    }
+                    var j = 1
+                    let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
+                    while(j<numFrames2) {
+                        frames.append(SKTexture(image: UIImage(named: "Slime Mold")!))
+                        j += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldPimply")
+                }
+                else if (moldData.moldType == MoldType.crystal) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 2
+                    let numFrames = 8
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i += 1
+                    }
+                    var j = 1
+                    let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
+                    while(j<numFrames2) {
+                        frames.append(SKTexture(image: UIImage(named: "Crystal Mold")!))
+                        j += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldCrystal")
+                }
+                else if (moldData.moldType == MoldType.alien) {
+                    
+                    let textureOne = SKTexture(image: UIImage(named: "Alien Mold")!)
+                    let textureTwo = SKTexture(image: UIImage(named: "Alien Mold F2")!)
+                    let textureThree = SKTexture(image: UIImage(named: "Alien Mold F3")!)
+                    let textureFour = SKTexture(image: UIImage(named: "Alien Mold F4")!)
+                    var frames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 8)*10
+                    while(i<numFrames) {
+                        frames.append(textureOne)
+                        frames.append(textureTwo)
+                        frames.append(textureFour)
+                        i += 3
+                    }
+                    
+                    frames.append(textureThree)
+                    frames.append(textureFour)
+                    frames.append(textureThree)
+                    frames.append(textureFour)
+                    frames.append(textureThree)
+                    frames.append(textureFour)
+                    frames.append(textureTwo)
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldAlien")
+                    
+                }
+                else if (moldData.moldType == MoldType.rainbow) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 1
+                    let numFrames = 11
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: "Rainbow Mold F\(i)")!))
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldRainbow")
+                    
+                }
+                else if (moldData.moldType == MoldType.slinky) {
+                    var frames = [SKTexture]()
+                    
+                    var i = 1
+                    var numFrames = 11
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: "Slinky Mold F\(i)")!))
+                        i += 1
+                    }
+                    
+                    i = 0
+                    numFrames = (Int(arc4random_uniform(6)) + 8)*10
+                    while(i<numFrames) {
+                        frames.append(SKTexture(image: UIImage(named: "Slinky Mold")!))
+                        i += 3
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldSlinky")
+                    
+                }
+                else if (moldData.moldType == MoldType.coffee) {
+                    var frames = [SKTexture]()
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Coffee Mold F1")!))
+                    frames.append(SKTexture(image: UIImage(named: "Coffee Mold F2")!))
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldCoffee")
+                    
+                }
+                else if (moldData.moldType == MoldType.angel) {
+                    var frames = [SKTexture]()
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
+                    frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
+                    frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
+                    var i = 2
+                    while(i<7) {
+                        var j = 1
+                        while(j < 4) {
+                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                            j += 1
+                        }
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldAngel")
+                    
+                }
+                else if (moldData.moldType == MoldType.star) {
+                    var frames = [SKTexture]()
+                    
+                    frames.append(SKTexture(image: UIImage(named: "Star Mold")!))
+                    var i = 1
+                    while(i<8) {
+                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                        i += 1
+                    }
+                    
+                    let firstFrame = frames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: frames,
+                                         timePerFrame: 0.15,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldStar")
+                    
+                }
+                    //THIS IS FOR MOLDS THAT JUST BLINK
+                else {
+                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+                    let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
+                    let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
+                    let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
+                    var blinkFrames = [SKTexture]()
+                    
+                    var i = 0
+                    let numFrames = (Int(arc4random_uniform(6)) + 8)*10
+                    while(i<numFrames) {
+                        blinkFrames.append(textureOne)
+                        i += 1
+                    }
+                    blinkFrames.append(textureTwo)
+                    blinkFrames.append(textureThree)
+                    blinkFrames.append(textureFour)
+                    blinkFrames.append(textureThree)
+                    blinkFrames.append(textureTwo)
+                    
+                    let firstFrame = blinkFrames[0]
+                    let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+                    moldLayer.addChild(moldPic)
+                    moldPic.run(SKAction.repeatForever(
+                        SKAction.animate(with: blinkFrames,
+                                         timePerFrame: 0.1,
+                                         resize: false,
+                                         restore: true)),
+                                withKey:"moldBlinking")
+                    
+                }
+                
+                print(moldData.name + " added to scene")
+                quantity += 1
             }
         }
     }
     
-    func animateSpritz() {
-        let particle = SKTexture(image: UIImage(named: "glowing particle")!)
-        for mold in moldLayer.children {
-            var counter = 0
-            while (counter < 15) {
-                var partNode = SKSpriteNode(texture: particle)
-                var size = Double.random0to1() * 0.8
-                partNode.setScale(CGFloat(size))
-                let posX = Int(arc4random_uniform(300)) - 150
-                let posY = Int(arc4random_uniform(60))
-                let ranX = Int(arc4random_uniform(40)) - 20
-                let ranY = Int(arc4random_uniform(100) + 1) + 120
-                partNode.position = CGPoint(x: mold.position.x + CGFloat(posX), y: mold.position.y + CGFloat(posY))
-                diamondLayer.addChild(partNode)
-                let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: ranY), duration: 2.0)
-               // moveAction.timingMode = .easeOut
-                
-                partNode.run(SKAction.sequence([moveAction, SKAction.fadeOut(withDuration: (1.0-size)), SKAction.removeFromParent()]))
-                counter += 1
-            }
+    
+    // MARK: - TUTORIAL
+    func beginTut() {
+        
+        //eventTimer.invalidate()
+        tutorial = 1
+        self.addChild(tutorialLayer)
+        let appear = SKAction.scale(to: 1.1, duration: 0.5)
+        //this is the godo case
+        let Texture = SKTexture(image: UIImage(named: "intro box")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
+        introNode.setScale(0.0)
+        tutorialLayer.addChild(introNode)
+        introNode.run(appear)
+        _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(addTitle1), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            introNode.setScale(0.7)
+        case .iPhone5:
+            //iPhone 5
+            introNode.setScale(0.9)
+            break
+        default:
+            break
+        }
+
+    }
+    
+    func addTitle1() {
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 15
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Welcome to"
+        welcomeTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+115);
+        tutorialLayer.addChild(welcomeTitle)
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 28
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "Mold Marauder"
+        welcomeTitle2.position = CGPoint(x:self.frame.midX, y:self.frame.midY+80);
+        tutorialLayer.addChild(welcomeTitle2)
+        let welcomeTitle3 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle3.fontSize = 15
+        welcomeTitle3.fontColor = UIColor.black
+        welcomeTitle3.text = "Your goal is to become the"
+        welcomeTitle3.position = CGPoint(x:self.frame.midX, y:self.frame.midY+45);
+        tutorialLayer.addChild(welcomeTitle3)
+        let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle4.fontSize = 15
+        welcomeTitle4.fontColor = UIColor.black
+        welcomeTitle4.text = "richest mold breeder in the "
+        welcomeTitle4.position = CGPoint(x:self.frame.midX, y:self.frame.midY+25);
+        tutorialLayer.addChild(welcomeTitle4)
+        let welcomeTitle5 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle5.fontSize = 15
+        welcomeTitle5.fontColor = UIColor.black
+        welcomeTitle5.text = "world."
+        welcomeTitle5.position = CGPoint(x:self.frame.midX, y:self.frame.midY+5);
+        tutorialLayer.addChild(welcomeTitle5)
+        let welcomeTitle6 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle6.fontSize = 15
+        welcomeTitle6.fontColor = UIColor.black
+        welcomeTitle6.text = "Tap to Continue"
+        welcomeTitle6.position = CGPoint(x:self.frame.midX, y:self.frame.midY-40);
+        tutorialLayer.addChild(welcomeTitle6)
+        
+        let Texture = SKTexture(image: UIImage(named: "Hypno Mold")!)
+        let moldNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        moldNode.position = CGPoint(x:self.frame.midX, y:self.frame.midY-95);
+        tutorialLayer.addChild(moldNode)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle.setScale(0.7)
+            welcomeTitle2.setScale(0.7)
+            welcomeTitle3.setScale(0.7)
+            welcomeTitle4.setScale(0.7)
+            welcomeTitle5.setScale(0.7)
+            welcomeTitle6.setScale(0.7)
+            moldNode.setScale(0.7)
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle3.setScale(0.9)
+            welcomeTitle4.setScale(0.9)
+            welcomeTitle5.setScale(0.9)
+            welcomeTitle6.setScale(0.9)
+            moldNode.setScale(0.9)
+            break
+        default:
+            break
         }
     }
+    
+    func tapTut() {
+        tutorial += 1
+        let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.position = CGPoint(x:diamondIcon.position.x+75, y:diamondIcon.position.y - 100)
+        tutorialLayer.addChild(introNode)
+        
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 13
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Tap the screen to earn points:"
+        welcomeTitle.position = CGPoint(x:introNode.position.x, y:introNode.position.y);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle.setScale(0.7)
+            introNode.setScale(0.7)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle.setScale(0.9)
+            introNode.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func buyMoldTutorial() {
+        print("derp")
+        tutorial = 11
+        
+        let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        introNode.setScale(1.15)
+        // Place in scene
+        switch UIDevice().screenType {
+        case .iPhone5:
+            //iPhone 5
+            introNode.setScale(1)
+            break
+        default:
+            break
+        }
+        
+        introNode.position = CGPoint(x:frame.midX, y:frame.midY);
+        tutorialLayer.addChild(introNode)
+        
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 13
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Good! Now lets buy your first mold"
+        welcomeTitle.position = CGPoint(x:introNode.position.x, y:introNode.position.y+12);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 13
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "Tap the \"Buy\" Button in the top right"
+        welcomeTitle2.position = CGPoint(x:introNode.position.x, y:introNode.position.y-12);
+        tutorialLayer.addChild(welcomeTitle2)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle.setScale(0.7)
+            welcomeTitle2.setScale(0.7)
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            break
+        default:
+            break
+        }
+    }
+    
+    func wormTutorial() {
+        let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.position = CGPoint(x:diamondIcon.position.x+75, y:diamondIcon.position.y - 100);
+        tutorialLayer.addChild(introNode)
+        
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 13
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Congrats you have a Mold!"
+        welcomeTitle.position = CGPoint(x:introNode.position.x, y:introNode.position.y+25);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 18
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "But BE CAREFUL!"
+        welcomeTitle2.position = CGPoint(x:introNode.position.x, y:introNode.position.y);
+        tutorialLayer.addChild(welcomeTitle2)
+        let welcomeTitle3 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle3.fontSize = 14
+        welcomeTitle3.fontColor = UIColor.black
+        welcomeTitle3.text = "Evil worms want to eat it!"
+        welcomeTitle3.position = CGPoint(x:introNode.position.x, y:introNode.position.y-25);
+        tutorialLayer.addChild(welcomeTitle3)
+        _ = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(killWormTutorial), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle.setScale(0.7)
+            welcomeTitle2.setScale(0.7)
+            welcomeTitle3.setScale(0.7)
+            introNode.setScale(0.7)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle3.setScale(0.9)
+            introNode.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func killWormTutorial() {
+        let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.position = CGPoint(x:diamondIcon.position.x+75, y:diamondIcon.position.y - 200);
+        tutorialLayer.addChild(introNode)
+        
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 14
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Tap the worm to fire"
+        welcomeTitle.position = CGPoint(x:introNode.position.x, y:introNode.position.y+18);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        let welcomeTitle25 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle25.fontSize = 14
+        welcomeTitle25.fontColor = UIColor.black
+        welcomeTitle25.text = "your laser"
+        welcomeTitle25.position = CGPoint(x:introNode.position.x, y:introNode.position.y);
+        tutorialLayer.addChild(welcomeTitle25)
+        
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 14
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "A couple shots should do it"
+        welcomeTitle2.position = CGPoint(x:introNode.position.x, y:introNode.position.y-18);
+        tutorialLayer.addChild(welcomeTitle2)
+        wormAttack(tutorial: true)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle.setScale(0.7)
+            welcomeTitle2.setScale(0.7)
+            welcomeTitle25.setScale(0.7)
+            introNode.setScale(0.7)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle25.setScale(0.9)
+            introNode.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+
+    func killWormCongrats() {
+        let appear = SKAction.scale(to: 1.1, duration: 0.5)
+        //this is the godo case
+        let Texture = SKTexture(image: UIImage(named: "intro box")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
+        introNode.setScale(0.0)
+        tutorialLayer.addChild(introNode)
+        introNode.run(appear)
+        _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(addWormDeadCongrats), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            introNode.setScale(0.7)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            introNode.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func addWormDeadCongrats() {
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 16
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Nice! You got it!"
+        welcomeTitle.position = CGPoint(x:frame.midX, y:frame.midY+115);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        let welcomeTitle25 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle25.fontSize = 14
+        welcomeTitle25.fontColor = UIColor.black
+        welcomeTitle25.text = "Watch out, worms will get"
+        welcomeTitle25.position = CGPoint(x:frame.midX, y:frame.midY+95);
+        tutorialLayer.addChild(welcomeTitle25)
+        
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 14
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "harder to kill"
+        welcomeTitle2.position = CGPoint(x:frame.midX, y:frame.midY+80);
+        tutorialLayer.addChild(welcomeTitle2)
+        
+        let welcomeTitle3 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle3.fontSize = 14
+        welcomeTitle3.fontColor = UIColor.black
+        welcomeTitle3.text = "but you can upgrade"
+        welcomeTitle3.position = CGPoint(x:frame.midX, y:frame.midY+65)
+        tutorialLayer.addChild(welcomeTitle3)
+        
+        let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle4.fontSize = 14
+        welcomeTitle4.fontColor = UIColor.black
+        welcomeTitle4.text = "your weapons."
+        welcomeTitle4.position = CGPoint(x:frame.midX, y:frame.midY+45);
+        tutorialLayer.addChild(welcomeTitle4)
+        
+        _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(addWormDeadCongrats2), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle.setScale(0.7)
+            welcomeTitle2.setScale(0.7)
+            welcomeTitle3.setScale(0.7)
+            welcomeTitle4.setScale(0.7)
+            welcomeTitle25.setScale(0.7)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle3.setScale(0.9)
+            welcomeTitle4.setScale(0.9)
+            welcomeTitle25.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func addWormDeadCongrats2() {
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 16
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Earn some cash and then"
+        welcomeTitle.position = CGPoint(x:frame.midX, y:frame.midY+15);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 14
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "0nce you've got a few molds"
+        welcomeTitle2.position = CGPoint(x:frame.midX, y:frame.midY);
+        tutorialLayer.addChild(welcomeTitle2)
+
+        let welcomeTitle3 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle3.fontSize = 14
+        welcomeTitle3.fontColor = UIColor.black
+        welcomeTitle3.text = "head to the breeding chamber"
+        welcomeTitle3.position = CGPoint(x:frame.midX, y:frame.midY-15);
+        tutorialLayer.addChild(welcomeTitle3)
+        
+        
+        let Texture = SKTexture(image: UIImage(named: "breed")!)
+        let moldNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        moldNode.position = CGPoint(x:self.frame.midX, y:self.frame.midY-60);
+        tutorialLayer.addChild(moldNode)
+        
+        _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(addWormDeadCongrats3), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle.setScale(0.7)
+            welcomeTitle2.setScale(0.7)
+            welcomeTitle3.setScale(0.7)
+            moldNode.setScale(0.7)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle3.setScale(0.9)
+            moldNode.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func addWormDeadCongrats3() {
+        let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle4.fontSize = 18
+        welcomeTitle4.fontColor = UIColor.black
+        welcomeTitle4.text = "Tap to Continue"
+        welcomeTitle4.position = CGPoint(x:frame.midX, y:frame.midY-135);
+        tutorialLayer.addChild(welcomeTitle4)
+        if let handler = touchHandler {
+            handler("increment tutorial worm congrats")
+        }
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            welcomeTitle4.setScale(0.7)
+            break
+        case .iPhone5:
+            //iPhone 5
+            welcomeTitle4.setScale(0.9)
+            break
+        default:
+            break
+        }
+        _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(fairyTut), userInfo: nil, repeats: false)
+    }
+    
+    func fairyTut() {
+        let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.position = CGPoint(x:diamondIcon.position.x+75, y:diamondIcon.position.y - 100)
+        tutorialLayer.addChild(introNode)
+        
+        let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle4.fontSize = 14
+        welcomeTitle4.fontColor = UIColor.black
+        welcomeTitle4.text = "Draw a circle around fairies"
+        welcomeTitle4.position = CGPoint(x:introNode.position.x, y:introNode.position.y + 10);
+        tutorialLayer.addChild(welcomeTitle4)
+        
+        let welcomeTitle5 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle5.fontSize = 14
+        welcomeTitle5.fontColor = UIColor.black
+        welcomeTitle5.text = "to capture them"
+        welcomeTitle5.position = CGPoint(x:introNode.position.x, y:introNode.position.y - 10);
+        tutorialLayer.addChild(welcomeTitle5)
+        
+        _ = Timer.scheduledTimer(timeInterval: 3.5, target: self, selector: #selector(removeWormCongrats), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            
+            welcomeTitle4.setScale(0.7)
+            welcomeTitle5.setScale(0.7)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            
+            welcomeTitle4.setScale(0.9)
+             welcomeTitle5.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func removeWormCongrats() {
+        let disappear = SKAction.scale(to: 0.0, duration: 0.3)
+        for child in tutorialLayer.children {
+            child.run(SKAction.sequence([disappear, SKAction.removeFromParent()]))
+        }
+        
+    }
+
+    //MARK: - EVENT
     
     //every 8 seconds trigger event
     /*
@@ -1461,19 +2186,34 @@ class GameScene: SKScene {
         //make sure user isn't buying diamonds
         if diamondShop == false {
             //worm attak
+            print(ran)
             if ran <= 40 {
                 if wormRepel == false {
-                    wormAttack()
+                    wormAttack(tutorial: false)
+                    //vibrateWithHaptic()
+                    if reinvestCount >= 1 {
+                        wormAttack(tutorial: false)
+                    }
                 }
             }
-            if ran > 40 && ran < 60 {
-                //text message
-                
+            //add faerie
+            if ran > 35 && ran < 85 {
+                addFaerie()
+            }
+            //add lots of faeries
+            if ran == 85 {
+                let amount = randomInRange(lo: 4, hi: 14)
+                var counter = 0
+                while(counter < amount) {
+                    addFaerie()
+                    counter += 1
+                }
             }
             //card pick
             if ran >  95 {
                 if let handler = touchHandler {
                     handler("touchOFF")
+                    handler("tap ended")
                 }
                 //create event cards
                 cardsActive = true
@@ -1492,14 +2232,47 @@ class GameScene: SKScene {
                 revealCards = SKSpriteNode(texture:texture)
                 revealCards.position = CGPoint(x:self.frame.midX, y:self.frame.midY-170)
                 cardLayer.addChild(revealCards)
-                eventTimer.invalidate()
+                if eventTimer != nil {
+                    eventTimer.invalidate()
+                }
                 playSound(select: "card flip")
             }
         }
     }
     
+    //add faerie
+    func addFaerie() {
+        var fairyFrames = [SKTexture]()
+        
+        fairyFrames.append(SKTexture(image: UIImage(named: "fairy")!))
+        fairyFrames.append(SKTexture(image: UIImage(named: "fairy2")!))
+        fairyFrames.append(SKTexture(image: UIImage(named: "fairy3")!))
+        fairyFrames.append(SKTexture(image: UIImage(named: "fairy2")!))
+        
+        let firstFrame = fairyFrames[0]
+        let fairyNode = SKSpriteNode(texture:firstFrame)
+        let y = randomInRange(lo: Int(self.frame.minY) + 60, hi: Int(self.frame.maxY) - 120)
+        let x = randomInRange(lo: Int(self.frame.minX) + 60, hi: Int(self.frame.maxX) - 60)
+        fairyNode.position = CGPoint(x:x, y:y)
+        fairyLayer.addChild(fairyNode)
+        fairyNode.run(SKAction.repeatForever(
+            SKAction.animate(with: fairyFrames,
+                             timePerFrame: 0.1,
+                             resize: false,
+                             restore: true)),
+                      withKey:"fairyFlap")
+        
+        let appear = SKAction.scale(to: 1.0, duration: 0.15)
+        // Place in scene
+        fairyNode.setScale(0.0)
+        fairyNode.run(SKAction.sequence([appear]))
+        if fairyTimer == nil {
+            fairyTimer = Timer.scheduledTimer(timeInterval: 0.15, target: self, selector: #selector(moveFairy), userInfo: nil, repeats: true)
+        }
+    }
+    
     //do le wirm atek
-    func wormAttack() {
+    func wormAttack(tutorial: Bool) {
         //pick random location on scren
         let y = randomInRange(lo: Int(self.frame.minY) + 40, hi: Int(self.frame.maxY) - 150)
         let x = randomInRange(lo: Int(self.frame.minX) + 40, hi: Int(self.frame.maxX) - 40)
@@ -1523,7 +2296,13 @@ class GameScene: SKScene {
         let wormPic = SKSpriteNode(texture:finalFrame)
         wormChompTimers.append(Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(GameScene.eatMold), userInfo: nil, repeats: true))
         wormHP.append(wormDifficulty)
-        wormPic.position = CGPoint(x: x, y: y)
+        if tutorial {
+            wormPic.position = CGPoint(x: self.frame.midX+50, y: self.frame.midY-75)
+        }
+        else {
+            wormPic.position = CGPoint(x: x, y: y)
+        }
+        
         wormLayer.addChild(wormPic)
         playSound(select: "worm appear")
         wormPic.run(SKAction.animate(with: wormFrames,
@@ -1571,8 +2350,64 @@ class GameScene: SKScene {
         }
     }
     
+    func moveFairy() {
+        //var counter = 0
+        for fairy in fairyLayer.children {
+            if fairyCounter == 48 {
+                //if counter == 0 {
+                    let disappear = SKAction.scale(to: 0.0, duration: 0.3)
+                    fairy.run(SKAction.sequence([disappear, SKAction.removeFromParent()]))
+                    fairyCounter = 0
+                    if fairyLayer.children.count == 1 {
+                        fairyTimer.invalidate()
+                        fairyTimer = nil
+                    }
+                    
+                    //if theres too many faeries
+                    if fairyLayer.children.count > 6 {
+                        for fairy in fairyLayer.children {
+                            fairy.run(SKAction.sequence([disappear, SKAction.removeFromParent()]))
+                        }
+                    }
+                //}
+            }
+            let y = CGFloat(randomInRange(lo: -24, hi: 24))
+            let x = CGFloat(randomInRange(lo: -24, hi: 24))
+            let newPosition = CGPoint(x:fairy.position.x+x, y:fairy.position.y+y)
+            let move = SKAction.move(to: newPosition, duration:0.15)
+            fairy.run(move)
+            //counter += 1
+        }
+        fairyCounter += 1
+    }
+    
+    //MARK: - ANIMATIONS
+    
+    func animateSpritz() {
+        let particle = SKTexture(image: UIImage(named: "glowing particle")!)
+        for mold in moldLayer.children {
+            var counter = 0
+            while (counter < 15) {
+                let partNode = SKSpriteNode(texture: particle)
+                let size = Double.random0to1() * 0.8
+                partNode.setScale(CGFloat(size))
+                let posX = Int(arc4random_uniform(300)) - 150
+                let posY = Int(arc4random_uniform(60))
+                let ranX = Int(arc4random_uniform(40)) - 20
+                let ranY = Int(arc4random_uniform(100) + 1) + 120
+                partNode.position = CGPoint(x: mold.position.x + CGFloat(posX), y: mold.position.y + CGFloat(posY))
+                diamondLayer.addChild(partNode)
+                let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: ranY), duration: 2.0)
+                // moveAction.timingMode = .easeOut
+                
+                partNode.run(SKAction.sequence([moveAction, SKAction.fadeOut(withDuration: (1.0-size)), SKAction.removeFromParent()]))
+                counter += 1
+            }
+        }
+    }
+    
     //animate the little numbers wiggling up
-    func animateScore(point: CGPoint, amount: BInt, tap: Bool) {
+    func animateScore(point: CGPoint, amount: BInt, tap: Bool, fairy: Bool, offline: Bool) {
         // Figure out what the midpoint of the chain is.
         let centerPosition = CGPoint(
             x: (point.x),
@@ -1592,34 +2427,54 @@ class GameScene: SKScene {
             scoreLabel.fontColor = UIColor.green
             scoreLabel.fontSize = 20
         }
-        gameLayer.addChild(scoreLabel)
-        
-        let ranX = Int(arc4random_uniform(40)) - 20
-        let ranY = Int(arc4random_uniform(25) + 1)
-        let Y = ranY + 120
-        let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: Y), duration: 3)
-        moveAction.timingMode = .easeOut
-        scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
-        
-        //coin
-        if tap {
-            var coinFrames = [SKTexture]()
-            coinFrames.append(SKTexture(image: UIImage(named: "coin")!))
-            coinFrames.append(SKTexture(image: UIImage(named: "coin 2")!))
-            coinFrames.append(SKTexture(image: UIImage(named: "coin 3")!))
-            //laser animation
-            let finalFrame = coinFrames[2]
-            let coinPic = SKSpriteNode(texture:finalFrame)
-            coinPic.position = CGPoint(x: scoreLabel.position.x + CGFloat(ranX), y: scoreLabel.position.y)
-            coinPic.zPosition = 200
-            gameLayer.addChild(coinPic)
-            coinPic.run(SKAction.repeatForever(SKAction.animate(with: coinFrames,
-                                                             timePerFrame: 0.02,
-                                                             resize: false,
-                                                             restore: true)))
-            coinPic.run(SKAction.sequence([SKAction.move(to: CGPoint(x: frame.midX,y: frame.maxY - 90), duration:0.9),SKAction.removeFromParent()]))
+        if fairy {
+            scoreLabel.fontColor = UIColor.yellow
+            scoreLabel.fontSize = 18
         }
- 
+        if offline == true {
+            let extraLabel = SKLabelNode(fontNamed: "Lemondrop")
+            extraLabel.fontColor = UIColor.green
+            scoreLabel.fontColor = UIColor.green
+            extraLabel.fontSize = 28
+            scoreLabel.fontSize = 28
+            extraLabel.zPosition = 300
+            extraLabel.position = CGPoint(x: (point.x), y: (point.y + 50))
+            extraLabel.text = "Offline Earnings"
+            gameLayer.addChild(extraLabel)
+            gameLayer.addChild(scoreLabel)
+            let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 35), duration: 2.5)
+            scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+            extraLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+        }
+        if offline == false {
+            gameLayer.addChild(scoreLabel)
+            
+            let ranX = Int(arc4random_uniform(40)) - 20
+            let ranY = Int(arc4random_uniform(25) + 1)
+            let Y = ranY + 120
+            let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: Y), duration: 3)
+            moveAction.timingMode = .easeOut
+            scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+            
+            //coin
+            if tap {
+                var coinFrames = [SKTexture]()
+                coinFrames.append(SKTexture(image: UIImage(named: "coin")!))
+                coinFrames.append(SKTexture(image: UIImage(named: "coin 2")!))
+                coinFrames.append(SKTexture(image: UIImage(named: "coin 3")!))
+                //laser animation
+                let finalFrame = coinFrames[2]
+                let coinPic = SKSpriteNode(texture:finalFrame)
+                coinPic.position = CGPoint(x: scoreLabel.position.x + CGFloat(ranX), y: scoreLabel.position.y)
+                coinPic.zPosition = 200
+                gameLayer.addChild(coinPic)
+                coinPic.run(SKAction.repeatForever(SKAction.animate(with: coinFrames,
+                                                                    timePerFrame: 0.02,
+                                                                    resize: false,
+                                                                    restore: true)))
+                coinPic.run(SKAction.sequence([SKAction.move(to: CGPoint(x: frame.midX,y: frame.maxY - 90), duration:0.9),SKAction.removeFromParent()]))
+            }
+        }
     }
     
     //add suffix to long numbers
@@ -1770,7 +2625,7 @@ class GameScene: SKScene {
         let flip = SKAction.scaleY(to: -1, duration: 0.4)
         node.setScale(1.0)
         let flipback = SKAction.scaleY(to: 1, duration: 0.01)
-        let cardNum = Int(arc4random_uniform(12)) + 1
+        let cardNum = Int(arc4random_uniform(13)) + 1
         if reveal {
             selectedArray.append(cardNum)
         }
@@ -1793,7 +2648,7 @@ class GameScene: SKScene {
         if selectedNum <= 7 {
             texture = SKTexture(image: UIImage(named: "double card button")!)
         }
-        else {
+        else if selectedNum <= 12 && selectedNum > 7 {
             texture = SKTexture(image: UIImage(named: "negate bad card")!)
         }
         changeEffectButton = SKSpriteNode(texture:texture)
@@ -1802,6 +2657,32 @@ class GameScene: SKScene {
         if revealCards != nil {
             cardLayer.removeChildren(in: [revealCards])
             revealCards = nil
+        }
+        
+    }
+    
+    func addQuestClaimButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0.8, duration: 0.1)
+        let bounce2 = SKAction.scale(to: 1, duration: 0.1)
+
+        let action2 = SKAction.sequence([reappear, bounce1, bounce2])
+        
+        let Texture = SKTexture(image: UIImage(named: "claim quest")!)
+        claimQuestButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        claimQuestButton.position = CGPoint(x:self.frame.minX+65, y:self.frame.minY+60);
+        
+        self.addChild(claimQuestButton)
+        claimQuestButton.run(action2)
+    }
+    
+    func removeQuestButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0, duration: 0.1)
+        let action2 = SKAction.sequence([reappear, bounce1, SKAction.removeFromParent()])
+        if claimQuestButton != nil {
+            claimQuestButton.run(action2)
         }
         
     }
@@ -1828,7 +2709,7 @@ class GameScene: SKScene {
                 animheart.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
                 playSound(select: "kiss")
                 //small chance for a baby
-                if Int(arc4random_uniform(250)) == 100 {
+                if Int(arc4random_uniform(250)) <= 3 {
                     if let handler = touchHandler {
                         handler("kiss baby")
                     }
@@ -1843,7 +2724,11 @@ class GameScene: SKScene {
                     fightFrames.append(SKTexture(image: UIImage(named: "fight \(i)")!))
                     i += 1
                 }
-                if Int(arc4random_uniform(250)) == 100 {
+                var killChance = Int(arc4random_uniform(250))
+                if reinvestCount > 3 {
+                    killChance = Int(arc4random_uniform(20))
+                }
+                if killChance <= 5 {
                     fightFrames.append(SKTexture(image: UIImage(named: "knockout")!))
                     if let handler = touchHandler {
                         handler("knockout")
@@ -1910,6 +2795,7 @@ class GameScene: SKScene {
         return CGPoint(x: xT, y: yT)
     }
     
+    //MARK: - MOVE SPRITES
     //these next four methods are for moving molds around, nothing more
     func selectNodeForTouch(touchLocation: CGPoint) {
         // 1
@@ -1932,7 +2818,11 @@ class GameScene: SKScene {
             let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
             
             panForTranslation(translation: translation)
+            
+            let loc = touch.location(in: fairyLayer)
+            touchedPoints.append(loc)
         }
+
     }
     
     func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
@@ -1954,14 +2844,14 @@ class GameScene: SKScene {
         }
     }
     
+    //MARK: - VIBRATE
+    func vibrateWithHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        //generator.prepare()
+    
+        generator.impactOccurred()
+    }
     
 }
 
-extension Double {
-    private static let arc4randomMax = Double(UInt32.max)
-    
-    static func random0to1() -> Double {
-        return Double(arc4random()) / arc4randomMax
-    }
-}
 

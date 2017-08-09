@@ -66,64 +66,64 @@ enum MoldType: Int, CustomStringConvertible {
         return spriteName + " Grey"
     }
     static func random() -> MoldType {
-        return MoldType(rawValue: Int(arc4random_uniform(38)) + 1)!
+        return MoldType(rawValue: Int(arc4random_uniform(42)) + 1)!
     }
     var description: String {
         return spriteName
     }
     var price: BInt {
-        let prices = [
-            BInt("2000"),
-            BInt("5000"),
-            BInt("10000"),
-            BInt("50000"),
+        var prices = [
+            BInt("200"),
+            BInt("2560"),
+            BInt("10200"),
+            BInt("51100"),
             BInt("25000"),
-            BInt("75000"),
+            BInt("750000"),
             BInt("106000"),
-            BInt("124000"),
-            BInt("106000"),
-            BInt("250000"),
-            BInt("6000000"),
-            BInt("3000000"),
-            BInt("5750000"),
-            BInt("960000000"),
-            BInt("210000000"),
-            BInt("320000000"),
-            BInt("7800000000"),
-            BInt("9960000000"),
-            BInt("2000000000"),
-            BInt("45000000000"),
-            BInt("87000000000"),
-            BInt("19800000000"),
-            BInt("430000000000"),
-            BInt("120000000000"),
-            BInt("790000000000"),
-            BInt("2400000000000"),
-            BInt("5670000000000"),
-            BInt("6700000000000"),
-            BInt("19700000000000"),
-            BInt("64500000000000"),
-            BInt("998000000000000"),
-            BInt("322000000000000"),
-            BInt("680000000000000"),
-            BInt("1700000000000000"),
-            BInt("5435400000000000"),
-            BInt("9878900000000000"),
-            BInt("87623000000000000"),
-            BInt("87670000000000000"),
-            BInt("567000000000000000"),
-            BInt("6437800000000000000"),
-            BInt("7592780000000000000"),
-            BInt("999999999999999999999"),
+            BInt("1240000"),
+            BInt("1060000"),
+            BInt("25000000"),
+            BInt("60000000"),
+            BInt("300000000"),
+            BInt("575000000"),
+            BInt("9600000000"),
+            BInt("2100000000"),
+            BInt("32000000000"),
+            BInt("78000000000"),
+            BInt("996000000000"),
+            BInt("236000000000"),
+            BInt("4500000000000"),
+            BInt("87000000000000"),
+            BInt("198000000000000"),
+            BInt("430000000000000"),
+            BInt("120000000000000"),
+            BInt("790000000000000"),
+            BInt("2400000000000000"),
+            BInt("5670000000000000"),
+            BInt("6700000000000000"),
+            BInt("1970000000000000"),
+            BInt("64500000000000000"),
+            BInt("99800000000000000"),
+            BInt("32200000000000000"),
+            BInt("680000000000000000"),
+            BInt("170000000000000000"),
+            BInt("543540000000000000"),
+            BInt("9878900000000000000"),
+            BInt("8762300000000000000"),
+            BInt("87670000000000000000"),
+            BInt("567000000000000000000"),
+            BInt("64378000000000000000000"),
+            BInt("75927800000000000000000"),
+            BInt("999999999999999999999999999"),
             BInt("0")]
         
         return prices[rawValue - 1]
     }
     var pointsPerSecond: BInt {
         let PPS = [
-            BInt("20"),
-            BInt("50"),
-            BInt("100"),
+            BInt("10"),
+            BInt("55"),
+            BInt("115"),
             BInt("500"),
             BInt("2500"),
             BInt("7500"),
@@ -172,7 +172,7 @@ enum MoldType: Int, CustomStringConvertible {
 class Mold: CustomStringConvertible {
     let moldType: MoldType
     let name: String
-    let price: BInt
+    var price: BInt
     var sprite: SKSpriteNode?
     var level: Int
     var PPS: BInt

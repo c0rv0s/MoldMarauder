@@ -8,6 +8,7 @@
 
 import SpriteKit
 class MoldInventory: SKScene {
+    var mute = false
     
     //molds to combine
     var slimeButton: SKNode! = nil
@@ -266,9 +267,12 @@ class MoldInventory: SKScene {
                 if moldOwned(mold: mold.moldType) {
                     count += 1
                 }
+                if mold.moldType == MoldType.coconut || mold.moldType == MoldType.flower || mold.moldType == MoldType.bee {
+                    count += 1
+                }
             }
         }
-        let height = count * 110
+        let height = count * 95
         //addNode
         addChild(moveableNode)
         //set up the scrollView
@@ -286,10 +290,32 @@ class MoldInventory: SKScene {
         
         //initialize these values, they get updated to be reused for each new button added
         var Texture = SKTexture(image: UIImage(named: "Slime Mold")!)
-        lastButton = CGPoint(x: -75, y: 270)
+        lastButton = CGPoint(x: -75, y: 260)
+        switch UIDevice().screenType {
+        case .iPhone4:
+            lastButton = CGPoint(x: -75, y: 210)
+            break
+        case .iPhone5:
+            lastButton = CGPoint(x: -100, y: 240)
+            break
+        default:
+            break
+        }
         
         let inLabel = SKLabelNode(fontNamed: "Lemondrop")
         inLabel.fontSize = 15
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            inLabel.fontSize = 11
+            break
+        case .iPhone5:
+            //iPhone 5
+            inLabel.fontSize = 12
+            break
+        default:
+            break
+        }
         inLabel.fontColor = UIColor.black
         inLabel.text = "Select up to 25 molds for display"
         inLabel.position = CGPoint(x: lastButton.x + 75, y: lastButton.y - 50)
@@ -1424,6 +1450,25 @@ class MoldInventory: SKScene {
         totalLabel.text = String(totalNum)
         totalLabel.position = CGPoint(x:self.frame.midX+160, y:self.frame.midY+130);
         self.addChild(totalLabel)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            totalLabel.setScale(0.75)
+            totalLabel.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+130);
+            break
+        case .iPhone5:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            totalLabel.setScale(0.75)
+            totalLabel.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+130);
+            break
+        default:
+            break
+        }
     }
     
     
@@ -2226,6 +2271,7 @@ class MoldInventory: SKScene {
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
@@ -2238,12 +2284,13 @@ class MoldInventory: SKScene {
         default:
             run(levelUpSound)
         }
+        }
     }
     
     func animateName(point: CGPoint,name: String, new: Int) {
         // Figure out what the midpoint of the chain is.
         let centerPosition = CGPoint(
-            x: (point.x),
+            x: (point.x + 25),
             y: (point.y + 10))
         
         // Add a label for the score that slowly floats up.

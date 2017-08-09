@@ -8,6 +8,7 @@
 
 import SpriteKit
 class PremiumShop: SKScene {
+    var mute = false
     
     var backButton: SKNode! = nil
     var cashWindfallButton: SKNode! = nil
@@ -15,6 +16,8 @@ class PremiumShop: SKScene {
     var incubatorButton: SKNode! = nil
     var starButton: SKNode! = nil
     var autoTapButton: SKNode! = nil
+    
+    var buyDiamondsButton: SKNode! = nil
     
     var incLabel: SKLabelNode! = nil
     
@@ -41,6 +44,7 @@ class PremiumShop: SKScene {
     let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
     let cashRegisterSound = SKAction.playSoundFileNamed("cash register.wav", waitForCompletion: false)
     let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
+    let diamondPopSound = SKAction.playSoundFileNamed("bubble pop.wav", waitForCompletion: false)
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -92,10 +96,10 @@ class PremiumShop: SKScene {
         cashWindfallButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+170);
         
         self.addChild(cashWindfallButton)
-        var windfallLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let windfallLabel = SKLabelNode(fontNamed: "Lemondrop")
         windfallLabel.fontSize = 14
         windfallLabel.fontColor = UIColor.black
-        windfallLabel.text = "30 Diamonds"
+        windfallLabel.text = "25 Diamonds"
         windfallLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+106)
         addChild(windfallLabel)
         
@@ -112,7 +116,7 @@ class PremiumShop: SKScene {
         deathRayButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+170)
         
         self.addChild(deathRayButton)
-        var deathLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let deathLabel = SKLabelNode(fontNamed: "Lemondrop")
         deathLabel.fontSize = 14
         deathLabel.fontColor = UIColor.black
         deathLabel.text = "$2.99"
@@ -138,16 +142,16 @@ class PremiumShop: SKScene {
         incLabel.text = "\((incubatorBought + 1)*10)% chance for a free"
         incLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-165)//CGPoint(x:self.frame.midX-85, y:self.frame.midY-10)
         addChild(incLabel)
-        var priceLabel2 = SKLabelNode(fontNamed: "Lemondrop")
+        let priceLabel2 = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel2.fontSize = 13
         priceLabel2.fontColor = UIColor.black
         priceLabel2.text = "mold w/ each purchase"
         priceLabel2.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-178)//CGPoint(x:self.frame.midX-85, y:self.frame.midY-23)
         addChild(priceLabel2)
-        var priceLabel3 = SKLabelNode(fontNamed: "Lemondrop")
+        let priceLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel3.fontSize = 13
         priceLabel3.fontColor = UIColor.black
-        priceLabel3.text = "15 Diamonds"
+        priceLabel3.text = "6 Diamonds"
         priceLabel3.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-194)//CGPoint(x:self.frame.midX-85, y:self.frame.midY-36)
         addChild(priceLabel3)
         
@@ -163,19 +167,19 @@ class PremiumShop: SKScene {
         autoTapButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+50)
         
         self.addChild(autoTapButton)
-        var autoLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let autoLabel = SKLabelNode(fontNamed: "Lemondrop")
         autoLabel.fontSize = 13
         autoLabel.fontColor = UIColor.black
         autoLabel.text = "Hold finger"
         autoLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-23)
         addChild(autoLabel)
-        var autoLabel2 = SKLabelNode(fontNamed: "Lemondrop")
+        let autoLabel2 = SKLabelNode(fontNamed: "Lemondrop")
         autoLabel2.fontSize = 13
         autoLabel2.fontColor = UIColor.black
         autoLabel2.text = "to auto-tap"
         autoLabel2.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-36)
         addChild(autoLabel2)
-        var autoLabel3 = SKLabelNode(fontNamed: "Lemondrop")
+        let autoLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         autoLabel3.fontSize = 13
         autoLabel3.fontColor = UIColor.black
         autoLabel3.text = "$3.99"
@@ -191,25 +195,105 @@ class PremiumShop: SKScene {
         
         self.addChild(starButton)
         //incubator price
-        let priceLabel = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel.fontSize = 13
-        priceLabel.fontColor = UIColor.black
-        priceLabel.text = "1M Points/Second"
-        priceLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-10)
-        addChild(priceLabel)
-        priceLabel2 = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel2.fontSize = 13
-        priceLabel2.fontColor = UIColor.black
-        priceLabel2.text = "Immune to worms"
-        priceLabel2.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-23)
-        addChild(priceLabel2)
-        priceLabel3 = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel3.fontSize = 13
-        priceLabel3.fontColor = UIColor.black
-        priceLabel3.text = "4.99$"
-        priceLabel3.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-36)
-        addChild(priceLabel3)
+        let priceLabelST = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabelST.fontSize = 13
+        priceLabelST.fontColor = UIColor.black
+        priceLabelST.text = "1M Points/Second"
+        priceLabelST.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-10)
+        addChild(priceLabelST)
+        let priceLabelST2 = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabelST2.fontSize = 13
+        priceLabelST2.fontColor = UIColor.black
+        priceLabelST2.text = "Immune to worms"
+        priceLabelST2.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-23)
+        addChild(priceLabelST2)
+        let priceLabelST3 = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabelST3.fontSize = 13
+        priceLabelST3.fontColor = UIColor.black
+        priceLabelST3.text = "30 Diamonds"
+        priceLabelST3.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-36)
+        addChild(priceLabelST3)
 
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.85)
+            cashWindfallButton.setScale(0.9)
+            deathRayButton.setScale(0.9)
+            incubatorButton.setScale(0.9)
+            autoTapButton.setScale(0.9)
+            starButton.setScale(0.9)
+            windfallLabel.setScale(0.85)
+            deathLabel.setScale(0.85)
+            incLabel.setScale(0.75)
+            priceLabel2.setScale(0.75)
+            priceLabel3.setScale(0.75)
+            autoLabel.setScale(0.85)
+            autoLabel2.setScale(0.85)
+            autoLabel3.setScale(0.85)
+            priceLabelST.setScale(0.85)
+            priceLabelST2.setScale(0.85)
+            priceLabelST3.setScale(0.85)
+            
+            cashWindfallButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+120);
+            deathRayButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+120)
+            incubatorButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-133)
+            autoTapButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY)
+            starButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY)
+            windfallLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+56)
+            deathLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+56)
+            incLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-195)
+            priceLabel2.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-208)
+            priceLabel3.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-224)
+            autoLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-73)
+            autoLabel2.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-86)
+            autoLabel3.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-99)
+            priceLabelST.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-60)
+            priceLabelST2.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-73)
+            priceLabelST3.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-86)
+            break
+        case .iPhone5:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.85)
+            cashWindfallButton.setScale(0.9)
+            deathRayButton.setScale(0.9)
+            incubatorButton.setScale(0.9)
+            autoTapButton.setScale(0.9)
+            starButton.setScale(0.9)
+            windfallLabel.setScale(0.85)
+            deathLabel.setScale(0.85)
+            incLabel.setScale(0.75)
+            priceLabel2.setScale(0.75)
+            priceLabel3.setScale(0.75)
+            autoLabel.setScale(0.85)
+            autoLabel2.setScale(0.85)
+            autoLabel3.setScale(0.85)
+            priceLabelST.setScale(0.85)
+            priceLabelST2.setScale(0.85)
+            priceLabelST3.setScale(0.85)
+            
+            cashWindfallButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+150);
+            deathRayButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+150)
+            incubatorButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-103)
+            autoTapButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+30)
+            starButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+30)
+            windfallLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+86)
+            deathLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+86)
+            incLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-165)
+            priceLabel2.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-178)
+            priceLabel3.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-194)
+            autoLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-43)
+            autoLabel2.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-56)
+            autoLabel3.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-69)
+            priceLabelST.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-30)
+            priceLabelST2.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-43)
+            priceLabelST3.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-56)
+            break
+        default:
+            break
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -257,10 +341,17 @@ class PremiumShop: SKScene {
                 handler("auto-tap")
             }
         }
-        
+        if buyDiamondsButton != nil {
+            if buyDiamondsButton.contains(touchLocation) {
+                if let handler = touchHandler {
+                    handler("addDiamonds")
+                }
+            }
+        }
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
@@ -268,9 +359,38 @@ class PremiumShop: SKScene {
             run(cashRegisterSound)
         case "select":
             run(selectSound)
+        case "diamond pop":
+            run(diamondPopSound)
         default:
             run(levelUpSound)
         }
+        }
+    }
+    
+    func addBuyDiamondsButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0.8, duration: 0.1)
+        let bounce2 = SKAction.scale(to: 1, duration: 0.1)
+        //this is the godo case
+        let action2 = SKAction.sequence([reappear, bounce1, bounce2])
+        
+        let Texture = SKTexture(image: UIImage(named: "add diamonds button")!)
+        buyDiamondsButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        buyDiamondsButton.position = CGPoint(x:self.frame.maxX - 65, y:self.frame.maxY-60);
+        
+        self.addChild(buyDiamondsButton)
+        buyDiamondsButton.run(action2)
+        playSound(select: "diamond pop")
+        
+        _ = Timer.scheduledTimer(timeInterval: 7.0, target: self, selector: #selector(removeDiamondButton), userInfo: nil, repeats: true)
+    }
+    
+    func removeDiamondButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0, duration: 0.1)
+        let action2 = SKAction.sequence([reappear, bounce1, SKAction.removeFromParent()])
+        buyDiamondsButton.run(action2)
     }
     
     func animateName(name: String) {

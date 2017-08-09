@@ -8,17 +8,20 @@
 
 import SpriteKit
 class MenuScene: SKScene {
+    var mute = false
     
     var buyButton: SKNode! = nil
     var exitButton: SKNode! = nil
     var cheatButton: SKNode! = nil
-    var resetButton: SKNode! = nil
+    //var resetButton: SKNode! = nil
     var breedButton: SKNode! = nil
     var levelButton: SKNode! = nil
     var itemButton: SKNode! = nil
     var achieveButton: SKNode! = nil
     var creditsButton: SKNode! = nil
     var questButton: SKNode! = nil
+    var helpButton: SKNode! = nil
+    var reinvestButton: SKNode! = nil
     
     //comet sprites
     var cometSprite1: SKNode! = nil
@@ -31,9 +34,11 @@ class MenuScene: SKScene {
     let background = SKSpriteNode(texture: SKTexture(image: UIImage(named: "cyber_menu_glow")!))
     var cometLayer = SKNode()
     
+    var tutorialLayer = SKNode()
+    
     let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
     let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
-    let exitSound = SKAction.playSoundFileNamed("exit.mp3", waitForCompletion: false)
+    let exitSound = SKAction.playSoundFileNamed("exit.wav", waitForCompletion: false)
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -155,6 +160,22 @@ class MenuScene: SKScene {
         
         self.addChild(exitButton)
         
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            exitButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            exitButton.setScale(0.75)
+            break
+        case .iPhone5:
+            //iPhone 5
+            exitButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            exitButton.setScale(0.75)
+            break
+        default:
+            break
+        }
+
+        
         // BREED BUTTON
         Texture = SKTexture(image: UIImage(named: "breed")!)
         breedButton = SKSpriteNode(texture:Texture)
@@ -175,7 +196,7 @@ class MenuScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "achievements")!)
         achieveButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        achieveButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-50);
+        achieveButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+100);
         
         self.addChild(achieveButton)
         
@@ -183,7 +204,7 @@ class MenuScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "credits button")!)
         creditsButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        creditsButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
+        creditsButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY);
         
         self.addChild(creditsButton)
         
@@ -195,22 +216,22 @@ class MenuScene: SKScene {
         
         self.addChild(questButton)
         
+        // HELP BUTTON
+        Texture = SKTexture(image: UIImage(named: "help button")!)
+        helpButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        helpButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+50)
+        
+        self.addChild(helpButton)
+        
         // CHEAT BUTTON
         Texture = SKTexture(image: UIImage(named: "cheat")!)
         cheatButton = SKSpriteNode(texture:Texture)
         // Place in scene
         cheatButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-150);
         
-        self.addChild(cheatButton)
-        
-        // RESET BUTTON
-        Texture = SKTexture(image: UIImage(named: "reset")!)
-        resetButton = SKSpriteNode(texture:Texture)
-        // Place in scene
-        resetButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-200);
-        
-        self.addChild(resetButton)
-        
+        //self.addChild(cheatButton)
+
         //level button
         Texture = SKTexture(image: UIImage(named: "level_up")!)
         levelButton = SKSpriteNode(texture: Texture)
@@ -218,6 +239,14 @@ class MenuScene: SKScene {
         levelButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+150);
         
         self.addChild(levelButton)
+        
+        //REINVEST button
+        Texture = SKTexture(image: UIImage(named: "reinvest button")!)
+        reinvestButton = SKSpriteNode(texture: Texture)
+        // Place in scene
+        reinvestButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-50);
+        
+        self.addChild(reinvestButton)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -242,12 +271,7 @@ class MenuScene: SKScene {
                 handler("cheat")
             }
         }
-        if resetButton.contains(touchLocation) {
-            print("reset")
-            if let handler = touchHandler {
-                handler("reset")
-            }
-        }
+        
         if breedButton.contains(touchLocation) {
             print("sexy-tieemmm")
             if let handler = touchHandler {
@@ -284,14 +308,131 @@ class MenuScene: SKScene {
                 handler("quest")
             }
         }
-        
+        if helpButton.contains(touchLocation) {
+            print("help")
+            if let handler = touchHandler {
+                handler("help")
+            }
+        }
+        if reinvestButton.contains(touchLocation) {
+            print("reinvest")
+            if let handler = touchHandler {
+                handler("reinvest")
+            }
+        }
     }
     
+    //MARK: - TUTORIAL
+    
+    func buyMoldTut() {
+        self.addChild(tutorialLayer)
+        let appear = SKAction.scale(to: 1.1, duration: 0.5)
+        //this is the godo case
+        let Texture = SKTexture(image: UIImage(named: "intro box")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.position = CGPoint(x:self.frame.midX, y:self.frame.midY-100);
+        introNode.setScale(0.0)
+        tutorialLayer.addChild(introNode)
+        introNode.run(appear)
+        _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(buyMoldTut2), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone5:
+            //iPhone 5
+            
+            introNode.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    func buyMoldTut2() {
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 15
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "This is the Menu Screen"
+        welcomeTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+15);
+        tutorialLayer.addChild(welcomeTitle)
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 15
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "From here you can levelup"
+        welcomeTitle2.position = CGPoint(x:self.frame.midX, y:self.frame.midY-20);
+        tutorialLayer.addChild(welcomeTitle2)
+        let welcomeTitle3 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle3.fontSize = 15
+        welcomeTitle3.fontColor = UIColor.black
+        welcomeTitle3.text = "to increase your earnings"
+        welcomeTitle3.position = CGPoint(x:self.frame.midX, y:self.frame.midY-40);
+        tutorialLayer.addChild(welcomeTitle3)
+        let welcomeTitle35 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle35.fontSize = 15
+        welcomeTitle35.fontColor = UIColor.black
+        welcomeTitle35.text = "from taps,"
+        welcomeTitle35.position = CGPoint(x:self.frame.midX, y:self.frame.midY-60);
+        tutorialLayer.addChild(welcomeTitle35)
+
+        let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle4.fontSize = 15
+        welcomeTitle4.fontColor = UIColor.black
+        welcomeTitle4.text = "buy buffs in the Item Shop,"
+        welcomeTitle4.position = CGPoint(x:self.frame.midX, y:self.frame.midY-80);
+        tutorialLayer.addChild(welcomeTitle4)
+        let welcomeTitle5 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle5.fontSize = 15
+        welcomeTitle5.fontColor = UIColor.black
+        welcomeTitle5.text = "view achievemnets and quests"
+        welcomeTitle5.position = CGPoint(x:self.frame.midX, y:self.frame.midY-100);
+        tutorialLayer.addChild(welcomeTitle5)
+        let welcomeTitle6 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle6.fontSize = 15
+        welcomeTitle6.fontColor = UIColor.black
+        welcomeTitle6.text = "and buy molds, to breed"
+        welcomeTitle6.position = CGPoint(x:self.frame.midX, y:self.frame.midY-120);
+        tutorialLayer.addChild(welcomeTitle6)
+        let welcomeTitle7 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle7.fontSize = 15
+        welcomeTitle7.fontColor = UIColor.black
+        welcomeTitle7.text = "and discover new species"
+        welcomeTitle7.position = CGPoint(x:self.frame.midX, y:self.frame.midY-140);
+        tutorialLayer.addChild(welcomeTitle7)
+        
+        let welcomeTitle8 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle8.fontSize = 20
+        welcomeTitle8.fontColor = UIColor.black
+        welcomeTitle8.text = "Tap on the Mold Shop"
+        welcomeTitle8.position = CGPoint(x:self.frame.midX, y:self.frame.midY-190);
+        tutorialLayer.addChild(welcomeTitle8)
+        
+        switch UIDevice().screenType {
+        case .iPhone5:
+            //iPhone 5
+            
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle3.setScale(0.9)
+            welcomeTitle35.setScale(0.9)
+            welcomeTitle4.setScale(0.9)
+            welcomeTitle5.setScale(0.9)
+            welcomeTitle6.setScale(0.9)
+            welcomeTitle7.setScale(0.9)
+            welcomeTitle8.setScale(0.9)
+            break
+        default:
+            break
+        }
+
+    }
+    
+    //MARK: - UTILITIES
     func randomInRange(lo: Int, hi : Int) -> Int {
         return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
@@ -301,6 +442,7 @@ class MenuScene: SKScene {
             run(exitSound)
         default:
             run(levelUpSound)
+        }
         }
     }
     

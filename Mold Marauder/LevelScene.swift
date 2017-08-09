@@ -8,6 +8,7 @@
 
 import SpriteKit
 class LevelScene: SKScene {
+    var mute = false
     
     var backButton: SKNode! = nil
     var levelButton: SKNode! = nil
@@ -17,9 +18,11 @@ class LevelScene: SKScene {
     var nextScorePerTapLabel: SKLabelNode! = nil
     
     var cash = BInt(0)
+    var diamonds = 0
     var currentLevel = 0
     var currentScorePerTap = BInt(0)
-    var currentLevelUpCost = BInt(0)
+    var levelUpCost = BInt(0)
+    var levelUpCostActual = BInt(0) // use this variable (sorry for the confusion)
     var nextScorePerTap = BInt(0)
     
     let gameLayer = SKNode()
@@ -48,8 +51,11 @@ class LevelScene: SKScene {
     var checkmark: SKNode! = nil
     var current: String!
     
-    //this is useless variable maybe do something with maybe not
-    var levelUpCost: BInt!
+    //offlien level
+    
+    var offlineLevelButton: SKNode! = nil
+    var offlineLev = 0
+    var buyDiamondsButton: SKNode! = nil
     
     //touch handler
     var touchHandler: ((String) -> ())?
@@ -64,6 +70,8 @@ class LevelScene: SKScene {
     let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
     let cashRegisterSound = SKAction.playSoundFileNamed("cash register.wav", waitForCompletion: false)
     let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
+    let diamondPopSound = SKAction.playSoundFileNamed("bubble pop.wav", waitForCompletion: false)
+    let dingSound = SKAction.playSoundFileNamed("ding.wav", waitForCompletion: false)
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -87,6 +95,7 @@ class LevelScene: SKScene {
         addChild(gameLayer)
         
         let _ = SKLabelNode(fontNamed: "Lemondrop")
+        //calculateScorePerTap()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -111,8 +120,31 @@ class LevelScene: SKScene {
         buttonLayer.addChild(backButton)
         
         //level button
+        let levelLabel2 = SKLabelNode(fontNamed: "Lemondrop")
+        levelLabel2.fontSize = 21
+        levelLabel2.fontColor = UIColor.black
+        levelLabel2.text = "Online Earnings"
+        levelLabel2.position = CGPoint(x:self.frame.midX, y:self.frame.midY+180);
+        buttonLayer.addChild(levelLabel2)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            levelLabel2.setScale(0)
+            break
+        case .iPhone5:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            break
+        default:
+            break
+        }
+        
         Texture = SKTexture(image: UIImage(named: "level_up")!)
-        if cash < currentLevelUpCost {
+        if cash < levelUpCostActual {
             Texture = SKTexture(image: UIImage(named: "level_up_grey")!)
         }
         levelButton = SKSpriteNode(texture: Texture)
@@ -132,7 +164,7 @@ class LevelScene: SKScene {
         currentLevelUpCostLabel.fontSize = 16
         currentLevelUpCostLabel.fontColor = UIColor.black
         if currentLevel < 75 {
-            currentLevelUpCostLabel.text = "LevelUp Cost: \(formatNumber(points: currentLevelUpCost))"
+            currentLevelUpCostLabel.text = "LevelUp Cost: \(formatNumber(points: levelUpCostActual))"
         }
         else {
             currentLevelUpCostLabel.text = "MAX LEVEL"
@@ -158,20 +190,90 @@ class LevelScene: SKScene {
         }
         nextScorePerTapLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+40);
         buttonLayer.addChild(nextScorePerTapLabel)
+        
+        //offlien earnings
+        Texture = SKTexture(image: UIImage(named: "offline level")!)
+        
+        offlineLevelButton = SKSpriteNode(texture: Texture)
+        // Place in scene
+        offlineLevelButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-45);
+        
+        buttonLayer.addChild(offlineLevelButton)
+        
+        let levelLabel1 = SKLabelNode(fontNamed: "Lemondrop")
+        levelLabel1.fontSize = 21
+        levelLabel1.fontColor = UIColor.black
+        levelLabel1.text = "Offline Earnings"
+        levelLabel1.position = CGPoint(x:self.frame.midX, y:self.frame.midY-10);
+        buttonLayer.addChild(levelLabel1)
+        
+        levelLabel = SKLabelNode(fontNamed: "Lemondrop")
+        levelLabel.fontSize = 28
+        levelLabel.fontColor = UIColor.black
+        levelLabel.text = "Lv: \(offlineLev)"
+        levelLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-60);
+        buttonLayer.addChild(levelLabel)
+        
+        let offLevUp = SKLabelNode(fontNamed: "Lemondrop")
+        offLevUp.fontSize = 16
+        offLevUp.fontColor = UIColor.black
+        
+        if offlineLev < 24 {
+            offLevUp.text = "LevelUp Cost: 2 Diamonds"
+        }
+        if offlineLev >= 24 && offlineLev <= 48 {
+            offLevUp.text = "LevelUp Cost: 4 Diamonds"
+        }
+        if offlineLev > 48 {
+            offLevUp.text = "MAX LEVEL"
+        }
+        offLevUp.position = CGPoint(x:self.frame.midX, y:self.frame.midY-90);
+        buttonLayer.addChild(offLevUp)
+        
+        let currentOffline = SKLabelNode(fontNamed: "Lemondrop")
+        currentOffline.fontSize = 16
+        currentOffline.fontColor = UIColor.black
+        currentOffline.text = "Current: \(Double(offlineLev)*30.0/60.0) hours"
+        currentOffline.position = CGPoint(x:self.frame.midX, y:self.frame.midY-110);
+        buttonLayer.addChild(currentOffline)
+        
+        let nextOffline = SKLabelNode(fontNamed: "Lemondrop")
+        nextOffline.fontSize = 16
+        nextOffline.fontColor = UIColor.black
+        if offlineLev < 48 {
+            nextOffline.text = "Next: \(Double(offlineLev + 1)*30.0/60.0) hours"
+        }
+        else {
+            nextOffline.text = "MAX LEVEL"
+        }
+        nextOffline.position = CGPoint(x:self.frame.midX, y:self.frame.midY-130);
+        buttonLayer.addChild(nextOffline)
     }
     
     func erectScroll() {
-        var width = CGFloat((currentLevel/6) * 150)
+        //var width = CGFloat((currentLevel/6) * 120)
         addChild(moveableNode)
-        scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 250, width: frame.width, height: frame.height * 0.6), moveableNode: moveableNode, direction: .horizontal)
+        
+        scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 495, width: frame.width, height: frame.height * 0.25), moveableNode: moveableNode, direction: .horizontal)
         scrollView?.contentSize = CGSize(width: scrollView!.frame.width * 3, height: scrollView!.frame.height) // * 3 makes it three times as wide
         view?.addSubview(scrollView!)
         scrollView?.setContentOffset(CGPoint(x: 0 + frame.width * 2, y: 0), animated: true)
         
         guard let scrollView = scrollView else { return } // unwrap  optional
         
+        var yPOS = frame.midY - 220
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            yPOS = frame.midY - 185
+            break
+        default:
+            break
+        }
+        
         page1ScrollView = SKSpriteNode(color: .clear, size: CGSize(width: scrollView.frame.width, height: scrollView.frame.size.height))
-        page1ScrollView.position = CGPoint(x: frame.midX - (frame.width * 2), y: frame.midY - 130)
+        page1ScrollView.position = CGPoint(x: frame.midX - (frame.width * 2), y: yPOS)
         moveableNode.addChild(page1ScrollView)
 
         lastButton = CGPoint(x: -180, y: 0)
@@ -314,6 +416,19 @@ class LevelScene: SKScene {
                     handler("level")
                 }
             }
+            if node == offlineLevelButton {
+                print("offlinelevel")
+                if let handler = touchHandler {
+                    handler("offlinelevel")
+                }
+            }
+            if buyDiamondsButton != nil {
+                if node == buyDiamondsButton {
+                    if let handler = touchHandler {
+                        handler("addDiamonds")
+                    }
+                }
+            }
             if caveButton != nil {
                 if node == caveButton {
                     print("cave")
@@ -415,6 +530,7 @@ class LevelScene: SKScene {
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
@@ -422,8 +538,13 @@ class LevelScene: SKScene {
             run(cashRegisterSound)
         case "select":
             run(selectSound)
+        case "diamond pop":
+            run(diamondPopSound)
+        case "ding":
+            run(dingSound)
         default:
             run(levelUpSound)
+        }
         }
     }
     
@@ -521,6 +642,32 @@ class LevelScene: SKScene {
             cometSprite2.run(SKAction.sequence([moveTwo]))
         }
         
+    }
+    
+    func addBuyDiamondsButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0.8, duration: 0.1)
+        let bounce2 = SKAction.scale(to: 1, duration: 0.1)
+        //this is the godo case
+        let action2 = SKAction.sequence([reappear, bounce1, bounce2])
+        
+        let Texture = SKTexture(image: UIImage(named: "add diamonds button")!)
+        buyDiamondsButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        buyDiamondsButton.position = CGPoint(x:self.frame.maxX - 65, y:self.frame.maxY-60);
+        
+        self.addChild(buyDiamondsButton)
+        buyDiamondsButton.run(action2)
+        playSound(select: "diamond pop")
+        
+        _ = Timer.scheduledTimer(timeInterval: 7.0, target: self, selector: #selector(removeDiamondButton), userInfo: nil, repeats: true)
+    }
+    
+    func removeDiamondButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0, duration: 0.1)
+        let action2 = SKAction.sequence([reappear, bounce1, SKAction.removeFromParent()])
+        buyDiamondsButton.run(action2)
     }
     
     
@@ -675,7 +822,7 @@ class LevelScene: SKScene {
             switch(currentLevel + 1) {
             case 0:
                 nextScorePerTap = BInt(10)
-                levelUpCost = BInt(2500)
+                levelUpCost = BInt(20)
                 break
             case 1:
                 nextScorePerTap = BInt(40)
@@ -877,7 +1024,7 @@ class LevelScene: SKScene {
                 nextScorePerTap = BInt("2373046875")
                 levelUpCost = BInt("295279001600000")
                 break
-            case 52:
+            case 51:
                 nextScorePerTap = BInt("3559570312")
                 levelUpCost = BInt("531502202880000")
                 break

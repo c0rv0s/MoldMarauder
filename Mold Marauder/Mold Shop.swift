@@ -8,6 +8,7 @@
 
 import SpriteKit
 class MoldShop: SKScene {
+    var mute = false
     
     var backButton: SKNode! = nil
     
@@ -55,7 +56,11 @@ class MoldShop: SKScene {
     var angelButton: SKNode! = nil
     var invisibleButton: SKNode! = nil
     
+    var page1ScrollView: SKNode!
+    
     var unlockedMolds: Array<Mold>!
+    var blockedMolds: Array<Mold>!
+    var maxTex = SKTexture(image: UIImage(named: "max label")!)
     //scrollView
     weak var scrollView: SwiftySKScrollView?
     let moveableNode = SKNode()
@@ -67,6 +72,8 @@ class MoldShop: SKScene {
     var point = CGPoint()
     
     var cometLayer = SKNode()
+    
+    var tutorialLayer = SKNode()
     
     //touch handler
     var touchHandler: ((String) -> ())?
@@ -81,10 +88,11 @@ class MoldShop: SKScene {
     
     let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
     let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
+    let buzzerSound = SKAction.playSoundFileNamed("buzzer.wav", waitForCompletion: false)
     
     override init(size: CGSize) {
         super.init(size: size)
-        
+        blockedMolds = []
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         background.size = size
@@ -112,21 +120,24 @@ class MoldShop: SKScene {
     override func didMove(to view: SKView) {
         animateComets()
         cometTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(animateComets), userInfo: nil, repeats: true)
-        
+        erectScroll()
+    }
+    
+    func erectScroll() {
         //let height = ceil(Double(unlockedMolds.count) * 250)
-        let height = unlockedMolds.count * 110
+        let height = 42 * 95
         createButton()
         //addNode
         addChild(moveableNode)
         //set up the scrollView
         scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), moveableNode: moveableNode, direction: .vertical)
         scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(height)) // makes it 2 times the height
-        view.addSubview(scrollView!)
+        view?.addSubview(scrollView!)
         
         // Add sprites for each page in the scrollView to make positioning your actual stuff later on much easier
         guard let scrollView = scrollView else { return } // unwrap  optional
         
-        let page1ScrollView = SKSpriteNode(color: .clear, size: CGSize(width: scrollView.frame.width, height: scrollView.frame.size.height))
+        page1ScrollView = SKSpriteNode(color: .clear, size: CGSize(width: scrollView.frame.width, height: scrollView.frame.size.height))
         page1ScrollView.position = CGPoint(x: frame.midX, y: frame.midY)
         moveableNode.addChild(page1ScrollView)
         
@@ -137,21 +148,47 @@ class MoldShop: SKScene {
         slimeButton = SKSpriteNode(texture:Texture)
         // Place in scene
         slimeButton.position = CGPoint(x: -100, y: 180)
+        switch UIDevice().screenType {
+        case .iPhone4:
+            slimeButton.position = CGPoint(x: -100, y: 150)
+            break
+        case .iPhone5:
+            slimeButton.position = CGPoint(x: -100, y: 160)
+            break
+        default:
+            break
+        }
+        var priceLabel = SKLabelNode(fontNamed: "Lemondrop")
+        var ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
+        var pointsPrice = MoldType.slime.price
+        
+        
         lastButton = slimeButton.position
         page1ScrollView.addChild(slimeButton)
-        var priceLabel = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 20
-        priceLabel.text = "Cost: " + formatNumber(points: MoldType.slime.price)
+        for unlocked in unlockedMolds {
+            if unlocked.moldType == MoldType.slime {
+                pointsPrice = unlocked.price
+                break
+            }
+        }
+        priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
         priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
         priceLabel.color = UIColor.black
         page1ScrollView.addChild(priceLabel)
-        var ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
+        ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
         ppsLabel.fontSize = 20
         ppsLabel.text = "PPS: " + formatNumber(points: MoldType.slime.pointsPerSecond)
         ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
         ppsLabel.fontColor = UIColor.black
+        if containsMold(array: blockedMolds, mold: MoldType.slime) {
+            var maxLabel = SKSpriteNode(texture: maxTex)
+            maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+            page1ScrollView.addChild(maxLabel)
+        }
         
         // cave
         Texture = SKTexture(image: UIImage(named: "Cave Mold")!)
@@ -162,7 +199,13 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(caveButton)
         priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 20
-        priceLabel.text = "Cost: " + formatNumber(points: MoldType.cave.price)
+        for unlocked in unlockedMolds {
+            if unlocked.moldType == MoldType.cave {
+                pointsPrice = unlocked.price
+                break
+            }
+        }
+        priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
         priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
         page1ScrollView.addChild(priceLabel)
         ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -172,6 +215,11 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
         ppsLabel.fontColor = UIColor.black
+        if containsMold(array: blockedMolds, mold: MoldType.cave) {
+            var maxLabel = SKSpriteNode(texture: maxTex)
+            maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+            page1ScrollView.addChild(maxLabel)
+        }
         
         // sad
         Texture = SKTexture(image: UIImage(named: "Sad Mold")!)
@@ -182,7 +230,13 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(sadButton)
         priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 20
-        priceLabel.text = "Cost: " + formatNumber(points: MoldType.sad.price)
+        for unlocked in unlockedMolds {
+            if unlocked.moldType == MoldType.sad {
+                pointsPrice = unlocked.price
+                break
+            }
+        }
+        priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
         priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
         page1ScrollView.addChild(priceLabel)
         ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -192,6 +246,12 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
         ppsLabel.fontColor = UIColor.black
+        if containsMold(array: blockedMolds, mold: MoldType.sad) {
+            var maxLabel = SKSpriteNode(texture: maxTex)
+            maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+            page1ScrollView.addChild(maxLabel)
+        }
+    
         
         // angry
         Texture = SKTexture(image: UIImage(named: "Angry Mold")!)
@@ -202,7 +262,13 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(angryButton)
         priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 20
-        priceLabel.text = "Cost: " + formatNumber(points: MoldType.angry.price)
+        for unlocked in unlockedMolds {
+            if unlocked.moldType == MoldType.angry {
+                pointsPrice = unlocked.price
+                break
+            }
+        }
+        priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
         priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
         page1ScrollView.addChild(priceLabel)
         ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -212,6 +278,11 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
         ppsLabel.fontColor = UIColor.black
+        if containsMold(array: blockedMolds, mold: MoldType.angry) {
+            var maxLabel = SKSpriteNode(texture: maxTex)
+            maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+            page1ScrollView.addChild(maxLabel)
+        }
         
         for mold in unlockedMolds {
             if mold.moldType == MoldType.alien {
@@ -224,7 +295,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(alienButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.alien.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.alien {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -234,6 +310,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.alien) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.freckled {
                 //freckled
@@ -245,7 +326,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(freckledButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.freckled.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.freckled {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -255,6 +341,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.freckled) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
+                
             }
             if mold.moldType == MoldType.hypno {
                 Texture = SKTexture(image: UIImage(named: "Hypno Mold")!)
@@ -265,7 +357,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(hypnoButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.hypno.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.hypno {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -275,6 +372,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.hypno) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.pimply {
                 Texture = SKTexture(image: UIImage(named: "Pimply Mold")!)
@@ -285,7 +387,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(pimplyButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.pimply.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.pimply {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -295,6 +402,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.pimply) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.rainbow {
                 Texture = SKTexture(image: UIImage(named: "Rainbow Mold")!)
@@ -305,7 +417,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(rainbowButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.rainbow.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.rainbow {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -315,6 +432,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.rainbow) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.aluminum {
                 Texture = SKTexture(image: UIImage(named: "Aluminum Mold")!)
@@ -325,7 +447,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(aluminumButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.aluminum.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.aluminum {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -335,6 +462,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.aluminum) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.circuit {
                 Texture = SKTexture(image: UIImage(named: "Circuit Mold")!)
@@ -345,7 +477,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(circuitButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.circuit.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.circuit {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -355,6 +492,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.circuit) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.hologram {
                 Texture = SKTexture(image: UIImage(named: "Hologram Mold")!)
@@ -365,7 +507,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(hologramButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.hologram.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.hologram {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -375,6 +522,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.hologram) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.storm {
                 Texture = SKTexture(image: UIImage(named: "Storm Mold")!)
@@ -385,7 +537,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(stormButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.storm.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.storm {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -395,6 +552,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.storm) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.bacteria {
                 Texture = SKTexture(image: UIImage(named: "Bacteria Mold")!)
@@ -405,7 +567,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(bacteriaButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.bacteria.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.bacteria {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -415,6 +582,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.bacteria) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.virus {
                 Texture = SKTexture(image: UIImage(named: "Virus Mold")!)
@@ -425,7 +597,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(virusButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.virus.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.virus {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -435,6 +612,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.virus) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.flower {
                 Texture = SKTexture(image: UIImage(named: "Flower Mold")!)
@@ -445,7 +627,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(flowerButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.flower.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.flower {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -455,6 +642,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.flower) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.bee {
                 Texture = SKTexture(image: UIImage(named: "Bee Mold")!)
@@ -465,7 +657,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(beeButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.bee.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.bee {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -475,6 +672,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.bee) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.x {
                 Texture = SKTexture(image: UIImage(named: "X Mold")!)
@@ -485,7 +687,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(xButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.x.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.x {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -495,6 +702,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.x) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.disaffected {
                 Texture = SKTexture(image: UIImage(named: "Disaffected Mold")!)
@@ -505,7 +717,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(disaffectedButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.disaffected.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.disaffected {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -515,6 +732,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.disaffected) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.olive {
                 Texture = SKTexture(image: UIImage(named: "Olive Mold")!)
@@ -525,7 +747,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(oliveButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.olive.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.olive {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -535,6 +762,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.olive) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.coconut {
                 Texture = SKTexture(image: UIImage(named: "Coconut Mold")!)
@@ -545,7 +777,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(coconutButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.coconut.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.coconut {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -555,6 +792,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.coconut) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.sick {
                 Texture = SKTexture(image: UIImage(named: "Sick Mold")!)
@@ -565,7 +807,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(sickButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.sick.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.sick {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -575,6 +822,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.sick) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.dead {
                 Texture = SKTexture(image: UIImage(named: "Dead Mold")!)
@@ -585,7 +837,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(deadButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.dead.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.dead {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -595,6 +852,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.dead) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.zombie {
                 Texture = SKTexture(image: UIImage(named: "Zombie Mold")!)
@@ -605,7 +867,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(zombieButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.zombie.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.zombie {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -615,6 +882,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.zombie) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.cloud {
                 Texture = SKTexture(image: UIImage(named: "Cloud Mold")!)
@@ -625,7 +897,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(cloudButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.cloud.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.cloud {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -635,6 +912,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.cloud) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.rock {
                 Texture = SKTexture(image: UIImage(named: "Rock Mold")!)
@@ -645,7 +927,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(rockButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.rock.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.rock {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -655,6 +942,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.rock) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.water {
                 Texture = SKTexture(image: UIImage(named: "Water Mold")!)
@@ -665,7 +957,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(waterButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.water.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.water {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -675,6 +972,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.water) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.crystal {
                 Texture = SKTexture(image: UIImage(named: "Crystal Mold")!)
@@ -685,7 +987,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(crystalButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.crystal.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.crystal {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -695,6 +1002,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.crystal) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.nuclear {
                 Texture = SKTexture(image: UIImage(named: "Nuclear Mold")!)
@@ -705,7 +1017,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(nuclearButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.nuclear.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.nuclear {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -715,6 +1032,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.nuclear) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.astronaut {
                 Texture = SKTexture(image: UIImage(named: "Astronaut Mold")!)
@@ -725,7 +1047,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(astronautButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.astronaut.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.astronaut {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -735,6 +1062,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.astronaut) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.sand {
                 Texture = SKTexture(image: UIImage(named: "Sand Mold")!)
@@ -745,7 +1077,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(sandButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.sand.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.sand{
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -755,6 +1092,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.sand) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.glass {
                 Texture = SKTexture(image: UIImage(named: "Glass Mold")!)
@@ -765,7 +1107,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(glassButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.glass.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.glass {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -775,6 +1122,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.glass) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.coffee {
                 Texture = SKTexture(image: UIImage(named: "Coffee Mold")!)
@@ -785,7 +1137,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(coffeeButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.coffee.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.coffee {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -795,6 +1152,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.coffee) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.slinky {
                 Texture = SKTexture(image: UIImage(named: "Slinky Mold")!)
@@ -805,7 +1167,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(slinkyButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.slinky.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.slinky {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -815,6 +1182,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.slinky) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.magma {
                 Texture = SKTexture(image: UIImage(named: "Magma Mold")!)
@@ -825,7 +1197,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(magmaButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.magma.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.magma {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -835,6 +1212,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.magma) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.samurai {
                 Texture = SKTexture(image: UIImage(named: "Samurai Mold")!)
@@ -845,7 +1227,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(samuraiButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.samurai.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.samurai {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -855,6 +1242,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.samurai) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.orange {
                 Texture = SKTexture(image: UIImage(named: "Orange Mold")!)
@@ -865,7 +1257,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(orangeButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.orange.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.orange {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -875,6 +1272,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.orange) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.strawberry {
                 Texture = SKTexture(image: UIImage(named: "Strawberry Mold")!)
@@ -885,7 +1287,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(strawberryButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.strawberry.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.strawberry {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -895,6 +1302,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.strawberry) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.tshirt {
                 Texture = SKTexture(image: UIImage(named: "TShirt Mold")!)
@@ -905,7 +1317,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(tshirtButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.tshirt.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.tshirt {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -915,6 +1332,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.tshirt) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.cryptid {
                 Texture = SKTexture(image: UIImage(named: "Cryptid Mold")!)
@@ -925,7 +1347,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(cryptidButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.cryptid.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.cryptid {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -935,6 +1362,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.cryptid) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.angel {
                 Texture = SKTexture(image: UIImage(named: "Angel Mold")!)
@@ -945,7 +1377,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(angelButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.angel.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.angel {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -955,6 +1392,11 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.angel) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
             if mold.moldType == MoldType.invisible {
                 Texture = SKTexture(image: UIImage(named: "Invisible Mold")!)
@@ -965,7 +1407,12 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(invisibleButton)
                 priceLabel = SKLabelNode(fontNamed: "Lemondrop")
                 priceLabel.fontSize = 20
-                priceLabel.text = "Cost: " + formatNumber(points: MoldType.invisible.price)
+                for unlocked in unlockedMolds {
+                    if unlocked.moldType == MoldType.invisible {
+                        pointsPrice = unlocked.price
+                    }
+                }
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
                 priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -975,9 +1422,69 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
+                if containsMold(array: blockedMolds, mold: MoldType.invisible) {
+                    var maxLabel = SKSpriteNode(texture: maxTex)
+                    maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
+                    page1ScrollView.addChild(maxLabel)
+                }
             }
         }
+        //            fill in black silhouettes for locked species
+        print("amount of unlocked molds")
+        print(unlockedMolds.count)
+        if unlockedMolds.count < 42 {
+            var remainder = 42 - unlockedMolds.count
+            
+            while(remainder >= 0) {
+                Texture = SKTexture(image: UIImage(named: "dna")!)
+                var locked = SKSpriteNode(texture:Texture)
+                // Place in scene
+                locked.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = locked.position
+                page1ScrollView.addChild(locked)
+                priceLabel = SKLabelNode(fontNamed: "Lemondrop")
+                priceLabel.fontSize = 20
+                priceLabel.text = "Cost: ????"
+                priceLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y )
+                page1ScrollView.addChild(priceLabel)
+                ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
+                ppsLabel.fontSize = 20
+                ppsLabel.text = "PPS: ????"
+                ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
+                page1ScrollView.addChild(ppsLabel)
+                priceLabel.fontColor = UIColor.black
+                ppsLabel.fontColor = UIColor.black
+                remainder -= 1
+                print(remainder)
+            }
+            
+        }
+    }
+    
+    func updatePrice(mold: Mold) {
+        //get index of mold in unlockedMolds
+        var index = 0
+        var pointsPrice = MoldType.slime.price
+        for check in unlockedMolds {
+            if check.moldType == mold.moldType {
+                pointsPrice = check.price
+                break
+            }
+            index += 1
+        }
         
+        var point = CGPoint(x: 30, y: (180 + (index * -90)) )
+        for child in page1ScrollView.children {
+            if child.position == point {
+                child.removeFromParent()
+                var priceLabel = SKLabelNode(fontNamed: "Lemondrop")
+                priceLabel.text = "Cost: " + formatNumber(points: pointsPrice)
+                priceLabel.position = point
+                priceLabel.fontSize = 20
+                priceLabel.fontColor = UIColor.black
+                page1ScrollView.addChild(priceLabel)
+            }
+        }
     }
     
     func createButton()
@@ -989,6 +1496,21 @@ class MoldShop: SKScene {
         backButton.position = CGPoint(x:self.frame.midX+160, y:self.frame.midY+190);
         
         self.addChild(backButton)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            break
+        case .iPhone5:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            break
+        default:
+            break
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -999,30 +1521,46 @@ class MoldShop: SKScene {
             
             point = touch.location(in: gameLayer)
             
+            if let node = node as? SKSpriteNode {
+                if node.texture == maxTex {
+                    playSound(select: "buzzer")
+                }
+            }
+            
+            
             //check if user purchased a mold
+            if (slimeButton) != nil {
             if node == slimeButton {
                 print("slime")
                 if let handler = touchHandler {
                     handler("slime")
                 }
             }
+            }
+            if (caveButton) != nil {
             if node == caveButton {
                 print("cave")
+                
                 if let handler = touchHandler {
                     handler("cave")
                 }
             }
+            }
+            if (sadButton) != nil {
             if node == sadButton {
                 print("sad")
                 if let handler = touchHandler {
                     handler("sad")
                 }
             }
+            }
+            if (angryButton) != nil {
             if node == angryButton {
                 print("angry")
                 if let handler = touchHandler {
                     handler("angry")
                 }
+            }
             }
             if (alienButton) != nil {
                 if node == alienButton {
@@ -1345,20 +1883,24 @@ class MoldShop: SKScene {
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
         case "select":
             run(selectSound)
+        case "buzzer":
+            run(buzzerSound)
         default:
             run(levelUpSound)
+        }
         }
     }
     
     func animateName(name: String) {
         // Figure out what the midpoint of the chain is.
         let centerPosition = CGPoint(
-            x: (point.x),
+            x: (point.x + 25),
             y: (point.y + 10))
         
         // Add a label for the score that slowly floats up.
@@ -1375,6 +1917,173 @@ class MoldShop: SKScene {
         let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: Y), duration: 3)
         moveAction.timingMode = .easeOut
         scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+    }
+    
+    //MARK: - TUTORIAL
+    func buyMoldTutorial() {
+        self.addChild(tutorialLayer)
+        let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        switch UIDevice().screenType {
+        case .iPhone6:
+            //iPhone 5
+            introNode.setScale(1.15)
+            break
+        case .iPhone6Plus:
+            introNode.setScale(1.15)
+            break
+        default:
+            break
+        }
+        introNode.position = CGPoint(x:frame.midX, y:frame.midY);
+        tutorialLayer.addChild(introNode)
+        
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 13
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Every Mold has a price and"
+        welcomeTitle.position = CGPoint(x:introNode.position.x, y:introNode.position.y+20);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        let welcomeTitle25 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle25.fontSize = 13
+        welcomeTitle25.fontColor = UIColor.black
+        welcomeTitle25.text = "a \"PPS\" - Points Per Second"
+        welcomeTitle25.position = CGPoint(x:introNode.position.x, y:introNode.position.y);
+        tutorialLayer.addChild(welcomeTitle25)
+        
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 13
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "Yep! Molds earn you free money!"
+        welcomeTitle2.position = CGPoint(x:introNode.position.x, y:introNode.position.y-24);
+        tutorialLayer.addChild(welcomeTitle2)
+        
+         _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(buyInstructions), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            
+            welcomeTitle.setScale(0.8)
+            welcomeTitle2.setScale(0.8)
+            welcomeTitle25.setScale(0.8)
+            introNode.setScale(1.0)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle25.setScale(0.9)
+            introNode.setScale(1.05)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func buyInstructions() {
+        let appear = SKAction.scale(to: 1.15, duration: 0.35)
+        let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
+        let introNode = SKSpriteNode(texture:Texture)
+        // Place in scene
+        introNode.setScale(0.0)
+        introNode.position = CGPoint(x:frame.midX, y:frame.midY-125);
+        tutorialLayer.addChild(introNode)
+        introNode.run(appear)
+        _ = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(addLabels), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            
+            introNode.setScale(0.9)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            
+            introNode.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func addLabels() {
+    
+        let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle.fontSize = 13
+        welcomeTitle.fontColor = UIColor.black
+        welcomeTitle.text = "Now buy a Slime Mold"
+        welcomeTitle.position = CGPoint(x:frame.midX, y:frame.midY-105);
+        tutorialLayer.addChild(welcomeTitle)
+        
+        let welcomeTitle25 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle25.fontSize = 13
+        welcomeTitle25.fontColor = UIColor.black
+        welcomeTitle25.text = "(the top one)"
+        welcomeTitle25.position = CGPoint(x:frame.midX, y:frame.midY-125);
+        tutorialLayer.addChild(welcomeTitle25)
+        
+        let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
+        welcomeTitle2.fontSize = 13
+        welcomeTitle2.fontColor = UIColor.black
+        welcomeTitle2.text = "and then return to the home screen"
+        welcomeTitle2.position = CGPoint(x:frame.midX, y:frame.midY-150);
+        tutorialLayer.addChild(welcomeTitle2)
+        _ = Timer.scheduledTimer(timeInterval: 9.0, target: self, selector: #selector(removeInstructions), userInfo: nil, repeats: false)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            
+            welcomeTitle.setScale(0.8)
+            welcomeTitle2.setScale(0.8)
+            welcomeTitle25.setScale(0.8)
+            
+            break
+        case .iPhone5:
+            //iPhone 5
+            
+            welcomeTitle.setScale(0.9)
+            welcomeTitle2.setScale(0.9)
+            welcomeTitle25.setScale(0.9)
+            
+            break
+        default:
+            break
+        }
+    }
+    
+    func removeInstructions() {
+        let disappear = SKAction.scale(to: 0.0, duration: 0.5)
+        let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
+        for node in tutorialLayer.children {
+            node.run(action)
+        }
+    }
+    
+    //MARK: - UTILITIES
+    
+    func containsMold(array: Array<Mold>, mold: MoldType) -> Bool {
+        if array.count != 0 {
+            for element in array {
+                if element.moldType == mold {
+                    return true
+                }
+            }
+            return false
+        }
+        else {
+            return false
+        }
+        
     }
     
     func animateComets() {

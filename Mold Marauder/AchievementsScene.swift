@@ -8,6 +8,7 @@
 
 import SpriteKit
 class AchievementsScene: SKScene {
+    var mute = false
     
     var backButton: SKNode! = nil
     
@@ -25,6 +26,8 @@ class AchievementsScene: SKScene {
     var deathRay = false
     var level: Int!
     var levelLabel: SKLabelNode! = nil
+    var cash: BInt!
+    var cashLabel: SKLabelNode! = nil
     
     var  rewardAmount = 0
     var claimButton: SKNode! = nil
@@ -130,13 +133,13 @@ class AchievementsScene: SKScene {
         else {
             wormLabel.text = "Complete!"
         }
-        wormLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+93);
+        wormLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+103);
         labelLayer.addChild(wormLabel)
 
         let wormBar = ProgressBar(color: SKColor.green, size:CGSize(width:250, height:25))
         goal = Double(wormsKilled) / Double(nextWorm())
         wormBar.progress = CGFloat(goal)
-        wormBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY+100);
+        wormBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY+110);
         barLayer.addChild(wormBar)
         
         //MOLDS OWNED
@@ -149,12 +152,12 @@ class AchievementsScene: SKScene {
         else {
             ownedLabel.text = "Complete!"
         }
-        ownedLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+43);
+        ownedLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+63);
         labelLayer.addChild(ownedLabel)
         let ownedBar = ProgressBar(color: SKColor.green, size:CGSize(width:250, height:25))
         goal = Double(moldsOwned) / Double(nextOwned())
         ownedBar.progress = CGFloat(goal)
-        ownedBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY+50);
+        ownedBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY+70);
         barLayer.addChild(ownedBar)
         
         
@@ -168,12 +171,12 @@ class AchievementsScene: SKScene {
         else {
             bredLabel.text = "Complete!"
         }
-        bredLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY-7);
+        bredLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+23);
         labelLayer.addChild(bredLabel)
         let bredBar = ProgressBar(color: SKColor.green, size:CGSize(width:250, height:25))
         goal = Double(speciesBred) / Double(nextBred())
         bredBar.progress = CGFloat(goal)
-        bredBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
+        bredBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY+30);
         barLayer.addChild(bredBar)
         
         
@@ -187,12 +190,12 @@ class AchievementsScene: SKScene {
         else {
             incLabel.text = "Complete!"
         }
-        incLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 57);
+        incLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 17);
         labelLayer.addChild(incLabel)
         let incBar = ProgressBar(color: SKColor.green, size:CGSize(width:250, height:25))
         goal = Double(Double(incLevel)/6.0)
         incBar.progress = CGFloat(goal)
-        incBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 50);
+        incBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 10);
         barLayer.addChild(incBar)
         
         
@@ -210,7 +213,7 @@ class AchievementsScene: SKScene {
         else if laserLevel == 3 && deathRay == true {
             laserLabel.text = "Complete!"
         }
-        laserLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY-107)
+        laserLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY-57)
         labelLayer.addChild(laserLabel)
 
         let laserBar = ProgressBar(color: SKColor.green, size:CGSize(width:250, height:25))
@@ -222,8 +225,21 @@ class AchievementsScene: SKScene {
             goal = 0.0
         }
         laserBar.progress = CGFloat(goal)
-        laserBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY-100)
+        laserBar.position = CGPoint(x:self.frame.midX, y:self.frame.midY-50)
         barLayer.addChild(laserBar)
+        
+        //CASH
+        cashLabel = SKLabelNode(fontNamed: "Lemondrop")
+        cashLabel.fontSize = 18
+        cashLabel.fontColor = UIColor.black
+        if cash < BInt("1000000000000000000000000000000000") {
+            cashLabel.text = "\(formatNumber(points: cash!))/1.0 D cash"
+        }
+        else {
+            cashLabel.text = "Complete!"
+        }
+        cashLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 97);
+        labelLayer.addChild(cashLabel)
         
         
         //CLAIM REWARD BUTTON
@@ -232,10 +248,25 @@ class AchievementsScene: SKScene {
             Texture = SKTexture(image: UIImage(named: "claim reward")!)
         }
         claimButton = SKSpriteNode(texture:Texture)
-        claimButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-230)
+        claimButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-200)
         self.addChild(claimButton)
         
         self.addChild(animLayer)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            break
+        case .iPhone5:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            break
+        default:
+            break
+        }
     }
     
     func nextWorm() -> Int {
@@ -366,6 +397,7 @@ class AchievementsScene: SKScene {
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
@@ -375,6 +407,7 @@ class AchievementsScene: SKScene {
             run(selectSound)
         default:
             run(levelUpSound)
+        }
         }
     }
     
@@ -473,6 +506,150 @@ class AchievementsScene: SKScene {
         }
         
     }
+    
+    //add suffix to long numbers
+    func formatNumber(points: BInt) -> String {
+        var cashString = String(describing: points)
+        if (cashString.characters.count < 4) {
+            return String(describing: points)
+        }
+        else {
+            let charsCount = cashString.characters.count
+            var cashDisplayString = cashString[0]
+            
+            var suffix = ""
+            switch charsCount {
+            case 4:
+                suffix = "K"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 5:
+                suffix = "K"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 6:
+                suffix = "K"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 7:
+                suffix = "M"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 8:
+                suffix = "M"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 9:
+                suffix = "M"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 10:
+                suffix = "B"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 11:
+                suffix = "B"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 12:
+                suffix = "B"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 13:
+                suffix = "T"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 14:
+                suffix = "T"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 15:
+                suffix = "T"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 16:
+                suffix = "Q"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 17:
+                suffix = "Q"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 18:
+                suffix = "Q"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 19:
+                suffix = "Qi"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 20:
+                suffix = "Qi"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 21:
+                suffix = "Qi"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 22:
+                suffix = "Se"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 23:
+                suffix = "Se"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 24:
+                suffix = "Se"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 25:
+                suffix = "Sp"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 26:
+                suffix = "Sp"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 27:
+                suffix = "Sp"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 28:
+                suffix = "Oc"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 29:
+                suffix = "Oc"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 30:
+                suffix = "Oc"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 31:
+                suffix = "No"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 32:
+                suffix = "No"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 33:
+                suffix = "No"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            default:
+                suffix = "D"
+                break
+            }
+            cashDisplayString += " "
+            cashDisplayString += suffix
+            
+            return cashDisplayString
+        }
+    }
+
 
     
     func randomInRange(lo: Int, hi : Int) -> Int {

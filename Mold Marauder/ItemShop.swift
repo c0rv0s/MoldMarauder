@@ -8,6 +8,7 @@
 
 import SpriteKit
 class ItemShop: SKScene {
+    var mute = false
     
     var backButton: SKNode! = nil
     var repelButton: SKNode! = nil
@@ -16,6 +17,8 @@ class ItemShop: SKScene {
     var spritzButton: SKNode! = nil
     var laserButton: SKNode! = nil
     var cashWindfallButton: SKNode! = nil
+    
+    var buyDiamondsButton: SKNode! = nil
     
     var laserBought = 0
     var laserLabel: SKLabelNode! = nil
@@ -26,6 +29,7 @@ class ItemShop: SKScene {
     
     var cometLayer = SKNode()
     var cometTimer: Timer!
+    var level : Int!
     
     //touch handler
     var touchHandler: ((String) -> ())?
@@ -40,7 +44,8 @@ class ItemShop: SKScene {
     let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
     let cashRegisterSound = SKAction.playSoundFileNamed("cash register.wav", waitForCompletion: false)
     let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
-    let exitSound = SKAction.playSoundFileNamed("exit.mp3", waitForCompletion: false)
+    let exitSound = SKAction.playSoundFileNamed("exit.wav", waitForCompletion: false)
+    let diamondPopSound = SKAction.playSoundFileNamed("bubble pop.wav", waitForCompletion: false)
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -104,10 +109,20 @@ class ItemShop: SKScene {
         self.addChild(repelButton)
         
         //repellant price
-        var priceLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 16
         priceLabel.fontColor = UIColor.black
-        priceLabel.text = "Cost: 10000"
+        if level < 3 {
+            priceLabel.text = "Cost: 10000"
+        }
+            
+        else if level < 29 {
+            priceLabel.text = "Cost: 12000"
+        }
+        else {
+            priceLabel.text = "Cost: 1.8 M"
+        }
+        //priceLabel.text = "Cost: 10000"
         priceLabel.position = CGPoint(x:self.frame.midX-90, y:self.frame.midY-25);
         addChild(priceLabel)
         
@@ -119,12 +134,12 @@ class ItemShop: SKScene {
         xTapButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+170)
         self.addChild(xTapButton)
         
-        priceLabel = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel.fontSize = 16
-        priceLabel.fontColor = UIColor.black
-        priceLabel.text = "10 Diamods"
-        priceLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+105)
-        addChild(priceLabel)
+        let priceLabel2 = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabel2.fontSize = 16
+        priceLabel2.fontColor = UIColor.black
+        priceLabel2.text = "10 Diamods"
+        priceLabel2.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+105)
+        addChild(priceLabel2)
         
         // spritz
         Texture = SKTexture(image: UIImage(named: "spritz")!)
@@ -132,12 +147,12 @@ class ItemShop: SKScene {
         // Place in scene
         spritzButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+40)
         self.addChild(spritzButton)
-        priceLabel = SKLabelNode(fontNamed: "Lemondrop")
-        priceLabel.fontSize = 16
-        priceLabel.fontColor = UIColor.black
-        priceLabel.text = "20 Diamods"
-        priceLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-25)
-        addChild(priceLabel)
+        let priceLabel3 = SKLabelNode(fontNamed: "Lemondrop")
+        priceLabel3.fontSize = 16
+        priceLabel3.fontColor = UIColor.black
+        priceLabel3.text = "12 Diamods"
+        priceLabel3.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-25)
+        addChild(priceLabel3)
         
         // worm laser
         if laserBought < 3 {
@@ -160,32 +175,32 @@ class ItemShop: SKScene {
         addChild(laserLabel)
         
         //laser descrip
-        var laserfastLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let laserfastLabel = SKLabelNode(fontNamed: "Lemondrop")
         laserfastLabel.fontSize = 13
         laserfastLabel.fontColor = UIColor.black
         laserfastLabel.text = "faster"
         laserfastLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-180)
         addChild(laserfastLabel)
         
-        var cost = 50000
+        var cost = BInt("50000")
         switch laserBought {
         case 0:
-            cost = 50000
+            cost = BInt("50000")
             break
         case 1:
-            cost = 180000
+            cost = BInt("180000000")
             break
         case 2:
-            cost = 3000000
+            cost = BInt("30000000000")
             break
         default:
-            cost = 3000000
+            cost = BInt("30000000000")
             break
         }
         laserCostLabel = SKLabelNode(fontNamed: "Lemondrop")
         laserCostLabel.fontSize = 13
         laserCostLabel.fontColor = UIColor.black
-        laserCostLabel.text = "Cost: \(cost)"
+        laserCostLabel.text = "Cost: \(formatNumber(points: cost))"
         laserCostLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-195)
         addChild(laserCostLabel)
         
@@ -196,15 +211,83 @@ class ItemShop: SKScene {
         cashWindfallButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-100);
         
         //cash winfall
-        var windfallLabel = SKLabelNode(fontNamed: "Lemondrop")
+        let windfallLabel = SKLabelNode(fontNamed: "Lemondrop")
         windfallLabel.fontSize = 13
         windfallLabel.fontColor = UIColor.black
-        windfallLabel.text = "15 Diamonds"
+        windfallLabel.text = "12 Diamonds"
         windfallLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-165)
         addChild(windfallLabel)
         
         self.addChild(cashWindfallButton)
 
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            premiumButton.setScale(0.9)
+            repelButton.setScale(0.9)
+            xTapButton.setScale(0.9)
+            spritzButton.setScale(0.9)
+            laserButton.setScale(0.9)
+            cashWindfallButton.setScale(0.9)
+            priceLabel.setScale(0.85)
+            priceLabel2.setScale(0.85)
+            priceLabel3.setScale(0.85)
+            laserLabel.setScale(0.85)
+            laserCostLabel.setScale(0.85)
+            laserfastLabel.setScale(0.85)
+            windfallLabel.setScale(0.85)
+            
+            premiumButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+120);
+            repelButton.position = CGPoint(x:self.frame.midX-90, y:self.frame.midY-5);
+            xTapButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+120)
+            spritzButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-10)
+            laserButton.position = CGPoint(x:self.frame.midX-90, y:self.frame.midY-135);
+            cashWindfallButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-135)
+            priceLabel.position = CGPoint(x:self.frame.midX-90, y:self.frame.midY-75);
+            priceLabel2.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+55)
+            priceLabel3.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-75)
+            laserLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-200)
+            laserCostLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-230)
+            laserfastLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-215)
+            windfallLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-200)
+            break
+        case .iPhone5:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            premiumButton.setScale(0.9)
+            repelButton.setScale(0.9)
+            xTapButton.setScale(0.9)
+            spritzButton.setScale(0.9)
+            laserButton.setScale(0.9)
+            cashWindfallButton.setScale(0.9)
+            priceLabel.setScale(0.85)
+            priceLabel2.setScale(0.85)
+            priceLabel3.setScale(0.85)
+            laserLabel.setScale(0.85)
+            laserCostLabel.setScale(0.85)
+            laserfastLabel.setScale(0.85)
+            windfallLabel.setScale(0.85)
+            
+            premiumButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+150);
+            repelButton.position = CGPoint(x:self.frame.midX-90, y:self.frame.midY+15);
+            xTapButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+150)
+            spritzButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+20)
+            laserButton.position = CGPoint(x:self.frame.midX-90, y:self.frame.midY-120);
+            cashWindfallButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-120)
+            priceLabel.position = CGPoint(x:self.frame.midX-90, y:self.frame.midY-45);
+            priceLabel2.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+85)
+            priceLabel3.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-45)
+            laserLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-185)
+            laserCostLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-215)
+            laserfastLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-200)
+            windfallLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-185)
+            break
+        default:
+            break
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -256,10 +339,17 @@ class ItemShop: SKScene {
                 handler("smallwindfall")
             }
         }
-        
+        if buyDiamondsButton != nil {
+            if buyDiamondsButton.contains(touchLocation) {
+                if let handler = touchHandler {
+                    handler("addDiamonds")
+                }
+            }
+        }
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
@@ -269,9 +359,38 @@ class ItemShop: SKScene {
             run(selectSound)
         case "exit":
             run(exitSound)
+        case "diamond pop":
+            run(diamondPopSound)
         default:
             run(levelUpSound)
         }
+        }
+    }
+    
+    func addBuyDiamondsButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0.8, duration: 0.1)
+        let bounce2 = SKAction.scale(to: 1, duration: 0.1)
+        //this is the godo case
+        let action2 = SKAction.sequence([reappear, bounce1, bounce2])
+        
+        let Texture = SKTexture(image: UIImage(named: "add diamonds button")!)
+        buyDiamondsButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        buyDiamondsButton.position = CGPoint(x:self.frame.maxX - 65, y:self.frame.maxY-60);
+        
+        self.addChild(buyDiamondsButton)
+        buyDiamondsButton.run(action2)
+        playSound(select: "diamond pop")
+        
+        _ = Timer.scheduledTimer(timeInterval: 7.0, target: self, selector: #selector(removeDiamondButton), userInfo: nil, repeats: true)
+    }
+    
+    func removeDiamondButton() {
+        let reappear = SKAction.scale(to: 1.3, duration: 0.2)
+        let bounce1 = SKAction.scale(to: 0, duration: 0.1)
+        let action2 = SKAction.sequence([reappear, bounce1, SKAction.removeFromParent()])
+        buyDiamondsButton.run(action2)
     }
     
     func animateName(name: String) {
@@ -368,6 +487,149 @@ class ItemShop: SKScene {
             cometSprite2.run(SKAction.sequence([moveTwo]))
         }
         
+    }
+    
+    //add suffix to long numbers
+    func formatNumber(points: BInt) -> String {
+        var cashString = String(describing: points)
+        if (cashString.characters.count < 4) {
+            return String(describing: points)
+        }
+        else {
+            let charsCount = cashString.characters.count
+            var cashDisplayString = cashString[0]
+            
+            var suffix = ""
+            switch charsCount {
+            case 4:
+                suffix = "K"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 5:
+                suffix = "K"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 6:
+                suffix = "K"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 7:
+                suffix = "M"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 8:
+                suffix = "M"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 9:
+                suffix = "M"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 10:
+                suffix = "B"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 11:
+                suffix = "B"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 12:
+                suffix = "B"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 13:
+                suffix = "T"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 14:
+                suffix = "T"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 15:
+                suffix = "T"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 16:
+                suffix = "Q"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 17:
+                suffix = "Q"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 18:
+                suffix = "Q"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 19:
+                suffix = "Qi"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 20:
+                suffix = "Qi"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 21:
+                suffix = "Qi"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 22:
+                suffix = "Se"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 23:
+                suffix = "Se"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 24:
+                suffix = "Se"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 25:
+                suffix = "Sp"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 26:
+                suffix = "Sp"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 27:
+                suffix = "Sp"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 28:
+                suffix = "Oc"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 29:
+                suffix = "Oc"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 30:
+                suffix = "Oc"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            case 31:
+                suffix = "No"
+                cashDisplayString = cashDisplayString + "." + cashString[1]
+                break
+            case 32:
+                suffix = "No"
+                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
+                break
+            case 33:
+                suffix = "No"
+                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
+                break
+            default:
+                suffix = "D"
+                break
+            }
+            cashDisplayString += " "
+            cashDisplayString += suffix
+            
+            return cashDisplayString
+        }
     }
 
     

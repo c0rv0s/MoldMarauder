@@ -8,13 +8,24 @@
 
 import SpriteKit
 class CreditsScene: SKScene {
+    var mute = false
     
     var backButton: SKNode! = nil
+    var revButton: SKNode! = nil
+    var listenButton: SKNode! = nil
+    
+    var musicButton: SKNode! = nil
+    var soundButton: SKNode! = nil
+    
+    var musicMute: SKNode! = nil
+    var soundMute: SKNode! = nil
     
     let gameLayer = SKNode()
     var point = CGPoint()
     
     var cometLayer = SKNode()
+    
+    var APP_ID = "com.Spacey-Dreams.Mold-Marauder"
     
     //touch handler
     var touchHandler: ((String) -> ())?
@@ -102,68 +113,163 @@ class CreditsScene: SKScene {
         labelFour.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+102)
         addChild(labelFour)
         
+        Texture = SKTexture(image: UIImage(named: "listen button")!)
+        listenButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        listenButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+85)
+        
+        self.addChild(listenButton)
+        
         let labelFive = SKLabelNode(fontNamed: "Lemondrop")
         labelFive.fontSize = 13
         labelFive.fontColor = UIColor.black
         labelFive.text = "Special Thanks: "
-        labelFive.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+81)
+        labelFive.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+40)
         addChild(labelFive)
         
         let labelSix = SKLabelNode(fontNamed: "Lemondrop")
         labelSix.fontSize = 13
         labelSix.fontColor = UIColor.black
         labelSix.text = "DeviantArt user BakaBrony and Hasbro"
-        labelSix.position = CGPoint(x:self.frame.midX, y:self.frame.midY+68)
+        labelSix.position = CGPoint(x:self.frame.midX, y:self.frame.midY+27)
         addChild(labelSix)
         
         let labelSeven = SKLabelNode(fontNamed: "Lemondrop")
         labelSeven.fontSize = 13
         labelSeven.fontColor = UIColor.black
         labelSeven.text = "for Cave Background"
-        labelSeven.position = CGPoint(x:self.frame.midX, y:self.frame.midY+55)
+        labelSeven.position = CGPoint(x:self.frame.midX, y:self.frame.midY+14)
         addChild(labelSeven)
         
         let labelEight = SKLabelNode(fontNamed: "Lemondrop")
         labelEight.fontSize = 13
         labelEight.fontColor = UIColor.black
         labelEight.text = "Github user crashoverride777:"
-        labelEight.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY+34)
+        labelEight.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY-10)
         addChild(labelEight)
         
         let labelNine = SKLabelNode(fontNamed: "Lemondrop")
         labelNine.fontSize = 13
         labelNine.fontColor = UIColor.black
         labelNine.text = "for SwiftySKScrollView"
-        labelNine.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY+21)
+        labelNine.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY-20)
         addChild(labelNine)
         
         let labelTen = SKLabelNode(fontNamed: "Lemondrop")
         labelTen.fontSize = 13
         labelTen.fontColor = UIColor.black
         labelTen.text = "Github user mkrd: "
-        labelTen.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY)
+        labelTen.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY-41)
         addChild(labelTen)
         
         let label11 = SKLabelNode(fontNamed: "Lemondrop")
         label11.fontSize = 13
         label11.fontColor = UIColor.black
         label11.text = "for Swift-Big-Integer"
-        label11.position = CGPoint(x:self.frame.midX, y:self.frame.midY-13)
+        label11.position = CGPoint(x:self.frame.midX, y:self.frame.midY-54)
         addChild(label11)
         
         let label12 = SKLabelNode(fontNamed: "Lemondrop")
         label12.fontSize = 13
         label12.fontColor = UIColor.black
         label12.text = "And RayWenderleich.com"
-        label12.position = CGPoint(x:self.frame.midX, y:self.frame.midY-35)
+        label12.position = CGPoint(x:self.frame.midX, y:self.frame.midY-76)
         addChild(label12)
         
         let label13 = SKLabelNode(fontNamed: "Lemondrop")
         label13.fontSize = 13
         label13.fontColor = UIColor.black
         label13.text = "For countless invaluable tutorials"
-        label13.position = CGPoint(x:self.frame.midX, y:self.frame.midY-48)
+        label13.position = CGPoint(x:self.frame.midX, y:self.frame.midY-89)
         addChild(label13)
+        
+        // Review
+        Texture = SKTexture(image: UIImage(named: "review button")!)
+        revButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        revButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-121)
+        
+        self.addChild(revButton)
+        
+        switch UIDevice().screenType {
+        case .iPhone4:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            labelOne.setScale(0.75)
+            labelTwo.setScale(0.75)
+            labelThree.setScale(0.75)
+            labelFour.setScale(0.75)
+            labelFive.setScale(0.75)
+            labelSix.setScale(0.75)
+            labelSeven.setScale(0.75)
+            labelEight.setScale(0.75)
+            labelNine.setScale(0.75)
+            labelTen.setScale(0.75)
+            label11.setScale(0.75)
+            label12.setScale(0.75)
+            label13.setScale(0.75)
+            break
+        case .iPhone5:
+            //iPhone 5
+            backButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
+            backButton.setScale(0.75)
+            labelOne.setScale(0.75)
+            labelTwo.setScale(0.75)
+            labelThree.setScale(0.75)
+            labelFour.setScale(0.75)
+            labelFive.setScale(0.75)
+            labelSix.setScale(0.75)
+            labelSeven.setScale(0.75)
+            labelEight.setScale(0.75)
+            labelNine.setScale(0.75)
+            labelTen.setScale(0.75)
+            label11.setScale(0.75)
+            label12.setScale(0.75)
+            label13.setScale(0.75)
+            break
+        default:
+            break
+        }
+        
+        // music
+        Texture = SKTexture(image: UIImage(named: "music_mute")!)
+        musicButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        musicButton.position = CGPoint(x:self.frame.midX-50, y:self.frame.midY-175)
+        
+        self.addChild(musicButton)
+        
+        // sound
+        Texture = SKTexture(image: UIImage(named: "sound_mute")!)
+        soundButton = SKSpriteNode(texture:Texture)
+        // Place in scene
+        soundButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-175)
+        
+        self.addChild(soundButton)
+    }
+    
+    func addMuteMusic() {
+        let Texture = SKTexture(image: UIImage(named: "mute_x")!)
+        musicMute = SKSpriteNode(texture:Texture)
+        // Place in scene
+        musicMute.position = musicButton.position
+        
+        self.addChild(musicMute)
+    }
+    func removeMuteMusic() {
+        musicMute.removeFromParent()
+    }
+    func addMuteSound() {
+        let Texture = SKTexture(image: UIImage(named: "mute_x")!)
+        soundMute = SKSpriteNode(texture:Texture)
+        // Place in scene
+        soundMute.position = soundButton.position
+        
+        self.addChild(soundMute)
+    }
+    func removeMuteSound() {
+        soundMute.removeFromParent()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -177,11 +283,34 @@ class CreditsScene: SKScene {
                 handler("back")
             }
         }
-        
-        
+        if revButton.contains(touchLocation) {
+            print("review")
+            if let handler = touchHandler {
+                handler("review")
+            }
+        }
+        if listenButton.contains(touchLocation) {
+            print("listen")
+            if let handler = touchHandler {
+                handler("listen")
+            }
+        }
+        if musicButton.contains(touchLocation) {
+            print("music")
+            if let handler = touchHandler {
+                handler("music")
+            }
+        }
+        if soundButton.contains(touchLocation) {
+            print("sound")
+            if let handler = touchHandler {
+                handler("sound")
+            }
+        }
     }
     
     func playSound(select: String) {
+        if mute == false {
         switch select {
         case "levelup":
             run(levelUpSound)
@@ -191,6 +320,7 @@ class CreditsScene: SKScene {
             run(selectSound)
         default:
             run(levelUpSound)
+        }
         }
     }
     

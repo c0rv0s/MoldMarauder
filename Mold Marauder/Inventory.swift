@@ -48,13 +48,24 @@ class Inventory: NSObject, NSCoding {
     
     var tutorialProgress: Int
     
+    var likedFB: Bool
+    
+    var muteMusic: Bool
+    var muteSound: Bool
+    
+    var quitTime: Int
+    var offlineLevel: Int
+    
+    var reinvestmentCount: Int
+
+    
     override init() {
         level = 0
         scorePerTap = 10
         levelUpCost = 2500
         //calculateScorePerTap()
         scorePerSecond = 0
-        cash = 0
+        cash = BInt("250")
         diamonds = 10
         molds = []
         unlockedMolds = [Mold(moldType: MoldType.slime), Mold(moldType: MoldType.cave), Mold(moldType: MoldType.sad), Mold(moldType: MoldType.angry)]
@@ -82,6 +93,15 @@ class Inventory: NSObject, NSCoding {
         questAmount = 0
         questReward = 0
         
+        likedFB = false
+        
+        muteMusic = false
+        muteSound = false
+        
+        quitTime = 0
+        offlineLevel = 0
+        
+        reinvestmentCount = 0
         
         achievementsDicc = [
         "own 5" : false,
@@ -107,7 +127,8 @@ class Inventory: NSObject, NSCoding {
         "level 50" : false,
         "level 60" : false,
         "level 70" : false,
-        "level 75" : false
+        "level 75" : false,
+        "max cash" : false
         ]
 
     }
@@ -138,12 +159,18 @@ class Inventory: NSObject, NSCoding {
         questAmount = aDecoder.decodeInteger(forKey: "questAmount")
         questGoal = aDecoder.decodeInteger(forKey: "questGoal")
         questReward = aDecoder.decodeInteger(forKey: "questReward")
+        likedFB = aDecoder.decodeBool(forKey: "likedFB")
+        muteSound = aDecoder.decodeBool(forKey: "muteSound")
+        muteMusic = aDecoder.decodeBool(forKey: "muteMusic")
         
         tutorialProgress = aDecoder.decodeInteger(forKey: "tutorialProgress")
         
-        var saveMolds = aDecoder.decodeObject(forKey: "molds") as! Array<Int>
-        var saveDisplayMolds = aDecoder.decodeObject(forKey: "displayMolds") as! Array<Int>
-        var saveUnlockedMolds = aDecoder.decodeObject(forKey: "unlockedMolds") as! Array<Int>
+        reinvestmentCount = aDecoder.decodeInteger(forKey: "reinvestmentCount")
+        
+        
+        let saveMolds = aDecoder.decodeObject(forKey: "molds") as! Array<Int>
+        let saveDisplayMolds = aDecoder.decodeObject(forKey: "displayMolds") as! Array<Int>
+        let saveUnlockedMolds = aDecoder.decodeObject(forKey: "unlockedMolds") as! Array<Int>
         
         self.molds = [Mold]()
         for mold in saveMolds {
@@ -159,6 +186,8 @@ class Inventory: NSObject, NSCoding {
         }
         
         achievementsDicc = aDecoder.decodeObject(forKey: "achievementsDicc") as! [String : Bool]
+        quitTime = aDecoder.decodeInteger(forKey: "quitTime")
+        offlineLevel = aDecoder.decodeInteger(forKey: "offlineLevel")
         
     }
     
@@ -166,6 +195,7 @@ class Inventory: NSObject, NSCoding {
     func encode(with aCoder: NSCoder) {
         //non array or dictionary stuff
         //like ints and booleans
+        
         aCoder.encode(level, forKey: "level")
         let sScorePerTap = String(describing: scorePerTap)
         let sLevelUpCost = String(describing: levelUpCost)
@@ -196,8 +226,13 @@ class Inventory: NSObject, NSCoding {
         aCoder.encode(questGoal, forKey: "questGoal")
         aCoder.encode(questAmount, forKey: "questAmount")
         aCoder.encode(questReward, forKey: "questReward")
+        aCoder.encode(likedFB, forKey: "likedFB")
+        aCoder.encode(muteMusic, forKey: "muteMusic")
+        aCoder.encode(muteSound, forKey: "muteSound")
         
         aCoder.encode(tutorialProgress, forKey: "tutorialProgress")
+        
+        aCoder.encode(reinvestmentCount, forKey: "reinvestmentCount")
         
         //now for achievmeents and molds
         var saveMolds = [Int]()
@@ -217,8 +252,20 @@ class Inventory: NSObject, NSCoding {
         aCoder.encode(saveDisplayMolds, forKey: "displayMolds")
         aCoder.encode(saveUnlockedMolds, forKey: "unlockedMolds")
         aCoder.encode(achievementsDicc, forKey: "achievementsDicc")
+        
+        // using current date and time as an example
+        let someDate = Date()
+        
+        // convert Date to TimeInterval (typealias for Double)
+        let timeInterval = someDate.timeIntervalSince1970
+        
+        // convert to Integer
+        let myInt = Int(timeInterval)
+        
+        aCoder.encode(myInt, forKey: "quitTime")
+        aCoder.encode(offlineLevel, forKey: "offlineLevel")
     }
-
+    
     //various internal calculations
     func incrementLevel() {
         level += 1
@@ -432,7 +479,7 @@ class Inventory: NSObject, NSCoding {
                 scorePerTap = BInt("2373046875")
                 levelUpCost = BInt("295279001600000")
                 break
-            case 52:
+            case 51:
                 scorePerTap = BInt("3559570312")
                 levelUpCost = BInt("531502202880000")
                 break

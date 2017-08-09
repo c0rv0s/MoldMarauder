@@ -7,15 +7,51 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
+		210F06CE1E94407C006EA0D5 /* achieve.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B21E94407C006EA0D5 /* achieve.wav */; };
+		210F06D01E94407C006EA0D5 /* bad card.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B41E94407C006EA0D5 /* bad card.wav */; };
+		210F06D11E94407C006EA0D5 /* bubble 2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B51E94407C006EA0D5 /* bubble 2.wav */; };
+		210F06D21E94407C006EA0D5 /* bubble low.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B61E94407C006EA0D5 /* bubble low.wav */; };
+		210F06D31E94407C006EA0D5 /* bubble pop.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B71E94407C006EA0D5 /* bubble pop.wav */; };
+		210F06D41E94407C006EA0D5 /* bubble.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B81E94407C006EA0D5 /* bubble.wav */; };
+		210F06D51E94407C006EA0D5 /* buzzer.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B91E94407C006EA0D5 /* buzzer.wav */; };
+		210F06D61E94407C006EA0D5 /* camera.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06BA1E94407C006EA0D5 /* camera.wav */; };
+		210F06D81E94407C006EA0D5 /* cash register.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06BC1E94407C006EA0D5 /* cash register.wav */; };
+		210F06D91E94407C006EA0D5 /* chest.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06BD1E94407C006EA0D5 /* chest.wav */; };
+		210F06DA1E94407C006EA0D5 /* crunch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06BE1E94407C006EA0D5 /* crunch.wav */; };
+		210F06DB1E94407C006EA0D5 /* dead.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06BF1E94407C006EA0D5 /* dead.wav */; };
+		210F06DC1E94407C006EA0D5 /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06C01E94407C006EA0D5 /* ding.wav */; };
+		210F06DF1E94407C006EA0D5 /* gem case.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06C31E94407C006EA0D5 /* gem case.wav */; };
+		210F06E01E94407C006EA0D5 /* gem collect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06C41E94407C006EA0D5 /* gem collect.wav */; };
+		210F06E21E94407C006EA0D5 /* laser.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06C61E94407C006EA0D5 /* laser.wav */; };
+		210F06E31E94407C006EA0D5 /* lose.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06C71E94407C006EA0D5 /* lose.wav */; };
+		210F06E41E94407C006EA0D5 /* powerdown.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06C81E94407C006EA0D5 /* powerdown.wav */; };
+		210F06E51E94407C006EA0D5 /* quest complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06C91E94407C006EA0D5 /* quest complete.wav */; };
+		210F06E61E94407C006EA0D5 /* select.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06CA1E94407C006EA0D5 /* select.wav */; };
+		210F06E71E94407C006EA0D5 /* snip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06CB1E94407C006EA0D5 /* snip.wav */; };
+		210F06E81E94407C006EA0D5 /* sparkle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 210F06CC1E94407C006EA0D5 /* sparkle.mp3 */; };
+		210F06E91E94407C006EA0D5 /* worm appear.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06CD1E94407C006EA0D5 /* worm appear.wav */; };
+		210F06EB1E9440D9006EA0D5 /* Ka-Ching.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06EA1E9440D9006EA0D5 /* Ka-Ching.wav */; };
+		210F06EF1E9440F9006EA0D5 /* cave_demo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06ED1E9440F9006EA0D5 /* cave_demo.wav */; };
+		210F06F01E9440F9006EA0D5 /* menu_demo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06EE1E9440F9006EA0D5 /* menu_demo.wav */; };
+		210F06F41E9441CD006EA0D5 /* exit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06F11E9441CD006EA0D5 /* exit.wav */; };
+		210F06F51E9441CD006EA0D5 /* fight sound_mixdown.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06F21E9441CD006EA0D5 /* fight sound_mixdown.wav */; };
+		210F06F81E944496006EA0D5 /* card flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06F71E944496006EA0D5 /* card flip.wav */; };
+		210F06FA1E9444C3006EA0D5 /* awe.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06F91E9444C3006EA0D5 /* awe.wav */; };
+		210F06FC1E9445B0006EA0D5 /* kiss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06FB1E9445B0006EA0D5 /* kiss.wav */; };
 		21305B471E615C0A006343A4 /* progress_Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21305B461E615C0A006343A4 /* progress_Bar.swift */; };
+		214A7D771E8E4F8000796E61 /* CircleFit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214A7D761E8E4F8000796E61 /* CircleFit.swift */; };
+		214DF2B91EC658B3002063F3 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2B81EC658B3002063F3 /* Bolts.framework */; };
+		214DF2BD1EC658CD002063F3 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2BA1EC658CD002063F3 /* FBSDKCoreKit.framework */; };
+		214DF2BE1EC658CD002063F3 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2BB1EC658CD002063F3 /* FBSDKLoginKit.framework */; };
+		214DF2BF1EC658CD002063F3 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2BC1EC658CD002063F3 /* FBSDKShareKit.framework */; };
 		214FB0FE1E7359A200E428AA /* LevelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214FB0FD1E7359A200E428AA /* LevelScene.swift */; };
-		214FB1001E753E4900E428AA /* worm appear.wav in Resources */ = {isa = PBXBuildFile; fileRef = 214FB0FF1E753E4900E428AA /* worm appear.wav */; };
 		215B49111E7BCA0D009107DF /* CreditsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B49101E7BCA0D009107DF /* CreditsScene.swift */; };
 		21655E0C1E6410E8003F9DB5 /* Lemondrop.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21655E0B1E64105F003F9DB5 /* Lemondrop.ttf */; };
-		217683829F8F421DA3440D29 /* Pods_Mold_MarauderUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D88F6D394688CDEFB67A89D /* Pods_Mold_MarauderUITests.framework */; };
+		21666A2E1EF1C48A003EF84F /* plinking.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21666A2D1EF1C48A003EF84F /* plinking.wav */; };
+		216D42381E8650CC000FAC70 /* HelpScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216D42371E8650CC000FAC70 /* HelpScene.swift */; };
 		217E3FD41E677CE800DC2EDB /* Mold Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E3FD31E677CE800DC2EDB /* Mold Inventory.swift */; };
 		21C16EFA1E43F6CB003D109A /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16EF91E43F6CB003D109A /* Inventory.swift */; };
-		21C16EFD1E440215003D109A /* Ka-Ching.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21C16EFC1E440215003D109A /* Ka-Ching.wav */; };
 		21C16EFF1E4408F8003D109A /* Molds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16EFE1E4408F8003D109A /* Molds.swift */; };
 		21C16F031E44F28F003D109A /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16F021E44F28F003D109A /* MenuScene.swift */; };
 		21C16F081E471C37003D109A /* Mold Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C16F071E471C36003D109A /* Mold Shop.swift */; };
@@ -30,9 +66,6 @@
 		21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D01DE71E590D85008184C4 /* GameKit.framework */; };
 		21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D01DEA1E590E14008184C4 /* StoreKit.framework */; };
 		21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E339981E5EDB3600083261 /* AchievementsScene.swift */; };
-		21EDB1981E79995B00884EA7 /* camera.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21EDB1961E79995B00884EA7 /* camera.wav */; };
-		21EDB1991E79995B00884EA7 /* select.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21EDB1971E79995B00884EA7 /* select.wav */; };
-		21EDB19B1E79E20F00884EA7 /* exit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 21EDB19A1E79E20F00884EA7 /* exit.mp3 */; };
 		21F134B71E7E710300627246 /* QuestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F134B61E7E710300627246 /* QuestScene.swift */; };
 		21F488EC1E68851700D2785B /* MG Basic Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488E71E68851700D2785B /* MG Basic Math.swift */; };
 		21F488ED1E68851700D2785B /* MG Benchmark Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488E81E68851700D2785B /* MG Benchmark Tools.swift */; };
@@ -40,29 +73,8 @@
 		21F488EF1E68851700D2785B /* SMP Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488EA1E68851700D2785B /* SMP Core.swift */; };
 		21F488F01E68851700D2785B /* SMP String Module.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F488EB1E68851700D2785B /* SMP String Module.swift */; };
 		21F8395D1E4B19E80071B689 /* Breeding Combos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F8395C1E4B19E80071B689 /* Breeding Combos.swift */; };
-		21F9B7D61E71310A004080DD /* card flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D31E71310A004080DD /* card flip.wav */; };
-		21F9B7D71E71310A004080DD /* dead.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D41E71310A004080DD /* dead.wav */; };
-		21F9B7D81E71310A004080DD /* laser.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D51E71310A004080DD /* laser.wav */; };
-		21F9B7DA1E713244004080DD /* bubble low.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7D91E713244004080DD /* bubble low.wav */; };
-		21F9B7DC1E71331E004080DD /* bubble 2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7DB1E71331E004080DD /* bubble 2.wav */; };
-		21F9B7DE1E713491004080DD /* snip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7DD1E713491004080DD /* snip.wav */; };
-		21F9B7E01E713575004080DD /* kiss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7DF1E713575004080DD /* kiss.wav */; };
-		21F9B7E21E713819004080DD /* fight sound_mixdown.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E11E713819004080DD /* fight sound_mixdown.wav */; };
-		21F9B7E41E71390E004080DD /* ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E31E71390E004080DD /* ding.wav */; };
-		21F9B7E61E713B3A004080DD /* bad card.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E51E713B3A004080DD /* bad card.wav */; };
-		21F9B7E81E714798004080DD /* gem collect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E71E714798004080DD /* gem collect.wav */; };
-		21F9B7EA1E714BC4004080DD /* crunch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7E91E714BC4004080DD /* crunch.wav */; };
-		21F9B7EC1E714DDB004080DD /* awe.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7EB1E714DDB004080DD /* awe.wav */; };
-		21F9B7EE1E714EB0004080DD /* buzzer.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7ED1E714EB0004080DD /* buzzer.wav */; };
-		21F9B7F01E714F0C004080DD /* lose.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7EF1E714F0C004080DD /* lose.wav */; };
-		21F9B7F21E71500A004080DD /* gem case.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F11E71500A004080DD /* gem case.wav */; };
-		21F9B7F41E7150EB004080DD /* chest.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F31E7150EB004080DD /* chest.wav */; };
-		21F9B7F61E715276004080DD /* achieve.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F51E715276004080DD /* achieve.wav */; };
-		21F9B7F81E715408004080DD /* cash register.wav in Resources */ = {isa = PBXBuildFile; fileRef = 21F9B7F71E715408004080DD /* cash register.wav */; };
 		21FCFDD81E5CE6C90042D55A /* ItemShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCFDD71E5CE6C90042D55A /* ItemShop.swift */; };
 		21FCFDDA1E5D19320042D55A /* PremiumShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCFDD91E5D19320042D55A /* PremiumShop.swift */; };
-		29110234EDB2D66ABF3A24EB /* Pods_Mold_MarauderTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5A478527A2B2C77D2A44D9E /* Pods_Mold_MarauderTests.framework */; };
-		8786D2C392702EE61A9BD0A9 /* Pods_Mold_Marauder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C958880BD183A8354CE43D3A /* Pods_Mold_Marauder.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,14 +95,52 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
+		210F06B21E94407C006EA0D5 /* achieve.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = achieve.wav; sourceTree = "<group>"; };
+		210F06B41E94407C006EA0D5 /* bad card.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bad card.wav"; sourceTree = "<group>"; };
+		210F06B51E94407C006EA0D5 /* bubble 2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble 2.wav"; sourceTree = "<group>"; };
+		210F06B61E94407C006EA0D5 /* bubble low.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble low.wav"; sourceTree = "<group>"; };
+		210F06B71E94407C006EA0D5 /* bubble pop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble pop.wav"; sourceTree = "<group>"; };
+		210F06B81E94407C006EA0D5 /* bubble.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bubble.wav; sourceTree = "<group>"; };
+		210F06B91E94407C006EA0D5 /* buzzer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = buzzer.wav; sourceTree = "<group>"; };
+		210F06BA1E94407C006EA0D5 /* camera.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = camera.wav; sourceTree = "<group>"; };
+		210F06BC1E94407C006EA0D5 /* cash register.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "cash register.wav"; sourceTree = "<group>"; };
+		210F06BD1E94407C006EA0D5 /* chest.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chest.wav; sourceTree = "<group>"; };
+		210F06BE1E94407C006EA0D5 /* crunch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = crunch.wav; sourceTree = "<group>"; };
+		210F06BF1E94407C006EA0D5 /* dead.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dead.wav; sourceTree = "<group>"; };
+		210F06C01E94407C006EA0D5 /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
+		210F06C31E94407C006EA0D5 /* gem case.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "gem case.wav"; sourceTree = "<group>"; };
+		210F06C41E94407C006EA0D5 /* gem collect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "gem collect.wav"; sourceTree = "<group>"; };
+		210F06C61E94407C006EA0D5 /* laser.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = laser.wav; sourceTree = "<group>"; };
+		210F06C71E94407C006EA0D5 /* lose.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lose.wav; sourceTree = "<group>"; };
+		210F06C81E94407C006EA0D5 /* powerdown.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = powerdown.wav; sourceTree = "<group>"; };
+		210F06C91E94407C006EA0D5 /* quest complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "quest complete.wav"; sourceTree = "<group>"; };
+		210F06CA1E94407C006EA0D5 /* select.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = select.wav; sourceTree = "<group>"; };
+		210F06CB1E94407C006EA0D5 /* snip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snip.wav; sourceTree = "<group>"; };
+		210F06CC1E94407C006EA0D5 /* sparkle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sparkle.mp3; sourceTree = "<group>"; };
+		210F06CD1E94407C006EA0D5 /* worm appear.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "worm appear.wav"; sourceTree = "<group>"; };
+		210F06EA1E9440D9006EA0D5 /* Ka-Ching.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Ka-Ching.wav"; sourceTree = "<group>"; };
+		210F06ED1E9440F9006EA0D5 /* cave_demo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cave_demo.wav; sourceTree = "<group>"; };
+		210F06EE1E9440F9006EA0D5 /* menu_demo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menu_demo.wav; sourceTree = "<group>"; };
+		210F06F11E9441CD006EA0D5 /* exit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = exit.wav; sourceTree = "<group>"; };
+		210F06F21E9441CD006EA0D5 /* fight sound_mixdown.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "fight sound_mixdown.wav"; sourceTree = "<group>"; };
+		210F06F71E944496006EA0D5 /* card flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "card flip.wav"; sourceTree = "<group>"; };
+		210F06F91E9444C3006EA0D5 /* awe.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = awe.wav; sourceTree = "<group>"; };
+		210F06FB1E9445B0006EA0D5 /* kiss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = kiss.wav; sourceTree = "<group>"; };
 		21305B461E615C0A006343A4 /* progress_Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = progress_Bar.swift; sourceTree = "<group>"; };
+		214A7D761E8E4F8000796E61 /* CircleFit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleFit.swift; sourceTree = "<group>"; };
+		214DF2B81EC658B3002063F3 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		214DF2BA1EC658CD002063F3 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		214DF2BB1EC658CD002063F3 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		214DF2BC1EC658CD002063F3 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		214DF2C01EC6601E002063F3 /* bridging-header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bridging-header.h"; sourceTree = "<group>"; };
 		214FB0FD1E7359A200E428AA /* LevelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelScene.swift; sourceTree = "<group>"; };
-		214FB0FF1E753E4900E428AA /* worm appear.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "worm appear.wav"; sourceTree = "<group>"; };
 		215B49101E7BCA0D009107DF /* CreditsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditsScene.swift; sourceTree = "<group>"; };
 		21655E0B1E64105F003F9DB5 /* Lemondrop.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lemondrop.ttf; sourceTree = "<group>"; };
+		21666A2D1EF1C48A003EF84F /* plinking.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = plinking.wav; sourceTree = "<group>"; };
+		216D42371E8650CC000FAC70 /* HelpScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpScene.swift; sourceTree = "<group>"; };
 		217E3FD31E677CE800DC2EDB /* Mold Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mold Inventory.swift"; sourceTree = "<group>"; };
 		21C16EF91E43F6CB003D109A /* Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
-		21C16EFC1E440215003D109A /* Ka-Ching.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Ka-Ching.wav"; sourceTree = "<group>"; };
 		21C16EFE1E4408F8003D109A /* Molds.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Molds.swift; sourceTree = "<group>"; };
 		21C16F021E44F28F003D109A /* MenuScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 		21C16F071E471C36003D109A /* Mold Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Mold Shop.swift"; sourceTree = "<group>"; };
@@ -110,9 +160,6 @@
 		21D01DE91E590D8B008184C4 /* Mold Marauder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Mold Marauder.entitlements"; sourceTree = "<group>"; };
 		21D01DEA1E590E14008184C4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		21E339981E5EDB3600083261 /* AchievementsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsScene.swift; sourceTree = "<group>"; };
-		21EDB1961E79995B00884EA7 /* camera.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = camera.wav; sourceTree = "<group>"; };
-		21EDB1971E79995B00884EA7 /* select.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = select.wav; sourceTree = "<group>"; };
-		21EDB19A1E79E20F00884EA7 /* exit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = exit.mp3; sourceTree = "<group>"; };
 		21F134B61E7E710300627246 /* QuestScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestScene.swift; sourceTree = "<group>"; };
 		21F488E71E68851700D2785B /* MG Basic Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Basic Math.swift"; sourceTree = "<group>"; };
 		21F488E81E68851700D2785B /* MG Benchmark Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Benchmark Tools.swift"; sourceTree = "<group>"; };
@@ -120,36 +167,8 @@
 		21F488EA1E68851700D2785B /* SMP Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMP Core.swift"; sourceTree = "<group>"; };
 		21F488EB1E68851700D2785B /* SMP String Module.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMP String Module.swift"; sourceTree = "<group>"; };
 		21F8395C1E4B19E80071B689 /* Breeding Combos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Breeding Combos.swift"; sourceTree = "<group>"; };
-		21F9B7D31E71310A004080DD /* card flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "card flip.wav"; sourceTree = "<group>"; };
-		21F9B7D41E71310A004080DD /* dead.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dead.wav; sourceTree = "<group>"; };
-		21F9B7D51E71310A004080DD /* laser.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = laser.wav; sourceTree = "<group>"; };
-		21F9B7D91E713244004080DD /* bubble low.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble low.wav"; sourceTree = "<group>"; };
-		21F9B7DB1E71331E004080DD /* bubble 2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble 2.wav"; sourceTree = "<group>"; };
-		21F9B7DD1E713491004080DD /* snip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = snip.wav; sourceTree = "<group>"; };
-		21F9B7DF1E713575004080DD /* kiss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = kiss.wav; sourceTree = "<group>"; };
-		21F9B7E11E713819004080DD /* fight sound_mixdown.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "fight sound_mixdown.wav"; sourceTree = "<group>"; };
-		21F9B7E31E71390E004080DD /* ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ding.wav; sourceTree = "<group>"; };
-		21F9B7E51E713B3A004080DD /* bad card.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bad card.wav"; sourceTree = "<group>"; };
-		21F9B7E71E714798004080DD /* gem collect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "gem collect.wav"; sourceTree = "<group>"; };
-		21F9B7E91E714BC4004080DD /* crunch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = crunch.wav; sourceTree = "<group>"; };
-		21F9B7EB1E714DDB004080DD /* awe.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = awe.wav; sourceTree = "<group>"; };
-		21F9B7ED1E714EB0004080DD /* buzzer.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = buzzer.wav; sourceTree = "<group>"; };
-		21F9B7EF1E714F0C004080DD /* lose.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lose.wav; sourceTree = "<group>"; };
-		21F9B7F11E71500A004080DD /* gem case.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "gem case.wav"; sourceTree = "<group>"; };
-		21F9B7F31E7150EB004080DD /* chest.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chest.wav; sourceTree = "<group>"; };
-		21F9B7F51E715276004080DD /* achieve.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = achieve.wav; sourceTree = "<group>"; };
-		21F9B7F71E715408004080DD /* cash register.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "cash register.wav"; sourceTree = "<group>"; };
 		21FCFDD71E5CE6C90042D55A /* ItemShop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemShop.swift; sourceTree = "<group>"; };
 		21FCFDD91E5D19320042D55A /* PremiumShop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PremiumShop.swift; sourceTree = "<group>"; };
-		7A296D69940CB8E71FEC01A4 /* Pods-Mold MarauderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderTests/Pods-Mold MarauderTests.debug.xcconfig"; sourceTree = "<group>"; };
-		9D88F6D394688CDEFB67A89D /* Pods_Mold_MarauderUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mold_MarauderUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A07A7946EEDED6823D4EFF05 /* Pods-Mold MarauderUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		BAFB501CDBFD20DF8E589CE9 /* Pods-Mold Marauder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold Marauder.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder.release.xcconfig"; sourceTree = "<group>"; };
-		BD42D5486CCE4404FD2F5271 /* Pods-Mold MarauderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderTests/Pods-Mold MarauderTests.release.xcconfig"; sourceTree = "<group>"; };
-		C89B5AF1A32B284ECB3E039E /* Pods-Mold Marauder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold Marauder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder.debug.xcconfig"; sourceTree = "<group>"; };
-		C958880BD183A8354CE43D3A /* Pods_Mold_Marauder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mold_Marauder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CED559C7711CC4D8E5DEC868 /* Pods-Mold MarauderUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mold MarauderUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests.release.xcconfig"; sourceTree = "<group>"; };
-		E5A478527A2B2C77D2A44D9E /* Pods_Mold_MarauderTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Mold_MarauderTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,9 +176,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				214DF2B91EC658B3002063F3 /* Bolts.framework in Frameworks */,
+				214DF2BD1EC658CD002063F3 /* FBSDKCoreKit.framework in Frameworks */,
+				214DF2BF1EC658CD002063F3 /* FBSDKShareKit.framework in Frameworks */,
+				214DF2BE1EC658CD002063F3 /* FBSDKLoginKit.framework in Frameworks */,
 				21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */,
 				21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */,
-				8786D2C392702EE61A9BD0A9 /* Pods_Mold_Marauder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,7 +189,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				29110234EDB2D66ABF3A24EB /* Pods_Mold_MarauderTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,13 +196,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				217683829F8F421DA3440D29 /* Pods_Mold_MarauderUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		210F06EC1E9440E2006EA0D5 /* music */ = {
+			isa = PBXGroup;
+			children = (
+				210F06ED1E9440F9006EA0D5 /* cave_demo.wav */,
+				210F06EE1E9440F9006EA0D5 /* menu_demo.wav */,
+			);
+			name = music;
+			sourceTree = "<group>";
+		};
+		214A7D751E8E4F7100796E61 /* circle */ = {
+			isa = PBXGroup;
+			children = (
+				214A7D761E8E4F8000796E61 /* CircleFit.swift */,
+			);
+			name = circle;
+			sourceTree = "<group>";
+		};
 		21655E0A1E641038003F9DB5 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,30 +230,36 @@
 		21C16EFB1E4401F4003D109A /* sounds */ = {
 			isa = PBXGroup;
 			children = (
-				214FB0FF1E753E4900E428AA /* worm appear.wav */,
-				21F9B7DB1E71331E004080DD /* bubble 2.wav */,
-				21F9B7DF1E713575004080DD /* kiss.wav */,
-				21F9B7ED1E714EB0004080DD /* buzzer.wav */,
-				21F9B7F31E7150EB004080DD /* chest.wav */,
-				21F9B7EF1E714F0C004080DD /* lose.wav */,
-				21F9B7F71E715408004080DD /* cash register.wav */,
-				21F9B7F51E715276004080DD /* achieve.wav */,
-				21F9B7F11E71500A004080DD /* gem case.wav */,
-				21F9B7E71E714798004080DD /* gem collect.wav */,
-				21F9B7E91E714BC4004080DD /* crunch.wav */,
-				21EDB19A1E79E20F00884EA7 /* exit.mp3 */,
-				21F9B7EB1E714DDB004080DD /* awe.wav */,
-				21EDB1961E79995B00884EA7 /* camera.wav */,
-				21EDB1971E79995B00884EA7 /* select.wav */,
-				21F9B7DD1E713491004080DD /* snip.wav */,
-				21F9B7E31E71390E004080DD /* ding.wav */,
-				21F9B7D91E713244004080DD /* bubble low.wav */,
-				21F9B7E51E713B3A004080DD /* bad card.wav */,
-				21F9B7E11E713819004080DD /* fight sound_mixdown.wav */,
-				21F9B7D31E71310A004080DD /* card flip.wav */,
-				21F9B7D41E71310A004080DD /* dead.wav */,
-				21F9B7D51E71310A004080DD /* laser.wav */,
-				21C16EFC1E440215003D109A /* Ka-Ching.wav */,
+				210F06B21E94407C006EA0D5 /* achieve.wav */,
+				210F06B41E94407C006EA0D5 /* bad card.wav */,
+				210F06B51E94407C006EA0D5 /* bubble 2.wav */,
+				210F06B61E94407C006EA0D5 /* bubble low.wav */,
+				210F06B71E94407C006EA0D5 /* bubble pop.wav */,
+				210F06F91E9444C3006EA0D5 /* awe.wav */,
+				210F06F71E944496006EA0D5 /* card flip.wav */,
+				21666A2D1EF1C48A003EF84F /* plinking.wav */,
+				210F06B81E94407C006EA0D5 /* bubble.wav */,
+				210F06B91E94407C006EA0D5 /* buzzer.wav */,
+				210F06BA1E94407C006EA0D5 /* camera.wav */,
+				210F06BC1E94407C006EA0D5 /* cash register.wav */,
+				210F06BD1E94407C006EA0D5 /* chest.wav */,
+				210F06EA1E9440D9006EA0D5 /* Ka-Ching.wav */,
+				210F06BE1E94407C006EA0D5 /* crunch.wav */,
+				210F06FB1E9445B0006EA0D5 /* kiss.wav */,
+				210F06F11E9441CD006EA0D5 /* exit.wav */,
+				210F06F21E9441CD006EA0D5 /* fight sound_mixdown.wav */,
+				210F06BF1E94407C006EA0D5 /* dead.wav */,
+				210F06C01E94407C006EA0D5 /* ding.wav */,
+				210F06C31E94407C006EA0D5 /* gem case.wav */,
+				210F06C41E94407C006EA0D5 /* gem collect.wav */,
+				210F06C61E94407C006EA0D5 /* laser.wav */,
+				210F06C71E94407C006EA0D5 /* lose.wav */,
+				210F06C81E94407C006EA0D5 /* powerdown.wav */,
+				210F06C91E94407C006EA0D5 /* quest complete.wav */,
+				210F06CA1E94407C006EA0D5 /* select.wav */,
+				210F06CB1E94407C006EA0D5 /* snip.wav */,
+				210F06CC1E94407C006EA0D5 /* sparkle.mp3 */,
+				210F06CD1E94407C006EA0D5 /* worm appear.wav */,
 			);
 			name = sounds;
 			sourceTree = "<group>";
@@ -228,6 +271,7 @@
 				21C16EFE1E4408F8003D109A /* Molds.swift */,
 				21F8395C1E4B19E80071B689 /* Breeding Combos.swift */,
 				21305B461E615C0A006343A4 /* progress_Bar.swift */,
+				214A7D751E8E4F7100796E61 /* circle */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -241,11 +285,13 @@
 				21C16F071E471C36003D109A /* Mold Shop.swift */,
 				21C16F091E47F060003D109A /* BreedScene.swift */,
 				21FCFDD71E5CE6C90042D55A /* ItemShop.swift */,
+				0FC242531F10BC56004A98A9 /* Reinvestments.swift */,
 				21FCFDD91E5D19320042D55A /* PremiumShop.swift */,
 				21E339981E5EDB3600083261 /* AchievementsScene.swift */,
 				217E3FD31E677CE800DC2EDB /* Mold Inventory.swift */,
 				21F134B61E7E710300627246 /* QuestScene.swift */,
 				215B49101E7BCA0D009107DF /* CreditsScene.swift */,
+				216D42371E8650CC000FAC70 /* HelpScene.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -264,7 +310,6 @@
 				21CB73341E412FD500DEAF4F /* Mold Marauder */,
 				21CB73331E412FD500DEAF4F /* Products */,
 				5B1F86CC0EF7B2FFCA1530CB /* Frameworks */,
-				73B59A4836671D5FD2473174 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -291,9 +336,11 @@
 				21C16F061E44F731003D109A /* Controllers */,
 				21CB733F1E412FD500DEAF4F /* Main.storyboard */,
 				21CB73421E412FD500DEAF4F /* Assets.xcassets */,
+				210F06EC1E9440E2006EA0D5 /* music */,
 				21C16EFB1E4401F4003D109A /* sounds */,
 				21CB73441E412FD500DEAF4F /* LaunchScreen.storyboard */,
 				21CB73471E412FD500DEAF4F /* Info.plist */,
+				214DF2C01EC6601E002063F3 /* bridging-header.h */,
 			);
 			path = "Mold Marauder";
 			sourceTree = "<group>";
@@ -314,26 +361,14 @@
 		5B1F86CC0EF7B2FFCA1530CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				214DF2BA1EC658CD002063F3 /* FBSDKCoreKit.framework */,
+				214DF2BB1EC658CD002063F3 /* FBSDKLoginKit.framework */,
+				214DF2BC1EC658CD002063F3 /* FBSDKShareKit.framework */,
+				214DF2B81EC658B3002063F3 /* Bolts.framework */,
 				21D01DEA1E590E14008184C4 /* StoreKit.framework */,
 				21D01DE71E590D85008184C4 /* GameKit.framework */,
-				C958880BD183A8354CE43D3A /* Pods_Mold_Marauder.framework */,
-				E5A478527A2B2C77D2A44D9E /* Pods_Mold_MarauderTests.framework */,
-				9D88F6D394688CDEFB67A89D /* Pods_Mold_MarauderUITests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		73B59A4836671D5FD2473174 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C89B5AF1A32B284ECB3E039E /* Pods-Mold Marauder.debug.xcconfig */,
-				BAFB501CDBFD20DF8E589CE9 /* Pods-Mold Marauder.release.xcconfig */,
-				7A296D69940CB8E71FEC01A4 /* Pods-Mold MarauderTests.debug.xcconfig */,
-				BD42D5486CCE4404FD2F5271 /* Pods-Mold MarauderTests.release.xcconfig */,
-				A07A7946EEDED6823D4EFF05 /* Pods-Mold MarauderUITests.debug.xcconfig */,
-				CED559C7711CC4D8E5DEC868 /* Pods-Mold MarauderUITests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -343,12 +378,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 21CB73601E412FD500DEAF4F /* Build configuration list for PBXNativeTarget "Mold Marauder" */;
 			buildPhases = (
-				F51789E9F778BE042C50878B /* [CP] Check Pods Manifest.lock */,
 				21CB732E1E412FD400DEAF4F /* Sources */,
 				21CB732F1E412FD400DEAF4F /* Frameworks */,
 				21CB73301E412FD400DEAF4F /* Resources */,
-				15EB3333D246F671419A8257 /* [CP] Embed Pods Frameworks */,
-				2F21E23A7ABF3C597DD8D4F9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -425,6 +457,9 @@
 							com.apple.InAppPurchase = {
 								enabled = 1;
 							};
+							com.apple.iCloud = {
+								enabled = 1;
+							};
 						};
 					};
 					21CB734B1E412FD500DEAF4F = {
@@ -464,34 +499,42 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21F9B7DC1E71331E004080DD /* bubble 2.wav in Resources */,
-				21F9B7DE1E713491004080DD /* snip.wav in Resources */,
+				210F06E71E94407C006EA0D5 /* snip.wav in Resources */,
+				210F06D51E94407C006EA0D5 /* buzzer.wav in Resources */,
+				210F06F41E9441CD006EA0D5 /* exit.wav in Resources */,
+				210F06D81E94407C006EA0D5 /* cash register.wav in Resources */,
+				210F06E81E94407C006EA0D5 /* sparkle.mp3 in Resources */,
+				210F06E01E94407C006EA0D5 /* gem collect.wav in Resources */,
+				210F06D31E94407C006EA0D5 /* bubble pop.wav in Resources */,
+				210F06E91E94407C006EA0D5 /* worm appear.wav in Resources */,
+				210F06D21E94407C006EA0D5 /* bubble low.wav in Resources */,
+				210F06DB1E94407C006EA0D5 /* dead.wav in Resources */,
+				210F06E51E94407C006EA0D5 /* quest complete.wav in Resources */,
+				210F06CE1E94407C006EA0D5 /* achieve.wav in Resources */,
 				21655E0C1E6410E8003F9DB5 /* Lemondrop.ttf in Resources */,
-				21F9B7DA1E713244004080DD /* bubble low.wav in Resources */,
-				21F9B7D71E71310A004080DD /* dead.wav in Resources */,
+				210F06D61E94407C006EA0D5 /* camera.wav in Resources */,
+				210F06EF1E9440F9006EA0D5 /* cave_demo.wav in Resources */,
+				210F06E61E94407C006EA0D5 /* select.wav in Resources */,
+				210F06DC1E94407C006EA0D5 /* ding.wav in Resources */,
+				210F06D41E94407C006EA0D5 /* bubble.wav in Resources */,
+				210F06DA1E94407C006EA0D5 /* crunch.wav in Resources */,
+				210F06F01E9440F9006EA0D5 /* menu_demo.wav in Resources */,
+				210F06F81E944496006EA0D5 /* card flip.wav in Resources */,
+				210F06D01E94407C006EA0D5 /* bad card.wav in Resources */,
 				21CB73411E412FD500DEAF4F /* Main.storyboard in Resources */,
-				21F9B7F41E7150EB004080DD /* chest.wav in Resources */,
-				21F9B7EC1E714DDB004080DD /* awe.wav in Resources */,
-				21EDB19B1E79E20F00884EA7 /* exit.mp3 in Resources */,
-				21F9B7E61E713B3A004080DD /* bad card.wav in Resources */,
-				21F9B7E21E713819004080DD /* fight sound_mixdown.wav in Resources */,
-				21F9B7E01E713575004080DD /* kiss.wav in Resources */,
-				21F9B7E41E71390E004080DD /* ding.wav in Resources */,
-				21F9B7EA1E714BC4004080DD /* crunch.wav in Resources */,
-				21F9B7EE1E714EB0004080DD /* buzzer.wav in Resources */,
-				21F9B7E81E714798004080DD /* gem collect.wav in Resources */,
-				21F9B7F61E715276004080DD /* achieve.wav in Resources */,
-				21C16EFD1E440215003D109A /* Ka-Ching.wav in Resources */,
-				21F9B7F81E715408004080DD /* cash register.wav in Resources */,
-				21F9B7F01E714F0C004080DD /* lose.wav in Resources */,
-				21EDB1991E79995B00884EA7 /* select.wav in Resources */,
-				21EDB1981E79995B00884EA7 /* camera.wav in Resources */,
-				21F9B7D81E71310A004080DD /* laser.wav in Resources */,
-				21F9B7F21E71500A004080DD /* gem case.wav in Resources */,
-				214FB1001E753E4900E428AA /* worm appear.wav in Resources */,
+				210F06E31E94407C006EA0D5 /* lose.wav in Resources */,
+				210F06D91E94407C006EA0D5 /* chest.wav in Resources */,
+				210F06DF1E94407C006EA0D5 /* gem case.wav in Resources */,
+				210F06F51E9441CD006EA0D5 /* fight sound_mixdown.wav in Resources */,
+				210F06FA1E9444C3006EA0D5 /* awe.wav in Resources */,
+				210F06E21E94407C006EA0D5 /* laser.wav in Resources */,
 				21CB73431E412FD500DEAF4F /* Assets.xcassets in Resources */,
-				21F9B7D61E71310A004080DD /* card flip.wav in Resources */,
+				210F06FC1E9445B0006EA0D5 /* kiss.wav in Resources */,
+				210F06D11E94407C006EA0D5 /* bubble 2.wav in Resources */,
+				21666A2E1EF1C48A003EF84F /* plinking.wav in Resources */,
+				210F06E41E94407C006EA0D5 /* powerdown.wav in Resources */,
 				21CB73461E412FD500DEAF4F /* LaunchScreen.storyboard in Resources */,
+				210F06EB1E9440D9006EA0D5 /* Ka-Ching.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,36 +583,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		15EB3333D246F671419A8257 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2F21E23A7ABF3C597DD8D4F9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold Marauder/Pods-Mold Marauder-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		4CD53268FAFA93F22613DB46 /* [CP] Embed Pods Frameworks */ = {
@@ -632,21 +645,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Mold MarauderUITests/Pods-Mold MarauderUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F51789E9F778BE042C50878B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -655,6 +653,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				21FCFDDA1E5D19320042D55A /* PremiumShop.swift in Sources */,
+				216D42381E8650CC000FAC70 /* HelpScene.swift in Sources */,
 				21C16F081E471C37003D109A /* Mold Shop.swift in Sources */,
 				21F8395D1E4B19E80071B689 /* Breeding Combos.swift in Sources */,
 				215B49111E7BCA0D009107DF /* CreditsScene.swift in Sources */,
@@ -670,11 +669,13 @@
 				21C16F0A1E47F060003D109A /* BreedScene.swift in Sources */,
 				21CB733C1E412FD500DEAF4F /* GameScene.swift in Sources */,
 				21C16F031E44F28F003D109A /* MenuScene.swift in Sources */,
+				0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */,
 				21F488F01E68851700D2785B /* SMP String Module.swift in Sources */,
 				21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */,
 				21CB733E1E412FD500DEAF4F /* GameViewController.swift in Sources */,
 				21FCFDD81E5CE6C90042D55A /* ItemShop.swift in Sources */,
 				21CB73361E412FD500DEAF4F /* AppDelegate.swift in Sources */,
+				214A7D771E8E4F8000796E61 /* CircleFit.swift in Sources */,
 				21305B471E615C0A006343A4 /* progress_Bar.swift in Sources */,
 				217E3FD41E677CE800DC2EDB /* Mold Inventory.swift in Sources */,
 			);
@@ -824,15 +825,18 @@
 		};
 		21CB73611E412FD500DEAF4F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C89B5AF1A32B284ECB3E039E /* Pods-Mold Marauder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
 				DEVELOPMENT_TEAM = PLNFCVNGS6;
+				FRAMEWORK_SEARCH_PATHS = "/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0";
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Desktop/Mold Marauder/Mold Marauder/bridging-header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -840,15 +844,18 @@
 		};
 		21CB73621E412FD500DEAF4F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BAFB501CDBFD20DF8E589CE9 /* Pods-Mold Marauder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
 				DEVELOPMENT_TEAM = PLNFCVNGS6;
+				FRAMEWORK_SEARCH_PATHS = "/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0";
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Desktop/Mold Marauder/Mold Marauder/bridging-header.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -856,7 +863,6 @@
 		};
 		21CB73641E412FD500DEAF4F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A296D69940CB8E71FEC01A4 /* Pods-Mold MarauderTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -871,7 +877,6 @@
 		};
 		21CB73651E412FD500DEAF4F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BD42D5486CCE4404FD2F5271 /* Pods-Mold MarauderTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -886,7 +891,6 @@
 		};
 		21CB73671E412FD500DEAF4F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A07A7946EEDED6823D4EFF05 /* Pods-Mold MarauderUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = "Mold MarauderUITests/Info.plist";
@@ -900,7 +904,6 @@
 		};
 		21CB73681E412FD500DEAF4F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CED559C7711CC4D8E5DEC868 /* Pods-Mold MarauderUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = "Mold MarauderUITests/Info.plist";

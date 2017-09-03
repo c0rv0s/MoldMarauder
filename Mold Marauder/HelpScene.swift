@@ -466,7 +466,7 @@ class HelpScene: SKScene {
         scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
     }
     
-    func animateComets() {
+    @objc func animateComets() {
         let comet = SKTexture(image: UIImage(named: "comet")!)
         let comet180 = SKTexture(image: UIImage(named: "comet180")!)
         let cometUp = SKTexture(image: UIImage(named: "cometUp")!)

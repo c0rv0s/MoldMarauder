@@ -356,7 +356,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         activateSleepTimer()
     }
     
-    func offlineCash() {
+    @objc func offlineCash() {
         // using current date and time as an example
         let someDate = Date()
         
@@ -390,7 +390,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         
     }
 
-    func myObserverMethod(notification : NSNotification) {
+    @objc func myObserverMethod(notification : NSNotification) {
         print("Observer method called")
         if scene.eventTimer != nil {
             scene.eventTimer.invalidate()
@@ -455,7 +455,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         print("saved")
     }
     
-    func sleepMode() {
+    @objc func sleepMode() {
         if scene.isActive == false {
             if (moldShop) != nil {
                 moldShop.scrollView?.removeFromSuperview()
@@ -639,8 +639,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             for mold in inventory.molds {
                 if mold.moldType == target.moldType {
 //                    pick an amount between 16% and 33%  of its price to adjust upward
-                    var pick = BInt(randomInRange(lo: 3, hi: 6))
-                    target.price += (mold.price / pick)
+                    target.price += (mold.price / BInt(randomInRange(lo: 3, hi: 6)))
                 }
             }
         }
@@ -3362,7 +3361,8 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 print(inventory.currentQuest)
                 if inventory.currentQuest.characters.count > 1 {
                     if inventory.currentQuest[inventory.currentQuest.characters.count - 1] == "&" {
-                        let name = inventory.currentQuest.substring(to: inventory.currentQuest.index(before: inventory.currentQuest.endIndex))
+                        //let name = inventory.currentQuest.substring(to: inventory.currentQuest.index(before: inventory.currentQuest.endIndex))
+                        let name = inventory.currentQuest[..<inventory.currentQuest.index(before: inventory.currentQuest.endIndex)]
                         print("&")
                         
                         if mold.name == name {
@@ -3378,7 +3378,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 checkMaxMolds()
                 if moldShop.containsMold(array: moldShop.blockedMolds, mold: mold.moldType) {
                     //moldShop.erectScroll()
-                    var maxLabel = SKSpriteNode(texture: moldShop.maxTex)
+                    let maxLabel = SKSpriteNode(texture: moldShop.maxTex)
                     maxLabel.position = pos
                     moldShop.page1ScrollView.addChild(maxLabel)
                     
@@ -4977,7 +4977,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
     }
     
-    func tapHelper() {
+    @objc func tapHelper() {
         activateSleepTimer()
         scene.tapPoint = inventory.scorePerTap
         
@@ -5078,7 +5078,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     
     
  
-    func captureScreen() {
+    @objc func captureScreen() {
         UIGraphicsBeginImageContextWithOptions(skView.bounds.size, true, 0)
         
         skView.drawHierarchy(in: skView.bounds, afterScreenUpdates: true)
@@ -5109,7 +5109,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         })
     }
     
-    func showMenu() {
+    @objc func showMenu() {
         scene.isActive = false
         //scene.diamondLabel.text = ""
         menu = MenuScene(size: skView.bounds.size)
@@ -5127,7 +5127,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         playBackgroundMusic(filename: "menu_demo.wav")
     }
     
-    func showInventory() {
+    @objc func showInventory() {
         //scene.diamondLabel.text = ""
         inventoryScene = MoldInventory(size: skView.bounds.size)
         inventoryScene.name = "inventoryScene"
@@ -5142,7 +5142,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         playBackgroundMusic(filename: "menu_demo.wav")
     }
     
-    func enableTouch() {
+    @objc func enableTouch() {
         self.view.isUserInteractionEnabled = true
     }
 
@@ -5179,7 +5179,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     }
     
     //per second function
-    func addCash() {
+    @objc func addCash() {
         //chance for two molds nex to each other kiss or fight
         if inventory.displayMolds.count > 1 {
             if Int(arc4random_uniform(60)) < 4 {

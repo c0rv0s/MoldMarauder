@@ -113,7 +113,8 @@ class QuestScene: SKScene {
         questName.fontSize = 18
         questName.fontColor = UIColor.black
         if currentQuest[currentQuest.characters.count - 1] == "&" {
-            questName.text = "Buy 2 " + currentQuest.substring(to: currentQuest.index(before: currentQuest.endIndex)) + "s"
+            //questName.text = "Buy 2 " + currentQuest.substring(to: currentQuest.index(before: currentQuest.endIndex)) + "s"
+            questName.text = "Buy 2 " + currentQuest[..<currentQuest.index(before: currentQuest.endIndex)] + "s"
         }
         if currentQuest == "tap" {
             questName.text = "Tap " + String(questGoal!) + " times"
@@ -278,7 +279,7 @@ class QuestScene: SKScene {
         _ = Timer.scheduledTimer(timeInterval: 7.0, target: self, selector: #selector(removeDiamondButton), userInfo: nil, repeats: true)
     }
     
-    func removeDiamondButton() {
+    @objc func removeDiamondButton() {
         let reappear = SKAction.scale(to: 1.3, duration: 0.2)
         let bounce1 = SKAction.scale(to: 0, duration: 0.1)
         let action2 = SKAction.sequence([reappear, bounce1, SKAction.removeFromParent()])
@@ -352,7 +353,7 @@ class QuestScene: SKScene {
         scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
     }
     
-    func animateComets() {
+    @objc func animateComets() {
         let comet = SKTexture(image: UIImage(named: "comet")!)
         let comet180 = SKTexture(image: UIImage(named: "comet180")!)
         let cometUp = SKTexture(image: UIImage(named: "cometUp")!)

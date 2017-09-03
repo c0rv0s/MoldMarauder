@@ -621,14 +621,16 @@ private func addLimbs(_ lhs: inout Limbs, _ rhs: Limbs, rhsPaddingZeroLimbs pz: 
 	{
 		if ovfl
 		{
-			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i &- pz])
+			//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i &- pz])
+            (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhs[i &- pz])
 			newLimb = newLimb &+ 1
 
 			ovfl = ovfl || newLimb == 0
 		}
 		else
 		{
-			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i &- pz])
+			//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i &- pz])
+            (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhs[i &- pz])
 		}
 
 		lhs[i] = newLimb
@@ -641,13 +643,15 @@ private func addLimbs(_ lhs: inout Limbs, _ rhs: Limbs, rhsPaddingZeroLimbs pz: 
 		{
 			if i < rhc
 			{
-				(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i &- pz])
-				newLimb = newLimb &+ 1
+				//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i &- pz])
+                (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhs[i &- pz])
+                newLimb = newLimb &+ 1
 				ovfl = ovfl || newLimb == 0
 			}
 			else
 			{
-				(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], 1)
+				//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], 1)
+                (newLimb, ovfl) = lhs[i].addingReportingOverflow(1)
 			}
 
 			lhs[i] = newLimb
@@ -656,7 +660,8 @@ private func addLimbs(_ lhs: inout Limbs, _ rhs: Limbs, rhsPaddingZeroLimbs pz: 
 		{
 			if i < rhc
 			{
-				(newLimb, ovfl) = Limb.addWithOverflow(rhs[i &- pz], 1)
+				//(newLimb, ovfl) = Limb.addWithOverflow(rhs[i &- pz], 1)
+                (newLimb, ovfl) = rhs[i &- pz].addingReportingOverflow(1)
 				lhs.append(newLimb)
 			}
 			else
@@ -691,7 +696,8 @@ private func addOneLimbToLimbs(_ lhs: inout Limbs, _ rhs: Limb, rhsPaddingZeroLi
 	// i < lhc
 	var i = pz
 
-	let (newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs)
+	//let (newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs)
+    let (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhs)
 	lhs[i] = newLimb
 
 	while ovfl
@@ -727,7 +733,8 @@ private func addTwoLimbsToLimbs(_ lhs: inout Limbs, _ rhsLo: Limb, _ rhsHi: Limb
 	// i < lhc
 	var i = pz
 
-	var (newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsLo)
+	//var (newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsLo)
+    var (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhsLo)
 	lhs[i] = newLimb
 
 	i += 1
@@ -736,13 +743,15 @@ private func addTwoLimbsToLimbs(_ lhs: inout Limbs, _ rhsLo: Limb, _ rhsHi: Limb
 	{
 		if ovfl
 		{
-			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsHi)
+			//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsHi)
+            (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhsHi)
 			newLimb = newLimb &+ 1
 			ovfl = ovfl || newLimb == 0
 		}
 		else
 		{
-			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsHi)
+			//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsHi)
+            (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhsHi)
 		}
 
 		lhs[i] = newLimb
@@ -797,14 +806,16 @@ private func +=°(lhs: inout Limbs, rhs: Limbs)
 	{
 		if ovfl
 		{
-			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+			//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+            (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhs[i])
 			newLimb = newLimb &+ 1
 
 			ovfl = ovfl || newLimb == 0
 		}
 		else
 		{
-			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+			//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+            (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhs[i])
 		}
 
 		lhs[i] = newLimb
@@ -817,13 +828,15 @@ private func +=°(lhs: inout Limbs, rhs: Limbs)
 		{
 			if i < rhc
 			{
-				(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+				//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+                (newLimb, ovfl) = lhs[i].addingReportingOverflow(rhs[i])
 				newLimb = newLimb &+ 1
 				ovfl = ovfl || newLimb == 0
 			}
 			else
 			{
-				(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], 1)
+				//(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], 1)
+                (newLimb, ovfl) = lhs[i].addingReportingOverflow(1)
 			}
 
 			lhs[i] = newLimb
@@ -832,7 +845,8 @@ private func +=°(lhs: inout Limbs, rhs: Limbs)
 		{
 			if i < rhc
 			{
-				(newLimb, ovfl) = Limb.addWithOverflow(rhs[i], 1)
+				//(newLimb, ovfl) = Limb.addWithOverflow(rhs[i], 1)
+                (newLimb, ovfl) = rhs[i].addingReportingOverflow(1)
 				lhs.append(newLimb)
 			}
 			else
@@ -896,13 +910,15 @@ private func -=°(lhs: inout Limbs, rhs: Limbs)
 	{
 		if ovfl
 		{
-			(lhs[i], ovfl) = Limb.subtractWithOverflow(lhs[i], rhs[i])
+			//(lhs[i], ovfl) = Limb.subtractWithOverflow(lhs[i], rhs[i])
+            (lhs[i], ovfl) = lhs[i].subtractingReportingOverflow(rhs[i])
 			lhs[i] = lhs[i] &- 1
 			ovfl = ovfl || lhs[i] == Limb.max
 		}
 		else
 		{
-			(lhs[i], ovfl) = Limb.subtractWithOverflow(lhs[i], rhs[i])
+			//(lhs[i], ovfl) = Limb.subtractWithOverflow(lhs[i], rhs[i])
+            (lhs[i], ovfl) = lhs[i].subtractingReportingOverflow(rhs[i])
 		}
 
 		i += 1
@@ -916,7 +932,8 @@ private func -=°(lhs: inout Limbs, rhs: Limbs)
 			break
 		}
 
-		(lhs[i], ovfl) = Limb.subtractWithOverflow(lhs[i], 1)
+		//(lhs[i], ovfl) = Limb.subtractWithOverflow(lhs[i], 1)
+        (lhs[i], ovfl) = lhs[i].subtractingReportingOverflow(1)
 
 		i += 1
 	}
@@ -1053,7 +1070,8 @@ private func mul(res: inout Limbs, limbs lhs: Limbs, limbs rhs: Limbs)
 			r = rhs[j]
 			if r == 0 { continue }
 
-			(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+			//(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+            (mulLo, overflow) = l.multipliedReportingOverflow(by: r)
 
 			if overflow
 			{
@@ -1103,7 +1121,8 @@ private func multiplyLimbs(limbs lhs: Limbs, limb r: Limb, addInto res: inout Li
 		l = lhs[i]
 		if l == 0 { continue }
 
-		(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+		//(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+        (mulLo, overflow) = l.multipliedReportingOverflow(by: r)
 
 		if overflow
 		{
@@ -1164,7 +1183,8 @@ func square(res: inout Limbs, limbs lhs: Limbs)
 			r = lhs[j]
 			if r == 0 { continue }
 
-			(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+			//(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+            (mulLo, overflow) = l.multipliedReportingOverflow(by: r)
 
 			if overflow
 			{
@@ -2315,7 +2335,7 @@ public extension String
 		let start = index(startIndex, offsetBy: r.lowerBound)
 		let end = index(start, offsetBy: r.upperBound - r.lowerBound)
 
-		return self[start..<end]
+		return String(self[start..<end])
 	}
 
 	/// If possible, returns index of first ocurrence of char.

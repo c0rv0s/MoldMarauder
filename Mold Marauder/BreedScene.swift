@@ -175,7 +175,6 @@ class BreedScene: SKScene {
         bubbleLayer.removeFromParent()
         //let pages = ceil(Double(unlockedMolds.count) / 2.0)
         var count = 0
-        var extra = 0
         if ownedMolds != nil {
             for mold in unlockedMolds {
                 if moldOwned(mold: mold.moldType) {
@@ -1217,7 +1216,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addTitle1() {
+    @objc func addTitle1() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 12
         welcomeTitle.fontColor = UIColor.black
@@ -1245,7 +1244,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addBox2() {
+    @objc func addBox2() {
         tutorialLayer.removeAllChildren()
         let appear = SKAction.scale(to: 1.1, duration: 0.5)
         //this is the godo case
@@ -1269,7 +1268,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addTitle2() {
+    @objc func addTitle2() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 14
         welcomeTitle.fontColor = UIColor.black
@@ -1332,7 +1331,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addTitle3() {
+    @objc func addTitle3() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 12
         welcomeTitle.fontColor = UIColor.black
@@ -1367,7 +1366,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addBox3(){
+    @objc func addBox3(){
         let appear = SKAction.scale(to: 1.1, duration: 0.5)
         //this is the godo case
         let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
@@ -1390,7 +1389,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addTitle4() {
+    @objc func addTitle4() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 12
         welcomeTitle.fontColor = UIColor.black
@@ -1418,7 +1417,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addBox4(){
+    @objc func addBox4(){
         let appear = SKAction.scale(to: 1.1, duration: 0.5)
         //this is the godo case
         let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
@@ -1440,7 +1439,7 @@ class BreedScene: SKScene {
         }
     }
     
-    func addTitle5() {
+    @objc func addTitle5() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 12
         welcomeTitle.fontColor = UIColor.black
@@ -1487,7 +1486,6 @@ class BreedScene: SKScene {
         bubble.setScale(0.01)
         //this is the godo case
         let appear = SKAction.scale(to: 1, duration: 0.12)
-        let rotateL = SKAction.rotate(byAngle: 360, duration: 400)
         let actionS = SKAction.sequence([appear])
         bubble.run(actionS)
         bubbleLayer.addChild(bubble)
@@ -1587,7 +1585,7 @@ class BreedScene: SKScene {
         _ = Timer.scheduledTimer(timeInterval: 7.0, target: self, selector: #selector(removeDiamondButton), userInfo: nil, repeats: true)
     }
     
-    func removeDiamondButton() {
+    @objc func removeDiamondButton() {
         let reappear = SKAction.scale(to: 1.3, duration: 0.2)
         let bounce1 = SKAction.scale(to: 0, duration: 0.1)
         let action2 = SKAction.sequence([reappear, bounce1, SKAction.removeFromParent()])
@@ -1634,7 +1632,7 @@ class BreedScene: SKScene {
         scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
     }
     
-    func animateComets() {
+    @objc func animateComets() {
         let comet = SKTexture(image: UIImage(named: "comet")!)
         let comet180 = SKTexture(image: UIImage(named: "comet180")!)
         let cometUp = SKTexture(image: UIImage(named: "cometUp")!)

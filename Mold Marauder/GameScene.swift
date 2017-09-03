@@ -214,7 +214,7 @@ class GameScene: SKScene {
         background.run(action)
     }
     
-    func backgroundPartTwo() {
+    @objc func backgroundPartTwo() {
         background.texture = SKTexture(imageNamed: backgroundName)
         
         let reappear = SKAction.scale(to: 1.1, duration: 0.2)
@@ -941,7 +941,7 @@ class GameScene: SKScene {
                 //molds w/ no animation
                 if (moldData.moldType == MoldType.invisible || moldData.moldType == MoldType.disaffected || moldData.moldType == MoldType.dead) {
                     let imName = String(moldData.name)
-                    let Image = UIImage(named: imName!)
+                    let Image = UIImage(named: imName)
                     let Texture = SKTexture(image: Image!)
                     
                     let moldPic = SKSpriteNode(texture:Texture)
@@ -1697,7 +1697,7 @@ class GameScene: SKScene {
 
     }
     
-    func addTitle1() {
+    @objc func addTitle1() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 15
         welcomeTitle.fontColor = UIColor.black
@@ -1900,7 +1900,7 @@ class GameScene: SKScene {
         }
     }
     
-    func killWormTutorial() {
+    @objc func killWormTutorial() {
         let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
         let introNode = SKSpriteNode(texture:Texture)
         // Place in scene
@@ -1979,7 +1979,7 @@ class GameScene: SKScene {
         }
     }
     
-    func addWormDeadCongrats() {
+    @objc func addWormDeadCongrats() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 16
         welcomeTitle.fontColor = UIColor.black
@@ -2041,7 +2041,7 @@ class GameScene: SKScene {
         }
     }
     
-    func addWormDeadCongrats2() {
+    @objc func addWormDeadCongrats2() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 16
         welcomeTitle.fontColor = UIColor.black
@@ -2094,7 +2094,7 @@ class GameScene: SKScene {
         }
     }
     
-    func addWormDeadCongrats3() {
+    @objc func addWormDeadCongrats3() {
         let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle4.fontSize = 18
         welcomeTitle4.fontColor = UIColor.black
@@ -2119,7 +2119,7 @@ class GameScene: SKScene {
         _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(fairyTut), userInfo: nil, repeats: false)
     }
     
-    func fairyTut() {
+    @objc func fairyTut() {
         let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
         let introNode = SKSpriteNode(texture:Texture)
         // Place in scene
@@ -2162,7 +2162,7 @@ class GameScene: SKScene {
         }
     }
     
-    func removeWormCongrats() {
+    @objc func removeWormCongrats() {
         let disappear = SKAction.scale(to: 0.0, duration: 0.3)
         for child in tutorialLayer.children {
             child.run(SKAction.sequence([disappear, SKAction.removeFromParent()]))
@@ -2180,7 +2180,7 @@ class GameScene: SKScene {
         - three cards appear, pick one for buff or debuff. pay diamonds to see all cards
         - idk tbh
      */
-    func triggerEvent() {
+    @objc func triggerEvent() {
         print("event triggered")
         let ran = Int(arc4random_uniform(100))
         //make sure user isn't buying diamonds
@@ -2316,7 +2316,7 @@ class GameScene: SKScene {
     }
     
     //eat mold
-    func eatMold() {
+    @objc func eatMold() {
         let index = randomInRange(lo: 0, hi: wormLayer.children.count - 1)
         var left = true
         if wormLayer.children[index].position.x < frame.midX {
@@ -2350,7 +2350,7 @@ class GameScene: SKScene {
         }
     }
     
-    func moveFairy() {
+    @objc func moveFairy() {
         //var counter = 0
         for fairy in fairyLayer.children {
             if fairyCounter == 48 {

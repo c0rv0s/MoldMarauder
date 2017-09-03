@@ -312,7 +312,8 @@ private func mulDigits(addInto res: inout Digits, _ lhs: Digits, _ rhs: Digits)
 			r = rhs[j]
 			if r == 0 { continue }
 
-			(mulLo, overflow) = Digit.multiplyWithOverflow(l, r)
+			//(mulLo, overflow) = Digit.multiplyWithOverflow(l, r)
+            (mulLo, overflow) = l.multipliedReportingOverflow(by: r)
 
 			if overflow
 			{

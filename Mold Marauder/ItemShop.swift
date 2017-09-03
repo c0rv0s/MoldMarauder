@@ -386,7 +386,7 @@ class ItemShop: SKScene {
         _ = Timer.scheduledTimer(timeInterval: 7.0, target: self, selector: #selector(removeDiamondButton), userInfo: nil, repeats: true)
     }
     
-    func removeDiamondButton() {
+    @objc func removeDiamondButton() {
         let reappear = SKAction.scale(to: 1.3, duration: 0.2)
         let bounce1 = SKAction.scale(to: 0, duration: 0.1)
         let action2 = SKAction.sequence([reappear, bounce1, SKAction.removeFromParent()])
@@ -415,7 +415,7 @@ class ItemShop: SKScene {
         scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
     }
     
-    func animateComets() {
+    @objc func animateComets() {
         let comet = SKTexture(image: UIImage(named: "comet")!)
         let comet180 = SKTexture(image: UIImage(named: "comet180")!)
         let cometUp = SKTexture(image: UIImage(named: "cometUp")!)

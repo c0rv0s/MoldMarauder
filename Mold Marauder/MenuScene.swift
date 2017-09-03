@@ -76,7 +76,7 @@ class MenuScene: SKScene {
         
     }
     
-    func animateComets() {
+    @objc func animateComets() {
         let comet = SKTexture(image: UIImage(named: "comet")!)
         let comet180 = SKTexture(image: UIImage(named: "comet180")!)
         let cometUp = SKTexture(image: UIImage(named: "cometUp")!)
@@ -348,7 +348,7 @@ class MenuScene: SKScene {
             break
         }
     }
-    func buyMoldTut2() {
+    @objc func buyMoldTut2() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 15
         welcomeTitle.fontColor = UIColor.black

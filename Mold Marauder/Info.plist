@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.8</string>
+	<string>1.0.9</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -26,7 +26,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>1</string>
 	<key>FacebookAppID</key>
 	<string>1945839575671053</string>
 	<key>FacebookDisplayName</key>
@@ -35,8 +35,12 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Please allow camera access to view Augmented Reality content</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>"Mold Marauder" would like to save screenshots to your Photo Roll</string>
+	<string>&quot;Mold Marauder&quot; would like to save screenshots to your Photo Roll</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>&quot;Mold Marauder&quot; would like to save screenshots to your Photo Roll</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Lemondrop.ttf</string>

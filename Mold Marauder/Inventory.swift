@@ -33,11 +33,13 @@ class Inventory: NSObject, NSCoding {
     var achieveDiamonds: Int
     var achievementsDicc: [String:Bool]
     
+    var levDicc: [String:Int]
+    
     var repelTimer: Int
     var xTapAmount: Int
-    var xTapCounter: Int
+    var xTapCount: Int
     var spritzAmount: Int
-    var spritzCounter: Int
+    var spritzCount: Int
     
     var currentQuest: String
     var questGoal: Int
@@ -82,9 +84,9 @@ class Inventory: NSObject, NSCoding {
         
         repelTimer = 0
         xTapAmount = 0
-        xTapCounter = 0
+        xTapCount = 0
         spritzAmount = 0
-        spritzCounter = 0
+        spritzCount = 0
         
         tutorialProgress = 0
         
@@ -131,6 +133,50 @@ class Inventory: NSObject, NSCoding {
         "max cash" : false
         ]
 
+        levDicc = [
+            "Slime Mold":0,
+            "Cave Mold":0,
+            "Sad Mold":0,
+            "Angry Mold":0,
+            "Alien Mold":0,
+            "Pimply Mold":0,
+            "Freckled Mold":0,
+            "Hypno Mold":0,
+            "Rainbow Mold":0,
+            "Aluminum Mold":0,
+            "Circuit Mold":0,
+            "Hologram Mold":0,
+            "Storm Mold":0,
+            "Bacteria Mold":0,
+            "Virus Mold":0,
+            "X Mold":0,
+            "Flower Mold":0,
+            "Bee Mold":0,
+            "Disaffected Mold":0,
+            "Olive Mold":0,
+            "Coconut Mold":0,
+            "Sick Mold":0,
+            "Dead Mold":0,
+            "Zombie Mold":0,
+            "Cloud Mold":0,
+            "Rock Mold":0,
+            "Water Mold":0,
+            "Crystal Mold":0,
+            "Nuclear Mold":0,
+            "Astronaut Mold":0,
+            "Sand Mold":0,
+            "Glass Mold":0,
+            "Coffee Mold":0,
+            "Slinky Mold":0,
+            "Magma Mold":0,
+            "Samurai Mold":0,
+            "Orange Mold":0,
+            "Strawberry Mold":0,
+            "TShirt Mold":0,
+            "Cryptid Mold":0,
+            "Angel Mold":0,
+            "Invisible Mold":0,
+            "Star Mold":0]
     }
     
     //for loading a saved game
@@ -151,9 +197,9 @@ class Inventory: NSObject, NSCoding {
         autoTapLevel = aDecoder.decodeInteger(forKey: "autoTapLevel")
         repelTimer = aDecoder.decodeInteger(forKey: "repelTimer")
         xTapAmount = aDecoder.decodeInteger(forKey: "xTapAmount")
-        xTapCounter = aDecoder.decodeInteger(forKey: "xTapCounter")
+        xTapCount = aDecoder.decodeInteger(forKey: "xTapCount")
         spritzAmount = aDecoder.decodeInteger(forKey: "spritzAmount")
-        spritzCounter = aDecoder.decodeInteger(forKey: "spritzCounter")
+        spritzCount = aDecoder.decodeInteger(forKey: "spritzCount")
         background = aDecoder.decodeObject(forKey: "background") as! String
         currentQuest = aDecoder.decodeObject(forKey: "currentQuest") as! String
         questAmount = aDecoder.decodeInteger(forKey: "questAmount")
@@ -186,6 +232,55 @@ class Inventory: NSObject, NSCoding {
         }
         
         achievementsDicc = aDecoder.decodeObject(forKey: "achievementsDicc") as! [String : Bool]
+        if aDecoder.decodeObject(forKey: "levDicc") != nil {
+            levDicc = aDecoder.decodeObject(forKey: "levDicc") as! [String : Int]
+        }
+        else {
+            levDicc = [
+                "Slime Mold":0,
+                "Cave Mold":0,
+                "Sad Mold":0,
+                "Angry Mold":0,
+                "Alien Mold":0,
+                "Pimply Mold":0,
+                "Freckled Mold":0,
+                "Hypno Mold":0,
+                "Rainbow Mold":0,
+                "Aluminum Mold":0,
+                "Circuit Mold":0,
+                "Hologram Mold":0,
+                "Storm Mold":0,
+                "Bacteria Mold":0,
+                "Virus Mold":0,
+                "X Mold":0,
+                "Flower Mold":0,
+                "Bee Mold":0,
+                "Disaffected Mold":0,
+                "Olive Mold":0,
+                "Coconut Mold":0,
+                "Sick Mold":0,
+                "Dead Mold":0,
+                "Zombie Mold":0,
+                "Cloud Mold":0,
+                "Rock Mold":0,
+                "Water Mold":0,
+                "Crystal Mold":0,
+                "Nuclear Mold":0,
+                "Astronaut Mold":0,
+                "Sand Mold":0,
+                "Glass Mold":0,
+                "Coffee Mold":0,
+                "Slinky Mold":0,
+                "Magma Mold":0,
+                "Samurai Mold":0,
+                "Orange Mold":0,
+                "Strawberry Mold":0,
+                "TShirt Mold":0,
+                "Cryptid Mold":0,
+                "Angel Mold":0,
+                "Invisible Mold":0,
+                "Star Mold":0]
+        }
         quitTime = aDecoder.decodeInteger(forKey: "quitTime")
         offlineLevel = aDecoder.decodeInteger(forKey: "offlineLevel")
         
@@ -218,9 +313,9 @@ class Inventory: NSObject, NSCoding {
         
         aCoder.encode(repelTimer, forKey: "repelTimer")
         aCoder.encode(xTapAmount, forKey: "xTapAmount")
-        aCoder.encode(xTapCounter, forKey: "xTapCounter")
+        aCoder.encode(xTapCount, forKey: "xTapCount")
         aCoder.encode(spritzAmount, forKey: "spritzAmount")
-        aCoder.encode(spritzCounter, forKey: "spritzCounter")
+        aCoder.encode(spritzCount, forKey: "spritzCount")
         aCoder.encode(background, forKey: "background")
         aCoder.encode(currentQuest, forKey: "currentQuest")
         aCoder.encode(questGoal, forKey: "questGoal")
@@ -252,6 +347,8 @@ class Inventory: NSObject, NSCoding {
         aCoder.encode(saveDisplayMolds, forKey: "displayMolds")
         aCoder.encode(saveUnlockedMolds, forKey: "unlockedMolds")
         aCoder.encode(achievementsDicc, forKey: "achievementsDicc")
+        
+        aCoder.encode(levDicc, forKey: "levDicc")
         
         // using current date and time as an example
         let someDate = Date()
@@ -420,172 +517,172 @@ class Inventory: NSObject, NSCoding {
                 levelUpCost = BInt("258339375000")
                 break
             case 36:
-                scorePerTap = BInt("14525006")
+                scorePerTap = BInt("145250060")
                 levelUpCost = BInt("413343000000")
                 break
             case 37:
-                scorePerTap = BInt("21787509")
+                scorePerTap = BInt("217875090")
                 levelUpCost = BInt("661348800000")
                 break
             case 38:
-                scorePerTap = BInt("27234386")
+                scorePerTap = BInt("2723438060")
                 levelUpCost = BInt("1058158080000")
                 break
             case 39:
-                scorePerTap = BInt("34042983")
+                scorePerTap = BInt("3404298300")
                 levelUpCost = BInt("1693052928000")
                 break
             case 40:
-                scorePerTap = BInt("61277370")
+                scorePerTap = BInt("6127737000")
                 levelUpCost = BInt("2708884684800")
                 break
             case 41:
-                scorePerTap = BInt("76596712")
+                scorePerTap = BInt("7659671200")
                 levelUpCost = BInt("4334215495680")
                 break
             case 42:
-                scorePerTap = BInt("95750000")
+                scorePerTap = BInt("957500000")
                 levelUpCost = BInt("6934744793088")
                 break
             case 43:
-                scorePerTap = BInt("119687500")
+                scorePerTap = BInt("11968750000")
                 levelUpCost = BInt("11095591668940")
                 break
             case 44:
-                scorePerTap = BInt("215437500")
+                scorePerTap = BInt("21543750000")
                 levelUpCost = BInt("17600000000000")
                 break
             case 45:
-                scorePerTap = BInt("269296875")
+                scorePerTap = BInt("26929687500")
                 levelUpCost = BInt("28160000000000")
                 break
             case 46:
-                scorePerTap = BInt("337500000")
+                scorePerTap = BInt("33750000000")
                 levelUpCost = BInt("45056000000000")
                 break
             case 47:
-                scorePerTap = BInt("421875000")
+                scorePerTap = BInt("42187500000")
                 levelUpCost = BInt("72089600000000")
                 break
             case 48:
-                scorePerTap = BInt("1054687500")
+                scorePerTap = BInt("105468750000")
                 levelUpCost = BInt("115343360000000")
                 break
             case 49:
-                scorePerTap = BInt("1582031250")
+                scorePerTap = BInt("158203125000")
                 levelUpCost = BInt("184549376000000")
                 break
             case 50:
-                scorePerTap = BInt("2373046875")
+                scorePerTap = BInt("237304687005")
                 levelUpCost = BInt("295279001600000")
                 break
             case 51:
-                scorePerTap = BInt("3559570312")
+                scorePerTap = BInt("355957031200")
                 levelUpCost = BInt("531502202880000")
                 break
             case 52:
-                scorePerTap = BInt("5339355468")
+                scorePerTap = BInt("533935546800")
                 levelUpCost = BInt("956703965184000")
                 break
             case 53:
-                scorePerTap = BInt("8009033203")
+                scorePerTap = BInt("8009033203000")
                 levelUpCost = BInt("1722067137331200")
                 break
             case 54:
-                scorePerTap = BInt("12013549804")
+                scorePerTap = BInt("1201354980400")
                 levelUpCost = BInt("3099720847196160")
                 break
             case 55:
-                scorePerTap = BInt("36040649414")
+                scorePerTap = BInt("3604064941400")
                 levelUpCost = BInt("5579497524953088")
                 break
             case 56:
-                scorePerTap = BInt("108121948242")
+                scorePerTap = BInt("10812194824200")
                 levelUpCost = BInt("10043095544915560")
                 break
             case 57:
-                scorePerTap = BInt("324365844726")
+                scorePerTap = BInt("32436584472600")
                 levelUpCost = BInt("18077571980848000")
                 break
             case 58:
-                scorePerTap = BInt("973097534179")
+                scorePerTap = BInt("97309753417900")
                 levelUpCost = BInt("32539629565526410")
                 break
             case 59:
-                scorePerTap = BInt("1500000000000")
+                scorePerTap = BInt("15000000000000")
                 levelUpCost = BInt("58571333217947540")
                 break
             case 60:
-                scorePerTap = BInt("2250000000000")
+                scorePerTap = BInt("22500000000000")
                 levelUpCost = BInt("105428399792305617")
                 break
             case 61:
-                scorePerTap = BInt("3375000000000")
+                scorePerTap = BInt("33750000000000")
                 levelUpCost = BInt("100897711196261517")
                 break
             case 62:
-                scorePerTap = BInt("5062500000000")
+                scorePerTap = BInt("506250000000000")
                 levelUpCost = BInt("3415880153270000717")
                 break
             case 63:
-                scorePerTap = BInt("6328125000000")
+                scorePerTap = BInt("6328125000000000")
                 levelUpCost = BInt("61485842758872600017")
                 break
             case 64:
-                scorePerTap = BInt("69492187500000")
+                scorePerTap = BInt("69492187500000000")
                 levelUpCost = BInt("720000000000000000000")
                 break
             case 65:
-                scorePerTap = BInt("14238281250000")
+                scorePerTap = BInt("142382812500000000")
                 levelUpCost = BInt("5200000000000000000000")
                 break
             case 65:
-                scorePerTap = BInt("21357421875000")
+                scorePerTap = BInt("2135742187500000000")
                 levelUpCost = BInt("67000000000000000000000")
                 break
             case 66:
-                scorePerTap = BInt("64072265625000")
+                scorePerTap = BInt("64072265625000000000")
                 levelUpCost = BInt("480000000000000000000000")
                 break
             case 67:
-                scorePerTap = BInt("192216796875000")
+                scorePerTap = BInt("192216796875000000000")
                 levelUpCost = BInt("1200000000000000000000000")
                 break
             case 68:
-                scorePerTap = BInt("961083984375000")
+                scorePerTap = BInt("961083984375000000000")
                 levelUpCost = BInt("34000000000000000000000000")
                 break
             case 69:
-                scorePerTap = BInt("2883251953125000")
+                scorePerTap = BInt("2883251953125000000000")
                 levelUpCost = BInt("560000000000000000000000000")
                 break
             case 70:
-                scorePerTap = BInt("8649755859375000")
+                scorePerTap = BInt("864975585937500000000000")
                 levelUpCost = BInt("7900000000000000000000000000")
                 break
             case 71:
-                scorePerTap = BInt("25949267578125000")
+                scorePerTap = BInt("2594926757812500000000000")
                 levelUpCost = BInt("9100000000000000000000000000")
                 break
             case 72:
-                scorePerTap = BInt("32436584472656250")
+                scorePerTap = BInt("32436584472656250000000000")
                 levelUpCost = BInt("65000000000000000000000000000")
                 break
             case 73:
-                scorePerTap = BInt("42436584472656250")
+                scorePerTap = BInt("424365844726562500000000000")
                 levelUpCost = BInt("780000000000000000000000000000")
                 break
             case 74:
-                scorePerTap = BInt("72436584472656250")
+                scorePerTap = BInt("7243658447265625000000000000")
                 levelUpCost = BInt("56000000000000000000000000000000")
                 break
             case 75:
-                scorePerTap = BInt("112436584472656250")
+                scorePerTap = BInt("112436584472656250000000000000")
                 levelUpCost = BInt("4900000000000000000000000000000000")
                 break
                 
             default:
-                scorePerTap = BInt("112436584472656250")
+                scorePerTap = BInt("112436584472656250000000000000")
                 levelUpCost = BInt("4900000000000000000000000000000000")
                 break
             }

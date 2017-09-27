@@ -47,16 +47,16 @@ class GameScene: SKScene {
     //var worms = [SKSpriteNode]()
     var wormHP = [Int]()
     var wormChompTimers = [Timer]()
+    var wormRepel = false
     var eventTimer: Timer!
     var wormDifficulty = 6
-    var wormRepel = false
-    var wormRepelTimer: Timer!
-    var wormRepelCount = 0
     var wormRepelLabel: SKLabelNode! = nil
     var deathRay = false
     var laserPower = 0
     
     var reinvestCount = 0
+    
+    var xTap = false
     
     //cards
     let cardLayer = SKNode()
@@ -89,10 +89,6 @@ class GameScene: SKScene {
     var sleepButton: SKNode! = nil
     
     //spritz and xtap
-    var xTapCount = 0
-    var xTapAmount = 100
-    var spritzAmount = 1
-    var spritzCount = 0
     var spritzLabel: SKLabelNode! = nil
     var xTapLabel: SKLabelNode! = nil
     
@@ -100,6 +96,7 @@ class GameScene: SKScene {
     var tapLoc: CGPoint!
     
     let gameLayer = SKNode()
+    let holeLayer = SKNode()
     let moldLayer = SKNode()
     let diamondLayer = SKNode()
     let wormLayer = SKNode()
@@ -117,6 +114,9 @@ class GameScene: SKScene {
     var touchHandler: ((String) -> ())?
     
     //sounds
+    let blackHoleAppear = SKAction.playSoundFileNamed("black_hole_hi.wav", waitForCompletion: false)
+    let blackHoleBye = SKAction.playSoundFileNamed("black_hole_bye.wav", waitForCompletion: false)
+    let moldSucc = SKAction.playSoundFileNamed("mold_succ.wav", waitForCompletion: false)
     let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
     let cardFlipSound = SKAction.playSoundFileNamed("card flip.wav", waitForCompletion: false)
     let laserSound = SKAction.playSoundFileNamed("laser.wav", waitForCompletion: false)
@@ -137,12 +137,15 @@ class GameScene: SKScene {
     let powerDownSound = SKAction.playSoundFileNamed("powerdown.wav", waitForCompletion: false)
     let plinkingSound = SKAction.playSoundFileNamed("plinking.wav", waitForCompletion: false)
     let reinvest = SKAction.playSoundFileNamed("quest complete.wav", waitForCompletion: false)
+    
 
     var animateTimer: Timer!
     
     var selectedNode = SKNode()
     
     var isActive = true
+//    hold the mold name to level it
+    var moldName = ""
     
     //tutorial
     var tutorial = 0
@@ -182,16 +185,20 @@ class GameScene: SKScene {
         
         addChild(gameLayer)
         addChild(moldLayer)
-        diamondLayer.zPosition = 300
+        diamondLayer.zPosition = 700
         addChild(diamondLayer)
         
         addChild(wormLayer)
+        wormLayer.zPosition = 500
         addChild(deadLayer)
+        deadLayer.zPosition = 500
         addChild(fairyLayer)
-        cardLayer.zPosition = 300
+        cardLayer.zPosition = 600
         addChild(cardLayer)
         sleepLayer.zPosition = 800
         addChild(sleepLayer)
+        addChild(holeLayer)
+        holeLayer.zPosition = 400
         
         createButton()
         
@@ -210,47 +217,42 @@ class GameScene: SKScene {
     func setBackground() {
         let disappear = SKAction.scale(to: 0, duration: 0.3)
         let action = SKAction.sequence([disappear])
-        _ = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(GameScene.backgroundPartTwo), userInfo: nil, repeats: false)
+        let when = DispatchTime.now() + 0.3
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.background.texture = SKTexture(imageNamed: self.backgroundName)
+            let reappear = SKAction.scale(to: 1.1, duration: 0.2)
+            let bounce1 = SKAction.scale(to: 0.89, duration: 0.1)
+            let bounce2 = SKAction.scale(to: 1, duration: 0.1)
+            //this is the godo case
+            let action2 = SKAction.sequence([reappear, bounce1, bounce2])
+            self.background.run(action2)
+        }
         background.run(action)
     }
     
-    @objc func backgroundPartTwo() {
-        background.texture = SKTexture(imageNamed: backgroundName)
-        
-        let reappear = SKAction.scale(to: 1.1, duration: 0.2)
-        let bounce1 = SKAction.scale(to: 0.89, duration: 0.1)
-        let bounce2 = SKAction.scale(to: 1, duration: 0.1)
-        //this is the godo case
-        let action2 = SKAction.sequence([reappear, bounce1, bounce2])
-        background.run(action2)
-    }
-    
     func createButton() {
+        //HEADER
         var Texture = SKTexture(image: UIImage(named: "header")!)
         header = SKSpriteNode(texture: Texture)
         header.setScale(0.38)
         // Place in scene
         header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+270);
         
-        self.addChild(header)
         // BUY
         Texture = SKTexture(image: UIImage(named: "BUY")!)
         buyButton = SKSpriteNode(texture: Texture)
         // Place in scene
         buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+270);
         
-        self.addChild(buyButton)
         //DIAMOND ICON
         Texture = SKTexture(image: UIImage(named: "diamond")!)
         diamondIcon = SKSpriteNode(texture: Texture)
         diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+270);
-        self.addChild(diamondIcon)
         
         //DIAMOND BUY
         Texture = SKTexture(image: UIImage(named: "plus")!)
         diamondBuy = SKSpriteNode(texture: Texture)
         diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+270);
-        self.addChild(diamondBuy)
         
         // DIAMOND LABEL
         diamondCLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -258,8 +260,8 @@ class GameScene: SKScene {
         diamondCLabel.fontColor = UIColor.black
         diamondCLabel.text = ""//String(numDiamonds)
         diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+262);
-        self.addChild(diamondCLabel)
        
+//        adjust for screen sizes
         switch UIDevice().screenType {
         case .iPhone4:
             header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+195)
@@ -287,6 +289,13 @@ class GameScene: SKScene {
         default:
             break
         }
+//        now place the elements
+        self.addChild(header)
+        self.addChild(buyButton)
+        self.addChild(diamondIcon)
+        self.addChild(diamondBuy)
+        self.addChild(diamondCLabel)
+        
         //CAMERA
         Texture = SKTexture(image: UIImage(named: "camera")!)
         cameraButton = SKSpriteNode(texture: Texture)
@@ -379,6 +388,9 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.location(in: self)
             let node = atPoint(location)
+            
+
+//            do te buttons
             if sleepButton != nil {
                 if node == sleepButton {
                     if let handler = touchHandler {
@@ -395,6 +407,7 @@ class GameScene: SKScene {
                     }
                 }
             }
+//            hadnel the cards
             if cardsActive {
                 if cardSelected == false{
                     if card1 != nil {
@@ -541,7 +554,29 @@ class GameScene: SKScene {
                     }
                 }
                 //booping complete
+//                black hole, chance to get a diamond
+                let holeBonk = touch.location(in: holeLayer)
+                for hole in holeLayer.children {
+                    if hole.contains(holeBonk) {
+                        if randomInRange(lo: 1, hi: 20) == 5 {
+                            if let handler = touchHandler {
+                                handler("addDiamond")
+                            }
+                            //animate dimmond
+                            let Texture = SKTexture(image: UIImage(named: "diamond_glow")!)
+                            let animDiamond = SKSpriteNode(texture:Texture)
+                            animDiamond.position = holeBonk
+                            deadLayer.addChild(animDiamond)
+                            let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 1.2)
+                            moveAction.timingMode = .easeOut
+                            playSound(select: "gem collect")
+                            animDiamond.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+                        }
+                    }
+                }
                 
+                
+//                more buttons
                 if node == buyButton {
                     if eventTimer != nil {
                         eventTimer.invalidate()
@@ -575,7 +610,7 @@ class GameScene: SKScene {
                     }
                 }
                 
-                
+//                diamonds purchase in the shop
                 if diamondShop {
                     if exitDiamond != nil {
                         if node == exitDiamond {
@@ -618,11 +653,74 @@ class GameScene: SKScene {
                     selectNodeForTouch(touchLocation: location)
                 }
             }
+            //            if its a mold animate the heart
+            
+            if node.name != nil {
+                if node.name!.characters.count > 5 {
+                    //animate heart
+                    var Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
+                    let rando = randomInRange(lo: 1, hi: 6)
+                    switch rando {
+                    case 1:
+                        Texture = SKTexture(image: UIImage(named: "heart_emoji_aqua")!)
+                        break
+                    case 2:
+                        Texture = SKTexture(image: UIImage(named: "heart_emoji_gold")!)
+                        break
+                    case 3:
+                        Texture = SKTexture(image: UIImage(named: "heart_emoji_indigo")!)
+                        break
+                    case 4:
+                        Texture = SKTexture(image: UIImage(named: "heart_emoji_red")!)
+                        break
+                    case 5:
+                        Texture = SKTexture(image: UIImage(named: "heart_emoji_seafoam")!)
+                        break
+                    default:
+                        Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
+                        break
+                    }
+                    
+                    let heart = SKSpriteNode(texture:Texture)
+                    heart.position = node.position
+                    self.addChild(heart)
+                    let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 80), duration: 1.2)
+                    moveAction.timingMode = .easeOut
+                    playSound(select: "kiss")
+                    let rando2 = randomInRange(lo: 0, hi: 1)
+                    if rando2 == 0 {
+                        heart.run(SKAction.sequence([
+                            .group([ moveAction,
+                                     .sequence([.rotate(byAngle: .pi / 8, duration: 0.3),
+                                                .rotate(byAngle: .pi / (-4), duration: 0.6),
+                                                .rotate(byAngle: .pi / 8, duration: 0.3)
+                                        ])
+                                ]),
+                            SKAction.fadeOut(withDuration: (0.35)),
+                            SKAction.removeFromParent()]))
+                    }
+                    else {
+                        heart.run(SKAction.sequence([
+                            .group([ moveAction,
+                                     .sequence([.rotate(byAngle: .pi / (-8), duration: 0.3),
+                                                .rotate(byAngle: .pi / (4), duration: 0.6),
+                                                .rotate(byAngle: .pi / (-8), duration: 0.3)
+                                        ])
+                                ]),
+                            SKAction.fadeOut(withDuration: (0.35)),
+                            SKAction.removeFromParent()]))
+                    }
+//                    level up mold
+                    if let handler = touchHandler {
+                        moldName = node.name!
+                        handler("level_mold")
+                    }
+                }
+            }
         }
     }
 
     func endRepelTimer() {
-        wormRepelCount = 0
         wormRepel = false
     }
     
@@ -683,6 +781,12 @@ class GameScene: SKScene {
                 print("no")
             case "reinvest":
                 run(reinvest)
+            case "black hole hi":
+                run(blackHoleAppear)
+            case "black hole bye":
+                run(blackHoleBye)
+            case "mold succ":
+                run(moldSucc)
             default:
                 run(levelUpSound)
             }
@@ -945,6 +1049,7 @@ class GameScene: SKScene {
                     let Texture = SKTexture(image: Image!)
                     
                     let moldPic = SKSpriteNode(texture:Texture)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                 }
@@ -973,6 +1078,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1003,6 +1109,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1039,6 +1146,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1076,6 +1184,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1113,6 +1222,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1145,6 +1255,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1176,6 +1287,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1215,6 +1327,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1236,6 +1349,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1262,6 +1376,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1288,6 +1403,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1328,6 +1444,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1361,6 +1478,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1386,6 +1504,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1407,6 +1526,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1434,6 +1554,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1461,6 +1582,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1497,6 +1619,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1519,6 +1642,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1548,6 +1672,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1566,6 +1691,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1594,6 +1720,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1616,6 +1743,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = frames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1648,6 +1776,7 @@ class GameScene: SKScene {
                     
                     let firstFrame = blinkFrames[0]
                     let moldPic = SKSpriteNode(texture:firstFrame)
+                    moldPic.name = moldData.name
                     moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
                     moldLayer.addChild(moldPic)
                     moldPic.run(SKAction.repeatForever(
@@ -1681,8 +1810,10 @@ class GameScene: SKScene {
         introNode.setScale(0.0)
         tutorialLayer.addChild(introNode)
         introNode.run(appear)
-        _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(addTitle1), userInfo: nil, repeats: false)
-        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.addTitle1()
+        }
         switch UIDevice().screenType {
         case .iPhone4:
             //iPhone 5
@@ -1697,7 +1828,7 @@ class GameScene: SKScene {
 
     }
     
-    @objc func addTitle1() {
+    func addTitle1() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 15
         welcomeTitle.fontColor = UIColor.black
@@ -1876,7 +2007,10 @@ class GameScene: SKScene {
         welcomeTitle3.text = "Evil worms want to eat it!"
         welcomeTitle3.position = CGPoint(x:introNode.position.x, y:introNode.position.y-25);
         tutorialLayer.addChild(welcomeTitle3)
-        _ = Timer.scheduledTimer(timeInterval: 4.0, target: self, selector: #selector(killWormTutorial), userInfo: nil, repeats: false)
+        let when = DispatchTime.now() + 4
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.killWormTutorial()
+        }
         
         switch UIDevice().screenType {
         case .iPhone4:
@@ -1900,7 +2034,7 @@ class GameScene: SKScene {
         }
     }
     
-    @objc func killWormTutorial() {
+    func killWormTutorial() {
         let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
         let introNode = SKSpriteNode(texture:Texture)
         // Place in scene
@@ -1961,8 +2095,10 @@ class GameScene: SKScene {
         introNode.setScale(0.0)
         tutorialLayer.addChild(introNode)
         introNode.run(appear)
-        _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(addWormDeadCongrats), userInfo: nil, repeats: false)
-        
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.addWormDeadCongrats()
+        }
         switch UIDevice().screenType {
         case .iPhone4:
             //iPhone 5
@@ -1979,7 +2115,7 @@ class GameScene: SKScene {
         }
     }
     
-    @objc func addWormDeadCongrats() {
+    func addWormDeadCongrats() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 16
         welcomeTitle.fontColor = UIColor.black
@@ -2014,9 +2150,11 @@ class GameScene: SKScene {
         welcomeTitle4.text = "your weapons."
         welcomeTitle4.position = CGPoint(x:frame.midX, y:frame.midY+45);
         tutorialLayer.addChild(welcomeTitle4)
-        
-        _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(addWormDeadCongrats2), userInfo: nil, repeats: false)
-        
+        let when = DispatchTime.now() + 1.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.addWormDeadCongrats2()
+        }
+       
         switch UIDevice().screenType {
         case .iPhone4:
             //iPhone 5
@@ -2041,7 +2179,7 @@ class GameScene: SKScene {
         }
     }
     
-    @objc func addWormDeadCongrats2() {
+    func addWormDeadCongrats2() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 16
         welcomeTitle.fontColor = UIColor.black
@@ -2069,8 +2207,10 @@ class GameScene: SKScene {
         // Place in scene
         moldNode.position = CGPoint(x:self.frame.midX, y:self.frame.midY-60);
         tutorialLayer.addChild(moldNode)
-        
-        _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(addWormDeadCongrats3), userInfo: nil, repeats: false)
+        let when = DispatchTime.now() + 1.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.addWormDeadCongrats3()
+        }
         
         switch UIDevice().screenType {
         case .iPhone4:
@@ -2094,7 +2234,7 @@ class GameScene: SKScene {
         }
     }
     
-    @objc func addWormDeadCongrats3() {
+    func addWormDeadCongrats3() {
         let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle4.fontSize = 18
         welcomeTitle4.fontColor = UIColor.black
@@ -2116,10 +2256,14 @@ class GameScene: SKScene {
         default:
             break
         }
-        _ = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(fairyTut), userInfo: nil, repeats: false)
+        
+        let when = DispatchTime.now() + 5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.fairyTut()
+        }
     }
     
-    @objc func fairyTut() {
+    func fairyTut() {
         let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
         let introNode = SKSpriteNode(texture:Texture)
         // Place in scene
@@ -2140,7 +2284,10 @@ class GameScene: SKScene {
         welcomeTitle5.position = CGPoint(x:introNode.position.x, y:introNode.position.y - 10);
         tutorialLayer.addChild(welcomeTitle5)
         
-        _ = Timer.scheduledTimer(timeInterval: 3.5, target: self, selector: #selector(removeWormCongrats), userInfo: nil, repeats: false)
+        let when = DispatchTime.now() + 3.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.removeWormCongrats()
+        }
         
         switch UIDevice().screenType {
         case .iPhone4:
@@ -2162,7 +2309,7 @@ class GameScene: SKScene {
         }
     }
     
-    @objc func removeWormCongrats() {
+    func removeWormCongrats() {
         let disappear = SKAction.scale(to: 0.0, duration: 0.3)
         for child in tutorialLayer.children {
             child.run(SKAction.sequence([disappear, SKAction.removeFromParent()]))
@@ -2207,6 +2354,13 @@ class GameScene: SKScene {
                 while(counter < amount) {
                     addFaerie()
                     counter += 1
+                }
+            }
+//            blak hole
+            if ran > 85 && ran <= 95 {
+                if isPaused == false {
+                    print("ad black hole")
+                    addBlackHole()
                 }
             }
             //card pick
@@ -2271,6 +2425,76 @@ class GameScene: SKScene {
         }
     }
     
+//    add black hole blackhole
+    func addBlackHole() {
+        let y = randomInRange(lo: Int(self.frame.minY) + 50, hi: Int(self.frame.maxY) - 160)
+        let x = randomInRange(lo: Int(self.frame.minX) + 50, hi: Int(self.frame.maxX) - 50)
+        let hole = BlackHole(size:CGSize(width:250, height:250))
+        hole.position = CGPoint(x: x, y: y)
+        
+        holeLayer.addChild(hole)
+        hole.place()
+        playSound(select: "black hole hi")
+        let when = DispatchTime.now() + 0.8
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.succMold()
+        }
+    }
+    
+    func succMold() {
+        if let handler = touchHandler {
+            handler("succ_mold")
+        }
+//        remove black hole
+        if randomInRange(lo: 0, hi: 2) == 1 {
+            var when = DispatchTime.now() + 1.35
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                if let hole = self.holeLayer.children[0] as? BlackHole {
+                    hole.disappear()
+                    self.playSound(select: "black hole bye")
+                }
+                
+                when = DispatchTime.now() + 0.55
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    if self.holeLayer.children.count > 0 {
+                        if let hole = self.holeLayer.children[0] as? BlackHole {
+                            hole.removeFromParent()
+                        }
+                        else {
+                            var index = 0
+                            checkHole: while true {
+                                if let hole = self.holeLayer.children[index] as? BlackHole {
+                                    hole.removeFromParent()
+                                    break checkHole
+                                }
+                                index += 1
+                                if index == self.holeLayer.children.count {
+                                    break checkHole
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+//            succ another mold
+        else {
+            let when = DispatchTime.now() + 1.25
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.succMold()
+            }
+            var worms = randomInRange(lo: 0, hi: 4)
+            while worms > 0 {
+                let when = DispatchTime.now() + TimeInterval(randomFloat(min: 0.1, max: 0.85))
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.wormAttack(tutorial: false)
+                }
+                worms -= 1
+            }
+        }
+        
+    }
+    
     //do le wirm atek
     func wormAttack(tutorial: Bool) {
         //pick random location on scren
@@ -2294,7 +2518,8 @@ class GameScene: SKScene {
         
         let finalFrame = wormFrames[4]
         let wormPic = SKSpriteNode(texture:finalFrame)
-        wormChompTimers.append(Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(GameScene.eatMold), userInfo: nil, repeats: true))
+        let timterval = randomFloat(min: 1.8, max: 3.6)
+        wormChompTimers.append(Timer.scheduledTimer(timeInterval: TimeInterval(timterval), target: self, selector: #selector(GameScene.eatMold), userInfo: nil, repeats: true))
         wormHP.append(wormDifficulty)
         if tutorial {
             wormPic.position = CGPoint(x: self.frame.midX+50, y: self.frame.midY-75)
@@ -2313,6 +2538,10 @@ class GameScene: SKScene {
     
     func randomInRange(lo: Int, hi : Int) -> Int {
         return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
+    }
+    
+    func randomFloat(min: Float, max: Float) -> Float {
+        return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
     }
     
     //eat mold
@@ -2423,7 +2652,7 @@ class GameScene: SKScene {
             scoreLabel.fontColor = UIColor(red: 1, green: 213/255, blue: 0, alpha: 1)
             scoreLabel.fontSize = 20
         }
-        else if xTapCount > 0 {
+        else if xTap {
             scoreLabel.fontColor = UIColor.green
             scoreLabel.fontSize = 20
         }
@@ -2700,14 +2929,58 @@ class GameScene: SKScene {
             //kiss
             if Int(arc4random_uniform(2)) == 1 {
                 //animate haert
-                let Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
+                var Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
+                let rando = randomInRange(lo: 1, hi: 6)
+                switch rando {
+                case 1:
+                    Texture = SKTexture(image: UIImage(named: "heart_emoji_aqua")!)
+                    break
+                case 2:
+                    Texture = SKTexture(image: UIImage(named: "heart_emoji_gold")!)
+                    break
+                case 3:
+                    Texture = SKTexture(image: UIImage(named: "heart_emoji_indigo")!)
+                    break
+                case 4:
+                    Texture = SKTexture(image: UIImage(named: "heart_emoji_red")!)
+                    break
+                case 5:
+                    Texture = SKTexture(image: UIImage(named: "heart_emoji_seafoam")!)
+                    break
+                default:
+                    Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
+                    break
+                }
                 let animheart = SKSpriteNode(texture:Texture)
                 animheart.position = kfPoint
                 deadLayer.addChild(animheart)
-                let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 1.2)
+                let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 40), duration: 1.2)
                 moveAction.timingMode = .easeOut
-                animheart.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
                 playSound(select: "kiss")
+                let rando2 = randomInRange(lo: 0, hi: 1)
+                if rando2 == 0 {
+                    animheart.run(SKAction.sequence([
+                        .group([ moveAction,
+                                 .sequence([.rotate(byAngle: .pi / 8, duration: 0.3),
+                                            .rotate(byAngle: .pi / (-4), duration: 0.6),
+                                            .rotate(byAngle: .pi / 8, duration: 0.3)
+                                    ])
+                            ]),
+                        SKAction.fadeOut(withDuration: (0.35)),
+                        SKAction.removeFromParent()]))
+                }
+                else {
+                    animheart.run(SKAction.sequence([
+                        .group([ moveAction,
+                                 .sequence([.rotate(byAngle: .pi / (-8), duration: 0.3),
+                                            .rotate(byAngle: .pi / (4), duration: 0.6),
+                                            .rotate(byAngle: .pi / (-8), duration: 0.3)
+                                    ])
+                            ]),
+                        SKAction.fadeOut(withDuration: (0.35)),
+                        SKAction.removeFromParent()]))
+                }
+                
                 //small chance for a baby
                 if Int(arc4random_uniform(250)) <= 3 {
                     if let handler = touchHandler {

@@ -22,7 +22,12 @@ class MenuScene: SKScene {
     var questButton: SKNode! = nil
     var helpButton: SKNode! = nil
     var reinvestButton: SKNode! = nil
+    var arButton: SKNode! = nil
+    var leaderboards: SKNode! = nil
     
+//    rmeber ar state
+    var arSwitch = false
+
     //comet sprites
     var cometSprite1: SKNode! = nil
     var cometSprite2: SKNode! = nil
@@ -73,7 +78,7 @@ class MenuScene: SKScene {
         
         animateComets()
         cometTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(animateComets), userInfo: nil, repeats: true)
-        
+        arSwitch = false
     }
     
     @objc func animateComets() {
@@ -200,11 +205,18 @@ class MenuScene: SKScene {
         
         self.addChild(achieveButton)
         
+//        leaderboards
+        Texture = SKTexture(image: UIImage(named: "leaderboards button")!)
+        leaderboards = SKSpriteNode(texture: Texture)
+//        place in scene
+        leaderboards.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+50);
+        self.addChild(leaderboards)
+        
         // CREDITS BUTTON
         Texture = SKTexture(image: UIImage(named: "credits button")!)
         creditsButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        creditsButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY);
+        creditsButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY-50);
         
         self.addChild(creditsButton)
         
@@ -220,7 +232,7 @@ class MenuScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "help button")!)
         helpButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        helpButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+50)
+        helpButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY)
         
         self.addChild(helpButton)
         
@@ -247,6 +259,14 @@ class MenuScene: SKScene {
         reinvestButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-50);
         
         self.addChild(reinvestButton)
+        
+        //AR button
+        Texture = SKTexture(image: UIImage(named: "armodeoff")!)
+        arButton = SKSpriteNode(texture: Texture)
+        // Place in scene
+        arButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
+        
+        self.addChild(arButton)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -302,6 +322,12 @@ class MenuScene: SKScene {
                 handler("credits")
             }
         }
+        if leaderboards.contains(touchLocation) {
+            print("leaderboards")
+            if let handler = touchHandler {
+                handler("leaderboards")
+            }
+        }
         if questButton.contains(touchLocation) {
             print("quest")
             if let handler = touchHandler {
@@ -320,6 +346,18 @@ class MenuScene: SKScene {
                 handler("reinvest")
             }
         }
+        if arButton.contains(touchLocation) {
+            print("ar")
+            if let handler = touchHandler {
+                if arSwitch {
+                    arSwitch = false
+                }
+                else {
+                    arSwitch = true
+                }
+                handler("ar")
+            }
+        }
     }
     
     //MARK: - TUTORIAL
@@ -335,7 +373,11 @@ class MenuScene: SKScene {
         introNode.setScale(0.0)
         tutorialLayer.addChild(introNode)
         introNode.run(appear)
-        _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(buyMoldTut2), userInfo: nil, repeats: false)
+
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.buyMoldTut2()
+        }
         
         switch UIDevice().screenType {
         case .iPhone5:
@@ -348,7 +390,7 @@ class MenuScene: SKScene {
             break
         }
     }
-    @objc func buyMoldTut2() {
+    func buyMoldTut2() {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 15
         welcomeTitle.fontColor = UIColor.black

@@ -75,6 +75,12 @@ class MoldShop: SKScene {
     
     var tutorialLayer = SKNode()
     
+//    update current pps
+    var levDicc: [String:Int]!
+    //    level molds
+    //    after 400 just go by every 50 after that
+    let moldLevCounts = [10,20,40,65,90,125,165,210,265,320,370,425]
+    
     //touch handler
     var touchHandler: ((String) -> ())?
     
@@ -121,6 +127,25 @@ class MoldShop: SKScene {
         animateComets()
         cometTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(animateComets), userInfo: nil, repeats: true)
         erectScroll()
+    }
+    
+    func ppsAmount(mold: MoldType) -> BInt {
+        //                check level to see how much more to add
+        let hearts = levDicc[mold.spriteName]!
+        var levs = 0
+        if hearts < 426 {
+            for num in moldLevCounts {
+                if hearts > num {
+                    levs += 1
+                }
+            }
+        }
+        else {
+            levs = moldLevCounts.count
+            levs += ((hearts - 425) / 100)
+        }
+        
+        return (levs*mold.pointsPerSecond/5) + mold.pointsPerSecond
     }
     
     func erectScroll() {
@@ -179,7 +204,7 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(priceLabel)
         ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
         ppsLabel.fontSize = 20
-        ppsLabel.text = "PPS: " + formatNumber(points: MoldType.slime.pointsPerSecond)
+        ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.slime))
         ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
@@ -210,7 +235,7 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(priceLabel)
         ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
         ppsLabel.fontSize = 20
-        ppsLabel.text = "PPS: " + formatNumber(points: MoldType.cave.pointsPerSecond)
+        ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.cave))
         ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
@@ -241,7 +266,7 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(priceLabel)
         ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
         ppsLabel.fontSize = 20
-        ppsLabel.text = "PPS: " + formatNumber(points: MoldType.sad.pointsPerSecond)
+        ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.sad))
         ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
@@ -273,7 +298,7 @@ class MoldShop: SKScene {
         page1ScrollView.addChild(priceLabel)
         ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
         ppsLabel.fontSize = 20
-        ppsLabel.text = "PPS: " + formatNumber(points: MoldType.angry.pointsPerSecond)
+        ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.angry))
         ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
         page1ScrollView.addChild(ppsLabel)
         priceLabel.fontColor = UIColor.black
@@ -305,7 +330,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.alien.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.alien))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -336,7 +361,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.freckled.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.freckled))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -367,7 +392,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.hypno.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.hypno))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -397,7 +422,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.pimply.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.pimply))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -427,7 +452,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.rainbow.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.rainbow))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -457,7 +482,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.aluminum.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.aluminum))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -487,7 +512,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.circuit.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.circuit))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -517,7 +542,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.hologram.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.hologram))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -547,7 +572,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.storm.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.storm))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -577,7 +602,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.bacteria.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.bacteria))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -607,7 +632,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.virus.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.virus))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -637,7 +662,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.flower.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.flower))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -667,7 +692,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.bee.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.bee))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -697,7 +722,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.x.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.x))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -727,7 +752,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.disaffected.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.disaffected))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -757,7 +782,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.olive.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.olive))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -787,7 +812,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.coconut.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.coconut))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -817,7 +842,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.sick.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.sick))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -847,7 +872,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.dead.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.dead))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -877,7 +902,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.zombie.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.zombie))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -907,7 +932,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.cloud.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.cloud))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -937,7 +962,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.rock.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.rock))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -967,7 +992,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.water.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.water))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -997,7 +1022,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.crystal.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.crystal))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1027,7 +1052,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.nuclear.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.nuclear))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1057,7 +1082,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.astronaut.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.astronaut))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1087,7 +1112,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.sand.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.sand))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1117,7 +1142,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.glass.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.glass))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1147,7 +1172,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.coffee.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.coffee))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1177,7 +1202,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.slinky.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.slinky))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1207,7 +1232,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.magma.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.magma))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1237,7 +1262,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.samurai.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.samurai))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1267,7 +1292,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.orange.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.orange))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1297,7 +1322,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.strawberry.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.strawberry))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1327,7 +1352,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.tshirt.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.tshirt))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1357,7 +1382,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.cryptid.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.cryptid))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1387,7 +1412,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.angel.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.angel))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1417,7 +1442,7 @@ class MoldShop: SKScene {
                 page1ScrollView.addChild(priceLabel)
                 ppsLabel = SKLabelNode(fontNamed: "Lemondrop")
                 ppsLabel.fontSize = 20
-                ppsLabel.text = "PPS: " + formatNumber(points: MoldType.invisible.pointsPerSecond)
+                ppsLabel.text = "PPS: " + formatNumber(points: ppsAmount(mold: MoldType.invisible))
                 ppsLabel.position = CGPoint(x: lastButton.x + 130, y: lastButton.y - 20)
                 page1ScrollView.addChild(ppsLabel)
                 priceLabel.fontColor = UIColor.black
@@ -1430,12 +1455,10 @@ class MoldShop: SKScene {
             }
         }
         //            fill in black silhouettes for locked species
-        print("amount of unlocked molds")
-        print(unlockedMolds.count)
         if unlockedMolds.count < 42 {
             var remainder = 42 - unlockedMolds.count
             
-            while(remainder >= 0) {
+            while(remainder > 0) {
                 Texture = SKTexture(image: UIImage(named: "dna")!)
                 let locked = SKSpriteNode(texture:Texture)
                 // Place in scene
@@ -1464,17 +1487,16 @@ class MoldShop: SKScene {
     func updatePrice(mold: Mold) {
         //get index of mold in unlockedMolds
         var index = 0
-        var pointsPrice = MoldType.slime.price
-        for check in unlockedMolds {
+        var pointsPrice: BInt = 0
+        price: for check in unlockedMolds {
             if check.moldType == mold.moldType {
                 pointsPrice = check.price
-                break
+                break price
             }
             index += 1
         }
-        
         let point = CGPoint(x: 30, y: (180 + (index * -90)) )
-        for child in page1ScrollView.children {
+        graphics: for child in page1ScrollView.children {
             if child.position == point {
                 child.removeFromParent()
                 let priceLabel = SKLabelNode(fontNamed: "Lemondrop")
@@ -1483,12 +1505,12 @@ class MoldShop: SKScene {
                 priceLabel.fontSize = 20
                 priceLabel.fontColor = UIColor.black
                 page1ScrollView.addChild(priceLabel)
+                break graphics
             }
         }
     }
     
-    func createButton()
-    {
+    func createButton() {
         // BACK MENU
         let Texture = SKTexture(image: UIImage(named: "exit")!)
         backButton = SKSpriteNode(texture:Texture)
@@ -1960,7 +1982,10 @@ class MoldShop: SKScene {
         welcomeTitle2.position = CGPoint(x:introNode.position.x, y:introNode.position.y-24);
         tutorialLayer.addChild(welcomeTitle2)
         
-         _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(buyInstructions), userInfo: nil, repeats: false)
+        let when = DispatchTime.now() + 1.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.buyInstructions()
+        }
         
         switch UIDevice().screenType {
         case .iPhone4:
@@ -1986,7 +2011,7 @@ class MoldShop: SKScene {
         }
     }
     
-    @objc func buyInstructions() {
+    func buyInstructions() {
         let appear = SKAction.scale(to: 1.15, duration: 0.35)
         let Texture = SKTexture(image: UIImage(named: "tutorial square small")!)
         let introNode = SKSpriteNode(texture:Texture)
@@ -1995,7 +2020,11 @@ class MoldShop: SKScene {
         introNode.position = CGPoint(x:frame.midX, y:frame.midY-125);
         tutorialLayer.addChild(introNode)
         introNode.run(appear)
-        _ = Timer.scheduledTimer(timeInterval: 0.35, target: self, selector: #selector(addLabels), userInfo: nil, repeats: false)
+        
+        let when = DispatchTime.now() + 0.35
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.addLabels()
+        }
         
         switch UIDevice().screenType {
         case .iPhone4:
@@ -2015,7 +2044,7 @@ class MoldShop: SKScene {
         }
     }
     
-    @objc func addLabels() {
+    func addLabels() {
     
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 13
@@ -2037,7 +2066,10 @@ class MoldShop: SKScene {
         welcomeTitle2.text = "and then return to the home screen"
         welcomeTitle2.position = CGPoint(x:frame.midX, y:frame.midY-150);
         tutorialLayer.addChild(welcomeTitle2)
-        _ = Timer.scheduledTimer(timeInterval: 9.0, target: self, selector: #selector(removeInstructions), userInfo: nil, repeats: false)
+        let when = DispatchTime.now() + 9
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.removeInstructions()
+        }
         
         switch UIDevice().screenType {
         case .iPhone4:
@@ -2061,7 +2093,7 @@ class MoldShop: SKScene {
         }
     }
     
-    @objc func removeInstructions() {
+    func removeInstructions() {
         let disappear = SKAction.scale(to: 0.0, duration: 0.5)
         let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
         for node in tutorialLayer.children {

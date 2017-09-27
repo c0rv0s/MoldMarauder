@@ -9,15 +9,21 @@
 
 import UIKit
 import SpriteKit
+import ARKit
 import StoreKit
 import AVFoundation
+import GameKit
+
+//facebook stuf for info/ads
 import FBSDKCoreKit
 import FBSDKLoginKit
 import FBSDKShareKit
 import FBSDKCoreKit.FBSDKAppEvents
 
-class GameViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver,
+    GKGameCenterControllerDelegate {
     var scene: GameScene!
+    var ARgameScene: ARScene!
     var moldShop: MoldShop!
     var breedScene: BreedScene!
     var menu : MenuScene!
@@ -31,7 +37,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     var questScene: QuestScene!
     var helpScene: HelpScene!
     var reinvestments: Reinvestments!
-    var skView: SKView!
+    
+    @IBOutlet weak var skView: SKView!
+    
+    @IBOutlet weak var arskView: ARSKView!
+    
+    var aroff = true
+    // Create a session configuration
+    let configuration = ARWorldTrackingConfiguration()
+    
+    
     
     var backgroundMusicPlayer = AVAudioPlayer()
     var APP_ID = "com.Spacey-Dreams.Mold-Marauder"
@@ -46,6 +61,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     
     var cashTimer: Timer? = nil
     var autoTapTimer: Timer? = nil
+    
+//    leaderboard stuff
+    /* Variables */
+    var gcEnabled = Bool() // Check if the user has Game Center enabled
+    var gcDefaultLeaderBoard = String() // Check the default leaderboardID
+    
+    var score = 0
+    
+    // IMPORTANT: replace the red string below with your own Leaderboard ID (the one you've set in iTunes Connect)
+    let LEADERBOARD_ID = "num_molds"
 
     //IAP
     let TINY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_99_cent_diamond"
@@ -65,6 +90,10 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     //    iclodu thing
     var iCloudKeyStore: NSUbiquitousKeyValueStore? = NSUbiquitousKeyValueStore()
     
+//    level molds
+//    after 400 just go by every 100 after that
+    let moldLevCounts = [10,20,40,65,90,125,165,210,265,320,370,425]
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -79,7 +108,9 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // Call the GC authentication controller
+        authenticateLocalPlayer()
+//        get purchaseable products
         fetchAvailableProducts()
         
         let defaults = UserDefaults.standard
@@ -97,8 +128,10 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
 
         // Configure the view.
-        skView = view as! SKView
-        skView.isMultipleTouchEnabled = true
+        //skView = view as! SKView
+        ARgameScene = ARScene(size: arskView.bounds.size)
+        // Tell the session to automatically detect horizontal planes
+        configuration.planeDetection = .horizontal
         
         // Create and configure the scene.
         scene = GameScene(size: skView.bounds.size)
@@ -133,15 +166,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
         if inventory.repelTimer > 0 {
             scene.wormRepel = true
-            scene.wormRepelCount = inventory.repelTimer
-        }
-        if inventory.xTapCounter > 0 {
-            scene.xTapAmount = inventory.xTapAmount
-            scene.xTapCount = inventory.xTapCounter
-        }
-        if inventory.spritzCounter > 0 {
-            scene.spritzAmount = inventory.spritzAmount
-            scene.spritzCount = inventory.spritzAmount
         }
         scene.deathRay = inventory.deathRay
         
@@ -195,10 +219,20 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         default:
             break
         }
-        _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(offlineCash), userInfo: nil, repeats: false)
+        let when = DispatchTime.now() + 2
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.offlineCash()
+        }
+       
+//        this little guy updates all your stats
+        inventory.calculateScorePerTap()
+        inventory.scorePerSecond = BInt(0)
+        for mold in inventory.molds {
+            inventory.scorePerSecond += mold.PPS
+        }
         //REMOVE
 //        incrementDiamonds(newDiamonds: 500)
-        //inventory.level = 30
+//        inventory.level = 64
 //        incrementCash(pointsToAdd: BInt("99999999999999999999999999"))
         //inventory.molds.append(Mold(moldType: MoldType.invisible))
         //inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
@@ -215,6 +249,63 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if aroff == false {
+            // Pause the view's session
+            arskView.session.pause()
+        }
+        
+    }
+//    auth game center
+    // MARK: - GAME CENTER
+    func authenticateLocalPlayer() {
+        let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
+        
+        localPlayer.authenticateHandler = {(ViewController, error) -> Void in
+            if((ViewController) != nil) {
+                // 1. Show login if player is not logged in
+                self.present(ViewController!, animated: true, completion: nil)
+            } else if (localPlayer.isAuthenticated) {
+                // 2. Player is already authenticated & logged in, load game center
+                self.gcEnabled = true
+                /*
+                // Get the default leaderboard ID
+                localPlayer.loadDefaultLeaderboardIdentifier(completionHandler: { (leaderboardIdentifer, error) in
+                    if error != nil { print(error as Any)
+                    } else { self.gcDefaultLeaderBoard = leaderboardIdentifer! }
+                })
+                */
+            } else {
+                // 3. Game center is not enabled on the users device
+                self.gcEnabled = false
+                print("Local player could not be authenticated!")
+                print(error as Any)
+            }
+        }
+    }
+
+    func SubmitToGC(_ sender: AnyObject) {
+
+        // Submit score to GC leaderboard
+        let bestScoreInt = GKScore(leaderboardIdentifier: LEADERBOARD_ID)
+        bestScoreInt.value = Int64(inventory.molds.count)
+        GKScore.report([bestScoreInt]) { (error) in
+            if error != nil {
+                print(error!.localizedDescription)
+            } else {
+                print("Best Score submitted to your Leaderboard!")
+            }
+        }
+    }
+    
+    // Delegate to dismiss the GC controller
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    //    MARK: - ICLOUD
     //    save to icloud
     func saveToiCloud() {
         //non array or dictionary stuff
@@ -241,9 +332,9 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         
         iCloudKeyStore?.set(inventory.repelTimer, forKey: "repelTimer")
         iCloudKeyStore?.set(inventory.xTapAmount, forKey: "xTapAmount")
-        iCloudKeyStore?.set(inventory.xTapCounter, forKey: "xTapCounter")
+        iCloudKeyStore?.set(inventory.xTapCount, forKey: "xTapCounter")
         iCloudKeyStore?.set(inventory.spritzAmount, forKey: "spritzAmount")
-        iCloudKeyStore?.set(inventory.spritzCounter, forKey: "spritzCounter")
+        iCloudKeyStore?.set(inventory.spritzCount, forKey: "spritzCounter")
         iCloudKeyStore?.set(inventory.background, forKey: "background")
         iCloudKeyStore?.set(inventory.currentQuest, forKey: "currentQuest")
         iCloudKeyStore?.set(inventory.questGoal, forKey: "questGoal")
@@ -275,6 +366,8 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         iCloudKeyStore?.set(saveDisplayMolds, forKey: "displayMolds")
         iCloudKeyStore?.set(saveUnlockedMolds, forKey: "unlockedMolds")
         iCloudKeyStore?.set(inventory.achievementsDicc, forKey: "achievementsDicc")
+        
+        iCloudKeyStore?.set(inventory.levDicc, forKey: "levDicc")
         
         // using current date and time as an example
         let someDate = Date()
@@ -310,9 +403,9 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         
         inventory.repelTimer = iCloudKeyStore?.object(forKey: "repelTimer") as! Int
         inventory.xTapAmount = iCloudKeyStore?.object(forKey: "xTapAmount") as! Int
-        inventory.xTapCounter = iCloudKeyStore?.object(forKey: "xTapCounter") as! Int
+        inventory.xTapCount = iCloudKeyStore?.object(forKey: "xTapCount") as! Int
         inventory.spritzAmount = iCloudKeyStore?.object(forKey: "spritzAmount") as! Int
-        inventory.spritzCounter = iCloudKeyStore?.object(forKey: "spritzCounter") as! Int
+        inventory.spritzCount = iCloudKeyStore?.object(forKey: "spritzCount") as! Int
         inventory.background = iCloudKeyStore?.object(forKey: "background") as! String
         inventory.currentQuest = iCloudKeyStore?.object(forKey: "currentQuest") as! String
         inventory.questGoal = iCloudKeyStore?.object(forKey: "questGoal") as! Int
@@ -344,12 +437,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
         
         inventory.achievementsDicc = iCloudKeyStore?.object(forKey: "achievementsDicc") as! [String : Bool]
+        inventory.levDicc = iCloudKeyStore?.object(forKey: "levDicc") as! [String : Int]
         inventory.quitTime = iCloudKeyStore?.object(forKey: "quitTime") as! Int
         inventory.offlineLevel = iCloudKeyStore?.object(forKey: "offlineLevel") as! Int
         print("icloud loaded")
     }
     
-
+    //MARK: - TIMERS
     
     func reactivateCashTimer() {
         cashTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(GameViewController.addCash), userInfo: nil, repeats: true)
@@ -426,29 +520,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             inventory.tutorialProgress = scene.tutorial
         }
         
-        if scene.wormRepelCount > 0 {
-            inventory.repelTimer = scene.wormRepelCount
-        }
-        else {
-            inventory.repelTimer = 0
-        }
-        if scene.spritzCount > 0 {
-            inventory.spritzAmount = scene.spritzAmount
-            inventory.spritzCounter = scene.spritzCount
-        }
-        else {
-            inventory.spritzAmount = 1 // this is just in case it gets multiplied accidently
-            inventory.spritzCounter = 0
-        }
-        if scene.xTapCount > 0 {
-            inventory.xTapCounter = scene.xTapCount
-            inventory.xTapAmount = scene.xTapAmount
-        }
-        else {
-            inventory.xTapAmount = 1
-            inventory.xTapCounter = 0
-        }
-        
         let savedData = NSKeyedArchiver.archivedData(withRootObject: inventory)
         let defaults = UserDefaults.standard
         defaults.set(savedData, forKey: "inventory")
@@ -477,6 +548,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             scene.molds = inventory.displayMolds
             scene.updateMolds()
             scene.isActive = true
+            
             skView.presentScene(scene)
             
             scene.menuPopUp.removeFromParent()
@@ -502,6 +574,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         preventNoTapAbuse?.invalidate()
         cashTimer?.invalidate()
         scene.sleep()
+        scene.isPaused = true
     }
     
     // MARK: - QUEST
@@ -652,14 +725,30 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         activateSleepTimer()
         if (action == "buy") {
             moldShop = MoldShop(size: skView.bounds.size)
+            moldShop.levDicc = inventory.levDicc
             checkMaxMolds()
             moldShop.name = "moldShop"
             moldShop.unlockedMolds = inventory.unlockedMolds
+//            remove the star mold, not necessary for the shop
+            var index = 0
+            star: for mold in moldShop.unlockedMolds {
+                if mold.moldType == MoldType.star {
+                    moldShop.unlockedMolds.remove(at: index)
+                    break star
+                }
+                index += 1
+            }
 //            update prices
             updateMoldPrices()
             moldShop.scaleMode = .aspectFill
             moldShop.touchHandler = shopHandler
-            skView.presentScene(moldShop)
+            if aroff {
+                skView.presentScene(moldShop)
+            }
+            else {
+                skView.presentScene(moldShop)
+            }
+            
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             moldShop.mute = inventory.muteSound
@@ -678,7 +767,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             itemShop.touchHandler = itemHandler
             itemShop.laserBought = inventory.laser
             itemShop.level = inventory.level
-            skView.presentScene(itemShop)
+            if aroff {
+                skView.presentScene(itemShop)
+            }
+            else {
+                skView.presentScene(itemShop)
+            }
+            
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             itemShop.mute = inventory.muteSound
@@ -689,7 +784,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             creditsScene.name = "creditsScene"
             creditsScene.scaleMode = .aspectFill
             creditsScene.touchHandler = creditsHandler
-            skView.presentScene(creditsScene)
+            if aroff {
+                skView.presentScene(creditsScene)
+            }
+            else {
+                skView.presentScene(creditsScene)
+            }
+            
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             creditsScene.mute = inventory.muteSound
@@ -706,7 +807,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             helpScene.name = "helpScene"
             helpScene.scaleMode = .aspectFill
             helpScene.touchHandler = helpHandler
-            skView.presentScene(helpScene)
+            if aroff {
+                skView.presentScene(helpScene)
+            }
+            else {
+                skView.presentScene(helpScene)
+            }
+            
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             helpScene.mute = inventory.muteSound
@@ -720,7 +827,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             questScene.currentQuest = inventory.currentQuest
             questScene.questGoal = inventory.questGoal
             questScene.questAmount = inventory.questAmount
-            skView.presentScene(questScene)
+            if aroff {
+                skView.presentScene(questScene)
+            }
+            else {
+                skView.presentScene(questScene)
+            }
+            
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             questScene.mute = inventory.muteSound
@@ -742,8 +855,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             achievements.cash = inventory.cash
             
             achievements.rewardAmount = inventory.achieveDiamonds
+            if aroff {
+                skView.presentScene(achievements)
+            }
+            else {
+                skView.presentScene(achievements)
+            }
             
-            skView.presentScene(achievements)
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             achievements.mute = inventory.muteSound
@@ -812,8 +930,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                     print(combo.child.name)
                 }
             }
+            if aroff {
+                skView.presentScene(breedScene)
+            }
+            else {
+                skView.presentScene(breedScene)
+            }
             
-            skView.presentScene(breedScene)
             breedScene.mute = inventory.muteSound
             breedScene.playSound(select: "select")
             
@@ -829,13 +952,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             print(inventory.tutorialProgress)
         }
         if (action == "exit") {
-            scene.menuPopUp.size = skView.bounds.size
-            
-            let disappear = SKAction.scale(to: 0, duration: 0.2)
-            //this is the godo case
-            let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             exitMenu()
-            scene.menuPopUp.run(action)
         }
         if (action == "cheat") {
             //incrementCash(pointsToAdd: BInt("1000000000000"))
@@ -860,7 +977,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             levelScene.diamonds = inventory.diamonds
             levelScene.offlineLev = inventory.offlineLevel
             levelScene.current = inventory.background
-            skView.presentScene(levelScene)
+            if aroff {
+                skView.presentScene(levelScene)
+            }
+            else {
+                skView.presentScene(levelScene)
+            }
+            
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             levelScene.mute = inventory.muteSound
@@ -878,64 +1001,51 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             reinvestments.name = "itemShop"
             reinvestments.scaleMode = .aspectFill
             reinvestments.touchHandler = reinvestHandler
-            skView.presentScene(reinvestments)
+            
+            if aroff {
+                skView.presentScene(reinvestments)
+            }
+            else {
+                skView.presentScene(reinvestments)
+            }
             menu.cometLayer.removeAllChildren()
             menu.cometTimer.invalidate()
             reinvestments.mute = inventory.muteSound
             reinvestments.playSound(select: "select")
-           
-            
-            
         }
-    }
-    
-    func exitMenu() {
-        menu.cometLayer.removeAllChildren()
-        menu.cometTimer.invalidate()
-        scene.molds = inventory.displayMolds
-        incrementDiamonds(newDiamonds: 0)
-        if inventory.level < 3 {
-            scene.wormDifficulty = 4 - inventory.laser + 1
+        if (action == "leaderboards") {
+            SubmitToGC(self)
+            let gcVC = GKGameCenterViewController()
+            gcVC.gameCenterDelegate = self
+            gcVC.viewState = .leaderboards
+            gcVC.leaderboardIdentifier = LEADERBOARD_ID
+            present(gcVC, animated: true, completion: nil)
+        }
+        if (action == "ar") {
+            //           switch var
+            if aroff {
+                aroff = false
+            }
+            else {
+                aroff = true
+            }
+            menu.playSound(select: "select")
+//            open the ar scene
+            //performSegue(withIdentifier: "ar-segue", sender: self)
+            var texSwitch = SKTexture(image: UIImage(named: "armodeon")!)
+            if aroff {
+                texSwitch = SKTexture(image: UIImage(named: "armodeoff")!)
+            }
+            menu.arButton.removeFromParent()
+            menu.arButton = SKSpriteNode(texture: texSwitch)
+            menu.arButton.position = CGPoint(x:menu.frame.midX-65, y:menu.frame.midY-100);
+            menu.addChild(menu.arButton)
+            
+
         }
         
-        else if inventory.level < 29 {
-            scene.wormDifficulty = 5 - inventory.laser
-        }
-        else {
-            scene.wormDifficulty = 9 - inventory.laser
-        }
-
-        scene.updateMolds()
-        scene.isActive = true
-        skView.presentScene(scene)
-        scene.mute = inventory.muteSound
-        scene.playSound(select: "exit")
-        if inventory.tutorialProgress == 14 {
-            scene.wormTutorial()
-        }
-        if inventory.background != scene.backgroundName {
-            scene.backgroundName = inventory.background
-            scene.setBackground()
-        }
-        if inventory.background == "cave" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "crystal forest" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yurt" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "apartment" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yacht exterior" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "space" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
     }
+    
     
     //REINVEST HANDLER
     func reinvestHandler(action: String) {
@@ -944,11 +1054,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             reinvestments.scrollView?.removeFromSuperview()
             reinvestments.cometLayer.removeAllChildren()
             reinvestments.cometTimer.invalidate()
-            menu = MenuScene(size: skView.bounds.size)
+            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
-            
-            skView.presentScene(menu)
+          
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -1002,6 +1117,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             
             scene.updateMolds()
             scene.isActive = true
+            scene.isPaused = false
             skView.presentScene(scene)
             scene.menuPopUp.run(action)
             
@@ -1031,11 +1147,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             levelScene.scrollView?.removeFromSuperview()
             levelScene.cometLayer.removeAllChildren()
             levelScene.cometTimer.invalidate()
-            menu = MenuScene(size: skView.bounds.size)
+            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             
-            skView.presentScene(menu)
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -3075,56 +3196,27 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
 
         if (action == "exit") {
-            scene.menuPopUp.size = skView.bounds.size
-            
-            let disappear = SKAction.scale(to: 0, duration: 0.2)
-            //this is the godo case
-            let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             exitInventory()
-            scene.menuPopUp.run(action)
         }
     }
     
-    func exitInventory() {
-        inventoryScene.cometLayer.removeAllChildren()
-        inventoryScene.cometTimer.invalidate()
-        scene.molds = inventory.displayMolds
-        scene.updateMolds()
-        scene.isActive = true
-        skView.presentScene(scene)
-        scene.mute = inventory.muteSound
-        scene.playSound(select: "exit")
-        if inventory.background == "cave" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "crystal forest" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yurt" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "apartment" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yacht exterior" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "space" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-    }
-    
+   
     // SHOP HANDLER
     func shopHandler(action: String) {
         activateSleepTimer()
         if (action == "back") {
-            menu = MenuScene(size: skView.bounds.size)
+            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
-            
+           
             moldShop.cometLayer.removeAllChildren()
             moldShop.cometTimer.invalidate()
-            skView.presentScene(menu)
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
             if inventory.tutorialProgress == 13 {
@@ -3320,6 +3412,25 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                     inventory.displayMolds.append(mold)
                 }
                 inventory.scorePerSecond += mold.PPS
+                
+                
+//                check level to see how much more to add
+                let hearts = inventory.levDicc[mold.name]!
+                var levs = 0
+                if hearts < 426 {
+                    for num in moldLevCounts {
+                        if hearts > num {
+                            levs += 1
+                        }
+                    }
+                }
+                else {
+                    levs = moldLevCounts.count
+                    levs += ((hearts - 425) / 100)
+                }
+                
+                inventory.scorePerSecond += levs*mold.PPS/5
+                
                 moldShop.playSound(select: "levelup")
                 moldShop.animateName(name: mold.name)
 //                incubator roll
@@ -3430,7 +3541,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         if (action == "back") {
             breedScene.cometLayer.removeAllChildren()
             breedScene.cometTimer.invalidate()
-            menu = MenuScene(size: skView.bounds.size)
+            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
             
@@ -3443,6 +3554,22 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                             if mold.moldType == target.moldType {
                                 inventory.molds.remove(at: index)
                                 inventory.scorePerSecond -= target.PPS
+//                              check level to see how much more to remove
+                                let hearts = inventory.levDicc[target.name]!
+                                var levs = 0
+                                if hearts < 426 {
+                                    for num in moldLevCounts {
+                                        if hearts > num {
+                                            levs += 1
+                                        }
+                                    }
+                                }
+                                else {
+                                    levs = moldLevCounts.count
+                                    levs += ((hearts - 425) / 100)
+                                }
+                                
+                                inventory.scorePerSecond -= levs*target.PPS/5
                                 break
                             }
                             index += 1
@@ -3458,8 +3585,13 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                     }
                 }
                 breedScene.ownedMolds = inventory.molds
- 
-            skView.presentScene(menu)
+         
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -3477,6 +3609,22 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                         if mold.moldType == target.moldType {
                             inventory.molds.remove(at: index)
                             inventory.scorePerSecond -= target.PPS
+//                              check level to see how much more to remove
+                            let hearts = inventory.levDicc[target.name]!
+                            var levs = 0
+                            if hearts < 426 {
+                                for num in moldLevCounts {
+                                    if hearts > num {
+                                        levs += 1
+                                    }
+                                }
+                            }
+                            else {
+                                levs = moldLevCounts.count
+                                levs += ((hearts - 425) / 100)
+                            }
+                            
+                            inventory.scorePerSecond -= levs*target.PPS/5
                             break
                         }
                         index += 1
@@ -3699,6 +3847,22 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                             if mold.moldType == target.moldType {
                                 inventory.molds.remove(at: index)
                                 inventory.scorePerSecond -= target.PPS
+//                              check level to see how much more to remove
+                                let hearts = inventory.levDicc[target.name]!
+                                var levs = 0
+                                if hearts < 426 {
+                                    for num in moldLevCounts {
+                                        if hearts > num {
+                                            levs += 1
+                                        }
+                                    }
+                                }
+                                else {
+                                    levs = moldLevCounts.count
+                                    levs += ((hearts - 425) / 100)
+                                }
+                                
+                                inventory.scorePerSecond -= levs*target.PPS/5
                                 break
                             }
                             index += 1
@@ -3779,11 +3943,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         if (action == "back") {
             itemShop.cometLayer.removeAllChildren()
             itemShop.cometTimer.invalidate()
-            menu = MenuScene(size: skView.bounds.size)
+            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
-            
-            skView.presentScene(menu)
+
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -3820,8 +3989,8 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             if inventory.level < 3 {
                 if inventory.cash > 1000 {
                     incrementCash(pointsToAdd: -1000)
+                    inventory.repelTimer += 30
                     scene.wormRepel = true
-                    scene.wormRepelCount += 30
                     itemShop.playSound(select: "levelup")
                     shiftTimerLabels()
                 }
@@ -3831,7 +4000,8 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 if inventory.cash > 12000 {
                     incrementCash(pointsToAdd: -12000)
                     scene.wormRepel = true
-                    scene.wormRepelCount += 30
+                    inventory.repelTimer += 30
+                    
                     itemShop.playSound(select: "levelup")
                     shiftTimerLabels()
                 }
@@ -3839,8 +4009,8 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             else {
                 if inventory.cash > 1800000 {
                     incrementCash(pointsToAdd: -1800000)
+                    inventory.repelTimer += 30
                     scene.wormRepel = true
-                    scene.wormRepelCount += 30
                     itemShop.playSound(select: "levelup")
                     shiftTimerLabels()
                 }
@@ -3860,14 +4030,21 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             }
             premiumShop.incubatorBought = inventory.incubator
             premiumShop.autoTapBought = inventory.autoTapLevel
-            skView.presentScene(premiumShop)
+            if aroff {
+                skView.presentScene(premiumShop)
+            }
+            else {
+                skView.presentScene(premiumShop)
+            }
+            
             premiumShop.mute = inventory.muteSound
             premiumShop.playSound(select: "select")
         }
         if action == "xTap" {
             if inventory.diamonds >= 10 {
-                scene.xTapAmount = 12
-                scene.xTapCount += 20
+                    inventory.xTapAmount = 12
+                    inventory.xTapCount += 20
+                scene.xTap = true
                 incrementDiamonds(newDiamonds: -10)
                 itemShop.playSound(select: "cash register")
                 shiftTimerLabels()
@@ -3878,8 +4055,10 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
         if action == "spritz" {
             if inventory.diamonds >= 12 {
-                scene.spritzAmount = 18
-                scene.spritzCount += 40
+
+                   inventory.spritzAmount = 18
+                   inventory.spritzCount += 40
+
                 incrementDiamonds(newDiamonds: -12)
                 itemShop.playSound(select: "cash register")
                 shiftTimerLabels()
@@ -3992,12 +4171,18 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         if (action == "back") {
             premiumShop.cometLayer.removeAllChildren()
             premiumShop.cometTimer.invalidate()
-            itemShop = ItemShop(size: skView.bounds.size)
+            //itemShop = ItemShop(size: skView.bounds.size)
             itemShop.scaleMode = .aspectFill
             itemShop.touchHandler = itemHandler
             itemShop.laserBought = inventory.laser
             itemShop.level = inventory.level
-            skView.presentScene(itemShop)
+            if aroff {
+                skView.presentScene(itemShop)
+            }
+            else {
+                skView.presentScene(itemShop)
+            }
+            
             //menu.cometLayer.removeAllChildren()
             itemShop.mute = inventory.muteSound
             itemShop.playSound(select: "exit")
@@ -4164,11 +4349,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         if (action == "back") {
             achievements.cometLayer.removeAllChildren()
             achievements.cometTimer.invalidate()
-            menu = MenuScene(size: skView.bounds.size)
+           // menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
             
-            skView.presentScene(menu)
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -4195,11 +4385,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         if (action == "back") {
             creditsScene.cometLayer.removeAllChildren()
             creditsScene.cometTimer.invalidate()
-            menu = MenuScene(size: skView.bounds.size)
+            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
             
-            skView.presentScene(menu)
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -4243,11 +4438,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             helpScene.scrollView?.removeFromSuperview()
             helpScene.cometLayer.removeAllChildren()
             helpScene.cometTimer.invalidate()
-            menu = MenuScene(size: skView.bounds.size)
+            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
             
-            skView.presentScene(menu)
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -4263,7 +4463,12 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
             
-            skView.presentScene(menu)
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
         }
@@ -4318,16 +4523,17 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 break
             case 2:
                 //20 seconds of tap bonus
-                scene.xTapAmount = 8
-                scene.xTapCount += 20
+                inventory.xTapAmount = 8
+                inventory.xTapCount += 20
+                scene.xTap = true
                 questScene.animateCoins()
                 shiftTimerLabels()
                 questScene.animateName(name: "Tap Multiplier")
                 break
             default:
                 //30 seconds of sprtiz
-                scene.spritzAmount = 12
-                scene.spritzCount += 20
+                inventory.spritzAmount = 12
+                inventory.spritzCount += 20
                 shiftTimerLabels()
                 scene.animateSpritz()
                 questScene.animateName(name: "Free Spritz")
@@ -4374,13 +4580,381 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             scene.doDiamondShop()
         }
     }
-
+    
+//    ARSCENE TAP HANDLER
+    func handleARTap(action: String) {
+        if action == "diamond_buy" {
+            ARgameScene.isPaused = true
+            arskView.session.pause()
+            arskView.isHidden = true
+            arskView.isUserInteractionEnabled = false
+            skView.isHidden = false
+            skView.isUserInteractionEnabled = true
+            scene.laserPower = inventory.laser
+            scene.deathRay = inventory.deathRay
+            scene.touchHandler = handleTap
+            scene.menuPopUp.removeFromParent()
+            
+            scene.molds = inventory.displayMolds
+            incrementDiamonds(newDiamonds: 0)
+            if inventory.level < 3 {
+                scene.wormDifficulty = 4 - inventory.laser + 1
+            }
+                
+            else if inventory.level < 29 {
+                scene.wormDifficulty = 5 - inventory.laser
+            }
+            else {
+                scene.wormDifficulty = 9 - inventory.laser
+            }
+            
+            scene.updateMolds()
+            scene.isActive = true
+            scene.isPaused = false
+            skView.presentScene(scene)
+            scene.mute = inventory.muteSound
+            scene.playSound(select: "exit")
+            activateSleepTimer()
+            scene.doDiamondShop()
+            scene.playSound(select: "select")
+            aroff = true
+        }
+        if action == "addDiamond" {
+            incrementDiamonds(newDiamonds: 1)
+        }
+        if action == "ar_scene_buy" {
+            activateSleepTimer()
+            ARgameScene.playSound(select: "select")
+            //popup
+            let Texture = SKTexture(image: UIImage(named: "cyber_menu_glow")!)
+            ARgameScene.menuPopUp = SKSpriteNode(texture:Texture)
+            // Place in scene
+            ARgameScene.menuPopUp.position = CGPoint(x:ARgameScene.frame.midX, y:ARgameScene.frame.midY)
+            ARgameScene.menuPopUp.size = arskView.bounds.size
+            
+            let appear = SKAction.scale(to: 1, duration: 0.2)
+            ARgameScene.menuPopUp.setScale(0.01)
+            //this is the godo case
+            let action = SKAction.sequence([appear])
+            ARgameScene.menuPopUp.run(action)
+            ARgameScene.addChild(ARgameScene.menuPopUp)
+            autoTapTimer?.invalidate()
+            autoTapTimer = nil
+            
+            let when = DispatchTime.now() + 0.2
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.showMenu()
+            }
+        }
+        if action == "ar_inventory" {
+            ARgameScene.playSound(select: "select")
+            //popup
+            let Texture = SKTexture(image: UIImage(named: "cyber_menu_glow")!)
+            ARgameScene.menuPopUp = SKSpriteNode(texture:Texture)
+            // Place in scene
+            ARgameScene.menuPopUp.position = CGPoint(x:ARgameScene.frame.midX, y:ARgameScene.frame.midY)
+            ARgameScene.menuPopUp.size = arskView.bounds.size
+            
+            let appear = SKAction.scale(to: 1, duration: 0.2)
+            ARgameScene.menuPopUp.setScale(0.01)
+            //this is the godo case
+            let action = SKAction.sequence([appear])
+            ARgameScene.menuPopUp.run(action)
+            ARgameScene.addChild(ARgameScene.menuPopUp)
+            autoTapTimer?.invalidate()
+            autoTapTimer = nil
+            
+            ARgameScene.isPaused = true
+            let when = DispatchTime.now() + 0.2
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.showInventory()
+            }
+        }
+        if action == "addDiamond" {
+            activateSleepTimer()
+            incrementDiamonds(newDiamonds: 1)
+            ARgameScene.diamondCLabel.text = String(inventory.diamonds)
+        }
+        if action == "add2Diamond" {
+            activateSleepTimer()
+            incrementDiamonds(newDiamonds: 2)
+            ARgameScene.diamondCLabel.text = String(inventory.diamonds)
+        }
+        if action == "wurmded" {
+            inventory.wormsKilled += 1
+            if inventory.currentQuest == "kill" {
+                inventory.questAmount += 1
+                if inventory.questAmount == inventory.questGoal {
+                    questAchieved()
+                }
+            }
+            
+            if inventory.wormsKilled == 20 {
+                if inventory.achievementsDicc["kill 20"] == false {
+                    inventory.achievementsDicc["kill 20"] = true
+                    inventory.achieveDiamonds += 5
+                }
+            }
+            else if inventory.wormsKilled == 100 {
+                if inventory.achievementsDicc["kill 100"] == false {
+                    inventory.achievementsDicc["kill 100"] = true
+                    inventory.achieveDiamonds += 5
+                }
+            }
+            else if inventory.wormsKilled == 500 {
+                if inventory.achievementsDicc["kill 500"] == false {
+                    inventory.achievementsDicc["kill 500"] = true
+                    inventory.achieveDiamonds += 5
+                }
+            }
+            else if inventory.wormsKilled == 5000 {
+                if inventory.achievementsDicc["kill 5000"] == false {
+                    inventory.achievementsDicc["kill 5000"] = true
+                    inventory.achieveDiamonds += 5
+                }
+            }
+            else if inventory.wormsKilled == 10000 {
+                if inventory.achievementsDicc["kill 10000"] == false {
+                    inventory.achievementsDicc["kill 10000"] = true
+                    inventory.achieveDiamonds += 25
+                }
+            }
+            if inventory.tutorialProgress == 14 {
+                scene.tutorialLayer.removeAllChildren()
+                inventory.tutorialProgress = 15
+                scene.killWormCongrats()
+            }
+        }
+        if action == "level_mold" {
+            let curType = ARgameScene.moldName
+            inventory.levDicc[curType]! += 1
+            //            now check if we level, first do the within predefined dictionary case
+            if inventory.levDicc[curType]! < 426 {
+                for num in moldLevCounts {
+                    if inventory.levDicc[curType]! == num {
+                        //                    just hit a new level, time to amp up the cash
+                        var additive = 0
+                        var pps: BInt!
+                        for xmold in inventory.molds {
+                            if xmold.name == curType {
+                                additive += 1
+                            }
+                        }
+                        findp: for xmold in inventory.molds {
+                            if xmold.name == curType {
+                                pps = xmold.PPS
+                                break findp
+                            }
+                        }
+                        //                        increase PPS
+                        inventory.scorePerSecond += additive*pps/5
+                        
+                        //                        show user
+                        // Add a label for the score that slowly floats up.
+                        let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
+                        scoreLabel.fontSize = 18
+                        scoreLabel.name = "naw"
+                        scoreLabel.text = String(curType + " Level Up!")
+                        scoreLabel.position = ARgameScene.center
+                        scoreLabel.fontColor = UIColor.green
+                        scoreLabel.zPosition = 300
+                        
+                        ARgameScene.addChild(scoreLabel)
+                        
+                        let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
+                        moveAction.timingMode = .easeOut
+                        scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+                    }
+                }
+            }
+                //          count how far after
+            else {
+                if (inventory.levDicc[curType]! - 425) % 100 == 0 {
+                    var additive = 0
+                    var pps: BInt!
+                    for xmold in inventory.molds {
+                        if xmold.name == curType {
+                            additive += 1
+                        }
+                    }
+                    findp: for xmold in inventory.molds {
+                        if xmold.name == curType {
+                            pps = xmold.PPS
+                            break findp
+                        }
+                    }
+                    //                        increase PPS
+                    
+                    inventory.scorePerSecond += additive*pps/5
+                    //                        show user
+                    // Add a label for the score that slowly floats up.
+                    let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
+                    scoreLabel.fontSize = 18
+                    scoreLabel.name = "naw"
+                    scoreLabel.fontColor = UIColor.green
+                    scoreLabel.text = String(curType + " Level Up!")
+                    scoreLabel.position = ARgameScene.center
+                    scoreLabel.zPosition = 300
+                    
+                    ARgameScene.addChild(scoreLabel)
+                    
+                    let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
+                    moveAction.timingMode = .easeOut
+                    scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+                }
+            }
+        }
+        /*
+        if action == "ar_camera" {
+            //scene.eventTimer.invalidate()
+            ARgameScene.cameraButton.removeFromParent()
+            ARgameScene.inventoryButton.removeFromParent()
+            ARgameScene.header.removeFromParent()
+            ARgameScene.buyButton.removeFromParent()
+            ARgameScene.diamondBuy.removeFromParent()
+            //scene.gameLayer.removeAllChildren()
+            ARgameScene.diamondIcon.removeFromParent()
+            ARgameScene.diamondCLabel.removeFromParent()
+            ARgameScene.wormRepelLabel.removeFromParent()
+            ARgameScene.spritzLabel.removeFromParent()
+            ARgameScene.xTapLabel.removeFromParent()
+            cashLabel.isHidden = true
+            cashHeader.isHidden = true
+            //autoTapTimer?.invalidate()
+            //autoTapTimer = nil
+            _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(captureScreen), userInfo: nil, repeats: false)
+        }
+ */
+    }
     
     //GAME SCENE HANDLER
     func handleTap(action: String) {
         let disappear = SKAction.scale(to: 0, duration: 0.5)
         //this is the godo case
         let animation = SKAction.sequence([disappear, SKAction.removeFromParent()])
+        if action == "level_mold" {
+            let curType = scene.moldName
+            inventory.levDicc[curType]! += 1
+//            now check if we level, first do the within predefined dictionary case
+            if inventory.levDicc[curType]! < 426 {
+                for num in moldLevCounts {
+                    if inventory.levDicc[curType]! == num {
+                        //                    just hit a new level, time to amp up the cash
+                        var additive = 0
+                        var pps: BInt!
+                        for xmold in inventory.molds {
+                            if xmold.name == curType {
+                                additive += 1
+                            }
+                        }
+                        findp: for xmold in inventory.molds {
+                            if xmold.name == curType {
+                                pps = xmold.PPS
+                                break findp
+                            }
+                        }
+//                        increase PPS
+                        inventory.scorePerSecond += additive*pps/5
+                        
+//                        show user
+                        // Add a label for the score that slowly floats up.
+                        let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
+                        scoreLabel.fontSize = 18
+                        scoreLabel.text = String(curType + " Level Up!")
+                        scoreLabel.position = scene.center
+                        scoreLabel.fontColor = UIColor.green
+                        scoreLabel.zPosition = 300
+                        
+                        scene.gameLayer.addChild(scoreLabel)
+                        
+                        let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
+                        moveAction.timingMode = .easeOut
+                        scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+                    }
+                }
+            }
+//          count how far after
+            else {
+                if (inventory.levDicc[curType]! - 425) % 100 == 0 {
+                    var additive = 0
+                    var pps: BInt!
+                    for xmold in inventory.molds {
+                        if xmold.name == curType {
+                            additive += 1
+                        }
+                    }
+                    findp: for xmold in inventory.molds {
+                        if xmold.name == curType {
+                            pps = xmold.PPS
+                            break findp
+                        }
+                    }
+                    //                        increase PPS
+                    
+                    inventory.scorePerSecond += additive*pps/5
+                    //                        show user
+                    // Add a label for the score that slowly floats up.
+                    let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
+                    scoreLabel.fontSize = 18
+                    scoreLabel.fontColor = UIColor.green
+                    scoreLabel.text = String(curType + " Level Up!")
+                    scoreLabel.position = scene.center
+                    scoreLabel.zPosition = 300
+                    
+                    scene.gameLayer.addChild(scoreLabel)
+                    
+                    let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
+                    moveAction.timingMode = .easeOut
+                    scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+                }
+            }
+        }
+        if action == "succ_mold" {
+//            trigger the blak hole mold death
+            let pick = randomInRange(lo: 0, hi: inventory.molds.count - 1)
+            if inventory.molds[pick].moldType != MoldType.star {
+                let moldData = inventory.molds[pick]
+                let fade = SKAction.scale(to: 0.0, duration: 0.75)
+                let imName = String(moldData.name)
+                let Image = UIImage(named: imName)
+                let Texture = SKTexture(image: Image!)
+                let moldPic = SKSpriteNode(texture:Texture)
+                moldPic.position = scene.holeLayer.children[0].position
+                scene.holeLayer.addChild(moldPic)
+                moldPic.run(SKAction.sequence([fade, SKAction.removeFromParent()]))
+                scene.playSound(select: "mold succ")
+                
+                var eatcount = 0
+                displayLoop: for molds in inventory.displayMolds {
+                    if molds.moldType == inventory.molds[pick].moldType {
+                        inventory.displayMolds.remove(at: eatcount)
+                        break displayLoop
+                    }
+                    eatcount += 1
+                }
+                inventory.scorePerSecond -= inventory.molds[pick].PPS
+                
+                //                check level to see how much more to remove
+                let hearts = inventory.levDicc[inventory.molds[pick].name]!
+                var levs = 0
+                if hearts < 426 {
+                    for num in moldLevCounts {
+                        if hearts > num {
+                            levs += 1
+                        }
+                    }
+                }
+                else {
+                    levs = moldLevCounts.count
+                    levs += ((hearts - 425) / 100)
+                }
+                
+                inventory.scorePerSecond -= levs*inventory.molds[pick].PPS/5
+                
+                inventory.molds.remove(at: pick)
+                scene.molds = inventory.displayMolds
+            }
+        }
         if action == "reactivate timers" {
             print("tutorial ")
             print(inventory.tutorialProgress)
@@ -4413,6 +4987,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             scene.sleepLayer.removeAllChildren()
             scene.reactivateTimer()
             scene.isActive = true
+            scene.isPaused = false
             cashTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(GameViewController.addCash), userInfo: nil, repeats: true)
         }
         if action == "claim quest" {
@@ -4599,62 +5174,66 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 activateSleepTimer()
                 switch scene.selectedNum {
                 case 1:
-                    scene.spritzAmount = 18
-                    scene.spritzCount += 120
+                    inventory.spritzAmount = 18
+                    inventory.spritzCount += 120
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 2:
-                    scene.spritzAmount = 12
-                    scene.spritzCount += 180
+                    inventory.spritzAmount = 12
+                    inventory.spritzCount += 180
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 3:
-                    scene.spritzAmount = 12
-                    scene.spritzCount += 60
+                    inventory.spritzAmount = 12
+                    inventory.spritzCount += 60
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 4:
-                    scene.xTapAmount = 30
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 30
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 5:
-                    scene.xTapAmount = 50
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 50
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 6:
-                    scene.xTapAmount = 80
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 80
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 7:
-                    scene.xTapAmount = 120
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 120
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 8:
-                    scene.spritzAmount = 0
-                    scene.spritzCount += 60
+                    inventory.spritzAmount = 0
+                    inventory.spritzCount += 60
                     scene.playSound(select: "bad card")
                     shiftTimerLabels()
                     break
                 case 9:
-                    scene.spritzAmount = 0
-                    scene.spritzCount += 90
+                    inventory.spritzAmount = 0
+                    inventory.spritzCount += 90
                     scene.playSound(select: "bad card")
                     shiftTimerLabels()
                     break
                 case 10:
-                    scene.spritzAmount = 0
-                    scene.spritzCount += 120
+                    inventory.spritzAmount = 0
+                    inventory.spritzCount += 120
                     scene.playSound(select: "bad card")
                     shiftTimerLabels()
                     break
@@ -4734,44 +5313,48 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 incrementDiamonds(newDiamonds: -2)
                 switch scene.selectedNum {
                 case 1:
-                    scene.spritzAmount = 18
-                    scene.spritzCount += 240
+                    inventory.spritzAmount = 18
+                    inventory.spritzCount += 240
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 2:
-                    scene.spritzAmount = 12
-                    scene.spritzCount += 360
+                    inventory.spritzAmount = 12
+                    inventory.spritzCount += 360
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 3:
-                    scene.spritzAmount = 12
-                    scene.spritzCount += 120
+                    inventory.spritzAmount = 12
+                    inventory.spritzCount += 120
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 4:
-                    scene.xTapAmount = 60
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 60
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 5:
-                    scene.xTapAmount = 100
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 100
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 6:
-                    scene.xTapAmount = 160
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 160
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
                 case 7:
-                    scene.xTapAmount = 240
-                    scene.xTapCount += 20
+                    inventory.xTapAmount = 240
+                    inventory.xTapCount += 20
+                    scene.xTap = true
                     scene.playSound(select: "ding")
                     shiftTimerLabels()
                     break
@@ -4809,6 +5392,24 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                         eatcount += 1
                     }
                     inventory.scorePerSecond -= inventory.molds[indexToEat].PPS
+                    
+//                check level to see how much more to remove
+                    let hearts = inventory.levDicc[inventory.molds[indexToEat].name]!
+                    var levs = 0
+                    if hearts < 426 {
+                        for num in moldLevCounts {
+                            if hearts > num {
+                                levs += 1
+                            }
+                        }
+                    }
+                    else {
+                        levs = moldLevCounts.count
+                        levs += ((hearts - 425) / 100)
+                    }
+                    
+                    inventory.scorePerSecond -= levs*inventory.molds[indexToEat].PPS/5
+                    
                     inventory.molds.remove(at: indexToEat)
                     scene.molds = inventory.displayMolds
                     scene.playSound(select: "crunch")
@@ -4875,6 +5476,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             if scene.buyEnabled {
                 activateSleepTimer()
                 scene.playSound(select: "select")
+                
                 //popup
                 let Texture = SKTexture(image: UIImage(named: "cyber_menu_glow")!)
                 scene.menuPopUp = SKSpriteNode(texture:Texture)
@@ -4890,12 +5492,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 scene.addChild(scene.menuPopUp)
                 autoTapTimer?.invalidate()
                 autoTapTimer = nil
-                _ = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(GameViewController.showMenu), userInfo: nil, repeats: false)
+                let when = DispatchTime.now() + 0.2
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.showMenu()
+                }
             }
         }
         if action == "game_scene_inventory" {
             activateSleepTimer()
             scene.playSound(select: "select")
+            
             //popup
             let Texture = SKTexture(image: UIImage(named: "cyber_menu_glow")!)
             scene.menuPopUp = SKSpriteNode(texture:Texture)
@@ -4911,9 +5517,10 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             scene.addChild(scene.menuPopUp)
             autoTapTimer?.invalidate()
             autoTapTimer = nil
-            _ = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(GameViewController.showInventory), userInfo: nil, repeats: false)
-            
-            
+            let when = DispatchTime.now() + 0.2
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.showInventory()
+            }
         }
         if action == "game_scene_camera" {
             scene.eventTimer.invalidate()
@@ -4932,8 +5539,10 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             cashHeader.isHidden = true
             autoTapTimer?.invalidate()
             autoTapTimer = nil
-            _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(captureScreen), userInfo: nil, repeats: false)
-            
+            let when = DispatchTime.now() + 0.1
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.captureScreen()
+            }
         }
         if action == "diamond_buy" {
             activateSleepTimer()
@@ -4946,6 +5555,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                 child.run(animation)
             }
             scene.diamondShop = false
+            scene.isPaused = false
             scene.playSound(select: "exit")
         }
         if action == "diamond_tiny" {
@@ -4981,17 +5591,18 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         activateSleepTimer()
         scene.tapPoint = inventory.scorePerTap
         
-        if scene.xTapCount > 0 {
+        if inventory.xTapCount > 0 {
             if inventory.reinvestmentCount >= 3 {
-                let div = (inventory.scorePerTap * BInt(scene.xTapAmount))
+                let div = (inventory.scorePerTap * BInt(inventory.xTapAmount))
                 incrementCash(pointsToAdd: div / 2)
             }
             else{
-                incrementCash(pointsToAdd: (inventory.scorePerTap * BInt(scene.xTapAmount)))
+                incrementCash(pointsToAdd: (inventory.scorePerTap * BInt(inventory.xTapAmount)))
             }
             
         }
         else {
+            scene.xTap = false
             if inventory.reinvestmentCount >= 3 {
                 let div = inventory.scorePerTap
                 incrementCash(pointsToAdd: div / 2)
@@ -5002,12 +5613,12 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
         
         if scene.diamondShop == false {
-            if scene.xTapCount > 0 {
+            if inventory.xTapCount > 0 {
                 if inventory.reinvestmentCount >= 3 {
-                    scene.animateScore(point: scene.tapLoc, amount: (scene.tapPoint * BInt(scene.xTapAmount))/2, tap: true, fairy: false, offline: false)
+                    scene.animateScore(point: scene.tapLoc, amount: (scene.tapPoint * BInt(inventory.xTapAmount))/2, tap: true, fairy: false, offline: false)
                 }
                 else{
-                    scene.animateScore(point: scene.tapLoc, amount: scene.tapPoint * BInt(scene.xTapAmount), tap: true, fairy: false, offline: false)
+                    scene.animateScore(point: scene.tapLoc, amount: scene.tapPoint * BInt(inventory.xTapAmount), tap: true, fairy: false, offline: false)
                 }
                 
             }
@@ -5029,6 +5640,200 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         }
         
     }
+    
+    //    MARK: - NOT HANDLERS BUT SIMILAIR
+    func exitInventory() {
+        inventoryScene.cometLayer.removeAllChildren()
+        inventoryScene.cometTimer.invalidate()
+        if aroff {
+            scene.menuPopUp.size = skView.bounds.size
+            let disappear = SKAction.scale(to: 0, duration: 0.2)
+            //this is the godo case
+            let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
+            scene.moldLayer.removeAllChildren()
+            scene.molds = inventory.displayMolds
+            scene.updateMolds()
+            scene.isActive = true
+            scene.isPaused = false
+            skView.presentScene(scene)
+            scene.mute = inventory.muteSound
+            scene.playSound(select: "exit")
+            scene.menuPopUp.run(action)
+        }
+        else {
+            
+            // Configure the view.
+            arskView.isHidden = false
+            arskView.isUserInteractionEnabled = true
+            skView.isHidden = true
+            skView.isUserInteractionEnabled = false
+            ARgameScene = ARScene(size: arskView.bounds.size)
+            ARgameScene.scaleMode = .resizeFill
+ 
+            ARgameScene.numDiamonds = inventory.diamonds
+            ARgameScene.laserPower = scene.laserPower
+            ARgameScene.deathRay = scene.deathRay
+            
+            
+            
+            ARgameScene.touchHandler = handleARTap
+            ARgameScene.ARdisplayCount = inventory.displayMolds.count - 1
+            if inventory.level < 3 {
+                ARgameScene.wormDifficulty = 4 - inventory.laser + 1
+            }
+                
+            else if inventory.level < 29 {
+                ARgameScene.wormDifficulty = 5 - inventory.laser
+            }
+            else {
+                ARgameScene.wormDifficulty = 9 - inventory.laser
+            }
+
+            // Run the view's session
+            arskView.session.run(configuration)
+            
+            // Set the scene to the view
+            arskView.presentScene(ARgameScene)
+            ARgameScene.createButton()
+            if ARgameScene.menuPopUp != nil {
+                let disappear = SKAction.scale(to: 0, duration: 0.1)
+                //this is the godo case
+                let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
+                ARgameScene.menuPopUp.run(action)
+            }
+        }
+        if inventory.background == "cave" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "crystal forest" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "yurt" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "apartment" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "yacht exterior" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "space" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+    }
+    
+    func exitMenu() {
+        menu.cometLayer.removeAllChildren()
+        menu.cometTimer.invalidate()
+        //        no ar load as usual
+        if aroff {
+            if menu.arSwitch {
+                arskView.isHidden = true
+                arskView.isUserInteractionEnabled = false
+                skView.isHidden = false
+                skView.isUserInteractionEnabled = true
+                scene.laserPower = inventory.laser
+                scene.deathRay = inventory.deathRay
+                scene.touchHandler = handleTap
+            }
+            scene.menuPopUp.size = skView.bounds.size
+            
+            let disappear = SKAction.scale(to: 0, duration: 0.2)
+            //this is the godo case
+            let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
+            
+            scene.molds = inventory.displayMolds
+            incrementDiamonds(newDiamonds: 0)
+            if inventory.level < 3 {
+                scene.wormDifficulty = 4 - inventory.laser + 1
+            }
+                
+            else if inventory.level < 29 {
+                scene.wormDifficulty = 5 - inventory.laser
+            }
+            else {
+                scene.wormDifficulty = 9 - inventory.laser
+            }
+            
+            
+            scene.updateMolds()
+            scene.isActive = true
+            scene.isPaused = false
+            skView.presentScene(scene)
+            scene.mute = inventory.muteSound
+            scene.playSound(select: "exit")
+            if inventory.tutorialProgress == 14 {
+                scene.wormTutorial()
+            }
+            if inventory.background != scene.backgroundName {
+                scene.backgroundName = inventory.background
+                scene.setBackground()
+            }
+            
+            scene.menuPopUp.run(action)
+        }
+            //        there some ar afoot, lets dive in
+        else {
+            
+            // Configure the view.
+            arskView.isHidden = false
+            arskView.isUserInteractionEnabled = true
+            skView.isHidden = true
+            skView.isUserInteractionEnabled = false
+            ARgameScene = ARScene(size: arskView.bounds.size)
+            ARgameScene.scaleMode = .resizeFill
+      
+            ARgameScene.numDiamonds = inventory.diamonds
+            ARgameScene.laserPower = scene.laserPower
+            ARgameScene.deathRay = scene.deathRay
+            
+            ARgameScene.touchHandler = handleARTap
+            ARgameScene.ARdisplayCount = inventory.displayMolds.count - 1
+            if inventory.level < 3 {
+                ARgameScene.wormDifficulty = 4 - inventory.laser + 1
+            }
+                
+            else if inventory.level < 29 {
+                ARgameScene.wormDifficulty = 5 - inventory.laser
+            }
+            else {
+                ARgameScene.wormDifficulty = 9 - inventory.laser
+            }
+
+            // Run the view's session
+            arskView.session.run(configuration)
+            
+            // Set the scene to the view
+            arskView.presentScene(ARgameScene)
+            ARgameScene.createButton()
+            if ARgameScene.menuPopUp != nil {
+                let disappear = SKAction.scale(to: 0, duration: 0.1)
+                //this is the godo case
+                let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
+                ARgameScene.menuPopUp.run(action)
+            }
+        }
+        if inventory.background == "cave" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "crystal forest" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "yurt" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "apartment" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "yacht exterior" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        if inventory.background == "space" {
+            playBackgroundMusic(filename: "cave_demo.wav")
+        }
+        
+    }
+    
     
     func findCircledView(_ center: CGPoint) {
         // walk through the fairies
@@ -5062,7 +5867,7 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                             partNode.run(SKAction.sequence([moveAction, SKAction.fadeOut(withDuration: (0.15)), SKAction.removeFromParent()]))
                             counter += 1
                     }
-                    let cashPrize = inventory.cash / BInt(randomInRange(lo: 85, hi: 150))
+                    let cashPrize = inventory.cash / BInt(randomInRange(lo: 25, hi: 90))
                     scene.animateScore(point: center, amount: cashPrize, tap: false, fairy: true, offline: false)
                     incrementCash(pointsToAdd: cashPrize)
                     if inventory.currentQuest == "faerie" {
@@ -5109,14 +5914,38 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         })
     }
     
-    @objc func showMenu() {
-        scene.isActive = false
-        //scene.diamondLabel.text = ""
-        menu = MenuScene(size: skView.bounds.size)
+    func showMenu() {
+        
+        if aroff {
+            menu = MenuScene(size: skView.bounds.size)
+        }
+        else {
+           menu = MenuScene(size: arskView.bounds.size)
+        }
+        
         menu.name = "menu"
         menu.scaleMode = .aspectFill
         menu.touchHandler = menuHandler
-        skView.presentScene(menu)
+        if aroff {
+            skView.presentScene(menu)
+        }
+        else {
+            ARgameScene.isPaused = true
+            arskView.session.pause()
+            
+            arskView.isHidden = true
+            arskView.isUserInteractionEnabled = false
+            skView.isHidden = false
+            skView.isUserInteractionEnabled = true
+            
+            skView.presentScene(menu)
+            let texSwitch = SKTexture(image: UIImage(named: "armodeon")!)
+            menu.arButton.removeFromParent()
+            menu.arButton = SKSpriteNode(texture: texSwitch)
+            menu.arButton.position = CGPoint(x:menu.frame.midX-65, y:menu.frame.midY-100);
+            menu.addChild(menu.arButton)
+        }
+        
         
         if scene.tutorial == 11 {
             scene.tutorialLayer.removeAllChildren()
@@ -5124,12 +5953,26 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             menu.buyMoldTut()
             scene.tutorial = -1
         }
+        scene.isActive = false
+        scene.isPaused = true
         playBackgroundMusic(filename: "menu_demo.wav")
     }
     
-    @objc func showInventory() {
-        //scene.diamondLabel.text = ""
-        inventoryScene = MoldInventory(size: skView.bounds.size)
+    func showInventory() {
+        if aroff {
+            inventoryScene = MoldInventory(size: skView.bounds.size)
+        }
+        else {
+            ARgameScene.isPaused = true
+            arskView.session.pause()
+            
+            arskView.isHidden = true
+            arskView.isUserInteractionEnabled = false
+            skView.isHidden = false
+            skView.isUserInteractionEnabled = true
+            
+            inventoryScene = MoldInventory(size: skView.bounds.size)
+        }
         inventoryScene.name = "inventoryScene"
         inventoryScene.scaleMode = .aspectFill
         inventoryScene.touchHandler = inventorySceneHandler
@@ -5137,8 +5980,16 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
         inventoryScene.ownedMolds = inventory.molds
         inventoryScene.totalNum = inventory.displayMolds.count
         inventoryScene.display = inventory.displayMolds
-        skView.presentScene(inventoryScene)
+        if aroff {
+            skView.presentScene(inventoryScene)
+        }
+        else {
+            arskView.session.pause()
+            //arskView.presentScene(inventoryScene)
+            skView.presentScene(inventoryScene)
+        }
         scene.isActive = false
+        scene.isPaused = true
         playBackgroundMusic(filename: "menu_demo.wav")
     }
     
@@ -5180,156 +6031,287 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
     
     //per second function
     @objc func addCash() {
+//        this fixes a bug where your points per second goes negative
+        if inventory.scorePerSecond < 0 {
+            inventory.scorePerSecond = 0
+        }
         //chance for two molds nex to each other kiss or fight
-        if inventory.displayMolds.count > 1 {
+        if inventory.displayMolds.count > 1 && scene.isActive {
             if Int(arc4random_uniform(60)) < 4 {
                 scene.kissOrFight()
             }
         }
-        //adjust spritz counter
-        if scene.spritzCount > 0 {
-            if inventory.reinvestmentCount >= 2 {
-                let div = (inventory.scorePerSecond * scene.spritzAmount)
-                incrementCash(pointsToAdd: div / 2)
+        if arskView.isHidden {
+            //adjust spritz counter
+            if inventory.spritzCount > 0 {
+                if inventory.reinvestmentCount >= 2 {
+                    let div = (inventory.scorePerSecond * inventory.spritzAmount)
+                    incrementCash(pointsToAdd: div / 2)
+                }
+                else{
+                    incrementCash(pointsToAdd: (inventory.scorePerSecond * inventory.spritzAmount))
+                }
+                
+                inventory.spritzCount -= 1
+                scene.spritzLabel.text = String(inventory.spritzCount)
+                if inventory.spritzCount == 0 {
+                    scene.spritzLabel.text = ""
+                    scene.playSound(select: "powerdown")
+                    shiftTimerLabels()
+                }
             }
-            else{
-                incrementCash(pointsToAdd: (inventory.scorePerSecond * scene.spritzAmount))
-            }
-            
-            scene.spritzCount -= 1
-            scene.spritzLabel.text = String(scene.spritzCount)
-            if scene.spritzCount == 0 {
+                //no spritz just add normal cash
+            else {
+                if inventory.reinvestmentCount >= 2 {
+                    let div = inventory.scorePerSecond
+                    incrementCash(pointsToAdd: div / 2)
+                }
+                else{
+                    incrementCash(pointsToAdd: inventory.scorePerSecond)
+                }
+                
                 scene.spritzLabel.text = ""
-                scene.playSound(select: "powerdown")
-                shiftTimerLabels()
             }
-        }
-            //no spritz just add normal cash
-        else {
-            if inventory.reinvestmentCount >= 2 {
-                let div = inventory.scorePerSecond
-                incrementCash(pointsToAdd: div / 2)
-            }
-            else{
-                incrementCash(pointsToAdd: inventory.scorePerSecond)
-            }
-            
-            scene.spritzLabel.text = ""
-        }
-        //calculate animation
-        if inventory.scorePerSecond > 0 {
-            if scene.diamondShop == false && scene.isActive == true {
-                if scene.spritzCount > 0 && scene.spritzAmount > 0 {
-                    if inventory.reinvestmentCount >= 2 {
-                        scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*scene.spritzAmount)/2, tap: false, fairy: false, offline: false)
+            //calculate animation
+            if inventory.scorePerSecond > 0 {
+                if scene.diamondShop == false && scene.isActive == true {
+                    if inventory.spritzCount > 0 && inventory.spritzAmount > 0 {
+                        if inventory.reinvestmentCount >= 2 {
+                            scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*inventory.spritzAmount)/2, tap: false, fairy: false, offline: false)
+                        }
+                        else {
+                            scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*inventory.spritzAmount), tap: false, fairy: false, offline: false)
+                        }
+                    }
+                    else if inventory.spritzCount > 0 && inventory.spritzAmount == 0 {
+                        
                     }
                     else {
-                        scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*scene.spritzAmount), tap: false, fairy: false, offline: false)
-                    }
-                }
-                else if scene.spritzCount > 0 && scene.spritzAmount == 0 {
-                    
-                }
-                else {
-                    if inventory.reinvestmentCount >= 2 {
-                        scene.animateScore(point: scene.center, amount: inventory.scorePerSecond/2, tap: false, fairy: false, offline: false)
-                    }
-                    else {
-                        scene.animateScore(point: scene.center, amount: inventory.scorePerSecond, tap: false, fairy: false, offline: false)
+                        if inventory.reinvestmentCount >= 2 {
+                            scene.animateScore(point: scene.center, amount: inventory.scorePerSecond/2, tap: false, fairy: false, offline: false)
+                        }
+                        else {
+                            scene.animateScore(point: scene.center, amount: inventory.scorePerSecond, tap: false, fairy: false, offline: false)
+                        }
+                        
                     }
                     
+                }
+            }
+            //handle timers for worm repel and also bonus tap multipliers
+            if scene.isActive {
+                //worm repel timer
+                if inventory.repelTimer > 0 {
+                    inventory.repelTimer -= 1
+                    scene.wormRepelLabel.text = String(inventory.repelTimer)
+                    if inventory.repelTimer == 0 {
+                        scene.wormRepelLabel.text = ""
+                        scene.endRepelTimer()
+                        scene.playSound(select: "powerdown")
+                        shiftTimerLabels()
+                    }
+                }
+                
+                
+                //xtap
+                if inventory.xTapCount > 0 {
+                    inventory.xTapCount -= 1
+                    scene.xTapLabel.text = String(inventory.xTapCount)
+                    if inventory.xTapCount == 0 {
+                        scene.xTapLabel.text = ""
+                        scene.playSound(select: "powerdown")
+                        shiftTimerLabels()
+                    }
                 }
                 
             }
         }
-        //handle timers for worm repel and also bonus tap multipliers
-        if scene.isActive {
-            //worm repel timer
-            if scene.wormRepelCount > 0 {
-                scene.wormRepelCount -= 1
-                scene.wormRepelLabel.text = String(scene.wormRepelCount)
-                if scene.wormRepelCount == 0 {
-                    scene.wormRepelLabel.text = ""
-                    scene.endRepelTimer()
-                    scene.playSound(select: "powerdown")
+//            same thing for AR scene
+        else {
+            //adjust spritz counter
+            if inventory.spritzCount > 0 {
+                if inventory.reinvestmentCount >= 2 {
+                    let div = (inventory.scorePerSecond * inventory.spritzAmount)
+                    incrementCash(pointsToAdd: div / 2)
+                }
+                else{
+                    incrementCash(pointsToAdd: (inventory.scorePerSecond * inventory.spritzAmount))
+                }
+                
+                inventory.spritzCount -= 1
+                ARgameScene.spritzLabel.text = String(inventory.spritzCount)
+                if inventory.spritzCount == 0 {
+                    ARgameScene.spritzLabel.text = ""
+                    ARgameScene.playSound(select: "powerdown")
                     shiftTimerLabels()
                 }
             }
-            
-
-            //xtap
-            if scene.xTapCount > 0 {
-                scene.xTapCount -= 1
-                scene.xTapLabel.text = String(scene.xTapCount)
-                if scene.xTapCount == 0 {
-                    scene.xTapLabel.text = ""
-                    scene.playSound(select: "powerdown")
-                    shiftTimerLabels()
+                //no spritz just add normal cash
+            else {
+                if inventory.reinvestmentCount >= 2 {
+                    let div = inventory.scorePerSecond
+                    incrementCash(pointsToAdd: div / 2)
                 }
+                else{
+                    incrementCash(pointsToAdd: inventory.scorePerSecond)
+                }
+                
+                ARgameScene.spritzLabel.text = ""
             }
-            
+            //handle timers for worm repel and also bonus tap multipliers
+            if ARgameScene.isPaused == false {
+                //worm repel timer
+                if inventory.repelTimer > 0 {
+                    inventory.repelTimer -= 1
+                    ARgameScene.wormRepelLabel.text = String(inventory.repelTimer)
+                    if inventory.repelTimer == 0 {
+                        ARgameScene.wormRepelLabel.text = ""
+                        //ARgameScene.endRepelTimer()
+                        ARgameScene.playSound(select: "powerdown")
+                        shiftTimerLabels()
+                    }
+                }
+                
+                
+                //xtap
+                if inventory.xTapCount > 0 {
+                   inventory.xTapCount -= 1
+                    ARgameScene.xTapLabel.text = String(inventory.xTapCount)
+                    if inventory.xTapCount == 0 {
+                        ARgameScene.xTapLabel.text = ""
+                        ARgameScene.playSound(select: "powerdown")
+                        shiftTimerLabels()
+                    }
+                }
+                
+            }
         }
     }
     
     //since there can be up to three timers in the game scene at the same time this method will space them correctly
     func shiftTimerLabels() {
-        if scene.wormRepelCount == 0 {
-            if scene.xTapCount > 0 {
-                var move = SKAction.move(to: CGPoint(x: scene.frame.midX+42,y: scene.xTapLabel.position.y), duration:0.45)
-                if scene.spritzCount == 0 {
-                    move = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
+//        perform shifting in the 2d scene
+        if arskView.isHidden {
+            if inventory.repelTimer == 0 {
+                if inventory.xTapCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: scene.frame.midX+42,y: scene.xTapLabel.position.y), duration:0.45)
+                    if inventory.spritzCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
+                    }
+                    scene.xTapLabel.run(move)
+                    
                 }
-                scene.xTapLabel.run(move)
+                if inventory.spritzCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: scene.frame.midX-42,y: scene.spritzLabel.position.y), duration:0.45)
+                    if inventory.xTapCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
+                    }
+                    scene.spritzLabel.run(move)
+                    
+                }
                 
             }
-            if scene.spritzCount > 0 {
-                var move = SKAction.move(to: CGPoint(x: scene.frame.midX-42,y: scene.spritzLabel.position.y), duration:0.45)
-                if scene.xTapCount == 0 {
-                    move = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
+            else {
+                if inventory.xTapCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: scene.frame.midX+74,y: scene.xTapLabel.position.y), duration:0.45)
+                    if inventory.spritzCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: scene.frame.midX+42,y: scene.xTapLabel.position.y), duration:0.45)
+                        let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX-42,y: scene.xTapLabel.position.y), duration:0.45)
+                        scene.wormRepelLabel.run(move2)
+                        
+                    }
+                    else {
+                        let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
+                        scene.wormRepelLabel.run(move2)
+                        
+                    }
+                    scene.xTapLabel.run(move)
+                    
                 }
-                scene.spritzLabel.run(move)
                 
+                if inventory.spritzCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: scene.frame.midX-74,y: scene.spritzLabel.position.y), duration:0.45)
+                    if inventory.xTapCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: scene.frame.midX-42,y: scene.xTapLabel.position.y), duration:0.45)
+                        let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX+42,y: scene.xTapLabel.position.y), duration:0.45)
+                        scene.wormRepelLabel.run(move2)
+                        
+                    }
+                    else {
+                        let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
+                        scene.wormRepelLabel.run(move2)
+                        
+                    }
+                    scene.spritzLabel.run(move)
+                    
+                }
+                if inventory.xTapCount == 0 && inventory.spritzCount == 0 {
+                    let move = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
+                    scene.wormRepelLabel.run(move)
+                    
+                }
             }
-
         }
+//       perform shifting in the ARScene
         else {
-            if scene.xTapCount > 0 {
-                var move = SKAction.move(to: CGPoint(x: scene.frame.midX+74,y: scene.xTapLabel.position.y), duration:0.45)
-                if scene.spritzCount == 0 {
-                    move = SKAction.move(to: CGPoint(x: scene.frame.midX+42,y: scene.xTapLabel.position.y), duration:0.45)
-                    let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX-42,y: scene.xTapLabel.position.y), duration:0.45)
-                    scene.wormRepelLabel.run(move2)
+            if inventory.repelTimer == 0 {
+                if inventory.xTapCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX+42,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                    if inventory.spritzCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                    }
+                    ARgameScene.xTapLabel.run(move)
                     
                 }
-                else {
-                    let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
-                    scene.wormRepelLabel.run(move2)
+                if inventory.spritzCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX-42,y: ARgameScene.spritzLabel.position.y), duration:0.45)
+                    if inventory.xTapCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                    }
+                    ARgameScene.spritzLabel.run(move)
                     
                 }
-                scene.xTapLabel.run(move)
                 
             }
-
-            if scene.spritzCount > 0 {
-                var move = SKAction.move(to: CGPoint(x: scene.frame.midX-74,y: scene.spritzLabel.position.y), duration:0.45)
-                if scene.xTapCount == 0 {
-                    move = SKAction.move(to: CGPoint(x: scene.frame.midX-42,y: scene.xTapLabel.position.y), duration:0.45)
-                    let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX+42,y: scene.xTapLabel.position.y), duration:0.45)
-                    scene.wormRepelLabel.run(move2)
+            else {
+                if inventory.xTapCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX+74,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                    if inventory.spritzCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX+42,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                        let move2 = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX-42,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                        ARgameScene.wormRepelLabel.run(move2)
+                        
+                    }
+                    else {
+                        let move2 = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                        ARgameScene.wormRepelLabel.run(move2)
+                        
+                    }
+                    ARgameScene.xTapLabel.run(move)
                     
                 }
-                else {
-                    let move2 = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
-                    scene.wormRepelLabel.run(move2)
+                
+                if inventory.spritzCount > 0 {
+                    var move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX-74,y: ARgameScene.spritzLabel.position.y), duration:0.45)
+                    if inventory.xTapCount == 0 {
+                        move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX-42,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                        let move2 = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX+42,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                        ARgameScene.wormRepelLabel.run(move2)
+                        
+                    }
+                    else {
+                        let move2 = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                        ARgameScene.wormRepelLabel.run(move2)
+                        
+                    }
+                    ARgameScene.spritzLabel.run(move)
                     
                 }
-                scene.spritzLabel.run(move)
-                
-            }
-            if scene.xTapCount == 0 && scene.spritzCount == 0 {
-                let move = SKAction.move(to: CGPoint(x: scene.frame.midX,y: scene.xTapLabel.position.y), duration:0.45)
-                scene.wormRepelLabel.run(move)
-                
+                if inventory.xTapCount == 0 && inventory.spritzCount == 0 {
+                    let move = SKAction.move(to: CGPoint(x: ARgameScene.frame.midX,y: ARgameScene.xTapLabel.position.y), duration:0.45)
+                    ARgameScene.wormRepelLabel.run(move)
+                    
+                }
             }
         }
     }
@@ -5475,7 +6457,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
  
             cashLabel.text = cashDisplayString
         }
-        
     }
     
     //add diamonds and update the scene lable
@@ -5495,12 +6476,246 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             }
         }
         updateLabels()
-       
     }
     
     //get a random integer in this range. used for some stuff
     func randomInRange(lo: Int, hi : Int) -> Int {
         return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
+    }
+    func randomFloat(min: Float, max: Float) -> Float {
+        return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
+    }
+    
+    // MARK: - AR STUFF
+    
+    func view(_ view: ARSKView, nodeFor anchor: ARAnchor) -> SKNode? {
+        var skNode: SKNode!
+//        this will run if we're still droppign the molds in
+        if ARgameScene.ARdisplayCount > 0 {
+            let pick = ARgameScene.ARdisplayCount
+            skNode = SKSpriteNode(imageNamed: inventory.displayMolds[pick!].name)
+            skNode.name = inventory.displayMolds[pick!].name
+            ARgameScene.moldCollection.append(skNode)
+            let frames = ARgameScene.animateMold(moldData: inventory.displayMolds[pick!]).frames
+            
+            print(inventory.displayMolds[pick!].name)
+            skNode.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                       withKey:"moldAR")
+            ARgameScene.ARdisplayCount! -= 1
+        }
+//            this will run if the molds are already placed
+//            (basically everythign after teh first like 2 seconds
+        else {
+            print("making a non-mold sknode")
+//            make worm shortcut
+            if ARgameScene.wormHole {
+                skNode = ARgameScene.wormAttack().wormPic
+                skNode.name = String(ARgameScene.wormDifficulty - ARgameScene.laserPower)
+                ARgameScene.wormCollection.append(skNode)
+                
+                let frames = ARgameScene.wormAttack().frames
+                print("worm attack")
+                ARgameScene.playSound(select: "worm appear")
+                let timterval = randomFloat(min: 2.1, max: 3.6)
+                ARgameScene.wormChompTimers.append(Timer.scheduledTimer(timeInterval: TimeInterval(timterval), target: self, selector: #selector(eatARMold), userInfo: nil, repeats: true))
+                skNode.run(SKAction.animate(with: frames,
+                                            timePerFrame: 0.1,
+                                            resize: false,
+                                            restore: true))
+            }
+            else {
+                //            create a black hole
+                if randomInRange(lo: 1, hi: 9) == 2 {
+                    skNode = BlackHole(size:CGSize(width:600, height:600))
+                    skNode.name = "hole"
+                    ARgameScene.holeCollection.append(skNode as! BlackHole)
+                    if let hole = skNode as! BlackHole? {
+                        hole.place()
+                        ARgameScene.playSound(select: "black hole hi")
+                        let when = DispatchTime.now() + 0.8
+                        DispatchQueue.main.asyncAfter(deadline: when) {
+                            self.succMold(index: self.ARgameScene.holeCollection.count - 1)
+                        }
+                    }
+                    
+                }
+                    //                otherwise just add a worm
+                else {
+                    if inventory.repelTimer < 1 {
+                        //                if there is no worm repel then you can add a worm
+                        skNode = ARgameScene.wormAttack().wormPic
+                        skNode.name = String(ARgameScene.wormDifficulty - ARgameScene.laserPower)
+                        ARgameScene.wormCollection.append(skNode)
+                        
+                        let frames = ARgameScene.wormAttack().frames
+                        print("worm attack")
+                        ARgameScene.playSound(select: "worm appear")
+                        let timterval = randomFloat(min: 2.1, max: 3.6)
+                        ARgameScene.wormChompTimers.append(Timer.scheduledTimer(timeInterval: TimeInterval(timterval), target: self, selector: #selector(eatARMold), userInfo: nil, repeats: true))
+                        skNode.run(SKAction.animate(with: frames,
+                                                    timePerFrame: 0.1,
+                                                    resize: false,
+                                                    restore: true))
+                    }
+                }
+            }
+
+        }
+        ARgameScene.wormBottom = 4.0
+        ARgameScene.wormTop = 8.0
+        ARgameScene.wormHole = false
+        return skNode
+    }
+    
+//    succ mold in AR
+    func succMold(index: Int) {
+//        succ mold code
+        let pick = randomInRange(lo: 0, hi: inventory.molds.count - 1)
+        if inventory.molds[pick].moldType != MoldType.star {
+            let moldData = inventory.molds[pick]
+            let fade = SKAction.scale(to: 0.0, duration: 0.55)
+            let imName = String(moldData.name)
+            let Image = UIImage(named: imName)
+            let Texture = SKTexture(image: Image!)
+            let moldPic = SKSpriteNode(texture:Texture)
+            moldPic.name = "naw"
+            moldPic.position = ARgameScene.holeCollection[index].position
+            ARgameScene.addChild(moldPic)
+            moldPic.run(SKAction.sequence([fade, SKAction.removeFromParent()]))
+            ARgameScene.playSound(select: "mold succ")
+            
+            var eatcount = 0
+            displayLoop: for molds in inventory.displayMolds {
+                if molds.moldType == inventory.molds[pick].moldType {
+                    inventory.displayMolds.remove(at: eatcount)
+                    break displayLoop
+                }
+                eatcount += 1
+            }
+            inventory.scorePerSecond -= inventory.molds[pick].PPS
+            
+            //                check level to see how much more to remove
+            let hearts = inventory.levDicc[inventory.molds[pick].name]!
+            var levs = 0
+            if hearts < 426 {
+                for num in moldLevCounts {
+                    if hearts > num {
+                        levs += 1
+                    }
+                }
+            }
+            else {
+                levs = moldLevCounts.count
+                levs += ((hearts - 425) / 100)
+            }
+            
+            inventory.scorePerSecond -= levs*inventory.molds[pick].PPS/5
+            
+            inventory.molds.remove(at: pick)
+        }
+//        now either remove hole or call worms and 'ave another go
+        if randomInRange(lo: 0, hi: 2) == 1 {
+            var when = DispatchTime.now() + 1.35
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                // Your code with delay
+                self.ARgameScene.holeCollection[index].disappear()
+                self.ARgameScene.playSound(select: "black hole bye")
+                
+                when = DispatchTime.now() + 0.55
+                DispatchQueue.main.asyncAfter(deadline: when) {
+                    self.ARgameScene.holeCollection[index].removeFromParent()
+                }
+            }
+        }
+        else {
+            let when = DispatchTime.now() + 1.25
+            DispatchQueue.main.asyncAfter(deadline: when) {
+                self.succMold(index: index)
+            }
+            
+            var worms = randomInRange(lo: 0, hi: 3)
+            while worms > 0 {
+                print("add worm")
+                ARgameScene.wormHole = true
+                ARgameScene.wormBottom = 0.5
+                ARgameScene.wormTop = 0.8
+                //ARgameScene.createAnchor()
+                worms -= 1
+            }
+            
+        }
+    }
+    
+    //eat mold
+    @objc func eatARMold() {
+        print("eat mold")
+//        first run the animation (shitty as it is for some reason)
+        var attackFrames = [SKTexture]()
+        let side = randomInRange(lo: 0, hi: 1)
+        if side == 0 {
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep left")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm strike left")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep left")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm left")!))
+        }
+        else {
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep right")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm strike right")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm prep right")!))
+            attackFrames.append(SKTexture(image: UIImage(named: "worm right")!))
+        }
+        var pick = 0
+        if ARgameScene.wormCollection.count > 1 {
+            pick = randomInRange(lo: 0, hi: ARgameScene.wormCollection.count - 1)
+        }
+        ARgameScene.playSound(select: "crunch")
+        if pick < ARgameScene.wormCollection.count {
+            ARgameScene.wormCollection[pick].run(SKAction.animate(with: attackFrames,
+                                                                  timePerFrame: 0.1,
+                                                                  resize: false,
+                                                                  restore: true))
+        }
+        
+        
+//        pick a mold to eat
+        if inventory.molds.count > 0 {
+            pick = randomInRange(lo: 0, hi: inventory.molds.count-1)
+            
+            let hearts = inventory.levDicc[inventory.molds[pick].name]!
+            var levs = 0
+            if hearts < 426 {
+                for num in moldLevCounts {
+                    if hearts > num {
+                        levs += 1
+                    }
+                }
+            }
+            else {
+                levs = moldLevCounts.count
+                levs += ((hearts - 425) / 100)
+            }
+            
+            inventory.scorePerSecond -= levs*inventory.molds[pick].PPS/5
+            inventory.scorePerSecond -= inventory.molds[pick].PPS
+            
+            var index = 0
+            loop: for node in ARgameScene.moldCollection {
+                if node.name == inventory.molds[pick].name {
+                    node.removeFromParent()
+                    ARgameScene.moldCollection.remove(at: index)
+                    break loop
+                }
+                index += 1
+            }
+            
+            inventory.molds.remove(at: pick)
+        }
+        
+        
     }
     
     // MARK: - FETCH AVAILABLE IAP PRODUCTS
@@ -5537,8 +6752,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             numberFormatter.numberStyle = .currency
             numberFormatter.locale = firstProduct.priceLocale
             _ = numberFormatter.string(from: firstProduct.price)
-            //print(price1Str ?? <#default value#>)
-            
             // Show its description
             //consumableLabel.text = firstProduct.localizedDescription + "\nfor just \(price1Str!)"
             // ------------------------------------------------
@@ -5551,7 +6764,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             // Get its price from iTunes Connect
             numberFormatter.locale = secondProd.priceLocale
             _ = numberFormatter.string(from: secondProd.price)
-            //print(price2Str ?? <#default value#>)
             // 3rd IAP Product (Consumable) ------------------------------
 
             let thirdProd = response.products[2] as SKProduct
@@ -5559,7 +6771,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             // Get its price from iTunes Connect
             numberFormatter.locale = thirdProd.priceLocale
             _ = numberFormatter.string(from: thirdProd.price)
-            //print(price3Str ?? <#default value#>)
             // 4th IAP Product (Consumable) ------------------------------
 
             let fourthProd = response.products[3] as SKProduct
@@ -5567,7 +6778,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             // Get its price from iTunes Connect
             numberFormatter.locale = fourthProd.priceLocale
             _ = numberFormatter.string(from: fourthProd.price)
-            //print(price4Str ?? <#default value#>)
             // 5th IAP Product (Consumable) ------------------------------
             
             let fifthProd = response.products[4] as SKProduct
@@ -5575,7 +6785,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             // Get its price from iTunes Connect
             numberFormatter.locale = fifthProd.priceLocale
             _ = numberFormatter.string(from: fifthProd.price)
-            //print(price5Str ?? <#default value#>)
             // 6th IAP Product (Non-Consumable) ------------------------------
             
             let sixthProd = response.products[5] as SKProduct
@@ -5583,7 +6792,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             // Get its price from iTunes Connect
             numberFormatter.locale = sixthProd.priceLocale
             _ = numberFormatter.string(from: sixthProd.price)
-            //print(price6Str ?? <#default value#>)
             // 7th IAP Product (Non-Consumable) ------------------------------
             
             let seventhProd = response.products[6] as SKProduct
@@ -5591,7 +6799,6 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
             // Get its price from iTunes Connect
             numberFormatter.locale = seventhProd.priceLocale
             _ = numberFormatter.string(from: seventhProd.price)
-            //print(price7Str ?? <#default value#>)
         }
         else {
             let alert = UIAlertController(title: "Uh-Oh!", message: "Couldn't load items", preferredStyle: UIAlertControllerStyle.alert)
@@ -5635,28 +6842,20 @@ class GameViewController: UIViewController, SKProductsRequestDelegate, SKPayment
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                     
                     if productID == TINY_PRODUCT_ID {
-
                         incrementDiamonds(newDiamonds: 10)
                         save()
-
                     }
                     else if productID == SMALL_PRODUCT_ID {
-
                         incrementDiamonds(newDiamonds: 32)
                         save()
-
                     }
                     else if productID == MEDIUM_PRODUCT_ID {
-
                         incrementDiamonds(newDiamonds: 114)
                         save()
-
                     }
                     else if productID == LARGE_PRODUCT_ID {
-
                         incrementDiamonds(newDiamonds: 612)
                         save()
-
                     }
                     else if productID == STAR_PRODUCT_ID {
                         premiumShop.playSound(select: "cash register")

@@ -822,7 +822,7 @@ class LevelScene: SKScene {
             switch(currentLevel + 1) {
             case 0:
                 nextScorePerTap = BInt(10)
-                levelUpCost = BInt(20)
+                levelUpCost = BInt(2500)
                 break
             case 1:
                 nextScorePerTap = BInt(40)
@@ -965,172 +965,172 @@ class LevelScene: SKScene {
                 levelUpCost = BInt("258339375000")
                 break
             case 36:
-                nextScorePerTap = BInt("14525006")
+                nextScorePerTap = BInt("145250060")
                 levelUpCost = BInt("413343000000")
                 break
             case 37:
-                nextScorePerTap = BInt("21787509")
+                nextScorePerTap = BInt("217875090")
                 levelUpCost = BInt("661348800000")
                 break
             case 38:
-                nextScorePerTap = BInt("27234386")
+                nextScorePerTap = BInt("2723438060")
                 levelUpCost = BInt("1058158080000")
                 break
             case 39:
-                nextScorePerTap = BInt("34042983")
+                nextScorePerTap = BInt("3404298300")
                 levelUpCost = BInt("1693052928000")
                 break
             case 40:
-                nextScorePerTap = BInt("61277370")
+                nextScorePerTap = BInt("6127737000")
                 levelUpCost = BInt("2708884684800")
                 break
             case 41:
-                nextScorePerTap = BInt("76596712")
+                nextScorePerTap = BInt("7659671200")
                 levelUpCost = BInt("4334215495680")
                 break
             case 42:
-                nextScorePerTap = BInt("95750000")
+                nextScorePerTap = BInt("957500000")
                 levelUpCost = BInt("6934744793088")
                 break
             case 43:
-                nextScorePerTap = BInt("119687500")
+                nextScorePerTap = BInt("11968750000")
                 levelUpCost = BInt("11095591668940")
                 break
             case 44:
-                nextScorePerTap = BInt("215437500")
+                nextScorePerTap = BInt("21543750000")
                 levelUpCost = BInt("17600000000000")
                 break
             case 45:
-                nextScorePerTap = BInt("269296875")
+                nextScorePerTap = BInt("26929687500")
                 levelUpCost = BInt("28160000000000")
                 break
             case 46:
-                nextScorePerTap = BInt("337500000")
+                nextScorePerTap = BInt("33750000000")
                 levelUpCost = BInt("45056000000000")
                 break
             case 47:
-                nextScorePerTap = BInt("421875000")
+                nextScorePerTap = BInt("42187500000")
                 levelUpCost = BInt("72089600000000")
                 break
             case 48:
-                nextScorePerTap = BInt("1054687500")
+                nextScorePerTap = BInt("105468750000")
                 levelUpCost = BInt("115343360000000")
                 break
             case 49:
-                nextScorePerTap = BInt("1582031250")
+                nextScorePerTap = BInt("158203125000")
                 levelUpCost = BInt("184549376000000")
                 break
             case 50:
-                nextScorePerTap = BInt("2373046875")
+                nextScorePerTap = BInt("237304687005")
                 levelUpCost = BInt("295279001600000")
                 break
             case 51:
-                nextScorePerTap = BInt("3559570312")
+                nextScorePerTap = BInt("355957031200")
                 levelUpCost = BInt("531502202880000")
                 break
             case 52:
-                nextScorePerTap = BInt("5339355468")
+                nextScorePerTap = BInt("533935546800")
                 levelUpCost = BInt("956703965184000")
                 break
             case 53:
-                nextScorePerTap = BInt("8009033203")
+                nextScorePerTap = BInt("8009033203000")
                 levelUpCost = BInt("1722067137331200")
                 break
             case 54:
-                nextScorePerTap = BInt("12013549804")
+                nextScorePerTap = BInt("1201354980400")
                 levelUpCost = BInt("3099720847196160")
                 break
             case 55:
-                nextScorePerTap = BInt("36040649414")
+                nextScorePerTap = BInt("3604064941400")
                 levelUpCost = BInt("5579497524953088")
                 break
             case 56:
-                nextScorePerTap = BInt("108121948242")
+                nextScorePerTap = BInt("10812194824200")
                 levelUpCost = BInt("10043095544915560")
                 break
             case 57:
-                nextScorePerTap = BInt("324365844726")
+                nextScorePerTap = BInt("32436584472600")
                 levelUpCost = BInt("18077571980848000")
                 break
             case 58:
-                nextScorePerTap = BInt("973097534179")
+                nextScorePerTap = BInt("97309753417900")
                 levelUpCost = BInt("32539629565526410")
                 break
             case 59:
-                nextScorePerTap = BInt("1500000000000")
+                nextScorePerTap = BInt("15000000000000")
                 levelUpCost = BInt("58571333217947540")
                 break
             case 60:
-                nextScorePerTap = BInt("2250000000000")
+                nextScorePerTap = BInt("22500000000000")
                 levelUpCost = BInt("105428399792305617")
                 break
             case 61:
-                nextScorePerTap = BInt("3375000000000")
+                nextScorePerTap = BInt("33750000000000")
                 levelUpCost = BInt("100897711196261517")
                 break
             case 62:
-                nextScorePerTap = BInt("5062500000000")
+                nextScorePerTap = BInt("506250000000000")
                 levelUpCost = BInt("3415880153270000717")
                 break
             case 63:
-                nextScorePerTap = BInt("6328125000000")
+                nextScorePerTap = BInt("6328125000000000")
                 levelUpCost = BInt("61485842758872600017")
                 break
             case 64:
-                nextScorePerTap = BInt("69492187500000")
+                nextScorePerTap = BInt("69492187500000000")
                 levelUpCost = BInt("720000000000000000000")
                 break
             case 65:
-                nextScorePerTap = BInt("14238281250000")
+                nextScorePerTap = BInt("142382812500000000")
                 levelUpCost = BInt("5200000000000000000000")
                 break
             case 65:
-                nextScorePerTap = BInt("21357421875000")
+                nextScorePerTap = BInt("2135742187500000000")
                 levelUpCost = BInt("67000000000000000000000")
                 break
             case 66:
-                nextScorePerTap = BInt("64072265625000")
+                nextScorePerTap = BInt("64072265625000000000")
                 levelUpCost = BInt("480000000000000000000000")
                 break
             case 67:
-                nextScorePerTap = BInt("192216796875000")
+                nextScorePerTap = BInt("192216796875000000000")
                 levelUpCost = BInt("1200000000000000000000000")
                 break
             case 68:
-                nextScorePerTap = BInt("961083984375000")
+                nextScorePerTap = BInt("961083984375000000000")
                 levelUpCost = BInt("34000000000000000000000000")
                 break
             case 69:
-                nextScorePerTap = BInt("2883251953125000")
+                nextScorePerTap = BInt("2883251953125000000000")
                 levelUpCost = BInt("560000000000000000000000000")
                 break
             case 70:
-                nextScorePerTap = BInt("8649755859375000")
+                nextScorePerTap = BInt("864975585937500000000000")
                 levelUpCost = BInt("7900000000000000000000000000")
                 break
             case 71:
-                nextScorePerTap = BInt("25949267578125000")
+                nextScorePerTap = BInt("2594926757812500000000000")
                 levelUpCost = BInt("9100000000000000000000000000")
                 break
             case 72:
-                nextScorePerTap = BInt("32436584472656250")
+                nextScorePerTap = BInt("32436584472656250000000000")
                 levelUpCost = BInt("65000000000000000000000000000")
                 break
             case 73:
-                nextScorePerTap = BInt("42436584472656250")
+                nextScorePerTap = BInt("424365844726562500000000000")
                 levelUpCost = BInt("780000000000000000000000000000")
                 break
             case 74:
-                nextScorePerTap = BInt("72436584472656250")
+                nextScorePerTap = BInt("7243658447265625000000000000")
                 levelUpCost = BInt("56000000000000000000000000000000")
                 break
             case 75:
-                nextScorePerTap = BInt("112436584472656250")
+                nextScorePerTap = BInt("112436584472656250000000000000")
                 levelUpCost = BInt("4900000000000000000000000000000000")
                 break
                 
             default:
-                nextScorePerTap = BInt("112436584472656250")
+                nextScorePerTap = BInt("112436584472656250000000000000")
                 levelUpCost = BInt("4900000000000000000000000000000000")
                 break
         }

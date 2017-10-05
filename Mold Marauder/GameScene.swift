@@ -234,7 +234,7 @@ class GameScene: SKScene {
         //HEADER
         var Texture = SKTexture(image: UIImage(named: "header")!)
         header = SKSpriteNode(texture: Texture)
-        header.setScale(0.38)
+        header.setScale(0.42)
         // Place in scene
         header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+270);
         
@@ -242,49 +242,49 @@ class GameScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "BUY")!)
         buyButton = SKSpriteNode(texture: Texture)
         // Place in scene
-        buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+270);
+        buyButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+270);
         
         //DIAMOND ICON
         Texture = SKTexture(image: UIImage(named: "diamond")!)
         diamondIcon = SKSpriteNode(texture: Texture)
-        diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+270);
+        diamondIcon.position = CGPoint(x:self.frame.midX-120, y:self.frame.midY+270);
         
         //DIAMOND BUY
         Texture = SKTexture(image: UIImage(named: "plus")!)
         diamondBuy = SKSpriteNode(texture: Texture)
-        diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+270);
+        diamondBuy.position = CGPoint(x:self.frame.midX-155, y:self.frame.midY+270);
         
         // DIAMOND LABEL
         diamondCLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondCLabel.fontSize = 18
         diamondCLabel.fontColor = UIColor.black
         diamondCLabel.text = ""//String(numDiamonds)
-        diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+262);
+        diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+262);
        
 //        adjust for screen sizes
         switch UIDevice().screenType {
         case .iPhone4:
-            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+195)
-            buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+195)
-            diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+195)
-            diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+195)
-            diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+187)
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+235);
+            buyButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+235);
+            diamondIcon.position = CGPoint(x:self.frame.midX-120, y:self.frame.midY+235);
+            diamondBuy.position = CGPoint(x:self.frame.midX-155, y:self.frame.midY+235);
+            diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+227);
             break
         case .iPhone5:
             //iPhone 5
-            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+230)
-            buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+230)
-            diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+230)
-            diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+230)
-            diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+222)
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+275);
+            buyButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+275);
+            diamondIcon.position = CGPoint(x:self.frame.midX-120, y:self.frame.midY+275);
+            diamondBuy.position = CGPoint(x:self.frame.midX-155, y:self.frame.midY+275);
+            diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+267);
             break
         case .iPhone6Plus:
             // Code for iPhone 6 Plus & iPhone 7 Plus
-            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+310)
-            buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+310)
-            diamondIcon.position = CGPoint(x:self.frame.midX-105, y:self.frame.midY+310)
-            diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+310)
-            diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+302)
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+270)
+            buyButton.position = CGPoint(x:self.frame.midX+105, y:self.frame.midY+270)
+            diamondIcon.position = CGPoint(x:self.frame.midX-115, y:self.frame.midY+270)
+            diamondBuy.position = CGPoint(x:self.frame.midX-150, y:self.frame.midY+270)
+            diamondCLabel.position = CGPoint(x:self.frame.midX-70, y:self.frame.midY+262)
             break
         default:
             break
@@ -325,6 +325,8 @@ class GameScene: SKScene {
         switch UIDevice().screenType {
         case .iPhone4:
             //iPhone 4
+            cameraButton.position = CGPoint(x:self.frame.maxX - 40, y:self.frame.minY + 140);
+            inventoryButton.position = CGPoint(x:self.frame.maxX - 40, y:self.frame.minY + 80);
             wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+130)
             spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+130)
             xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+130)
@@ -2018,7 +2020,7 @@ class GameScene: SKScene {
             welcomeTitle.setScale(0.7)
             welcomeTitle2.setScale(0.7)
             welcomeTitle3.setScale(0.7)
-            introNode.setScale(0.7)
+            introNode.setScale(0.8)
             
             break
         case .iPhone5:

@@ -215,6 +215,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         case .iPhone5:
             //iPhone 5
             topMargin.constant -= 12
+            cashHeader.font = cashHeader.font.withSize(12)
+            cashLabel.font = cashLabel.font.withSize(12)
             break
         default:
             break
@@ -223,13 +225,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.offlineCash()
         }
-       
-//        this little guy updates all your stats
-        inventory.calculateScorePerTap()
-        inventory.scorePerSecond = BInt(0)
-        for mold in inventory.molds {
-            inventory.scorePerSecond += mold.PPS
-        }
+
         //REMOVE
 //        incrementDiamonds(newDiamonds: 500)
 //        inventory.level = 64
@@ -4912,6 +4908,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "succ_mold" {
 //            trigger the blak hole mold death
             let pick = randomInRange(lo: 0, hi: inventory.molds.count - 1)
+            if inventory.molds.count > 0 {
             if inventory.molds[pick].moldType != MoldType.star {
                 let moldData = inventory.molds[pick]
                 let fade = SKAction.scale(to: 0.0, duration: 0.75)
@@ -4953,6 +4950,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 
                 inventory.molds.remove(at: pick)
                 scene.molds = inventory.displayMolds
+            }
             }
         }
         if action == "reactivate timers" {
@@ -6031,6 +6029,9 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     //per second function
     @objc func addCash() {
+        if inventory.scorePerSecond < 0 {
+            inventory.scorePerSecond = 0
+        }
 //        this fixes a bug where your points per second goes negative
         if inventory.scorePerSecond < 0 {
             inventory.scorePerSecond = 0

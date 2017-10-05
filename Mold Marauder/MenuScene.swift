@@ -259,7 +259,7 @@ class MenuScene: SKScene {
         reinvestButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-50);
         
         self.addChild(reinvestButton)
-        
+        /*
         //AR button
         Texture = SKTexture(image: UIImage(named: "armodeoff")!)
         arButton = SKSpriteNode(texture: Texture)
@@ -267,6 +267,7 @@ class MenuScene: SKScene {
         arButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
         
         self.addChild(arButton)
+ */
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -346,6 +347,7 @@ class MenuScene: SKScene {
                 handler("reinvest")
             }
         }
+        /*
         if arButton.contains(touchLocation) {
             print("ar")
             if let handler = touchHandler {
@@ -358,6 +360,7 @@ class MenuScene: SKScene {
                 handler("ar")
             }
         }
+ */
     }
     
     //MARK: - TUTORIAL

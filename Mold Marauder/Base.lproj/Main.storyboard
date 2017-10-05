@@ -26,34 +26,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arskView hidden="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CiB-Vc-Oxj">
+                            <arskView hidden="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CiB-Vc-Oxj">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="BV1-FR-VrT" id="Djz-XT-qBo"/>
                                 </connections>
                             </arskView>
-                            <skView multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1c2-gA-Nj3">
+                            <skView multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1c2-gA-Nj3">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="BV1-FR-VrT" id="hyR-VT-Ur2"/>
                                 </connections>
                             </skView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="PaX-qD-XBh">
-                                <rect key="frame" x="132" y="62" width="112" height="42"/>
+                                <rect key="frame" x="118" y="62" width="140" height="42"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2zj-Ln-s63">
-                                        <rect key="frame" x="0.0" y="0.0" width="112" height="42"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="140" height="42"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cash:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j96-WM-HzH">
-                                                <rect key="frame" x="0.0" y="0.0" width="112" height="19.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="140" height="19.5"/>
                                                 <fontDescription key="fontDescription" name="Lemondrop" family="Lemondrop" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="000.000 OO" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hNA-Wp-ciD">
-                                                <rect key="frame" x="0.0" y="19.5" width="112" height="22.5"/>
+                                                <rect key="frame" x="0.0" y="19.5" width="140" height="22.5"/>
                                                 <fontDescription key="fontDescription" name="Lemondrop" family="Lemondrop" pointSize="16"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -62,15 +60,23 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="112" id="ehR-M4-7dW"/>
+                                    <constraint firstAttribute="width" constant="140" id="Tnc-AG-qb3"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.62593102331606221" green="0.62593102331606221" blue="0.62593102331606221" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="PaX-qD-XBh" secondAttribute="trailing" constant="102" id="97S-JS-aSO"/>
+                            <constraint firstItem="CiB-Vc-Oxj" firstAttribute="top" secondItem="3se-qz-xqx" secondAttribute="top" id="JW0-wK-krl"/>
+                            <constraint firstItem="1c2-gA-Nj3" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="M8p-2c-RrH"/>
+                            <constraint firstItem="1c2-gA-Nj3" firstAttribute="top" secondItem="3se-qz-xqx" secondAttribute="top" id="c5l-Y9-M3W"/>
+                            <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="1c2-gA-Nj3" secondAttribute="bottom" id="gq4-Wg-gSH"/>
                             <constraint firstItem="PaX-qD-XBh" firstAttribute="top" secondItem="8aa-yV-Osq" secondAttribute="bottom" constant="42" id="kkv-0t-uqK"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="PaX-qD-XBh" secondAttribute="trailing" constant="115" id="siP-Iw-hqY"/>
-                            <constraint firstItem="PaX-qD-XBh" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" constant="116" id="ulq-PO-R98"/>
+                            <constraint firstItem="PaX-qD-XBh" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" constant="102" id="q3J-HF-axJ"/>
+                            <constraint firstAttribute="trailing" secondItem="1c2-gA-Nj3" secondAttribute="trailing" id="qYZ-J2-1gK"/>
+                            <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="CiB-Vc-Oxj" secondAttribute="bottom" id="wxI-F1-Bor"/>
+                            <constraint firstAttribute="trailing" secondItem="CiB-Vc-Oxj" secondAttribute="trailing" id="zLU-9Z-vgg"/>
+                            <constraint firstItem="CiB-Vc-Oxj" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="zsK-Jx-62P"/>
                         </constraints>
                     </view>
                     <connections>

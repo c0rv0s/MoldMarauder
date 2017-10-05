@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
+		0FCB1D4C1F85CCAE006CE351 /* ARScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4A1F85CCAD006CE351 /* ARScene.swift */; };
+		0FCB1D4D1F85CCAE006CE351 /* BlackHole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4B1F85CCAD006CE351 /* BlackHole.swift */; };
+		0FCB1D511F85D059006CE351 /* black_hole_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4E1F85D059006CE351 /* black_hole_hi.wav */; };
+		0FCB1D521F85D059006CE351 /* mold_succ.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4F1F85D059006CE351 /* mold_succ.wav */; };
+		0FCB1D531F85D059006CE351 /* black_hole_bye.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0FCB1D501F85D059006CE351 /* black_hole_bye.wav */; };
 		210F06CE1E94407C006EA0D5 /* achieve.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B21E94407C006EA0D5 /* achieve.wav */; };
 		210F06D01E94407C006EA0D5 /* bad card.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B41E94407C006EA0D5 /* bad card.wav */; };
 		210F06D11E94407C006EA0D5 /* bubble 2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B51E94407C006EA0D5 /* bubble 2.wav */; };
@@ -96,6 +101,11 @@
 
 /* Begin PBXFileReference section */
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
+		0FCB1D4A1F85CCAD006CE351 /* ARScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARScene.swift; sourceTree = "<group>"; };
+		0FCB1D4B1F85CCAD006CE351 /* BlackHole.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackHole.swift; sourceTree = "<group>"; };
+		0FCB1D4E1F85D059006CE351 /* black_hole_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = black_hole_hi.wav; sourceTree = "<group>"; };
+		0FCB1D4F1F85D059006CE351 /* mold_succ.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = mold_succ.wav; sourceTree = "<group>"; };
+		0FCB1D501F85D059006CE351 /* black_hole_bye.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = black_hole_bye.wav; sourceTree = "<group>"; };
 		210F06B21E94407C006EA0D5 /* achieve.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = achieve.wav; sourceTree = "<group>"; };
 		210F06B41E94407C006EA0D5 /* bad card.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bad card.wav"; sourceTree = "<group>"; };
 		210F06B51E94407C006EA0D5 /* bubble 2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble 2.wav"; sourceTree = "<group>"; };
@@ -230,6 +240,9 @@
 		21C16EFB1E4401F4003D109A /* sounds */ = {
 			isa = PBXGroup;
 			children = (
+				0FCB1D501F85D059006CE351 /* black_hole_bye.wav */,
+				0FCB1D4E1F85D059006CE351 /* black_hole_hi.wav */,
+				0FCB1D4F1F85D059006CE351 /* mold_succ.wav */,
 				210F06B21E94407C006EA0D5 /* achieve.wav */,
 				210F06B41E94407C006EA0D5 /* bad card.wav */,
 				210F06B51E94407C006EA0D5 /* bubble 2.wav */,
@@ -267,6 +280,7 @@
 		21C16F041E44F704003D109A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0FCB1D4B1F85CCAD006CE351 /* BlackHole.swift */,
 				21C16EF91E43F6CB003D109A /* Inventory.swift */,
 				21C16EFE1E4408F8003D109A /* Molds.swift */,
 				21F8395C1E4B19E80071B689 /* Breeding Combos.swift */,
@@ -279,6 +293,7 @@
 		21C16F051E44F711003D109A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				0FCB1D4A1F85CCAD006CE351 /* ARScene.swift */,
 				21CB733B1E412FD500DEAF4F /* GameScene.swift */,
 				21C16F021E44F28F003D109A /* MenuScene.swift */,
 				214FB0FD1E7359A200E428AA /* LevelScene.swift */,
@@ -503,10 +518,12 @@
 				210F06E71E94407C006EA0D5 /* snip.wav in Resources */,
 				210F06D51E94407C006EA0D5 /* buzzer.wav in Resources */,
 				210F06F41E9441CD006EA0D5 /* exit.wav in Resources */,
+				0FCB1D511F85D059006CE351 /* black_hole_hi.wav in Resources */,
 				210F06D81E94407C006EA0D5 /* cash register.wav in Resources */,
 				210F06E81E94407C006EA0D5 /* sparkle.mp3 in Resources */,
 				210F06E01E94407C006EA0D5 /* gem collect.wav in Resources */,
 				210F06D31E94407C006EA0D5 /* bubble pop.wav in Resources */,
+				0FCB1D521F85D059006CE351 /* mold_succ.wav in Resources */,
 				210F06E91E94407C006EA0D5 /* worm appear.wav in Resources */,
 				210F06D21E94407C006EA0D5 /* bubble low.wav in Resources */,
 				210F06DB1E94407C006EA0D5 /* dead.wav in Resources */,
@@ -532,6 +549,7 @@
 				21CB73431E412FD500DEAF4F /* Assets.xcassets in Resources */,
 				210F06FC1E9445B0006EA0D5 /* kiss.wav in Resources */,
 				210F06D11E94407C006EA0D5 /* bubble 2.wav in Resources */,
+				0FCB1D531F85D059006CE351 /* black_hole_bye.wav in Resources */,
 				21666A2E1EF1C48A003EF84F /* plinking.wav in Resources */,
 				210F06E41E94407C006EA0D5 /* powerdown.wav in Resources */,
 				21CB73461E412FD500DEAF4F /* LaunchScreen.storyboard in Resources */,
@@ -658,6 +676,7 @@
 				21C16F081E471C37003D109A /* Mold Shop.swift in Sources */,
 				21F8395D1E4B19E80071B689 /* Breeding Combos.swift in Sources */,
 				215B49111E7BCA0D009107DF /* CreditsScene.swift in Sources */,
+				0FCB1D4C1F85CCAE006CE351 /* ARScene.swift in Sources */,
 				21C16F0D1E480FBE003D109A /* SwiftySKScrollView.swift in Sources */,
 				21C16EFA1E43F6CB003D109A /* Inventory.swift in Sources */,
 				21F488ED1E68851700D2785B /* MG Benchmark Tools.swift in Sources */,
@@ -675,6 +694,7 @@
 				21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */,
 				21CB733E1E412FD500DEAF4F /* GameViewController.swift in Sources */,
 				21FCFDD81E5CE6C90042D55A /* ItemShop.swift in Sources */,
+				0FCB1D4D1F85CCAE006CE351 /* BlackHole.swift in Sources */,
 				21CB73361E412FD500DEAF4F /* AppDelegate.swift in Sources */,
 				214A7D771E8E4F8000796E61 /* CircleFit.swift in Sources */,
 				21305B471E615C0A006343A4 /* progress_Bar.swift in Sources */,

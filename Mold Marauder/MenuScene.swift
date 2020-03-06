@@ -27,40 +27,21 @@ class MenuScene: SKScene {
     
 //    rmeber ar state
     var arSwitch = false
-
-    //comet sprites
-    var cometSprite1: SKNode! = nil
-    var cometSprite2: SKNode! = nil
-    var cometTimer: Timer!
     
     var touchHandler: ((String) -> ())?
     
-    var backframes = [SKTexture]()
-    let background = SKSpriteNode(texture: SKTexture(image: UIImage(named: "cyber_menu_glow")!))
-    var cometLayer = SKNode()
+    var background = Background()
+    var cometLayer = CometLayer()
     
     var tutorialLayer = SKNode()
-    
-    let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
-    let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
-    let exitSound = SKAction.playSoundFileNamed("exit.wav", waitForCompletion: false)
     
     override init(size: CGSize) {
         super.init(size: size)
         
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
-        background.size = size
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F2")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F3")!))
-        addChild(background)
-        background.run(SKAction.repeatForever(
-            SKAction.animate(with: backframes,
-                             timePerFrame: 0.15,
-                             resize: false,
-                             restore: true)),
-                       withKey:"background")
+
+        background.start(size: size)
+        addChild(background.background)
         
         addChild(cometLayer)
         
@@ -75,76 +56,9 @@ class MenuScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
+        cometLayer.start(menu: true)
         
-        animateComets()
-        cometTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(animateComets), userInfo: nil, repeats: true)
         arSwitch = false
-    }
-    
-    @objc func animateComets() {
-        let comet = SKTexture(image: UIImage(named: "comet")!)
-        let comet180 = SKTexture(image: UIImage(named: "comet180")!)
-        let cometUp = SKTexture(image: UIImage(named: "cometUp")!)
-        let cometDown = SKTexture(image: UIImage(named: "cometDown")!)
-        
-        //left or right
-        let side = Int(arc4random_uniform(2))
-        let y = randomInRange(lo: Int(self.frame.minY), hi: Int(self.frame.maxY))
-        if side == 1{
-            cometSprite1 = SKSpriteNode(texture:comet)
-            cometSprite1.position = CGPoint(x: -500, y: y)
-            cometLayer.addChild(cometSprite1)
-            
-            let moveHoriz = SKAction.move(to: CGPoint(x: 500,y: y), duration:0.7)
-            cometSprite1.run(moveHoriz)
-            
-            let up = Int(arc4random_uniform(2))
-            let x = randomInRange(lo: Int(self.frame.minX), hi: Int(self.frame.maxX))
-            if up == 1 {
-                cometSprite2 = SKSpriteNode(texture:cometUp)
-                cometSprite2.position = CGPoint(x: x, y: -700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: 700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-            else {
-                cometSprite2 = SKSpriteNode(texture:cometDown)
-                cometSprite2.position = CGPoint(x: x, y: 700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: -700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-            
-        }
-        else {
-            cometSprite1 = SKSpriteNode(texture:comet180)
-            cometSprite1.position = CGPoint(x: 500, y: y)
-            cometLayer.addChild(cometSprite1)
-            
-            let moveHoriz = SKAction.move(to: CGPoint(x: -500,y: y), duration:0.7)
-            cometSprite1.run(moveHoriz)
-            
-            let up = Int(arc4random_uniform(2))
-            let x = randomInRange(lo: Int(self.frame.minX), hi: Int(self.frame.maxX))
-            if up == 1 {
-                cometSprite2 = SKSpriteNode(texture:cometUp)
-                cometSprite2.position = CGPoint(x: x, y: -700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: 700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-            else {
-                cometSprite2 = SKSpriteNode(texture:cometDown)
-                cometSprite2.position = CGPoint(x: x, y: 700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: -700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-        }
     }
     
     func createButton()
@@ -259,7 +173,7 @@ class MenuScene: SKScene {
         reinvestButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-50);
         
         self.addChild(reinvestButton)
-        /*
+        
         //AR button
         Texture = SKTexture(image: UIImage(named: "armodeoff")!)
         arButton = SKSpriteNode(texture: Texture)
@@ -267,7 +181,7 @@ class MenuScene: SKScene {
         arButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
         
         self.addChild(arButton)
- */
+ 
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -347,7 +261,7 @@ class MenuScene: SKScene {
                 handler("reinvest")
             }
         }
-        /*
+        
         if arButton.contains(touchLocation) {
             print("ar")
             if let handler = touchHandler {
@@ -360,7 +274,7 @@ class MenuScene: SKScene {
                 handler("ar")
             }
         }
- */
+ 
     }
     
     //MARK: - TUTORIAL
@@ -472,9 +386,6 @@ class MenuScene: SKScene {
     }
     
     //MARK: - UTILITIES
-    func randomInRange(lo: Int, hi : Int) -> Int {
-        return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
-    }
     
     func playSound(select: String) {
         if mute == false {

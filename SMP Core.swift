@@ -241,7 +241,7 @@ public struct BInt:
 		var sign = false
 		var base: Limbs = [1]
 		var limbs: Limbs = [0]
-		limbs.reserveCapacity(Int(Double(str.characters.count) / 19.2))
+		limbs.reserveCapacity(Int(Double(str.count) / 19.2))
 
 		if str.hasPrefix("-")
 		{
@@ -251,7 +251,7 @@ public struct BInt:
 			sign = str != "0"
 		}
 
-		for char in str.characters.reversed()
+		for char in str.reversed()
 		{
 			if let num = Limb(String(char))
 			{
@@ -2090,13 +2090,13 @@ public struct BDouble:
 
 		if let exp = nStr[Character("e")]
 		{
-			let beforeExp = String(nStr[0..<exp].characters.filter{ $0 != "." })
-			var afterExp = nStr[(exp + 1)..<nStr.characters.count]
+			let beforeExp = String(nStr[0..<exp].filter{ $0 != "." })
+			var afterExp = nStr[(exp + 1)..<nStr.count]
 			var sign = false
 
 			if let neg = afterExp[Character("-")]
 			{
-				afterExp = afterExp[(neg + 1)..<afterExp.characters.count]
+				afterExp = afterExp[(neg + 1)..<afterExp.count]
 				sign = true
 			}
 
@@ -2117,7 +2117,7 @@ public struct BDouble:
 		let i = nStr["."]!
 		let beforePoint = nStr[0..<i]
 
-		let afterPoint = nStr[(i + 1)..<nStr.characters.count]
+		let afterPoint = nStr[(i + 1)..<nStr.count]
 
 		if afterPoint == "0"
 		{
@@ -2125,7 +2125,7 @@ public struct BDouble:
 		}
 		else
 		{
-			let den = ["1"] + [Character](repeating: "0", count: afterPoint.characters.count)
+			let den = ["1"] + [Character](repeating: "0", count: afterPoint.count)
 			self.init(beforePoint + afterPoint, over: String(den))
 		}
 	}
@@ -2341,9 +2341,9 @@ public extension String
 	/// If possible, returns index of first ocurrence of char.
 	subscript(char: Character) -> Int?
 	{
-		if let idx = self.characters.index(of: char)
+		if let idx = self.index(of: char)
 		{
-			return self.characters.distance(from: self.startIndex, to: idx)
+			return self.distance(from: self.startIndex, to: idx)
 		}
 		return nil
 	}

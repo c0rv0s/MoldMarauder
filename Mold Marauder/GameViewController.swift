@@ -15,10 +15,10 @@ import AVFoundation
 import GameKit
 
 //facebook stuf for info/ads
-import FBSDKCoreKit
-import FBSDKLoginKit
-import FBSDKShareKit
-import FBSDKCoreKit.FBSDKAppEvents
+//import FBSDKCoreKit
+//import FBSDKLoginKit
+//import FBSDKShareKit
+//import FBSDKCoreKit.FBSDKAppEvents
 
 class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver,
     GKGameCenterControllerDelegate {
@@ -49,7 +49,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     
     var backgroundMusicPlayer = AVAudioPlayer()
-    var APP_ID = "com.Spacey-Dreams.Mold-Marauder"
+    var APP_ID = "com.Spacey-Dreams.Mold-Marauder-by-Nathan"
     
     var combos: Combos!
     
@@ -73,13 +73,14 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     let LEADERBOARD_ID = "num_molds"
 
     //IAP
-    let TINY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_99_cent_diamond"
-    let SMALL_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_299_cent_diamond"
-    let MEDIUM_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_999_cent_diamond"
-    let LARGE_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_4999_cent_diamond"
-    let STAR_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_star"
-    let DEATH_RAY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_death_ray"
-    let AUTO_TAP_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder.mold_auto_tap"
+    var available = false
+    let TINY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_99_cent_diamond"
+    let SMALL_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_299_cent_diamond"
+    let MEDIUM_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_999_cent_diamond"
+    let LARGE_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_4999_cent_diamond"
+    let STAR_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_star"
+    let DEATH_RAY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_death_ray"
+    let AUTO_TAP_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_auto_tap"
     
     var productID = ""
     var productsRequest = SKProductsRequest()
@@ -218,6 +219,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             cashHeader.font = cashHeader.font.withSize(12)
             cashLabel.font = cashLabel.font.withSize(12)
             break
+        case .iPhoneX:
+            topMargin.constant -= 35
         default:
             break
         }
@@ -229,7 +232,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         //REMOVE
 //        incrementDiamonds(newDiamonds: 500)
 //        inventory.level = 64
-//        incrementCash(pointsToAdd: BInt("99999999999999999999999999"))
+//        incrementCash(pointsToAdd: BInt("9999999999999999999999999999"))
         //inventory.molds.append(Mold(moldType: MoldType.invisible))
         //inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
         //inventory.reinvestmentCount = 8
@@ -399,9 +402,19 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         
         inventory.repelTimer = iCloudKeyStore?.object(forKey: "repelTimer") as! Int
         inventory.xTapAmount = iCloudKeyStore?.object(forKey: "xTapAmount") as! Int
-        inventory.xTapCount = iCloudKeyStore?.object(forKey: "xTapCount") as! Int
+        if (iCloudKeyStore?.object(forKey: "xTapCount") != nil) {
+            inventory.xTapCount = iCloudKeyStore?.object(forKey: "xTapCount") as! Int
+        }
+        else {
+            inventory.xTapCount = 0
+        }
         inventory.spritzAmount = iCloudKeyStore?.object(forKey: "spritzAmount") as! Int
-        inventory.spritzCount = iCloudKeyStore?.object(forKey: "spritzCount") as! Int
+        if (iCloudKeyStore?.object(forKey: "spritzCount") != nil) {
+            inventory.spritzCount = iCloudKeyStore?.object(forKey: "spritzCount") as! Int
+        }
+        else {
+            inventory.spritzCount = 0
+        }
         inventory.background = iCloudKeyStore?.object(forKey: "background") as! String
         inventory.currentQuest = iCloudKeyStore?.object(forKey: "currentQuest") as! String
         inventory.questGoal = iCloudKeyStore?.object(forKey: "questGoal") as! Int
@@ -463,8 +476,10 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             print("under max")
             let multiplier = Int(Double(difference) * 0.06)
             let amount = inventory.scorePerSecond * multiplier
-            incrementCash(pointsToAdd: amount)
-            scene.animateScore(point: scene.center, amount: amount, tap: false, fairy: false, offline: true)
+            if amount > 0 {
+                incrementCash(pointsToAdd: amount)
+                scene.animateScore(point: scene.center, amount: amount, tap: false, fairy: false, offline: true)
+            }
             print("offline earnings: \(amount)")
         }
         //over alloted time
@@ -473,8 +488,10 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             difference = inventory.offlineLevel*1800
             let multiplier = Int(Double(difference) * 0.06)
             let amount = inventory.scorePerSecond * multiplier
-            incrementCash(pointsToAdd: amount)
-            scene.animateScore(point: scene.center, amount: amount, tap: false, fairy: false, offline: true)
+            if amount > 0 {
+                incrementCash(pointsToAdd: amount)
+                scene.animateScore(point: scene.center, amount: amount, tap: false, fairy: false, offline: true)
+            }
             print("offline earnings: \(amount)")
         }
         
@@ -746,7 +763,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             moldShop.mute = inventory.muteSound
             moldShop.playSound(select: "select")
             
@@ -771,7 +788,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             itemShop.mute = inventory.muteSound
             itemShop.playSound(select: "select")
         }
@@ -788,7 +805,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             creditsScene.mute = inventory.muteSound
             creditsScene.playSound(select: "select")
             if inventory.muteSound {
@@ -811,7 +828,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             helpScene.mute = inventory.muteSound
             helpScene.playSound(select: "select")
         }
@@ -831,7 +848,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             questScene.mute = inventory.muteSound
             questScene.playSound(select: "select")
         }
@@ -859,13 +876,13 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             achievements.mute = inventory.muteSound
             achievements.playSound(select: "select")
         }
         if (action == "breed") {
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             breedScene = BreedScene(size: skView.bounds.size)
             breedScene.name = "breedScene"
             breedScene.unlockedMolds = inventory.unlockedMolds
@@ -981,7 +998,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             levelScene.mute = inventory.muteSound
             levelScene.playSound(select: "select")
         }
@@ -1005,7 +1022,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 skView.presentScene(reinvestments)
             }
             menu.cometLayer.removeAllChildren()
-            menu.cometTimer.invalidate()
+            menu.cometLayer.cometTimer.invalidate()
             reinvestments.mute = inventory.muteSound
             reinvestments.playSound(select: "select")
         }
@@ -1049,7 +1066,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if (action == "back") {
             reinvestments.scrollView?.removeFromSuperview()
             reinvestments.cometLayer.removeAllChildren()
-            reinvestments.cometTimer.invalidate()
+            reinvestments.cometLayer.cometTimer.invalidate()
             //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -1097,7 +1114,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             reinvestments.scrollView?.removeFromSuperview()
             reinvestments.cometLayer.removeAllChildren()
-            reinvestments.cometTimer.invalidate()
+            reinvestments.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
             if inventory.level < 3 {
@@ -1142,7 +1159,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if (action == "back") {
             levelScene.scrollView?.removeFromSuperview()
             levelScene.cometLayer.removeAllChildren()
-            levelScene.cometTimer.invalidate()
+            levelScene.cometLayer.cometTimer.invalidate()
             //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -1159,7 +1176,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "level" {
             if (inventory.cash > inventory.levelUpCost) && inventory.level < 75 {
                 inventory.incrementLevel()
-                FBSDKAppEvents.logEvent("level up")
+//                FBSDKAppEvents.logEvent("level up")
                 updateLabels()
                 levelScene.cash = inventory.cash
                 levelScene.currentLevel = inventory.level
@@ -1226,7 +1243,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     incrementDiamonds(newDiamonds: -2)
                 }
                 else {
-                    levelScene.addBuyDiamondsButton()
+                    //levelScene.addBuyDiamondsButton()
                 }
             }
             if inventory.offlineLevel >= 24 && inventory.offlineLevel < 48 {
@@ -1239,7 +1256,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     incrementDiamonds(newDiamonds: -4)
                 }
                 else {
-                    levelScene.addBuyDiamondsButton()
+                    //levelScene.addBuyDiamondsButton()
                 }
             }
             
@@ -1249,7 +1266,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             //this is the godo case
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             levelScene.cometLayer.removeAllChildren()
-            levelScene.cometTimer.invalidate()
+            levelScene.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
             if inventory.level < 3 {
@@ -3206,7 +3223,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             menu.touchHandler = menuHandler
            
             moldShop.cometLayer.removeAllChildren()
-            moldShop.cometTimer.invalidate()
+            moldShop.cometLayer.cometTimer.invalidate()
             if aroff {
                 skView.presentScene(menu)
             }
@@ -3403,7 +3420,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 inventory.molds.append(mold)
                 updateMoldPrices()
                 moldShop.updatePrice(mold: mold)
-                FBSDKAppEvents.logEvent("new mold")
+//                FBSDKAppEvents.logEvent("new mold")
                 if inventory.displayMolds.count < 25 {
                     inventory.displayMolds.append(mold)
                 }
@@ -3466,8 +3483,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 print("current")
 //                calculate if a quest has been achieved
                 print(inventory.currentQuest)
-                if inventory.currentQuest.characters.count > 1 {
-                    if inventory.currentQuest[inventory.currentQuest.characters.count - 1] == "&" {
+                if inventory.currentQuest.count > 1 {
+                    if inventory.currentQuest[inventory.currentQuest.count - 1] == "&" {
                         //let name = inventory.currentQuest.substring(to: inventory.currentQuest.index(before: inventory.currentQuest.endIndex))
                         let name = inventory.currentQuest[..<inventory.currentQuest.index(before: inventory.currentQuest.endIndex)]
                         print("&")
@@ -3509,7 +3526,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             //this is the godo case
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             breedScene.cometLayer.removeAllChildren()
-            breedScene.cometTimer.invalidate()
+            breedScene.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
             if inventory.level < 3 {
@@ -3536,7 +3553,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
         if (action == "back") {
             breedScene.cometLayer.removeAllChildren()
-            breedScene.cometTimer.invalidate()
+            breedScene.cometLayer.cometTimer.invalidate()
             //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -3692,7 +3709,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     breedScene.unlockedMolds = inventory.unlockedMolds
                     //breedScene.animateName(point: breedScene.center, name: (newCombo?.child.name)!, new: 1)
                     
-                    FBSDKAppEvents.logEvent("new breed")
+//                    FBSDKAppEvents.logEvent("new breed")
                     breedScene.playSound(select: "awe")
                     save()
                     breedScene.showNewBreed(breed: (newCombo?.child.moldType)!)
@@ -3746,7 +3763,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
             else {
                 breedScene.animateName(point: breedScene.center, name: "OUT OF DIAMONDS", new: 2)
-                breedScene.addBuyDiamondsButton()
+//                breedScene.addBuyDiamondsButton()
             }
 
         }
@@ -3792,7 +3809,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                                 breedScene.unlockedMolds = inventory.unlockedMolds
                                 //breedScene.animateName(point: breedScene.center, name: combo.child.name, new: 1)
                                 breedScene.playSound(select: "awe")
-                                FBSDKAppEvents.logEvent("new breed")
+//                                FBSDKAppEvents.logEvent("new breed")
                                 save()
                                 
                                 print("tutorial progress")
@@ -3938,7 +3955,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         activateSleepTimer()
         if (action == "back") {
             itemShop.cometLayer.removeAllChildren()
-            itemShop.cometTimer.invalidate()
+            itemShop.cometLayer.cometTimer.invalidate()
             //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -3957,7 +3974,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             //this is the godo case
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             itemShop.cometLayer.removeAllChildren()
-            itemShop.cometTimer.invalidate()
+            itemShop.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
             if inventory.level < 3 {
@@ -4015,7 +4032,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             
         }
         if (action == "premium") {
-            itemShop.cometTimer.invalidate()
+            itemShop.cometLayer.cometTimer.invalidate()
             itemShop.cometLayer.removeAllChildren()
             premiumShop = PremiumShop(size: skView.bounds.size)
             premiumShop.name = "premiumShop"
@@ -4046,7 +4063,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 shiftTimerLabels()
             }
             else {
-                itemShop.addBuyDiamondsButton()
+//                itemShop.addBuyDiamondsButton()
             }
         }
         if action == "spritz" {
@@ -4061,7 +4078,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 scene.animateSpritz()
             }
             else {
-                itemShop.addBuyDiamondsButton()
+//                itemShop.addBuyDiamondsButton()
             }
         }
         if action == "laser" {
@@ -4123,7 +4140,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     cost = BInt("30000000000")
                     break
                 }
-                itemShop.laserCostLabel.text = "Cost: \(itemShop.formatNumber(points: cost))"
+                itemShop.laserCostLabel.text = "Cost: \(formatNumber(points: cost))"
                 
                 switch UIDevice().screenType {
                 case .iPhone4:
@@ -4156,7 +4173,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 incrementDiamonds(newDiamonds: -12)
             }
             else {
-                itemShop.addBuyDiamondsButton()
+//                itemShop.addBuyDiamondsButton()
             }
         }
     }
@@ -4166,7 +4183,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         activateSleepTimer()
         if (action == "back") {
             premiumShop.cometLayer.removeAllChildren()
-            premiumShop.cometTimer.invalidate()
+            premiumShop.cometLayer.cometTimer.invalidate()
             //itemShop = ItemShop(size: skView.bounds.size)
             itemShop.scaleMode = .aspectFill
             itemShop.touchHandler = itemHandler
@@ -4188,7 +4205,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             //this is the godo case
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             premiumShop.cometLayer.removeAllChildren()
-            premiumShop.cometTimer.invalidate()
+            premiumShop.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
             if inventory.level < 3 {
@@ -4220,11 +4237,40 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 premiumShop.playSound(select: "cash register")
             }
             else {
-                premiumShop.addBuyDiamondsButton()
+//                premiumShop.addBuyDiamondsButton()
             }
         }
         if action == "death ray" {
-            purchaseMyProduct(product: iapProducts[5])
+            if inventory.diamonds >= 500 {
+                incrementDiamonds(newDiamonds: -500)
+                inventory.deathRay = true
+                scene.deathRay = true
+                premiumShop.deathRayBought = true
+                premiumShop.playSound(select: "cash register")
+                let Texture = SKTexture(image: UIImage(named: "death ray bought")!)
+                premiumShop.deathRayButton = SKSpriteNode(texture:Texture)
+                premiumShop.deathRayButton.position = CGPoint(x:premiumShop.frame.midX+50, y:premiumShop.frame.midY+170)
+                premiumShop.addChild(premiumShop.deathRayButton)
+                //death ray achievmenet
+                if inventory.achievementsDicc["death ray"] == false {
+                    inventory.achievementsDicc["death ray"] = true
+                    inventory.achieveDiamonds += 5
+                }
+                save()
+            }
+            /*
+            if available {
+               purchaseMyProduct(product: iapProducts[5])
+            }
+            
+            else {
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
+                    // perhaps use action.title here
+                })
+                present(alert, animated: true)
+            }
+ */
         }
         if action == "incubator" {
             if inventory.diamonds >= 6 {
@@ -4274,12 +4320,58 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 }
             }
             else {
-                premiumShop.addBuyDiamondsButton()
+//                premiumShop.addBuyDiamondsButton()
             }
         }
         if action == "auto-tap" {
-            if inventory.autoTapLevel < 5 {
-                purchaseMyProduct(product: iapProducts[4])
+            if inventory.autoTapLevel < 5 && inventory.diamonds >= 200 {
+                incrementDiamonds(newDiamonds: -200)
+                premiumShop.playSound(select: "cash register")
+                if inventory.autoTap == false {
+                    inventory.autoTap = true
+                }
+                inventory.autoTapLevel += 1
+                
+                premiumShop.autoTapBought = inventory.autoTapLevel
+                var Texture = SKTexture(image: UIImage(named: "auto-miner 1")!)
+                print(premiumShop.autoTapBought)
+                if premiumShop.autoTapBought <= 4 {
+                    Texture = SKTexture(image: UIImage(named: "auto-miner \(premiumShop.autoTapBought + 1)")!)
+                }
+                else {
+                    Texture = SKTexture(image: UIImage(named: "auto-miner purchased")!)
+                }
+                premiumShop.autoTapButton.removeFromParent()
+                premiumShop.autoTapButton = SKSpriteNode(texture:Texture)
+                premiumShop.autoTapButton.position = CGPoint(x:premiumShop.frame.midX+50, y:premiumShop.frame.midY+50);
+                premiumShop.addChild(premiumShop.autoTapButton)
+                save()
+                
+                switch UIDevice().screenType {
+                case .iPhone4:
+                    //iPhone 5
+                    premiumShop.autoTapButton.setScale(0.9)
+                    premiumShop.autoTapButton.position = CGPoint(x:premiumShop.frame.midX+50, y:premiumShop.frame.midY)
+                    break
+                case .iPhone5:
+                    //iPhone 5
+                    premiumShop.autoTapButton.setScale(0.9)
+                    premiumShop.autoTapButton.position = CGPoint(x:premiumShop.frame.midX+50, y:premiumShop.frame.midY+30)
+                    break
+                default:
+                    break
+                }
+//                if available {
+//                    purchaseMyProduct(product: iapProducts[4])
+//                }
+//                else {
+//                    let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+//                    alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
+//                        // perhaps use action.title here
+//                    })
+//                    present(alert, animated: true)
+//                }
+                
             }
         }
         if action == "star" {
@@ -4344,7 +4436,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         activateSleepTimer()
         if (action == "back") {
             achievements.cometLayer.removeAllChildren()
-            achievements.cometTimer.invalidate()
+            achievements.cometLayer.cometTimer.invalidate()
            // menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -4380,7 +4472,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         activateSleepTimer()
         if (action == "back") {
             creditsScene.cometLayer.removeAllChildren()
-            creditsScene.cometTimer.invalidate()
+            creditsScene.cometLayer.cometTimer.invalidate()
             //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -4433,7 +4525,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if (action == "back") {
             helpScene.scrollView?.removeFromSuperview()
             helpScene.cometLayer.removeAllChildren()
-            helpScene.cometTimer.invalidate()
+            helpScene.cometLayer.cometTimer.invalidate()
             //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -4454,7 +4546,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         activateSleepTimer()
         if (action == "back") {
             questScene.cometLayer.removeAllChildren()
-            questScene.cometTimer.invalidate()
+            questScene.cometLayer.cometTimer.invalidate()
             menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -4488,7 +4580,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 questScene.createButton()
             }
             else {
-                questScene.addBuyDiamondsButton()
+                //questScene.addBuyDiamondsButton()
             }
         }
         if action == "claim quest" {
@@ -4550,7 +4642,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             //this is the godo case
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             questScene.cometLayer.removeAllChildren()
-            questScene.cometTimer.invalidate()
+            questScene.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
             if inventory.level < 3 {
@@ -5521,7 +5613,10 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         if action == "game_scene_camera" {
-            scene.eventTimer.invalidate()
+            if scene.eventTimer != nil {
+                scene.eventTimer.invalidate()
+            }
+            
             scene.cameraButton.removeFromParent()
             scene.inventoryButton.removeFromParent()
             scene.header.removeFromParent()
@@ -5559,25 +5654,58 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "diamond_tiny" {
             scene.playSound(select: "gem case")
             activateSleepTimer()
-            purchaseMyProduct(product: iapProducts[3])
+            if available {
+                purchaseMyProduct(product: iapProducts[3])
+            }
+            else {
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
+                    // perhaps use action.title here
+                })
+                present(alert, animated: true)
+            }
         }
         if action == "diamond_small" {
             scene.playSound(select: "gem case")
             activateSleepTimer()
-            
-            purchaseMyProduct(product: iapProducts[0])
+            if available {
+                purchaseMyProduct(product: iapProducts[0])
+            }
+            else {
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
+                    // perhaps use action.title here
+                })
+                present(alert, animated: true)
+            }
         }
         if action == "diamond_medium" {
             scene.playSound(select: "gem case")
             activateSleepTimer()
-            
-            purchaseMyProduct(product: iapProducts[2])
+            if available {
+                purchaseMyProduct(product: iapProducts[2])
+            }
+            else {
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
+                    // perhaps use action.title here
+                })
+                present(alert, animated: true)
+            }
         }
         if action == "diamond_large" {
             scene.playSound(select: "chest")
             activateSleepTimer()
-
-            purchaseMyProduct(product: iapProducts[1])
+            if available {
+                purchaseMyProduct(product: iapProducts[1])
+            }
+            else {
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
+                    // perhaps use action.title here
+                })
+                present(alert, animated: true)
+            }
         }
         if action == "increment tutorial worm congrats" {
             inventory.tutorialProgress = 16
@@ -5642,7 +5770,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     //    MARK: - NOT HANDLERS BUT SIMILAIR
     func exitInventory() {
         inventoryScene.cometLayer.removeAllChildren()
-        inventoryScene.cometTimer.invalidate()
+        inventoryScene.cometLayer.cometTimer.invalidate()
         if aroff {
             scene.menuPopUp.size = skView.bounds.size
             let disappear = SKAction.scale(to: 0, duration: 0.2)
@@ -5722,7 +5850,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     func exitMenu() {
         menu.cometLayer.removeAllChildren()
-        menu.cometTimer.invalidate()
+        menu.cometLayer.cometTimer.invalidate()
         //        no ar load as usual
         if aroff {
             if menu.arSwitch {
@@ -6029,9 +6157,16 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     //per second function
     @objc func addCash() {
-        if inventory.scorePerSecond < 0 {
-            inventory.scorePerSecond = 0
+        //hotpatch: delete extra worms
+        
+        if scene.wormLayer.children.count > 0 && scene.wormHP.count == 0 {  
+            scene.wormKill()
         }
+ /*
+        print("worm sprites:",scene.wormLayer.children.count)
+        print("wormhp:",scene.wormHP.count)
+        print("wormtiemrs:",scene.wormChompTimers.count)
+ */
 //        this fixes a bug where your points per second goes negative
         if inventory.scorePerSecond < 0 {
             inventory.scorePerSecond = 0
@@ -6319,12 +6454,12 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     //formats the cash label with proper suffix to stay within 3 digits
     func updateLabels() {
-        var cashString = String(describing: inventory.cash)
-        if (cashString.characters.count < 4) {
+        let cashString = String(describing: inventory.cash)
+        if (cashString.count < 4) {
             cashLabel.text = String(describing: inventory.cash)
         }
         else {
-            let charsCount = cashString.characters.count
+            let charsCount = cashString.count
             var cashDisplayString = cashString[0]
             
             var suffix = ""
@@ -6800,13 +6935,19 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             // Get its price from iTunes Connect
             numberFormatter.locale = seventhProd.priceLocale
             _ = numberFormatter.string(from: seventhProd.price)
+            
+            //set the var
+            available = true
         }
         else {
-            let alert = UIAlertController(title: "Uh-Oh!", message: "Couldn't load items", preferredStyle: UIAlertControllerStyle.alert)
+            available = false
+            /* this get annoying tbh
+            let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
                 // perhaps use action.title here
             })
             present(alert, animated: true)
+ */
         }
     }
     
@@ -6843,19 +6984,19 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                     
                     if productID == TINY_PRODUCT_ID {
-                        incrementDiamonds(newDiamonds: 10)
+                        incrementDiamonds(newDiamonds: 18)
                         save()
                     }
                     else if productID == SMALL_PRODUCT_ID {
-                        incrementDiamonds(newDiamonds: 32)
+                        incrementDiamonds(newDiamonds: 60)
                         save()
                     }
                     else if productID == MEDIUM_PRODUCT_ID {
-                        incrementDiamonds(newDiamonds: 114)
+                        incrementDiamonds(newDiamonds: 200)
                         save()
                     }
                     else if productID == LARGE_PRODUCT_ID {
-                        incrementDiamonds(newDiamonds: 612)
+                        incrementDiamonds(newDiamonds: 1060)
                         save()
                     }
                     else if productID == STAR_PRODUCT_ID {
@@ -7029,6 +7170,7 @@ public extension UIDevice {
         case iPhone5
         case iPhone6
         case iPhone6Plus
+        case iPhoneX
         case Unknown
     }
     var screenType: ScreenType {
@@ -7039,14 +7181,17 @@ public extension UIDevice {
                 print("4")
                 return .iPhone4
             case 1136:
-                print("5")
+                print("5, SE")
                 return .iPhone5
             case 1334:
-                print("6")
+                print("6,7,8")
                 return .iPhone6
             case 2208:
-                print("6+")
+                print("6+,7+,8+")
                 return .iPhone6Plus
+            case 2436:
+                print("X")
+                return .iPhoneX
             default:
                 return .Unknown
             }

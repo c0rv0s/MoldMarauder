@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F1EE98B227D291D0026BF88 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1EE98A227D291D0026BF88 /* Bolts.framework */; };
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
+		0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A42411D02A0014A9BB /* Utils.swift */; };
+		0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A62411D4C60014A9BB /* CometLayer.swift */; };
+		0FC7D0A92411DB0F0014A9BB /* Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A82411DB0F0014A9BB /* Background.swift */; };
 		0FCB1D4C1F85CCAE006CE351 /* ARScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4A1F85CCAD006CE351 /* ARScene.swift */; };
 		0FCB1D4D1F85CCAE006CE351 /* BlackHole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4B1F85CCAD006CE351 /* BlackHole.swift */; };
 		0FCB1D511F85D059006CE351 /* black_hole_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4E1F85D059006CE351 /* black_hole_hi.wav */; };
@@ -46,7 +50,6 @@
 		210F06FC1E9445B0006EA0D5 /* kiss.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06FB1E9445B0006EA0D5 /* kiss.wav */; };
 		21305B471E615C0A006343A4 /* progress_Bar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21305B461E615C0A006343A4 /* progress_Bar.swift */; };
 		214A7D771E8E4F8000796E61 /* CircleFit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214A7D761E8E4F8000796E61 /* CircleFit.swift */; };
-		214DF2B91EC658B3002063F3 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2B81EC658B3002063F3 /* Bolts.framework */; };
 		214DF2BD1EC658CD002063F3 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2BA1EC658CD002063F3 /* FBSDKCoreKit.framework */; };
 		214DF2BE1EC658CD002063F3 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2BB1EC658CD002063F3 /* FBSDKLoginKit.framework */; };
 		214DF2BF1EC658CD002063F3 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 214DF2BC1EC658CD002063F3 /* FBSDKShareKit.framework */; };
@@ -100,7 +103,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F1EE98A227D291D0026BF88 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
+		0FC7D0A42411D02A0014A9BB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		0FC7D0A62411D4C60014A9BB /* CometLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CometLayer.swift; sourceTree = "<group>"; };
+		0FC7D0A82411DB0F0014A9BB /* Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Background.swift; sourceTree = "<group>"; };
 		0FCB1D4A1F85CCAD006CE351 /* ARScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ARScene.swift; sourceTree = "<group>"; };
 		0FCB1D4B1F85CCAD006CE351 /* BlackHole.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackHole.swift; sourceTree = "<group>"; };
 		0FCB1D4E1F85D059006CE351 /* black_hole_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = black_hole_hi.wav; sourceTree = "<group>"; };
@@ -139,7 +146,6 @@
 		210F06FB1E9445B0006EA0D5 /* kiss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = kiss.wav; sourceTree = "<group>"; };
 		21305B461E615C0A006343A4 /* progress_Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = progress_Bar.swift; sourceTree = "<group>"; };
 		214A7D761E8E4F8000796E61 /* CircleFit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleFit.swift; sourceTree = "<group>"; };
-		214DF2B81EC658B3002063F3 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		214DF2BA1EC658CD002063F3 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		214DF2BB1EC658CD002063F3 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		214DF2BC1EC658CD002063F3 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -186,10 +192,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				214DF2B91EC658B3002063F3 /* Bolts.framework in Frameworks */,
 				214DF2BD1EC658CD002063F3 /* FBSDKCoreKit.framework in Frameworks */,
 				214DF2BF1EC658CD002063F3 /* FBSDKShareKit.framework in Frameworks */,
 				214DF2BE1EC658CD002063F3 /* FBSDKLoginKit.framework in Frameworks */,
+				0F1EE98B227D291D0026BF88 /* Bolts.framework in Frameworks */,
 				21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */,
 				21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */,
 			);
@@ -284,6 +290,8 @@
 				21C16EF91E43F6CB003D109A /* Inventory.swift */,
 				21C16EFE1E4408F8003D109A /* Molds.swift */,
 				21F8395C1E4B19E80071B689 /* Breeding Combos.swift */,
+				0FC7D0A62411D4C60014A9BB /* CometLayer.swift */,
+				0FC7D0A82411DB0F0014A9BB /* Background.swift */,
 				21305B461E615C0A006343A4 /* progress_Bar.swift */,
 				214A7D751E8E4F7100796E61 /* circle */,
 			);
@@ -346,6 +354,7 @@
 				21D01DE91E590D8B008184C4 /* Mold Marauder.entitlements */,
 				21CB73351E412FD500DEAF4F /* AppDelegate.swift */,
 				21C16F0C1E480FBE003D109A /* SwiftySKScrollView.swift */,
+				0FC7D0A42411D02A0014A9BB /* Utils.swift */,
 				21C16F041E44F704003D109A /* Models */,
 				21C16F051E44F711003D109A /* Views */,
 				21C16F061E44F731003D109A /* Controllers */,
@@ -376,10 +385,10 @@
 		5B1F86CC0EF7B2FFCA1530CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0F1EE98A227D291D0026BF88 /* Bolts.framework */,
 				214DF2BA1EC658CD002063F3 /* FBSDKCoreKit.framework */,
 				214DF2BB1EC658CD002063F3 /* FBSDKLoginKit.framework */,
 				214DF2BC1EC658CD002063F3 /* FBSDKShareKit.framework */,
-				214DF2B81EC658B3002063F3 /* Bolts.framework */,
 				21D01DEA1E590E14008184C4 /* StoreKit.framework */,
 				21D01DE71E590D85008184C4 /* GameKit.framework */,
 			);
@@ -455,12 +464,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Nathan Mueller";
 				TargetAttributes = {
 					21CB73311E412FD400DEAF4F = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = PLNFCVNGS6;
+						DevelopmentTeam = TCL5NNKKA5;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -480,11 +489,13 @@
 					};
 					21CB734B1E412FD500DEAF4F = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = TCL5NNKKA5;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 21CB73311E412FD400DEAF4F;
 					};
 					21CB73561E412FD500DEAF4F = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = TCL5NNKKA5;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 21CB73311E412FD400DEAF4F;
 					};
@@ -495,6 +506,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -679,6 +691,7 @@
 				0FCB1D4C1F85CCAE006CE351 /* ARScene.swift in Sources */,
 				21C16F0D1E480FBE003D109A /* SwiftySKScrollView.swift in Sources */,
 				21C16EFA1E43F6CB003D109A /* Inventory.swift in Sources */,
+				0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */,
 				21F488ED1E68851700D2785B /* MG Benchmark Tools.swift in Sources */,
 				21F488EE1E68851700D2785B /* SMP Bignum Extensions.swift in Sources */,
 				21F488EC1E68851700D2785B /* MG Basic Math.swift in Sources */,
@@ -692,12 +705,14 @@
 				0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */,
 				21F488F01E68851700D2785B /* SMP String Module.swift in Sources */,
 				21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */,
+				0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */,
 				21CB733E1E412FD500DEAF4F /* GameViewController.swift in Sources */,
 				21FCFDD81E5CE6C90042D55A /* ItemShop.swift in Sources */,
 				0FCB1D4D1F85CCAE006CE351 /* BlackHole.swift in Sources */,
 				21CB73361E412FD500DEAF4F /* AppDelegate.swift in Sources */,
 				214A7D771E8E4F8000796E61 /* CircleFit.swift in Sources */,
 				21305B471E615C0A006343A4 /* progress_Bar.swift in Sources */,
+				0FC7D0A92411DB0F0014A9BB /* Background.swift in Sources */,
 				217E3FD41E677CE800DC2EDB /* Mold Inventory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -764,6 +779,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -771,6 +787,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -797,7 +814,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -820,6 +837,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -827,6 +845,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -847,7 +866,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -861,16 +880,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
-				DEVELOPMENT_TEAM = PLNFCVNGS6;
-				FRAMEWORK_SEARCH_PATHS = "/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0";
+				DEVELOPMENT_TEAM = TCL5NNKKA5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1.2;
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder-by-Nathan";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Desktop/Mold Marauder/Mold Marauder/bridging-header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Documents/Development/mold marauder/bridging-header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -881,16 +904,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
-				DEVELOPMENT_TEAM = PLNFCVNGS6;
-				FRAMEWORK_SEARCH_PATHS = "/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0";
+				DEVELOPMENT_TEAM = TCL5NNKKA5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.1.2;
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder-by-Nathan";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Desktop/Mold Marauder/Mold Marauder/bridging-header.h";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Documents/Development/mold marauder/bridging-header.h";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -901,6 +928,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = TCL5NNKKA5;
 				INFOPLIST_FILE = "Mold MarauderTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderTests";
@@ -915,6 +943,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = TCL5NNKKA5;
 				INFOPLIST_FILE = "Mold MarauderTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderTests";
@@ -928,6 +957,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = TCL5NNKKA5;
 				INFOPLIST_FILE = "Mold MarauderUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderUITests";
@@ -941,6 +971,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				DEVELOPMENT_TEAM = TCL5NNKKA5;
 				INFOPLIST_FILE = "Mold MarauderUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.SpaceyDreams.Mold-MarauderUITests";

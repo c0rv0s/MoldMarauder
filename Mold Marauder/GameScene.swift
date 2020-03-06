@@ -112,32 +112,6 @@ class GameScene: SKScene {
     var background: SKSpriteNode!
     
     var touchHandler: ((String) -> ())?
-    
-    //sounds
-    let blackHoleAppear = SKAction.playSoundFileNamed("black_hole_hi.wav", waitForCompletion: false)
-    let blackHoleBye = SKAction.playSoundFileNamed("black_hole_bye.wav", waitForCompletion: false)
-    let moldSucc = SKAction.playSoundFileNamed("mold_succ.wav", waitForCompletion: false)
-    let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
-    let cardFlipSound = SKAction.playSoundFileNamed("card flip.wav", waitForCompletion: false)
-    let laserSound = SKAction.playSoundFileNamed("laser.wav", waitForCompletion: false)
-    let deadSound = SKAction.playSoundFileNamed("dead.wav", waitForCompletion: false)
-    let kissSound = SKAction.playSoundFileNamed("kiss.wav", waitForCompletion: false)
-    let fightSound = SKAction.playSoundFileNamed("fight sound_mixdown.wav", waitForCompletion: false)
-    let dingSound = SKAction.playSoundFileNamed("ding.wav", waitForCompletion: false)
-    let badCardSound = SKAction.playSoundFileNamed("bad card.wav", waitForCompletion: false)
-    let gemCollectSound = SKAction.playSoundFileNamed("gem collect.wav", waitForCompletion: false)
-    let crunchSound = SKAction.playSoundFileNamed("crunch.wav", waitForCompletion: false)
-    let gemCaseSound = SKAction.playSoundFileNamed("gem case.wav", waitForCompletion: false)
-    let chestSound = SKAction.playSoundFileNamed("chest.wav", waitForCompletion: false)
-    let wormAppearSound = SKAction.playSoundFileNamed("worm appear.wav", waitForCompletion: false)
-    let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
-    let cameraSound = SKAction.playSoundFileNamed("camera.wav", waitForCompletion: false)
-    let exitSound = SKAction.playSoundFileNamed("exit.wav", waitForCompletion: false)
-    let fairySound = SKAction.playSoundFileNamed("sparkle.mp3", waitForCompletion: false)
-    let powerDownSound = SKAction.playSoundFileNamed("powerdown.wav", waitForCompletion: false)
-    let plinkingSound = SKAction.playSoundFileNamed("plinking.wav", waitForCompletion: false)
-    let reinvest = SKAction.playSoundFileNamed("quest complete.wav", waitForCompletion: false)
-    
 
     var animateTimer: Timer!
     
@@ -286,6 +260,15 @@ class GameScene: SKScene {
             diamondBuy.position = CGPoint(x:self.frame.midX-150, y:self.frame.midY+270)
             diamondCLabel.position = CGPoint(x:self.frame.midX-70, y:self.frame.midY+262)
             break
+        case .iPhoneX:
+            header.setScale(0.38)
+            buyButton.setScale(0.9)
+            diamondIcon.setScale(0.8)
+            diamondBuy.setScale(0.9)
+            diamondCLabel.fontSize = 15
+            diamondIcon.position = CGPoint(x:self.frame.midX-110, y:self.frame.midY+270);
+            diamondBuy.position = CGPoint(x:self.frame.midX-142, y:self.frame.midY+270);
+            break
         default:
             break
         }
@@ -293,7 +276,7 @@ class GameScene: SKScene {
         self.addChild(header)
         self.addChild(buyButton)
         self.addChild(diamondIcon)
-        self.addChild(diamondBuy)
+//        self.addChild(diamondBuy)
         self.addChild(diamondCLabel)
         
         //CAMERA
@@ -342,6 +325,10 @@ class GameScene: SKScene {
             wormRepelLabel.setScale(0.75)
             spritzLabel.setScale(0.75)
             xTapLabel.setScale(0.75)
+            break
+        case .iPhoneX:
+            cameraButton.position = CGPoint(x:self.frame.maxX - 60, y:self.frame.minY + 100);
+            inventoryButton.position = CGPoint(x:self.frame.maxX - 60, y:self.frame.minY + 40);
             break
         default:
             break
@@ -402,7 +389,10 @@ class GameScene: SKScene {
             }
             if claimQuestButton != nil {
                 if node == claimQuestButton {
-                    eventTimer.invalidate()
+                    
+                    if eventTimer != nil {
+                        eventTimer.invalidate()
+                    }
                     eventTimer = nil
                     if let handler = touchHandler {
                         handler("claim quest")
@@ -516,6 +506,7 @@ class GameScene: SKScene {
                                                                                      timePerFrame: 0.1,
                                                                                      resize: false,
                                                                                      restore: true), SKAction.removeFromParent()]))
+                                    
                                     
                                     //one in 6 chance to get diamond
                                     let diamondGrab = Int(arc4random_uniform(15))
@@ -658,7 +649,7 @@ class GameScene: SKScene {
             //            if its a mold animate the heart
             
             if node.name != nil {
-                if node.name!.characters.count > 5 {
+                if node.name!.count > 5 {
                     //animate heart
                     var Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
                     let rando = randomInRange(lo: 1, hi: 6)
@@ -720,6 +711,25 @@ class GameScene: SKScene {
                 }
             }
         }
+    }
+    
+    //helper clean up method
+    func wormKill() {
+
+            for worm in wormLayer.children {
+                wormLayer.removeChildren(in: [worm])
+                //animate dead worm
+                let finalFrame = deadFrames[0]
+                let deadPic = SKSpriteNode(texture:finalFrame)
+                deadPic.position = worm.position
+                deadLayer.addChild(deadPic)
+                playSound(select: "dead")
+                deadPic.run(SKAction.sequence([SKAction.animate(with: deadFrames,
+                                                                timePerFrame: 0.1,
+                                                                resize: false,
+                                                                restore: true), SKAction.removeFromParent()]))
+            }
+    
     }
 
     func endRepelTimer() {
@@ -862,7 +872,7 @@ class GameScene: SKScene {
         diamondLayer.addChild(diamondTiny)
         let diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel.fontSize = 20
-        diamondLabel.text = "10 Diamonds"
+        diamondLabel.text = "18 Diamonds"
         diamondLabel.position = CGPoint(x: 30, y: 160)
         diamondLabel.color = UIColor.black
         diamondLayer.addChild(diamondLabel)
@@ -886,7 +896,7 @@ class GameScene: SKScene {
         diamondLayer.addChild(diamondSmall)
         let diamondLabel2 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel2.fontSize = 20
-        diamondLabel2.text = "32 Diamonds"
+        diamondLabel2.text = "60 Diamonds"
         diamondLabel2.position = CGPoint(x: 30, y: 50)
         diamondLabel2.color = UIColor.black
         diamondLayer.addChild(diamondLabel2)
@@ -910,7 +920,7 @@ class GameScene: SKScene {
         diamondLayer.addChild(diamondMedium)
         let diamondLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel3.fontSize = 20
-        diamondLabel3.text = "114 Diamonds"
+        diamondLabel3.text = "200 Diamonds"
         diamondLabel3.position = CGPoint(x: 30, y: -60)
         diamondLabel3.color = UIColor.black
         diamondLayer.addChild(diamondLabel3)
@@ -934,7 +944,7 @@ class GameScene: SKScene {
         diamondLayer.addChild(diamondLarge)
         let diamondLabel4 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel4.fontSize = 16
-        diamondLabel4.text = "612 Diamonds"
+        diamondLabel4.text = "1060 Diamonds"
         diamondLabel4.position = CGPoint(x: 30, y: -170)
         diamondLabel4.color = UIColor.black
         diamondLayer.addChild(diamondLabel4)
@@ -1920,13 +1930,16 @@ class GameScene: SKScene {
             //iPhone 5
             welcomeTitle.setScale(0.7)
             introNode.setScale(0.7)
-            
             break
         case .iPhone5:
             //iPhone 5
             welcomeTitle.setScale(0.9)
             introNode.setScale(0.9)
-            
+            break
+        case .iPhoneX:
+            //iPhone 5
+            welcomeTitle.setScale(0.75)
+            introNode.setScale(0.75)
             break
         default:
             break
@@ -2293,18 +2306,19 @@ class GameScene: SKScene {
         
         switch UIDevice().screenType {
         case .iPhone4:
-            //iPhone 5
-            
+            //iPhone 4
             welcomeTitle4.setScale(0.7)
             welcomeTitle5.setScale(0.7)
-            
             break
         case .iPhone5:
             //iPhone 5
-            
             welcomeTitle4.setScale(0.9)
              welcomeTitle5.setScale(0.9)
-            
+            break
+        case .iPhoneX:
+            //iPhone 4
+            welcomeTitle4.setScale(0.75)
+            welcomeTitle5.setScale(0.75)
             break
         default:
             break
@@ -2485,13 +2499,15 @@ class GameScene: SKScene {
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.succMold()
             }
-            var worms = randomInRange(lo: 0, hi: 4)
-            while worms > 0 {
-                let when = DispatchTime.now() + TimeInterval(randomFloat(min: 0.1, max: 0.85))
-                DispatchQueue.main.asyncAfter(deadline: when) {
-                    self.wormAttack(tutorial: false)
+            if wormRepel == false {
+                var worms = randomInRange(lo: 0, hi: 3)
+                while worms > 0 {
+                    let when = DispatchTime.now() + TimeInterval(randomFloat(min: 0.2, max: 1.4))
+                    DispatchQueue.main.asyncAfter(deadline: when) {
+                        self.wormAttack(tutorial: false)
+                    }
+                    worms -= 1
                 }
-                worms -= 1
             }
         }
         
@@ -2708,149 +2724,6 @@ class GameScene: SKScene {
         }
     }
     
-    //add suffix to long numbers
-    func formatNumber(points: BInt) -> String {
-        var cashString = String(describing: points)
-        if (cashString.characters.count < 4) {
-            return String(describing: points)
-        }
-        else {
-            let charsCount = cashString.characters.count
-            var cashDisplayString = cashString[0]
-            
-            var suffix = ""
-            switch charsCount {
-            case 4:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 5:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 6:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 7:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 8:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 9:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 10:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 11:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 12:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 13:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 14:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 15:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 16:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 17:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 18:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 19:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 20:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 21:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 22:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 23:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 24:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 25:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 26:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 27:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 28:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 29:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 30:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 31:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 32:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 33:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            default:
-                suffix = "D"
-                break
-            }
-            cashDisplayString += " "
-            cashDisplayString += suffix
-            
-            return cashDisplayString
-        }
-    }
-    
     //CARD FLIP STUff
     func flipTile(node : SKSpriteNode, reveal: Bool) {
         let flip = SKAction.scaleY(to: -1, duration: 0.4)
@@ -2904,6 +2777,13 @@ class GameScene: SKScene {
         // Place in scene
         claimQuestButton.position = CGPoint(x:self.frame.minX+65, y:self.frame.minY+60);
         
+        switch UIDevice().screenType {
+        case .iPhoneX:
+            claimQuestButton.position = CGPoint(x:self.frame.minX+80, y:self.frame.minY+60);
+            break
+        default:
+            break
+        }
         self.addChild(claimQuestButton)
         claimQuestButton.run(action2)
     }

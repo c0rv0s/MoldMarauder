@@ -72,31 +72,6 @@ class ARScene: SKScene {
 //    for levels
     var moldName = ""
     
-//    sounds
-    let blackHoleAppear = SKAction.playSoundFileNamed("black_hole_hi.wav", waitForCompletion: false)
-    let blackHoleBye = SKAction.playSoundFileNamed("black_hole_bye.wav", waitForCompletion: false)
-    let moldSucc = SKAction.playSoundFileNamed("mold_succ.wav", waitForCompletion: false)
-    let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
-    let cardFlipSound = SKAction.playSoundFileNamed("card flip.wav", waitForCompletion: false)
-    let laserSound = SKAction.playSoundFileNamed("laser.wav", waitForCompletion: false)
-    let deadSound = SKAction.playSoundFileNamed("dead.wav", waitForCompletion: false)
-    let kissSound = SKAction.playSoundFileNamed("kiss.wav", waitForCompletion: false)
-    let fightSound = SKAction.playSoundFileNamed("fight sound_mixdown.wav", waitForCompletion: false)
-    let dingSound = SKAction.playSoundFileNamed("ding.wav", waitForCompletion: false)
-    let badCardSound = SKAction.playSoundFileNamed("bad card.wav", waitForCompletion: false)
-    let gemCollectSound = SKAction.playSoundFileNamed("gem collect.wav", waitForCompletion: false)
-    let crunchSound = SKAction.playSoundFileNamed("crunch.wav", waitForCompletion: false)
-    let gemCaseSound = SKAction.playSoundFileNamed("gem case.wav", waitForCompletion: false)
-    let chestSound = SKAction.playSoundFileNamed("chest.wav", waitForCompletion: false)
-    let wormAppearSound = SKAction.playSoundFileNamed("worm appear.wav", waitForCompletion: false)
-    let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
-    let cameraSound = SKAction.playSoundFileNamed("camera.wav", waitForCompletion: false)
-    let exitSound = SKAction.playSoundFileNamed("exit.wav", waitForCompletion: false)
-    let fairySound = SKAction.playSoundFileNamed("sparkle.mp3", waitForCompletion: false)
-    let powerDownSound = SKAction.playSoundFileNamed("powerdown.wav", waitForCompletion: false)
-    let plinkingSound = SKAction.playSoundFileNamed("plinking.wav", waitForCompletion: false)
-    let reinvest = SKAction.playSoundFileNamed("quest complete.wav", waitForCompletion: false)
-    
     var touchHandler: ((String) -> ())?
     //    MARK: - init stuff
     
@@ -231,7 +206,7 @@ class ARScene: SKScene {
                 }
             }
             // what if its a mold?
-            if node.name!.characters.count > 5 {
+            if node.name!.count > 5 {
                 print("hey it mold")
                 //animate heart
                 var Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
@@ -301,7 +276,7 @@ class ARScene: SKScene {
             }
             // Check if the node is a worm
             else {
-                if node.name!.characters.count == 1 {
+                if node.name!.count == 1 {
                     print("HIT")
                     let wormNum = Int(node.name!)
                     
@@ -451,9 +426,8 @@ class ARScene: SKScene {
         diamondCLabel.fontSize = 18
         diamondCLabel.name = "naw"
         diamondCLabel.fontColor = UIColor.black
-        if numDiamonds != nil {
-            diamondCLabel.text = String(describing: numDiamonds)
-        }
+        diamondCLabel.text = String(describing: numDiamonds)
+        
         
         diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+262);
         
@@ -1177,9 +1151,5 @@ class ARScene: SKScene {
     
     func randomFloat(min: Float, max: Float) -> Float {
         return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
-    }
-    //get a random integer in this range. used for some stuff
-    func randomInRange(lo: Int, hi : Int) -> Int {
-        return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
     }
 }

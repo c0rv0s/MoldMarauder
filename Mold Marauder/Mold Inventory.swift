@@ -201,7 +201,7 @@ class MoldInventory: SKScene {
     var lastButton : CGPoint!
     
     let gameLayer = SKNode()
-    var cometLayer = SKNode()
+    var cometLayer = CometLayer()
     
     var center:  CGPoint!
     //scrollView
@@ -209,17 +209,7 @@ class MoldInventory: SKScene {
     let moveableNode = SKNode()
     
     //for background animations
-    var backframes = [SKTexture]()
-    let background = SKSpriteNode(texture: SKTexture(image: UIImage(named: "cyber_menu_glow")!))
-    //comet sprites
-    var cometSprite1: SKNode! = nil
-    var cometSprite2: SKNode! = nil
-    var cometTimer: Timer!
-    
-    let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
-    let addSound = SKAction.playSoundFileNamed("bubble 2.wav", waitForCompletion: false)
-    let snipSound = SKAction.playSoundFileNamed("snip.wav", waitForCompletion: false)
-    let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
+    var background = Background()
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -229,17 +219,9 @@ class MoldInventory: SKScene {
         
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
-        background.size = size
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F2")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F3")!))
-        addChild(background)
-        background.run(SKAction.repeatForever(
-            SKAction.animate(with: backframes,
-                             timePerFrame: 0.15,
-                             resize: false,
-                             restore: true)),
-                       withKey:"background")
+        background.start(size: size)
+        addChild(background.background)
+        
         addChild(cometLayer)
         
         let _ = SKLabelNode(fontNamed: "Lemondrop")
@@ -252,8 +234,7 @@ class MoldInventory: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        animateComets()
-        cometTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(animateComets), userInfo: nil, repeats: true)
+        cometLayer.start(menu: false)
         
         createButton()
         erectScroll()
@@ -261,6 +242,7 @@ class MoldInventory: SKScene {
     
     func erectScroll() {
         //let pages = ceil(Double(unlockedMolds.count) / 2.0)
+        /*
         var count = 0
         if ownedMolds != nil {
             for mold in unlockedMolds {
@@ -271,8 +253,8 @@ class MoldInventory: SKScene {
                     count += 1
                 }
             }
-        }
-        let height = count * 95
+        }*/
+        let height = 100 + (ownedMolds.count * 95)
         //addNode
         addChild(moveableNode)
         //set up the scrollView
@@ -2325,75 +2307,5 @@ class MoldInventory: SKScene {
         let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: Y), duration: 3)
         moveAction.timingMode = .easeOut
         scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
-    }
-    
-    @objc func animateComets() {
-        let comet = SKTexture(image: UIImage(named: "comet")!)
-        let comet180 = SKTexture(image: UIImage(named: "comet180")!)
-        let cometUp = SKTexture(image: UIImage(named: "cometUp")!)
-        let cometDown = SKTexture(image: UIImage(named: "cometDown")!)
-        
-        //left or right
-        let side = Int(arc4random_uniform(2))
-        let y = randomInRange(lo: Int(self.frame.minY), hi: Int(self.frame.maxY))
-        if side == 1{
-            cometSprite1 = SKSpriteNode(texture:comet)
-            cometSprite1.position = CGPoint(x: -500, y: y)
-            cometLayer.addChild(cometSprite1)
-            
-            let moveHoriz = SKAction.move(to: CGPoint(x: 500,y: y), duration:0.7)
-            cometSprite1.run(moveHoriz)
-            
-            let up = Int(arc4random_uniform(2))
-            let x = randomInRange(lo: Int(self.frame.minX), hi: Int(self.frame.maxX))
-            if up == 1 {
-                cometSprite2 = SKSpriteNode(texture:cometUp)
-                cometSprite2.position = CGPoint(x: x, y: -700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: 700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-            else {
-                cometSprite2 = SKSpriteNode(texture:cometDown)
-                cometSprite2.position = CGPoint(x: x, y: 700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: -700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-            
-        }
-        else {
-            cometSprite1 = SKSpriteNode(texture:comet180)
-            cometSprite1.position = CGPoint(x: 500, y: y)
-            cometLayer.addChild(cometSprite1)
-            
-            let moveHoriz = SKAction.move(to: CGPoint(x: -500,y: y), duration:0.7)
-            cometSprite1.run(moveHoriz)
-            
-            let up = Int(arc4random_uniform(2))
-            let x = randomInRange(lo: Int(self.frame.minX), hi: Int(self.frame.maxX))
-            if up == 1 {
-                cometSprite2 = SKSpriteNode(texture:cometUp)
-                cometSprite2.position = CGPoint(x: x, y: -700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: 700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-            else {
-                cometSprite2 = SKSpriteNode(texture:cometDown)
-                cometSprite2.position = CGPoint(x: x, y: 700)
-                cometLayer.addChild(cometSprite2)
-                
-                let moveVert = SKAction.move(to: CGPoint(x: x,y: -700), duration:0.9)
-                cometSprite2.run(SKAction.sequence([moveVert, SKAction.removeFromParent()]))
-            }
-        }
-    }
-    
-    func randomInRange(lo: Int, hi : Int) -> Int {
-        return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
     }
 }

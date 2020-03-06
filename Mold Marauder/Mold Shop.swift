@@ -71,7 +71,7 @@ class MoldShop: SKScene {
     let gameLayer = SKNode()
     var point = CGPoint()
     
-    var cometLayer = SKNode()
+    var cometLayer = CometLayer()
     
     var tutorialLayer = SKNode()
     
@@ -85,33 +85,16 @@ class MoldShop: SKScene {
     var touchHandler: ((String) -> ())?
     
     //for background animations
-    var backframes = [SKTexture]()
-    let background = SKSpriteNode(texture: SKTexture(image: UIImage(named: "cyber_menu_glow")!))
-    //comet sprites
-    var cometSprite: SKNode! = nil
-    var cometSprite2: SKNode! = nil
-    var cometTimer: Timer!
-    
-    let levelUpSound = SKAction.playSoundFileNamed("Ka-Ching.wav", waitForCompletion: false)
-    let selectSound = SKAction.playSoundFileNamed("select.wav", waitForCompletion: false)
-    let buzzerSound = SKAction.playSoundFileNamed("buzzer.wav", waitForCompletion: false)
-    
+    var background = Background()
+
     override init(size: CGSize) {
         super.init(size: size)
         blockedMolds = []
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
-        background.size = size
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F2")!))
-        backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F3")!))
-        addChild(background)
-        background.run(SKAction.repeatForever(
-            SKAction.animate(with: backframes,
-                             timePerFrame: 0.15,
-                             resize: false,
-                             restore: true)),
-                       withKey:"background")
+        background.start(size: size)
+        addChild(background.background)
+        
         addChild(cometLayer)
         
         addChild(gameLayer)
@@ -124,8 +107,7 @@ class MoldShop: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        animateComets()
-        cometTimer = Timer.scheduledTimer(timeInterval: 0.6, target: self, selector: #selector(animateComets), userInfo: nil, repeats: true)
+        cometLayer.start(menu: false)
         erectScroll()
     }
     
@@ -2116,226 +2098,5 @@ class MoldShop: SKScene {
             return false
         }
         
-    }
-    
-    @objc func animateComets() {
-        let comet = SKTexture(image: UIImage(named: "comet")!)
-        let comet180 = SKTexture(image: UIImage(named: "comet180")!)
-        let cometUp = SKTexture(image: UIImage(named: "cometUp")!)
-        let cometDown = SKTexture(image: UIImage(named: "cometDown")!)
-        
-        //left or right
-        let side = Int(arc4random_uniform(4))
-        let y = randomInRange(lo: Int(self.frame.minY), hi: Int(self.frame.maxY))
-        let x = randomInRange(lo: Int(self.frame.minX), hi: Int(self.frame.maxX))
-        if side == 1{
-            cometSprite = SKSpriteNode(texture:comet)
-            cometSprite.position = CGPoint(x: -500, y: y)
-            cometLayer.addChild(cometSprite)
-            
-            let moveOne = SKAction.move(to: CGPoint(x: 500,y: y), duration:0.6)
-            cometSprite.run(SKAction.sequence([moveOne]))
-            
-            cometSprite2 = SKSpriteNode(texture:comet)
-            cometSprite2.position = CGPoint(x: -500, y: y + 30)
-            cometLayer.addChild(cometSprite2)
-            
-            let moveTwo = SKAction.move(to: CGPoint(x: 500,y: y + 30), duration:0.6)
-            cometSprite2.run(SKAction.sequence([moveTwo]))
-            
-        }
-        if side == 2 {
-            cometSprite = SKSpriteNode(texture:cometUp)
-            cometSprite.position = CGPoint(x: x, y: -700)
-            cometLayer.addChild(cometSprite)
-            
-            let moveOne = SKAction.move(to: CGPoint(x: x,y: 700), duration:0.8)
-            cometSprite.run(SKAction.sequence([moveOne]))
-            
-            cometSprite2 = SKSpriteNode(texture:cometUp)
-            cometSprite2.position = CGPoint(x: x + 30, y: -700)
-            cometLayer.addChild(cometSprite2)
-            
-            let moveTwo = SKAction.move(to: CGPoint(x: x + 30,y: 700), duration:0.8)
-            cometSprite2.run(SKAction.sequence([moveTwo]))
-        }
-        if side == 3 {
-            cometSprite = SKSpriteNode(texture:cometDown)
-            cometSprite.position = CGPoint(x: x, y: 700)
-            cometLayer.addChild(cometSprite)
-            
-            let moveOne = SKAction.move(to: CGPoint(x: x,y: -700), duration:0.8)
-            cometSprite.run(SKAction.sequence([moveOne]))
-            
-            cometSprite2 = SKSpriteNode(texture:cometDown)
-            cometSprite2.position = CGPoint(x: x - 30, y: 700)
-            cometLayer.addChild(cometSprite2)
-            
-            let moveTwo = SKAction.move(to: CGPoint(x: x - 30,y: -700), duration:0.8)
-            cometSprite2.run(SKAction.sequence([moveTwo]))
-        }
-        else {
-            cometSprite = SKSpriteNode(texture:comet180)
-            cometSprite.position = CGPoint(x: 500, y: y)
-            cometLayer.addChild(cometSprite)
-            
-            let moveOne = SKAction.move(to: CGPoint(x: -500,y: y), duration:0.6)
-            cometSprite.run(SKAction.sequence([moveOne]))
-            
-            cometSprite2 = SKSpriteNode(texture:comet180)
-            cometSprite2.position = CGPoint(x: 500, y: y - 30)
-            cometLayer.addChild(cometSprite2)
-            
-            let moveTwo = SKAction.move(to: CGPoint(x: -500,y: y - 30), duration:0.6)
-            cometSprite2.run(SKAction.sequence([moveTwo]))
-        }
-        
-    }
-    
-    func randomInRange(lo: Int, hi : Int) -> Int {
-        return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
-    }
-    
-    //add suffix to long numbers
-    func formatNumber(points: BInt) -> String {
-        var cashString = String(describing: points)
-        if (cashString.characters.count < 4) {
-            return String(describing: points)
-        }
-        else {
-            let charsCount = cashString.characters.count
-            var cashDisplayString = cashString[0]
-            
-            var suffix = ""
-            switch charsCount {
-            case 4:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 5:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 6:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 7:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 8:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 9:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 10:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 11:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 12:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 13:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 14:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 15:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 16:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 17:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 18:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 19:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 20:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 21:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 22:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 23:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 24:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 25:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 26:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 27:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 28:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 29:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 30:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            case 31:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + "." + cashString[1]
-                break
-            case 32:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-                break
-            case 33:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-                break
-            default:
-                suffix = "D"
-                break
-            }
-            cashDisplayString += " "
-            cashDisplayString += suffix
-            
-            return cashDisplayString
-        }
     }
 }

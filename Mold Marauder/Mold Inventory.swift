@@ -11,185 +11,185 @@ class MoldInventory: SKScene {
     var mute = false
     
     //molds to combine
-    var slimeButton: SKNode! = nil
-    var slimePlus: SKNode! = nil
-    var slimeMinus: SKNode! = nil
-    var slimeLabel: SKLabelNode! = nil
-    var caveButton: SKNode! = nil
-    var cavePlus: SKNode! = nil
-    var caveMinus: SKNode! = nil
-    var caveLabel: SKLabelNode! = nil
-    var sadButton: SKNode! = nil
-    var sadPlus: SKNode! = nil
-    var sadMinus: SKNode! = nil
-    var sadLabel: SKLabelNode! = nil
-    var angryButton: SKNode! = nil
-    var angryPlus: SKNode! = nil
-    var angryMinus: SKNode! = nil
-    var angryLabel: SKLabelNode! = nil
-    var alienButton: SKNode! = nil
-    var alienPlus: SKNode! = nil
-    var alienMinus: SKNode! = nil
-    var alienLabel: SKLabelNode! = nil
-    var pimplyButton: SKNode! = nil
-    var pimplyPlus: SKNode! = nil
-    var pimplyMinus: SKNode! = nil
-    var pimplyLabel: SKLabelNode! = nil
-    var freckledButton: SKNode! = nil
-    var freckledPlus: SKNode! = nil
-    var freckledMinus: SKNode! = nil
-    var freckledLabel: SKLabelNode! = nil
-    var hypnoButton: SKNode! = nil
-    var hypnoPlus: SKNode! = nil
-    var hypnoMinus: SKNode! = nil
-    var hypnoLabel: SKLabelNode! = nil
-    var rainbowButton: SKNode! = nil
-    var rainbowPlus: SKNode! = nil
-    var rainbowMinus: SKNode! = nil
-    var rainbowLabel: SKLabelNode! = nil
-    var aluminumButton: SKNode! = nil
-    var aluminumPlus: SKNode! = nil
-    var aluminumMinus: SKNode! = nil
-    var aluminumLabel: SKLabelNode! = nil
-    var circuitButton: SKNode! = nil
-    var circuitPlus: SKNode! = nil
-    var circuitMinus: SKNode! = nil
-    var circuitLabel: SKLabelNode! = nil
-    var hologramButton: SKNode! = nil
-    var hologramPlus: SKNode! = nil
-    var hologramMinus: SKNode! = nil
-    var hologramLabel: SKLabelNode! = nil
-    var stormButton: SKNode! = nil
-    var stormPlus: SKNode! = nil
-    var stormMinus: SKNode! = nil
-    var stormLabel: SKLabelNode! = nil
-    var bacteriaButton: SKNode! = nil
-    var bacteriaPlus: SKNode! = nil
-    var bacteriaMinus: SKNode! = nil
-    var bacteriaLabel: SKLabelNode! = nil
-    var virusButton: SKNode! = nil
-    var virusPlus: SKNode! = nil
-    var virusMinus: SKNode! = nil
-    var virusLabel: SKLabelNode! = nil
-    var flowerButton: SKNode! = nil
-    var flowerPlus: SKNode! = nil
-    var flowerMinus: SKNode! = nil
-    var flowerLabel: SKLabelNode! = nil
-    var beeButton: SKNode! = nil
-    var beePlus: SKNode! = nil
-    var beeMinus: SKNode! = nil
-    var beeLabel: SKLabelNode! = nil
-    var xButton: SKNode! = nil
-    var xPlus: SKNode! = nil
-    var xMinus: SKNode! = nil
-    var xLabel: SKLabelNode! = nil
-    var disaffectedButton: SKNode! = nil
-    var disaffectedPlus: SKNode! = nil
-    var disaffectedMinus: SKNode! = nil
-    var disaffectedLabel: SKLabelNode! = nil
-    var oliveButton: SKNode! = nil
-    var olivePlus: SKNode! = nil
-    var oliveMinus: SKNode! = nil
-    var oliveLabel: SKLabelNode! = nil
-    var coconutButton: SKNode! = nil
-    var coconutPlus: SKNode! = nil
-    var coconutMinus: SKNode! = nil
-    var coconutLabel: SKLabelNode! = nil
-    var sickButton: SKNode! = nil
-    var sickPlus: SKNode! = nil
-    var sickMinus: SKNode! = nil
-    var sickLabel: SKLabelNode! = nil
-    var deadButton: SKNode! = nil
-    var deadPlus: SKNode! = nil
-    var deadMinus: SKNode! = nil
-    var deadLabel: SKLabelNode! = nil
-    var zombieButton: SKNode! = nil
-    var zombiePlus: SKNode! = nil
-    var zombieMinus: SKNode! = nil
-    var zombieLabel: SKLabelNode! = nil
-    var rockButton: SKNode! = nil
-    var rockPlus: SKNode! = nil
-    var rockMinus: SKNode! = nil
-    var rockLabel: SKLabelNode! = nil
-    var cloudButton: SKNode! = nil
-    var cloudPlus: SKNode! = nil
-    var cloudMinus: SKNode! = nil
-    var cloudLabel: SKLabelNode! = nil
-    var waterButton: SKNode! = nil
-    var waterPlus: SKNode! = nil
-    var waterMinus: SKNode! = nil
-    var waterLabel: SKLabelNode! = nil
-    var crystalButton: SKNode! = nil
-    var crystalPlus: SKNode! = nil
-    var crystalMinus: SKNode! = nil
-    var crystalLabel: SKLabelNode! = nil
-    var nuclearButton: SKNode! = nil
-    var nuclearPlus: SKNode! = nil
-    var nuclearMinus: SKNode! = nil
-    var nuclearLabel: SKLabelNode! = nil
-    var astronautButton: SKNode! = nil
-    var astronautPlus: SKNode! = nil
-    var astronautMinus: SKNode! = nil
-    var astronautLabel: SKLabelNode! = nil
-    var sandButton: SKNode! = nil
-    var sandPlus: SKNode! = nil
-    var sandMinus: SKNode! = nil
-    var sandLabel: SKLabelNode! = nil
-    var glassButton: SKNode! = nil
-    var glassPlus: SKNode! = nil
-    var glassMinus: SKNode! = nil
-    var glassLabel: SKLabelNode! = nil
-    var coffeeButton: SKNode! = nil
-    var coffeePlus: SKNode! = nil
-    var coffeeMinus: SKNode! = nil
-    var coffeeLabel: SKLabelNode! = nil
-    var slinkyButton: SKNode! = nil
-    var slinkyPlus: SKNode! = nil
-    var slinkyMinus: SKNode! = nil
-    var slinkyLabel: SKLabelNode! = nil
-    var magmaButton: SKNode! = nil
-    var magmaPlus: SKNode! = nil
-    var magmaMinus: SKNode! = nil
-    var magmaLabel: SKLabelNode! = nil
-    var samuraiButton: SKNode! = nil
-    var samuraiPlus: SKNode! = nil
-    var samuraiMinus: SKNode! = nil
-    var samuraiLabel: SKLabelNode! = nil
-    var orangeButton: SKNode! = nil
-    var orangePlus: SKNode! = nil
-    var orangeMinus: SKNode! = nil
-    var orangeLabel: SKLabelNode! = nil
-    var strawberryButton: SKNode! = nil
-    var strawberryPlus: SKNode! = nil
-    var strawberryMinus: SKNode! = nil
-    var strawberryLabel: SKLabelNode! = nil
-    var tshirtButton: SKNode! = nil
-    var tshirtPlus: SKNode! = nil
-    var tshirtMinus: SKNode! = nil
-    var tshirtLabel: SKLabelNode! = nil
-    var cryptidButton: SKNode! = nil
-    var cryptidPlus: SKNode! = nil
-    var cryptidMinus: SKNode! = nil
-    var cryptidLabel: SKLabelNode! = nil
-    var angelButton: SKNode! = nil
-    var angelPlus: SKNode! = nil
-    var angelMinus: SKNode! = nil
-    var angelLabel: SKLabelNode! = nil
-    var invisibleButton: SKNode! = nil
-    var invisiblePlus: SKNode! = nil
-    var invisibleMinus: SKNode! = nil
-    var invisibleLabel: SKLabelNode! = nil
-    var starButton: SKNode! = nil
-    var starPlus: SKNode! = nil
-    var starMinus: SKNode! = nil
-    var starLabel: SKLabelNode! = nil
+    var slimeButton: SKNode!
+    var slimePlus: SKNode!
+    var slimeMinus: SKNode!
+    var slimeLabel: SKLabelNode!
+    var caveButton: SKNode!
+    var cavePlus: SKNode!
+    var caveMinus: SKNode!
+    var caveLabel: SKLabelNode!
+    var sadButton: SKNode!
+    var sadPlus: SKNode!
+    var sadMinus: SKNode!
+    var sadLabel: SKLabelNode!
+    var angryButton: SKNode!
+    var angryPlus: SKNode!
+    var angryMinus: SKNode!
+    var angryLabel: SKLabelNode!
+    var alienButton: SKNode!
+    var alienPlus: SKNode!
+    var alienMinus: SKNode!
+    var alienLabel: SKLabelNode!
+    var pimplyButton: SKNode!
+    var pimplyPlus: SKNode!
+    var pimplyMinus: SKNode!
+    var pimplyLabel: SKLabelNode!
+    var freckledButton: SKNode!
+    var freckledPlus: SKNode!
+    var freckledMinus: SKNode!
+    var freckledLabel: SKLabelNode!
+    var hypnoButton: SKNode!
+    var hypnoPlus: SKNode!
+    var hypnoMinus: SKNode!
+    var hypnoLabel: SKLabelNode!
+    var rainbowButton: SKNode!
+    var rainbowPlus: SKNode!
+    var rainbowMinus: SKNode!
+    var rainbowLabel: SKLabelNode!
+    var aluminumButton: SKNode!
+    var aluminumPlus: SKNode!
+    var aluminumMinus: SKNode!
+    var aluminumLabel: SKLabelNode!
+    var circuitButton: SKNode!
+    var circuitPlus: SKNode!
+    var circuitMinus: SKNode!
+    var circuitLabel: SKLabelNode!
+    var hologramButton: SKNode!
+    var hologramPlus: SKNode!
+    var hologramMinus: SKNode!
+    var hologramLabel: SKLabelNode!
+    var stormButton: SKNode!
+    var stormPlus: SKNode!
+    var stormMinus: SKNode!
+    var stormLabel: SKLabelNode!
+    var bacteriaButton: SKNode!
+    var bacteriaPlus: SKNode!
+    var bacteriaMinus: SKNode!
+    var bacteriaLabel: SKLabelNode!
+    var virusButton: SKNode!
+    var virusPlus: SKNode!
+    var virusMinus: SKNode!
+    var virusLabel: SKLabelNode!
+    var flowerButton: SKNode!
+    var flowerPlus: SKNode!
+    var flowerMinus: SKNode!
+    var flowerLabel: SKLabelNode!
+    var beeButton: SKNode!
+    var beePlus: SKNode!
+    var beeMinus: SKNode!
+    var beeLabel: SKLabelNode!
+    var xButton: SKNode!
+    var xPlus: SKNode!
+    var xMinus: SKNode!
+    var xLabel: SKLabelNode!
+    var disaffectedButton: SKNode!
+    var disaffectedPlus: SKNode!
+    var disaffectedMinus: SKNode!
+    var disaffectedLabel: SKLabelNode!
+    var oliveButton: SKNode!
+    var olivePlus: SKNode!
+    var oliveMinus: SKNode!
+    var oliveLabel: SKLabelNode!
+    var coconutButton: SKNode!
+    var coconutPlus: SKNode!
+    var coconutMinus: SKNode!
+    var coconutLabel: SKLabelNode!
+    var sickButton: SKNode!
+    var sickPlus: SKNode!
+    var sickMinus: SKNode!
+    var sickLabel: SKLabelNode!
+    var deadButton: SKNode!
+    var deadPlus: SKNode!
+    var deadMinus: SKNode!
+    var deadLabel: SKLabelNode!
+    var zombieButton: SKNode!
+    var zombiePlus: SKNode!
+    var zombieMinus: SKNode!
+    var zombieLabel: SKLabelNode!
+    var rockButton: SKNode!
+    var rockPlus: SKNode!
+    var rockMinus: SKNode!
+    var rockLabel: SKLabelNode!
+    var cloudButton: SKNode!
+    var cloudPlus: SKNode!
+    var cloudMinus: SKNode!
+    var cloudLabel: SKLabelNode!
+    var waterButton: SKNode!
+    var waterPlus: SKNode!
+    var waterMinus: SKNode!
+    var waterLabel: SKLabelNode!
+    var crystalButton: SKNode!
+    var crystalPlus: SKNode!
+    var crystalMinus: SKNode!
+    var crystalLabel: SKLabelNode!
+    var nuclearButton: SKNode!
+    var nuclearPlus: SKNode!
+    var nuclearMinus: SKNode!
+    var nuclearLabel: SKLabelNode!
+    var astronautButton: SKNode!
+    var astronautPlus: SKNode!
+    var astronautMinus: SKNode!
+    var astronautLabel: SKLabelNode!
+    var sandButton: SKNode!
+    var sandPlus: SKNode!
+    var sandMinus: SKNode!
+    var sandLabel: SKLabelNode!
+    var glassButton: SKNode!
+    var glassPlus: SKNode!
+    var glassMinus: SKNode!
+    var glassLabel: SKLabelNode!
+    var coffeeButton: SKNode!
+    var coffeePlus: SKNode!
+    var coffeeMinus: SKNode!
+    var coffeeLabel: SKLabelNode!
+    var slinkyButton: SKNode!
+    var slinkyPlus: SKNode!
+    var slinkyMinus: SKNode!
+    var slinkyLabel: SKLabelNode!
+    var magmaButton: SKNode!
+    var magmaPlus: SKNode!
+    var magmaMinus: SKNode!
+    var magmaLabel: SKLabelNode!
+    var samuraiButton: SKNode!
+    var samuraiPlus: SKNode!
+    var samuraiMinus: SKNode!
+    var samuraiLabel: SKLabelNode!
+    var orangeButton: SKNode!
+    var orangePlus: SKNode!
+    var orangeMinus: SKNode!
+    var orangeLabel: SKLabelNode!
+    var strawberryButton: SKNode!
+    var strawberryPlus: SKNode!
+    var strawberryMinus: SKNode!
+    var strawberryLabel: SKLabelNode!
+    var tshirtButton: SKNode!
+    var tshirtPlus: SKNode!
+    var tshirtMinus: SKNode!
+    var tshirtLabel: SKLabelNode!
+    var cryptidButton: SKNode!
+    var cryptidPlus: SKNode!
+    var cryptidMinus: SKNode!
+    var cryptidLabel: SKLabelNode!
+    var angelButton: SKNode!
+    var angelPlus: SKNode!
+    var angelMinus: SKNode!
+    var angelLabel: SKLabelNode!
+    var invisibleButton: SKNode!
+    var invisiblePlus: SKNode!
+    var invisibleMinus: SKNode!
+    var invisibleLabel: SKLabelNode!
+    var starButton: SKNode!
+    var starPlus: SKNode!
+    var starMinus: SKNode!
+    var starLabel: SKLabelNode!
     
-    var totalLabel: SKLabelNode! = nil
+    var totalLabel: SKLabelNode!
     var totalNum = 0
     
     //other things
-    var backButton: SKNode! = nil
-    var clearButton: SKNode! = nil
+    var backButton: SKNode!
+    var clearButton: SKNode!
     
     var touchHandler: ((String) -> ())?
     

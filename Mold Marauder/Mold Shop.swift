@@ -10,51 +10,51 @@ import SpriteKit
 class MoldShop: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
+    var backButton: SKNode!
     
     //molds to buy
-    var slimeButton: SKNode! = nil
-    var caveButton: SKNode! = nil
-    var sadButton: SKNode! = nil
-    var angryButton: SKNode! = nil
-    var alienButton: SKNode! = nil
-    var pimplyButton: SKNode! = nil
-    var freckledButton: SKNode! = nil
-    var hypnoButton: SKNode! = nil
-    var rainbowButton: SKNode! = nil
-    var aluminumButton: SKNode! = nil
-    var circuitButton: SKNode! = nil
-    var hologramButton: SKNode! = nil
-    var stormButton: SKNode! = nil
-    var bacteriaButton: SKNode! = nil
-    var virusButton: SKNode! = nil
-    var flowerButton: SKNode! = nil
-    var beeButton: SKNode! = nil
-    var xButton: SKNode! = nil
-    var disaffectedButton: SKNode! = nil
-    var oliveButton: SKNode! = nil
-    var coconutButton: SKNode! = nil
-    var sickButton: SKNode! = nil
-    var deadButton: SKNode! = nil
-    var zombieButton: SKNode! = nil
-    var cloudButton: SKNode! = nil
-    var rockButton: SKNode! = nil
-    var waterButton: SKNode! = nil
-    var crystalButton: SKNode! = nil
-    var nuclearButton: SKNode! = nil
-    var astronautButton: SKNode! = nil
-    var sandButton: SKNode! = nil
-    var glassButton: SKNode! = nil
-    var coffeeButton: SKNode! = nil
-    var slinkyButton: SKNode! = nil
-    var magmaButton: SKNode! = nil
-    var samuraiButton: SKNode! = nil
-    var orangeButton: SKNode! = nil
-    var strawberryButton: SKNode! = nil
-    var tshirtButton: SKNode! = nil
-    var cryptidButton: SKNode! = nil
-    var angelButton: SKNode! = nil
-    var invisibleButton: SKNode! = nil
+    var slimeButton: SKNode!
+    var caveButton: SKNode!
+    var sadButton: SKNode!
+    var angryButton: SKNode!
+    var alienButton: SKNode!
+    var pimplyButton: SKNode!
+    var freckledButton: SKNode!
+    var hypnoButton: SKNode!
+    var rainbowButton: SKNode!
+    var aluminumButton: SKNode!
+    var circuitButton: SKNode!
+    var hologramButton: SKNode!
+    var stormButton: SKNode!
+    var bacteriaButton: SKNode!
+    var virusButton: SKNode!
+    var flowerButton: SKNode!
+    var beeButton: SKNode!
+    var xButton: SKNode!
+    var disaffectedButton: SKNode!
+    var oliveButton: SKNode!
+    var coconutButton: SKNode!
+    var sickButton: SKNode!
+    var deadButton: SKNode!
+    var zombieButton: SKNode!
+    var cloudButton: SKNode!
+    var rockButton: SKNode!
+    var waterButton: SKNode!
+    var crystalButton: SKNode!
+    var nuclearButton: SKNode!
+    var astronautButton: SKNode!
+    var sandButton: SKNode!
+    var glassButton: SKNode!
+    var coffeeButton: SKNode!
+    var slinkyButton: SKNode!
+    var magmaButton: SKNode!
+    var samuraiButton: SKNode!
+    var orangeButton: SKNode!
+    var strawberryButton: SKNode!
+    var tshirtButton: SKNode!
+    var cryptidButton: SKNode!
+    var angelButton: SKNode!
+    var invisibleButton: SKNode!
     
     var page1ScrollView: SKNode!
     

@@ -11,9 +11,9 @@ class Reinvestments: SKScene {
     var mute = false
     var canReinvest = false
     var reinvestList = 0
-    var backButton: SKNode! = nil
-    var reinvestButton: SKNode! = nil
-    var confirmReinvestButton: SKNode! = nil
+    var backButton: SKNode!
+    var reinvestButton: SKNode!
+    var confirmReinvestButton: SKNode!
     
     
     let gameLayer = SKNode()

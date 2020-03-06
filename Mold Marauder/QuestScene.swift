@@ -10,14 +10,14 @@ import SpriteKit
 class QuestScene: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
-    var claimQuestButton: SKNode! = nil
-    var skipQuestButton: SKNode! = nil
-    var facebookButton: SKNode! = nil
+    var backButton: SKNode!
+    var claimQuestButton: SKNode!
+    var skipQuestButton: SKNode!
+    var facebookButton: SKNode!
     
-    var progressLabel: SKLabelNode! = nil
-    var questName: SKLabelNode! = nil
-    var screenshotHelp: SKLabelNode! = nil
+    var progressLabel: SKLabelNode!
+    var questName: SKLabelNode!
+    var screenshotHelp: SKLabelNode!
     
     var currentQuest: String!
     var questGoal: Int!
@@ -28,7 +28,7 @@ class QuestScene: SKScene {
     let barLayer = SKNode()
     var point = CGPoint()
     
-    var buyDiamondsButton: SKNode! = nil
+    var buyDiamondsButton: SKNode!
     
     var cometLayer = CometLayer()
     

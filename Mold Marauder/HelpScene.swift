@@ -10,7 +10,7 @@ import SpriteKit
 class HelpScene: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
+    var backButton: SKNode!
     
     let gameLayer = SKNode()
     var point = CGPoint()

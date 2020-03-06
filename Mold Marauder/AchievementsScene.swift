@@ -10,27 +10,27 @@ import SpriteKit
 class AchievementsScene: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
+    var backButton: SKNode!
     
     //achievements progress
     var wormsKilled: Int!
-    var wormLabel: SKLabelNode! = nil
+    var wormLabel: SKLabelNode!
     var moldsOwned: Int!
-    var ownedLabel: SKLabelNode! = nil
+    var ownedLabel: SKLabelNode!
     var speciesBred: Int!
-    var bredLabel: SKLabelNode! = nil
+    var bredLabel: SKLabelNode!
     var incLevel: Int!
-    var incLabel: SKLabelNode! = nil
+    var incLabel: SKLabelNode!
     var laserLevel: Int!
-    var laserLabel: SKLabelNode! = nil
+    var laserLabel: SKLabelNode!
     var deathRay = false
     var level: Int!
-    var levelLabel: SKLabelNode! = nil
+    var levelLabel: SKLabelNode!
     var cash: BInt!
-    var cashLabel: SKLabelNode! = nil
+    var cashLabel: SKLabelNode!
     
     var  rewardAmount = 0
-    var claimButton: SKNode! = nil
+    var claimButton: SKNode!
     
     let gameLayer = SKNode()
     var point = CGPoint()

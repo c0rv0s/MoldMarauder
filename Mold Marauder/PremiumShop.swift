@@ -10,16 +10,16 @@ import SpriteKit
 class PremiumShop: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
-    var cashWindfallButton: SKNode! = nil
-    var deathRayButton: SKNode! = nil
-    var incubatorButton: SKNode! = nil
-    var starButton: SKNode! = nil
-    var autoTapButton: SKNode! = nil
+    var backButton: SKNode!
+    var cashWindfallButton: SKNode!
+    var deathRayButton: SKNode!
+    var incubatorButton: SKNode!
+    var starButton: SKNode!
+    var autoTapButton: SKNode!
     
-    var buyDiamondsButton: SKNode! = nil
+    var buyDiamondsButton: SKNode!
     
-    var incLabel: SKLabelNode! = nil
+    var incLabel: SKLabelNode!
     
     var deathRayBought = false
     var incubatorBought = 0

@@ -10,12 +10,12 @@ import SpriteKit
 class LevelScene: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
-    var levelButton: SKNode! = nil
-    var levelLabel: SKLabelNode! = nil
-    var currentScorePerTapLabel: SKLabelNode! = nil
-    var currentLevelUpCostLabel: SKLabelNode! = nil
-    var nextScorePerTapLabel: SKLabelNode! = nil
+    var backButton: SKNode!
+    var levelButton: SKNode!
+    var levelLabel: SKLabelNode!
+    var currentScorePerTapLabel: SKLabelNode!
+    var currentLevelUpCostLabel: SKLabelNode!
+    var nextScorePerTapLabel: SKLabelNode!
     
     var cash = BInt(0)
     var diamonds = 0
@@ -37,24 +37,24 @@ class LevelScene: SKScene {
     
     var lastButton : CGPoint!
     
-    var caveButton: SKNode! = nil
-    var yachtExButton: SKNode! = nil
-    var crysForestButton: SKNode! = nil
-    var apartmentButton: SKNode! = nil
-    var apartment2Button: SKNode! = nil
-    var yurtButton:SKNode! = nil
-    var sandButton: SKNode! = nil
-    var spaceButton: SKNode! = nil
-    var space2Button: SKNode! = nil
+    var caveButton: SKNode!
+    var yachtExButton: SKNode!
+    var crysForestButton: SKNode!
+    var apartmentButton: SKNode!
+    var apartment2Button: SKNode!
+    var yurtButton:SKNode!
+    var sandButton: SKNode!
+    var spaceButton: SKNode!
+    var space2Button: SKNode!
     
-    var checkmark: SKNode! = nil
+    var checkmark: SKNode!
     var current: String!
     
     //offlien level
     
-    var offlineLevelButton: SKNode! = nil
+    var offlineLevelButton: SKNode!
     var offlineLev = 0
-    var buyDiamondsButton: SKNode! = nil
+    var buyDiamondsButton: SKNode!
     
     //touch handler
     var touchHandler: ((String) -> ())?

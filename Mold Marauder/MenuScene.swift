@@ -10,20 +10,20 @@ import SpriteKit
 class MenuScene: SKScene {
     var mute = false
     
-    var buyButton: SKNode! = nil
-    var exitButton: SKNode! = nil
-    var cheatButton: SKNode! = nil
-    //var resetButton: SKNode! = nil
-    var breedButton: SKNode! = nil
-    var levelButton: SKNode! = nil
-    var itemButton: SKNode! = nil
-    var achieveButton: SKNode! = nil
-    var creditsButton: SKNode! = nil
-    var questButton: SKNode! = nil
-    var helpButton: SKNode! = nil
-    var reinvestButton: SKNode! = nil
-    var arButton: SKNode! = nil
-    var leaderboards: SKNode! = nil
+    var buyButton: SKNode!
+    var exitButton: SKNode!
+    var cheatButton: SKNode!
+    //var resetButton: SKNode!
+    var breedButton: SKNode!
+    var levelButton: SKNode!
+    var itemButton: SKNode!
+    var achieveButton: SKNode!
+    var creditsButton: SKNode!
+    var questButton: SKNode!
+    var helpButton: SKNode!
+    var reinvestButton: SKNode!
+    var arButton: SKNode!
+    var leaderboards: SKNode!
     
 //    rmeber ar state
     var arSwitch = false

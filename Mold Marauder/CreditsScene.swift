@@ -10,15 +10,15 @@ import SpriteKit
 class CreditsScene: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
-    var revButton: SKNode! = nil
-    var listenButton: SKNode! = nil
+    var backButton: SKNode!
+    var revButton: SKNode!
+    var listenButton: SKNode!
     
-    var musicButton: SKNode! = nil
-    var soundButton: SKNode! = nil
+    var musicButton: SKNode!
+    var soundButton: SKNode!
     
-    var musicMute: SKNode! = nil
-    var soundMute: SKNode! = nil
+    var musicMute: SKNode!
+    var soundMute: SKNode!
     
     let gameLayer = SKNode()
     var point = CGPoint()

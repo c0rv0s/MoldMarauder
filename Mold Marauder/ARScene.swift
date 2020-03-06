@@ -16,43 +16,43 @@ class ARScene: SKScene {
     
 //    gameScene stuff
     var mute = false
-    var header: SKNode! = nil
-    var buyButton: SKNode! = nil
-    var diamondIcon: SKNode! = nil
-    var diamondCLabel: SKLabelNode! = nil
-    var diamondBuy: SKNode! = nil
+    var header: SKNode!
+    var buyButton: SKNode!
+    var diamondIcon: SKNode!
+    var diamondCLabel: SKLabelNode!
+    var diamondBuy: SKNode!
     
     var buyEnabled = true
-    var claimQuestButton: SKNode! = nil
+    var claimQuestButton: SKNode!
     
     var numDiamonds: Int = 0
     var diamondShop = false
     
-    var diamondTiny: SKNode! = nil
-    var diamondSmall: SKNode! = nil
-    var diamondMedium: SKNode! = nil
-    var diamondLarge: SKNode! = nil
-    var exitDiamond: SKNode! = nil
+    var diamondTiny: SKNode!
+    var diamondSmall: SKNode!
+    var diamondMedium: SKNode!
+    var diamondLarge: SKNode!
+    var exitDiamond: SKNode!
     var diamondShelves: SKSpriteNode!
     
-    var tinyButton: SKSpriteNode! = nil
-    var smallButton: SKSpriteNode! = nil
-    var mediumButton: SKSpriteNode! = nil
-    var largeButton: SKSpriteNode! = nil
+    var tinyButton: SKSpriteNode!
+    var smallButton: SKSpriteNode!
+    var mediumButton: SKSpriteNode!
+    var largeButton: SKSpriteNode!
     
     var menuPopUp: SKSpriteNode!
     
-    var inventoryButton: SKNode! = nil
-    var cameraButton: SKNode! = nil
+    var inventoryButton: SKNode!
+    var cameraButton: SKNode!
     
     var tapPoint: BInt!
     
     var center:  CGPoint!
     
     //spritz and xtap
-    var wormRepelLabel: SKLabelNode! = nil
-    var spritzLabel: SKLabelNode! = nil
-    var xTapLabel: SKLabelNode! = nil
+    var wormRepelLabel: SKLabelNode!
+    var spritzLabel: SKLabelNode!
+    var xTapLabel: SKLabelNode!
     
 //    worm
     var deadFrames = [SKTexture]()
@@ -523,7 +523,7 @@ class ARScene: SKScene {
     }
     
     func animateMold(moldData: Mold) -> (pic:SKSpriteNode, frames:[SKTexture]) {
-        var moldPic: SKSpriteNode! = nil
+        var moldPic: SKSpriteNode!
         var frames = [SKTexture]()
         //molds w/ no animation
         if (moldData.moldType == MoldType.invisible || moldData.moldType == MoldType.disaffected || moldData.moldType == MoldType.dead) {

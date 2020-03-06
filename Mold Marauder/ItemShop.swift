@@ -10,19 +10,19 @@ import SpriteKit
 class ItemShop: SKScene {
     var mute = false
     
-    var backButton: SKNode! = nil
-    var repelButton: SKNode! = nil
-    var premiumButton: SKNode! = nil
-    var xTapButton: SKNode! = nil
-    var spritzButton: SKNode! = nil
-    var laserButton: SKNode! = nil
-    var cashWindfallButton: SKNode! = nil
+    var backButton: SKNode!
+    var repelButton: SKNode!
+    var premiumButton: SKNode!
+    var xTapButton: SKNode!
+    var spritzButton: SKNode!
+    var laserButton: SKNode!
+    var cashWindfallButton: SKNode!
     
-    var buyDiamondsButton: SKNode! = nil
+    var buyDiamondsButton: SKNode!
     
     var laserBought = 0
-    var laserLabel: SKLabelNode! = nil
-    var laserCostLabel: SKLabelNode! = nil
+    var laserLabel: SKLabelNode!
+    var laserCostLabel: SKLabelNode!
     
     let gameLayer = SKNode()
     var point = CGPoint()

@@ -35,6 +35,8 @@ class Inventory: NSObject, NSCoding {
     
     var levDicc: [String:Int]
     
+    var moldCountDicc: [String:Int]
+    
     var repelTimer: Int
     var xTapAmount: Int
     var xTapCount: Int
@@ -176,7 +178,54 @@ class Inventory: NSObject, NSCoding {
             "Cryptid Mold":0,
             "Angel Mold":0,
             "Invisible Mold":0,
-            "Star Mold":0]
+            "Star Mold":0
+        ]
+        
+        moldCountDicc = [
+            "Slime Mold":0,
+            "Cave Mold":0,
+            "Sad Mold":0,
+            "Angry Mold":0,
+            "Alien Mold":0,
+            "Pimply Mold":0,
+            "Freckled Mold":0,
+            "Hypno Mold":0,
+            "Rainbow Mold":0,
+            "Aluminum Mold":0,
+            "Circuit Mold":0,
+            "Hologram Mold":0,
+            "Storm Mold":0,
+            "Bacteria Mold":0,
+            "Virus Mold":0,
+            "X Mold":0,
+            "Flower Mold":0,
+            "Bee Mold":0,
+            "Disaffected Mold":0,
+            "Olive Mold":0,
+            "Coconut Mold":0,
+            "Sick Mold":0,
+            "Dead Mold":0,
+            "Zombie Mold":0,
+            "Cloud Mold":0,
+            "Rock Mold":0,
+            "Water Mold":0,
+            "Crystal Mold":0,
+            "Nuclear Mold":0,
+            "Astronaut Mold":0,
+            "Sand Mold":0,
+            "Glass Mold":0,
+            "Coffee Mold":0,
+            "Slinky Mold":0,
+            "Magma Mold":0,
+            "Samurai Mold":0,
+            "Orange Mold":0,
+            "Strawberry Mold":0,
+            "TShirt Mold":0,
+            "Cryptid Mold":0,
+            "Angel Mold":0,
+            "Invisible Mold":0,
+            "Star Mold":0
+        ]
     }
     
     //for loading a saved game
@@ -279,7 +328,63 @@ class Inventory: NSObject, NSCoding {
                 "Cryptid Mold":0,
                 "Angel Mold":0,
                 "Invisible Mold":0,
-                "Star Mold":0]
+                "Star Mold":0
+            ]
+        }
+        
+        if aDecoder.decodeObject(forKey: "moldCountDicc") != nil {
+            moldCountDicc = aDecoder.decodeObject(forKey: "moldCountDicc") as! [String : Int]
+        }
+        else {
+            moldCountDicc = [
+                "Slime Mold":0,
+                "Cave Mold":0,
+                "Sad Mold":0,
+                "Angry Mold":0,
+                "Alien Mold":0,
+                "Pimply Mold":0,
+                "Freckled Mold":0,
+                "Hypno Mold":0,
+                "Rainbow Mold":0,
+                "Aluminum Mold":0,
+                "Circuit Mold":0,
+                "Hologram Mold":0,
+                "Storm Mold":0,
+                "Bacteria Mold":0,
+                "Virus Mold":0,
+                "X Mold":0,
+                "Flower Mold":0,
+                "Bee Mold":0,
+                "Disaffected Mold":0,
+                "Olive Mold":0,
+                "Coconut Mold":0,
+                "Sick Mold":0,
+                "Dead Mold":0,
+                "Zombie Mold":0,
+                "Cloud Mold":0,
+                "Rock Mold":0,
+                "Water Mold":0,
+                "Crystal Mold":0,
+                "Nuclear Mold":0,
+                "Astronaut Mold":0,
+                "Sand Mold":0,
+                "Glass Mold":0,
+                "Coffee Mold":0,
+                "Slinky Mold":0,
+                "Magma Mold":0,
+                "Samurai Mold":0,
+                "Orange Mold":0,
+                "Strawberry Mold":0,
+                "TShirt Mold":0,
+                "Cryptid Mold":0,
+                "Angel Mold":0,
+                "Invisible Mold":0,
+                "Star Mold":0
+            ]
+            
+            for m in self.molds {
+                moldCountDicc[m.name]! += 1
+            }
         }
         quitTime = aDecoder.decodeInteger(forKey: "quitTime")
         offlineLevel = aDecoder.decodeInteger(forKey: "offlineLevel")
@@ -349,6 +454,7 @@ class Inventory: NSObject, NSCoding {
         aCoder.encode(achievementsDicc, forKey: "achievementsDicc")
         
         aCoder.encode(levDicc, forKey: "levDicc")
+        aCoder.encode(moldCountDicc, forKey: "moldCountDicc")
         
         // using current date and time as an example
         let someDate = Date()

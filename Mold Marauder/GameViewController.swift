@@ -230,9 +230,9 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
 
         //REMOVE
-//        incrementDiamonds(newDiamonds: 500)
+        incrementDiamonds(newDiamonds: 500)
 //        inventory.level = 64
-//        incrementCash(pointsToAdd: BInt("9999999999999999999999999999"))
+        incrementCash(pointsToAdd: BInt("9999999999999999999999999999"))
         //inventory.molds.append(Mold(moldType: MoldType.invisible))
         //inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
         //inventory.reinvestmentCount = 8
@@ -368,6 +368,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         
         iCloudKeyStore?.set(inventory.levDicc, forKey: "levDicc")
         
+        iCloudKeyStore?.set(inventory.moldCountDicc, forKey: "moldCountDicc")
+        
         // using current date and time as an example
         let someDate = Date()
         
@@ -447,6 +449,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         
         inventory.achievementsDicc = iCloudKeyStore?.object(forKey: "achievementsDicc") as! [String : Bool]
         inventory.levDicc = iCloudKeyStore?.object(forKey: "levDicc") as! [String : Int]
+        inventory.moldCountDicc = iCloudKeyStore?.object(forKey: "moldCountDicc") as! [String : Int]
         inventory.quitTime = iCloudKeyStore?.object(forKey: "quitTime") as! Int
         inventory.offlineLevel = iCloudKeyStore?.object(forKey: "offlineLevel") as! Int
         print("icloud loaded")
@@ -702,32 +705,16 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     }
     
     func checkMaxMolds() {
-        for mold in inventory.unlockedMolds {
-            var count = 0
-            critterCheck: for critter in inventory.molds {
-                if mold.moldType == critter.moldType {
-                    count += 1
-                }
-                if count == 50 {
-                    moldShop.blockedMolds.append(mold)
-                    break critterCheck
-                }
+        for (mold, count) in inventory.moldCountDicc {
+            if count >= 50 {
+                moldShop.blockedMolds.insert(mold)
             }
-            
         }
     }
     
     func updateMoldPrices() {
         for item in moldShop.unlockedMolds {
-            item.price = item.moldType.price
-        }
-        for target in moldShop.unlockedMolds {
-            for mold in inventory.molds {
-                if mold.moldType == target.moldType {
-//                    pick an amount between 16% and 33%  of its price to adjust upward
-                    target.price += (mold.price / BInt(randomInRange(lo: 3, hi: 6)))
-                }
-            }
+            moldShop.prices[item.name] = item.price + ((inventory.moldCountDicc[item.name] ?? 0) * (item.price / BInt(randomInRange(lo: 3, hi: 6))))
         }
     }
     
@@ -3418,7 +3405,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             if (inventory.cash > currentPrice) {
                 inventory.cash -= currentPrice
                 inventory.molds.append(mold)
-                updateMoldPrices()
+                inventory.moldCountDicc[mold.name]! += 1
+                moldShop.prices[mold.name]! += mold.price / BInt(randomInRange(lo: 3, hi: 6))
                 moldShop.updatePrice(mold: mold)
 //                FBSDKAppEvents.logEvent("new mold")
                 if inventory.displayMolds.count < 25 {
@@ -3499,15 +3487,12 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 }
                 
 //              check if the limit is reached
-                checkMaxMolds()
-                if moldShop.containsMold(array: moldShop.blockedMolds, mold: mold.moldType) {
-                    //moldShop.erectScroll()
+                if inventory.moldCountDicc[mold.name] ?? 0 >= 50 {
+                    moldShop.blockedMolds.insert(mold.moldType.description)
                     let maxLabel = SKSpriteNode(texture: moldShop.maxTex)
                     maxLabel.position = pos
                     moldShop.page1ScrollView.addChild(maxLabel)
-                    
                 }
-                
             }
             updateLabels()
 

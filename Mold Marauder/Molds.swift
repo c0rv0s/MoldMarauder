@@ -72,7 +72,7 @@ enum MoldType: Int, CustomStringConvertible {
         return spriteName
     }
     var price: BInt {
-        var prices = [
+        let prices = [
             BInt("200"),
             BInt("2560"),
             BInt("10200"),

@@ -50,6 +50,7 @@ func randomInRange(lo: Int, hi : Int) -> Int {
 }
 
 //add suffix to long numbers
+var suffices = ["", "K", "M", "B", "T", "Q", "Qi", "Se", "Sp", "Oc", "No"]
 func formatNumber(points: BInt) -> String {
     let cashString = String(describing: points)
     if (cashString.count < 4) {
@@ -57,137 +58,23 @@ func formatNumber(points: BInt) -> String {
     }
     else {
         let charsCount = cashString.count
-        var cashDisplayString = cashString[0]
+        var cashDisplayString = ""
         
-        var suffix = ""
-        switch charsCount {
-        case 4:
-            suffix = "K"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 5:
-            suffix = "K"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 6:
-            suffix = "K"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 7:
-            suffix = "M"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 8:
-            suffix = "M"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 9:
-            suffix = "M"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 10:
-            suffix = "B"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 11:
-            suffix = "B"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 12:
-            suffix = "B"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 13:
-            suffix = "T"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 14:
-            suffix = "T"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 15:
-            suffix = "T"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 16:
-            suffix = "Q"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 17:
-            suffix = "Q"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 18:
-            suffix = "Q"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 19:
-            suffix = "Qi"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 20:
-            suffix = "Qi"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 21:
-            suffix = "Qi"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 22:
-            suffix = "Se"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 23:
-            suffix = "Se"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 24:
-            suffix = "Se"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 25:
-            suffix = "Sp"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 26:
-            suffix = "Sp"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 27:
-            suffix = "Sp"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 28:
-            suffix = "Oc"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 29:
-            suffix = "Oc"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 30:
-            suffix = "Oc"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        case 31:
-            suffix = "No"
-            cashDisplayString = cashDisplayString + "." + cashString[1]
-            break
-        case 32:
-            suffix = "No"
-            cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2]
-            break
-        case 33:
-            suffix = "No"
-            cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3]
-            break
-        default:
-            suffix = "D"
-            break
+        if charsCount % 3 == 0 {
+            cashDisplayString = cashString.prefix(3) + "." + cashString.prefix(6).dropFirst(3)
         }
-        cashDisplayString += " "
-        cashDisplayString += suffix
+        if charsCount % 3 == 1 {
+            cashDisplayString = cashString.prefix(1) + "." + cashString.prefix(4).dropFirst(1)
+        }
+        if charsCount % 3 == 2 {
+            cashDisplayString = cashString.prefix(2) + "." + cashString.prefix(5).dropFirst(2)
+        }
         
-        return cashDisplayString
+        var suffix = "D"
+        if charsCount < 34 {
+            suffix = suffices[((charsCount-1) / 3)]
+        }
+        
+        return cashDisplayString + suffix
     }
 }

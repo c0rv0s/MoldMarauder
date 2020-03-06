@@ -92,7 +92,7 @@ class QuestScene: SKScene {
         questName = SKLabelNode(fontNamed: "Lemondrop")
         questName.fontSize = 18
         questName.fontColor = UIColor.black
-        if currentQuest[currentQuest.count - 1] == "&" {
+        if currentQuest.suffix(1) == "&" {
             //questName.text = "Buy 2 " + currentQuest.substring(to: currentQuest.index(before: currentQuest.endIndex)) + "s"
             questName.text = "Buy 2 " + currentQuest[..<currentQuest.index(before: currentQuest.endIndex)] + "s"
         }

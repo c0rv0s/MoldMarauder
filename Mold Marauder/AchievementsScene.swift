@@ -214,7 +214,7 @@ class AchievementsScene: SKScene {
         cashLabel = SKLabelNode(fontNamed: "Lemondrop")
         cashLabel.fontSize = 18
         cashLabel.fontColor = UIColor.black
-        if cash < BInt("1000000000000000000000000000000000") {
+        if cash! < BInt("1000000000000000000000000000000000")! {
             cashLabel.text = "\(formatNumber(points: cash!))/1.0 D cash"
         }
         else {

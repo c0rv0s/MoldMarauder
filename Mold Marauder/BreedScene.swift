@@ -87,7 +87,7 @@ class BreedScene: SKScene {
     
     var center:  CGPoint!
     //scrollView
-    weak var scrollView: SwiftySKScrollView?
+    var scrollView: SwiftySKScrollView?
     let moveableNode = SKNode()
     
     //for background animations

@@ -63,7 +63,7 @@ class MoldShop: SKScene {
     var blockedMolds: Set<String>!
     var maxTex = SKTexture(image: UIImage(named: "max label")!)
     //scrollView
-    weak var scrollView: SwiftySKScrollView?
+    var scrollView: SwiftySKScrollView?
     let moveableNode = SKNode()
     
     //for loading buttons without blank space

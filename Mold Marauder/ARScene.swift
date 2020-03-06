@@ -113,7 +113,7 @@ class ARScene: SKScene {
                 creationTime = currentTime + 0.1
             }
             else {
-                creationTime = currentTime + TimeInterval(randomFloat(min: wormBottom, max: wormTop))
+                creationTime = currentTime + TimeInterval(Float.random(in: wormBottom ..< wormTop))
             }
         }
     }
@@ -127,17 +127,17 @@ class ARScene: SKScene {
         let _360degrees = 2.0 * Float.pi
         
         // Create a rotation matrix in the X-axis
-        let rotateX = simd_float4x4(SCNMatrix4MakeRotation(_360degrees * randomFloat(min: 0.0, max: 1.0), 1, 0, 0))
+        let rotateX = simd_float4x4(SCNMatrix4MakeRotation(_360degrees * Float.random(in: 0.0 ..< 1.0), 1, 0, 0))
         
         // Create a rotation matrix in the Y-axis
-        let rotateY = simd_float4x4(SCNMatrix4MakeRotation(_360degrees * randomFloat(min: 0.0, max: 1.0), 0, 1, 0))
+        let rotateY = simd_float4x4(SCNMatrix4MakeRotation(_360degrees * Float.random(in: 0.0 ..< 1.0), 0, 1, 0))
         
         // Combine both rotation matrices
         let rotation = simd_mul(rotateX, rotateY)
         
         // Create a translation matrix in the Z-axis with a value between 1 and 2 meters
         var translation = matrix_identity_float4x4
-        translation.columns.3.z = -1 - randomFloat(min: 0.0, max: 1.0)
+        translation.columns.3.z = -1 - Float.random(in: 0.0 ..< 1.0)
         
         // Combine the rotation and translation matrices
         let transform = simd_mul(rotation, translation)
@@ -379,7 +379,7 @@ class ARScene: SKScene {
             wormFrames.append(SKTexture(image: UIImage(named: "hole F\(i)")!))
             i += 1
         }
-        let x = randomFloat(min: 0, max: 1)
+        let x = Float.random(in: 0.0 ..< 1.0)
         if x < 1{
             wormFrames.append(SKTexture(image: UIImage(named: "worm right")!))
         }
@@ -1147,9 +1147,5 @@ class ARScene: SKScene {
                 run(levelUpSound)
             }
         }
-    }
-    
-    func randomFloat(min: Float, max: Float) -> Float {
-        return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
     }
 }

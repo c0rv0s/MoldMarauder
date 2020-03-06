@@ -180,7 +180,7 @@ class ItemShop: SKScene {
         laserCostLabel = SKLabelNode(fontNamed: "Lemondrop")
         laserCostLabel.fontSize = 13
         laserCostLabel.fontColor = UIColor.black
-        laserCostLabel.text = "Cost: \(formatNumber(points: cost))"
+        laserCostLabel.text = "Cost: \(formatNumber(points: cost!))"
         laserCostLabel.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY-195)
         addChild(laserCostLabel)
         

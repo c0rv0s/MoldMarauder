@@ -117,7 +117,7 @@ enum MoldType: Int, CustomStringConvertible {
             BInt("999999999999999999999999999"),
             BInt("0")]
         
-        return prices[rawValue - 1]
+        return prices[rawValue - 1]!
     }
     var pointsPerSecond: BInt {
         let PPS = [
@@ -165,7 +165,7 @@ enum MoldType: Int, CustomStringConvertible {
             BInt("999999999999999999999"),
             BInt("999999")]
         
-        return PPS[rawValue - 1]
+        return PPS[rawValue - 1]!
     }
 }
 

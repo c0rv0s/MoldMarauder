@@ -2502,7 +2502,7 @@ class GameScene: SKScene {
             if wormRepel == false {
                 var worms = randomInRange(lo: 0, hi: 3)
                 while worms > 0 {
-                    let when = DispatchTime.now() + TimeInterval(randomFloat(min: 0.2, max: 1.4))
+                    let when = DispatchTime.now() + TimeInterval(Double.random(in: 0.2 ..< 1.4))
                     DispatchQueue.main.asyncAfter(deadline: when) {
                         self.wormAttack(tutorial: false)
                     }
@@ -2536,7 +2536,7 @@ class GameScene: SKScene {
         
         let finalFrame = wormFrames[4]
         let wormPic = SKSpriteNode(texture:finalFrame)
-        let timterval = randomFloat(min: 1.8, max: 3.6)
+        let timterval = Double.random(in: 1.8 ..< 3.6)
         wormChompTimers.append(Timer.scheduledTimer(timeInterval: TimeInterval(timterval), target: self, selector: #selector(GameScene.eatMold), userInfo: nil, repeats: true))
         wormHP.append(wormDifficulty)
         if tutorial {
@@ -2553,15 +2553,7 @@ class GameScene: SKScene {
                              resize: false,
                              restore: true))
     }
-    
-    func randomInRange(lo: Int, hi : Int) -> Int {
-        return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
-    }
-    
-    func randomFloat(min: Float, max: Float) -> Float {
-        return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
-    }
-    
+
     //eat mold
     @objc func eatMold() {
         let index = randomInRange(lo: 0, hi: wormLayer.children.count - 1)

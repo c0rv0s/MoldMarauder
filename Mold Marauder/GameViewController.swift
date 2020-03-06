@@ -118,7 +118,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         
         //instantiate player inventory
         if let savedInventory = defaults.object(forKey: "inventory") as? Data {
-            inventory = NSKeyedUnarchiver.unarchiveObject(with: savedInventory) as! Inventory
+            inventory = NSKeyedUnarchiver.unarchiveObject(with: savedInventory) as? Inventory
         }
         else {
             inventory = Inventory()
@@ -199,7 +199,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //        reinvest count
         scene.reinvestCount = inventory.reinvestmentCount
 //add save game observer
-        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.myObserverMethod(notification:)), name: .UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.myObserverMethod(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
 //        check quests
         if inventory.questGoal == 0  {
             generateQuest()
@@ -229,10 +229,11 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             self.offlineCash()
         }
 
-        //REMOVE
-        incrementDiamonds(newDiamonds: 500)
+        //TESTING - REMOVE
+//        inventory = Inventory()
+//        incrementDiamonds(newDiamonds: 500)
 //        inventory.level = 64
-        incrementCash(pointsToAdd: BInt("9999999999999999999999999999"))
+//        incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
         //inventory.molds.append(Mold(moldType: MoldType.invisible))
         //inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
         //inventory.reinvestmentCount = 8
@@ -260,7 +261,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //    auth game center
     // MARK: - GAME CENTER
     func authenticateLocalPlayer() {
-        let localPlayer: GKLocalPlayer = GKLocalPlayer.localPlayer()
+        let localPlayer: GKLocalPlayer = GKLocalPlayer.local
         
         localPlayer.authenticateHandler = {(ViewController, error) -> Void in
             if((ViewController) != nil) {
@@ -387,10 +388,10 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     //    load from icloud
     func loadiCloud() {
         inventory.level = iCloudKeyStore?.object(forKey: "level") as! Int
-        inventory.scorePerTap = BInt(iCloudKeyStore?.object(forKey: "scorePerTap") as! String)
-        inventory.levelUpCost = BInt(iCloudKeyStore?.object(forKey: "levelUpCost") as! String)
-        inventory.scorePerSecond = BInt(iCloudKeyStore?.object(forKey: "scorePerSecond") as! String)
-        inventory.cash = BInt(iCloudKeyStore?.object(forKey: "cash") as! String)
+        inventory.scorePerTap = BInt(iCloudKeyStore?.object(forKey: "scorePerTap") as! String)!
+        inventory.levelUpCost = BInt(iCloudKeyStore?.object(forKey: "levelUpCost") as! String)!
+        inventory.scorePerSecond = BInt(iCloudKeyStore?.object(forKey: "scorePerSecond") as! String)!
+        inventory.cash = BInt(iCloudKeyStore?.object(forKey: "cash") as! String)!
         inventory.diamonds = iCloudKeyStore?.object(forKey: "diamonds") as! Int
         inventory.displayAmount = iCloudKeyStore?.object(forKey: "displayAmount") as! Int
         inventory.deathRay = ((iCloudKeyStore?.object(forKey: "deathRay")) != nil)
@@ -536,7 +537,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             inventory.tutorialProgress = scene.tutorial
         }
         
-        let savedData = NSKeyedArchiver.archivedData(withRootObject: inventory)
+        let savedData = NSKeyedArchiver.archivedData(withRootObject: inventory!)
         let defaults = UserDefaults.standard
         defaults.set(savedData, forKey: "inventory")
         print("saved")
@@ -714,7 +715,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     func updateMoldPrices() {
         for item in moldShop.unlockedMolds {
-            moldShop.prices[item.name] = item.price + ((inventory.moldCountDicc[item.name] ?? 0) * (item.price / BInt(randomInRange(lo: 3, hi: 6))))
+            moldShop.prices[item.name] = item.price + ((inventory.moldCountDicc[item.name] ?? 0) * (item.price / BInt(10)))
         }
     }
     
@@ -3402,11 +3403,11 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     currentPrice = plsFind.price
                 }
             }
-            if (inventory.cash > currentPrice) {
-                inventory.cash -= currentPrice
+            if (inventory.cash > currentPrice!) {
+                inventory.cash -= currentPrice!
                 inventory.molds.append(mold)
                 inventory.moldCountDicc[mold.name]! += 1
-                moldShop.prices[mold.name]! += mold.price / BInt(randomInRange(lo: 3, hi: 6))
+                moldShop.prices[mold.name]! += mold.price / BInt(10)
                 moldShop.updatePrice(mold: mold)
 //                FBSDKAppEvents.logEvent("new mold")
                 if inventory.displayMolds.count < 25 {
@@ -3472,7 +3473,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //                calculate if a quest has been achieved
                 print(inventory.currentQuest)
                 if inventory.currentQuest.count > 1 {
-                    if inventory.currentQuest[inventory.currentQuest.count - 1] == "&" {
+                    if inventory.currentQuest.suffix(1) == "&" {
                         //let name = inventory.currentQuest.substring(to: inventory.currentQuest.index(before: inventory.currentQuest.endIndex))
                         let name = inventory.currentQuest[..<inventory.currentQuest.index(before: inventory.currentQuest.endIndex)]
                         print("&")
@@ -4083,7 +4084,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 break
             }
             
-            if inventory.cash >= cost {
+            if inventory.cash >= cost! {
                 inventory.laser += 1
                 //log laser maxing achievement if level 3
                 if inventory.laser == 3 {
@@ -4108,7 +4109,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 itemShop.laserButton.position = CGPoint(x:itemShop.frame.midX-90, y:itemShop.frame.midY-100);
                 itemShop.addChild(itemShop.laserButton)
                 itemShop.playSound(select: "levelup")
-                incrementCash(pointsToAdd: (cost * -1))
+                incrementCash(pointsToAdd: (cost! * -1))
                 
                 var cost = BInt("50000")
                 switch inventory.laser {
@@ -4125,7 +4126,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     cost = BInt("30000000000")
                     break
                 }
-                itemShop.laserCostLabel.text = "Cost: \(formatNumber(points: cost))"
+                itemShop.laserCostLabel.text = "Cost: \(formatNumber(points: cost!))"
                 
                 switch UIDevice().screenType {
                 case .iPhone4:
@@ -5643,7 +5644,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 purchaseMyProduct(product: iapProducts[3])
             }
             else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
                     // perhaps use action.title here
                 })
@@ -5657,7 +5658,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 purchaseMyProduct(product: iapProducts[0])
             }
             else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
                     // perhaps use action.title here
                 })
@@ -5671,7 +5672,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 purchaseMyProduct(product: iapProducts[2])
             }
             else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
                     // perhaps use action.title here
                 })
@@ -5685,7 +5686,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 purchaseMyProduct(product: iapProducts[1])
             }
             else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
                     // perhaps use action.title here
                 })
@@ -6439,145 +6440,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     //formats the cash label with proper suffix to stay within 3 digits
     func updateLabels() {
-        let cashString = String(describing: inventory.cash)
-        if (cashString.count < 4) {
-            cashLabel.text = String(describing: inventory.cash)
-        }
-        else {
-            let charsCount = cashString.count
-            var cashDisplayString = cashString[0]
-            
-            var suffix = ""
-            switch charsCount {
-            case 4:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 5:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 6:
-                suffix = "K"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 7:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 8:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 9:
-                suffix = "M"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 10:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 11:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 12:
-                suffix = "B"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 13:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 14:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 15:
-                suffix = "T"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 16:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 17:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 18:
-                suffix = "Q"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 19:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 20:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 21:
-                suffix = "Qi"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 22:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 23:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 24:
-                suffix = "Se"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 25:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 26:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 27:
-                suffix = "Sp"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 28:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 29:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 30:
-                suffix = "Oc"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            case 31:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + "." + cashString[1..<4]
-                break
-            case 32:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + cashString[1] + "." + cashString[2..<5]
-                break
-            case 33:
-                suffix = "No"
-                cashDisplayString = cashDisplayString + cashString[1..<3] + "." + cashString[3..<6]
-                break
-            default:
-                suffix = "D"
-                break
-            }
-            cashDisplayString += " "
-            cashDisplayString += suffix
- 
-            cashLabel.text = cashDisplayString
-        }
+        cashLabel.text = formatNumber(points: inventory.cash)
     }
     
     //add diamonds and update the scene lable
@@ -6589,22 +6452,14 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     //tap for cash funciotn
     func incrementCash(pointsToAdd: BInt) {
         inventory.cash += pointsToAdd
-        if inventory.cash > BInt("1000000000000000000000000000000000") {
-            inventory.cash = BInt("1000000000000000000000000000000000")
+        if inventory.cash > BInt("10000000000000000000000000000000000")! {
+            inventory.cash = BInt("10000000000000000000000000000000000")!
             if inventory.achievementsDicc["max cash"] == false {
                 inventory.achievementsDicc["max cash"] = true
                 inventory.achieveDiamonds += 25
             }
         }
         updateLabels()
-    }
-    
-    //get a random integer in this range. used for some stuff
-    func randomInRange(lo: Int, hi : Int) -> Int {
-        return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
-    }
-    func randomFloat(min: Float, max: Float) -> Float {
-        return (Float(arc4random()) / 0xFFFFFFFF) * (max - min) + min
     }
     
     // MARK: - AR STUFF
@@ -6641,7 +6496,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 let frames = ARgameScene.wormAttack().frames
                 print("worm attack")
                 ARgameScene.playSound(select: "worm appear")
-                let timterval = randomFloat(min: 2.1, max: 3.6)
+                let timterval = Float.random(in: 2.1 ..< 3.6)
                 ARgameScene.wormChompTimers.append(Timer.scheduledTimer(timeInterval: TimeInterval(timterval), target: self, selector: #selector(eatARMold), userInfo: nil, repeats: true))
                 skNode.run(SKAction.animate(with: frames,
                                             timePerFrame: 0.1,
@@ -6675,7 +6530,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                         let frames = ARgameScene.wormAttack().frames
                         print("worm attack")
                         ARgameScene.playSound(select: "worm appear")
-                        let timterval = randomFloat(min: 2.1, max: 3.6)
+                        let timterval = Float.random(in: 2.1 ..< 3.6)
                         ARgameScene.wormChompTimers.append(Timer.scheduledTimer(timeInterval: TimeInterval(timterval), target: self, selector: #selector(eatARMold), userInfo: nil, repeats: true))
                         skNode.run(SKAction.animate(with: frames,
                                                     timePerFrame: 0.1,
@@ -6951,7 +6806,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             // IAP Purchases dsabled on the Device
         } else {
             
-            let alert = UIAlertController(title: "Uh-Oh!", message: "Purchases are disabled in your device!", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "Uh-Oh!", message: "Purchases are disabled in your device!", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
                 // perhaps use action.title here
             })
@@ -7132,7 +6987,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             completion(UIApplication.shared.openURL(url))
             return
         }
-        UIApplication.shared.open(url, options: [:], completionHandler: completion)
+        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: completion)
     }
 }
 
@@ -7187,4 +7042,9 @@ public extension UIDevice {
         }
     }
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

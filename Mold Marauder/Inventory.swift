@@ -69,7 +69,7 @@ class Inventory: NSObject, NSCoding {
         levelUpCost = 2500
         //calculateScorePerTap()
         scorePerSecond = 0
-        cash = BInt("250")
+        cash = BInt("250")!
         diamonds = 10
         molds = []
         unlockedMolds = [Mold(moldType: MoldType.slime), Mold(moldType: MoldType.cave), Mold(moldType: MoldType.sad), Mold(moldType: MoldType.angry)]
@@ -231,10 +231,10 @@ class Inventory: NSObject, NSCoding {
     //for loading a saved game
     required init(coder aDecoder: NSCoder) {
         level = aDecoder.decodeInteger(forKey: "level")
-        scorePerTap = BInt(aDecoder.decodeObject(forKey: "scorePerTap") as! String)
-        levelUpCost = BInt(aDecoder.decodeObject(forKey: "levelUpCost") as! String)
-        scorePerSecond = BInt(aDecoder.decodeObject(forKey: "scorePerSecond") as! String)
-        cash = BInt(aDecoder.decodeObject(forKey: "cash") as! String)
+        scorePerTap = BInt(aDecoder.decodeObject(forKey: "scorePerTap") as! String)!
+        levelUpCost = BInt(aDecoder.decodeObject(forKey: "levelUpCost") as! String)!
+        scorePerSecond = BInt(aDecoder.decodeObject(forKey: "scorePerSecond") as! String)!
+        cash = BInt(aDecoder.decodeObject(forKey: "cash") as! String)!
         diamonds = aDecoder.decodeInteger(forKey: "diamonds")
         displayAmount = aDecoder.decodeInteger(forKey: "displayAmount")
         deathRay = aDecoder.decodeBool(forKey: "deathRay")
@@ -511,281 +511,281 @@ class Inventory: NSObject, NSCoding {
             levelUpCost = BInt(320000)
             break
         case 8:
-            scorePerTap = BInt("2750")
-            levelUpCost = BInt("640000")
+            scorePerTap = BInt("2750")!
+            levelUpCost = BInt("640000")!
             break
         case 9:
-            scorePerTap = BInt("3250")
-            levelUpCost = BInt("1200000")
+            scorePerTap = BInt("3250")!
+            levelUpCost = BInt("1200000")!
             break
         case 10:
-            scorePerTap = BInt("5000")
-            levelUpCost = BInt("2400000")
+            scorePerTap = BInt("5000")!
+            levelUpCost = BInt("2400000")!
             break
         case 11:
-            scorePerTap = BInt("8000")
-            levelUpCost = BInt("4800000")
+            scorePerTap = BInt("8000")!
+            levelUpCost = BInt("4800000")!
             break
         case 12:
-            scorePerTap = BInt("12000")
-            levelUpCost = BInt("9600000")
+            scorePerTap = BInt("12000")!
+            levelUpCost = BInt("9600000")!
             break
         case 13:
-            scorePerTap = BInt("18000")
-            levelUpCost = BInt("18000000")
+            scorePerTap = BInt("18000")!
+            levelUpCost = BInt("18000000")!
             break
         case 14:
-            scorePerTap = BInt("32000")
-            levelUpCost = BInt("36000000")
+            scorePerTap = BInt("32000")!
+            levelUpCost = BInt("36000000")!
             break
         case 15:
-            scorePerTap = BInt("64000")
-            levelUpCost = BInt("72000000")
+            scorePerTap = BInt("64000")!
+            levelUpCost = BInt("72000000")!
             break
         case 16:
-            scorePerTap = BInt("80000")
-            levelUpCost = BInt("108000000")
+            scorePerTap = BInt("80000")!
+            levelUpCost = BInt("108000000")!
             break
         case 17:
-            scorePerTap = BInt("100000")
-            levelUpCost = BInt("162000000")
+            scorePerTap = BInt("100000")!
+            levelUpCost = BInt("162000000")!
             break
         case 18:
-            scorePerTap = BInt("125000")
-            levelUpCost = BInt("243000000")
+            scorePerTap = BInt("125000")!
+            levelUpCost = BInt("243000000")!
             break
         case 19:
-            scorePerTap = BInt("156250")
-            levelUpCost = BInt("364500000")
+            scorePerTap = BInt("156250")!
+            levelUpCost = BInt("364500000")!
             break
         case 20:
-            scorePerTap = BInt("195312")
-            levelUpCost = BInt("546750000")
+            scorePerTap = BInt("195312")!
+            levelUpCost = BInt("546750000")!
             break
         case 21:
-            scorePerTap = BInt("244140")
-            levelUpCost = BInt("820125000")
+            scorePerTap = BInt("244140")!
+            levelUpCost = BInt("820125000")!
             break
         case 22:
-            scorePerTap = BInt("305175")
-            levelUpCost = BInt("1230187500")
+            scorePerTap = BInt("305175")!
+            levelUpCost = BInt("1230187500")!
             break
         case 23:
-            scorePerTap = BInt("381468")
-            levelUpCost = BInt("1845281250")
+            scorePerTap = BInt("381468")!
+            levelUpCost = BInt("1845281250")!
             break
         case 24:
-            scorePerTap = BInt("686642")
-            levelUpCost = BInt("2767921875")
+            scorePerTap = BInt("686642")!
+            levelUpCost = BInt("2767921875")!
             break
         case 25:
-            scorePerTap = BInt("8926352")
-            levelUpCost = BInt("4151882812")
+            scorePerTap = BInt("8926352")!
+            levelUpCost = BInt("4151882812")!
             break
         case 26:
-            scorePerTap = BInt("1115793")
-            levelUpCost = BInt("6300000000")
+            scorePerTap = BInt("1115793")!
+            levelUpCost = BInt("6300000000")!
             break
         case 27:
-            scorePerTap = BInt("1394741")
-            levelUpCost = BInt("9450000000")
+            scorePerTap = BInt("1394741")!
+            levelUpCost = BInt("9450000000")!
             break
         case 28:
-            scorePerTap = BInt("1743426")
-            levelUpCost = BInt("14175000000")
+            scorePerTap = BInt("1743426")!
+            levelUpCost = BInt("14175000000")!
             break
         case 29:
-            scorePerTap = BInt("2266454")
-            levelUpCost = BInt("21262500000")
+            scorePerTap = BInt("2266454")!
+            levelUpCost = BInt("21262500000")!
             break
         case 30:
-            scorePerTap = BInt("3173036")
-            levelUpCost = BInt("31893750000")
+            scorePerTap = BInt("3173036")!
+            levelUpCost = BInt("31893750000")!
             break
         case 31:
-            scorePerTap = BInt("3966295")
-            levelUpCost = BInt("47840625000")
+            scorePerTap = BInt("3966295")!
+            levelUpCost = BInt("47840625000")!
             break
         case 32:
-            scorePerTap = BInt("4957869")
-            levelUpCost = BInt("71760937500")
+            scorePerTap = BInt("4957869")!
+            levelUpCost = BInt("71760937500")!
             break
         case 33:
-            scorePerTap = BInt("6197336")
-            levelUpCost = BInt("107641406250")
+            scorePerTap = BInt("6197336")!
+            levelUpCost = BInt("107641406250")!
             break
         case 34:
-            scorePerTap = BInt("9296004")
-            levelUpCost = BInt("161462109375")
+            scorePerTap = BInt("9296004")!
+            levelUpCost = BInt("161462109375")!
             break
         case 35:
-            scorePerTap = BInt("11620005")
-            levelUpCost = BInt("258339375000")
+            scorePerTap = BInt("11620005")!
+            levelUpCost = BInt("258339375000")!
             break
         case 36:
-            scorePerTap = BInt("145250060")
-            levelUpCost = BInt("413343000000")
+            scorePerTap = BInt("145250060")!
+            levelUpCost = BInt("413343000000")!
             break
         case 37:
-            scorePerTap = BInt("217875090")
-            levelUpCost = BInt("661348800000")
+            scorePerTap = BInt("217875090")!
+            levelUpCost = BInt("661348800000")!
             break
         case 38:
-            scorePerTap = BInt("2723438060")
-            levelUpCost = BInt("1058158080000")
+            scorePerTap = BInt("2723438060")!
+            levelUpCost = BInt("1058158080000")!
             break
         case 39:
-            scorePerTap = BInt("3404298300")
-            levelUpCost = BInt("1693052928000")
+            scorePerTap = BInt("3404298300")!
+            levelUpCost = BInt("1693052928000")!
             break
         case 40:
-            scorePerTap = BInt("6127737000")
-            levelUpCost = BInt("2708884684800")
+            scorePerTap = BInt("6127737000")!
+            levelUpCost = BInt("2708884684800")!
             break
         case 41:
-            scorePerTap = BInt("7659671200")
-            levelUpCost = BInt("4334215495680")
+            scorePerTap = BInt("7659671200")!
+            levelUpCost = BInt("4334215495680")!
             break
         case 42:
-            scorePerTap = BInt("957500000")
-            levelUpCost = BInt("6934744793088")
+            scorePerTap = BInt("957500000")!
+            levelUpCost = BInt("6934744793088")!
             break
         case 43:
-            scorePerTap = BInt("11968750000")
-            levelUpCost = BInt("11095591668940")
+            scorePerTap = BInt("11968750000")!
+            levelUpCost = BInt("11095591668940")!
             break
         case 44:
-            scorePerTap = BInt("21543750000")
-            levelUpCost = BInt("17600000000000")
+            scorePerTap = BInt("21543750000")!
+            levelUpCost = BInt("17600000000000")!
             break
         case 45:
-            scorePerTap = BInt("26929687500")
-            levelUpCost = BInt("28160000000000")
+            scorePerTap = BInt("26929687500")!
+            levelUpCost = BInt("28160000000000")!
             break
         case 46:
-            scorePerTap = BInt("33750000000")
-            levelUpCost = BInt("45056000000000")
+            scorePerTap = BInt("33750000000")!
+            levelUpCost = BInt("45056000000000")!
             break
         case 47:
-            scorePerTap = BInt("42187500000")
-            levelUpCost = BInt("72089600000000")
+            scorePerTap = BInt("42187500000")!
+            levelUpCost = BInt("72089600000000")!
             break
         case 48:
-            scorePerTap = BInt("105468750000")
-            levelUpCost = BInt("115343360000000")
+            scorePerTap = BInt("105468750000")!
+            levelUpCost = BInt("115343360000000")!
             break
         case 49:
-            scorePerTap = BInt("158203125000")
-            levelUpCost = BInt("184549376000000")
+            scorePerTap = BInt("158203125000")!
+            levelUpCost = BInt("184549376000000")!
             break
         case 50:
-            scorePerTap = BInt("237304687005")
-            levelUpCost = BInt("295279001600000")
+            scorePerTap = BInt("237304687005")!
+            levelUpCost = BInt("295279001600000")!
             break
         case 51:
-            scorePerTap = BInt("355957031200")
-            levelUpCost = BInt("531502202880000")
+            scorePerTap = BInt("355957031200")!
+            levelUpCost = BInt("531502202880000")!
             break
         case 52:
-            scorePerTap = BInt("533935546800")
-            levelUpCost = BInt("956703965184000")
+            scorePerTap = BInt("533935546800")!
+            levelUpCost = BInt("956703965184000")!
             break
         case 53:
-            scorePerTap = BInt("8009033203000")
-            levelUpCost = BInt("1722067137331200")
+            scorePerTap = BInt("8009033203000")!
+            levelUpCost = BInt("1722067137331200")!
             break
         case 54:
-            scorePerTap = BInt("1201354980400")
-            levelUpCost = BInt("3099720847196160")
+            scorePerTap = BInt("1201354980400")!
+            levelUpCost = BInt("3099720847196160")!
             break
         case 55:
-            scorePerTap = BInt("3604064941400")
-            levelUpCost = BInt("5579497524953088")
+            scorePerTap = BInt("3604064941400")!
+            levelUpCost = BInt("5579497524953088")!
             break
         case 56:
-            scorePerTap = BInt("10812194824200")
-            levelUpCost = BInt("10043095544915560")
+            scorePerTap = BInt("10812194824200")!
+            levelUpCost = BInt("10043095544915560")!
             break
         case 57:
-            scorePerTap = BInt("32436584472600")
-            levelUpCost = BInt("18077571980848000")
+            scorePerTap = BInt("32436584472600")!
+            levelUpCost = BInt("18077571980848000")!
             break
         case 58:
-            scorePerTap = BInt("97309753417900")
-            levelUpCost = BInt("32539629565526410")
+            scorePerTap = BInt("97309753417900")!
+            levelUpCost = BInt("32539629565526410")!
             break
         case 59:
-            scorePerTap = BInt("15000000000000")
-            levelUpCost = BInt("58571333217947540")
+            scorePerTap = BInt("15000000000000")!
+            levelUpCost = BInt("58571333217947540")!
             break
         case 60:
-            scorePerTap = BInt("22500000000000")
-            levelUpCost = BInt("105428399792305617")
+            scorePerTap = BInt("22500000000000")!
+            levelUpCost = BInt("105428399792305617")!
             break
         case 61:
-            scorePerTap = BInt("33750000000000")
-            levelUpCost = BInt("100897711196261517")
+            scorePerTap = BInt("33750000000000")!
+            levelUpCost = BInt("100897711196261517")!
             break
         case 62:
-            scorePerTap = BInt("506250000000000")
-            levelUpCost = BInt("3415880153270000717")
+            scorePerTap = BInt("506250000000000")!
+            levelUpCost = BInt("3415880153270000717")!
             break
         case 63:
-            scorePerTap = BInt("6328125000000000")
-            levelUpCost = BInt("61485842758872600017")
+            scorePerTap = BInt("6328125000000000")!
+            levelUpCost = BInt("61485842758872600017")!
             break
         case 64:
-            scorePerTap = BInt("69492187500000000")
-            levelUpCost = BInt("720000000000000000000")
+            scorePerTap = BInt("69492187500000000")!
+            levelUpCost = BInt("720000000000000000000")!
             break
         case 65:
-            scorePerTap = BInt("2135742187500000000")
-            levelUpCost = BInt("67000000000000000000000")
+            scorePerTap = BInt("2135742187500000000")!
+            levelUpCost = BInt("67000000000000000000000")!
             break
         case 66:
-            scorePerTap = BInt("64072265625000000000")
-            levelUpCost = BInt("480000000000000000000000")
+            scorePerTap = BInt("64072265625000000000")!
+            levelUpCost = BInt("480000000000000000000000")!
             break
         case 67:
-            scorePerTap = BInt("192216796875000000000")
-            levelUpCost = BInt("1200000000000000000000000")
+            scorePerTap = BInt("192216796875000000000")!
+            levelUpCost = BInt("1200000000000000000000000")!
             break
         case 68:
-            scorePerTap = BInt("961083984375000000000")
-            levelUpCost = BInt("34000000000000000000000000")
+            scorePerTap = BInt("961083984375000000000")!
+            levelUpCost = BInt("34000000000000000000000000")!
             break
         case 69:
-            scorePerTap = BInt("2883251953125000000000")
-            levelUpCost = BInt("560000000000000000000000000")
+            scorePerTap = BInt("2883251953125000000000")!
+            levelUpCost = BInt("560000000000000000000000000")!
             break
         case 70:
-            scorePerTap = BInt("864975585937500000000000")
-            levelUpCost = BInt("7900000000000000000000000000")
+            scorePerTap = BInt("864975585937500000000000")!
+            levelUpCost = BInt("7900000000000000000000000000")!
             break
         case 71:
-            scorePerTap = BInt("2594926757812500000000000")
-            levelUpCost = BInt("9100000000000000000000000000")
+            scorePerTap = BInt("2594926757812500000000000")!
+            levelUpCost = BInt("9100000000000000000000000000")!
             break
         case 72:
-            scorePerTap = BInt("32436584472656250000000000")
-            levelUpCost = BInt("65000000000000000000000000000")
+            scorePerTap = BInt("32436584472656250000000000")!
+            levelUpCost = BInt("65000000000000000000000000000")!
             break
         case 73:
-            scorePerTap = BInt("424365844726562500000000000")
-            levelUpCost = BInt("780000000000000000000000000000")
+            scorePerTap = BInt("424365844726562500000000000")!
+            levelUpCost = BInt("780000000000000000000000000000")!
             break
         case 74:
-            scorePerTap = BInt("7243658447265625000000000000")
-            levelUpCost = BInt("56000000000000000000000000000000")
+            scorePerTap = BInt("7243658447265625000000000000")!
+            levelUpCost = BInt("56000000000000000000000000000000")!
             break
         case 75:
-            scorePerTap = BInt("112436584472656250000000000000")
-            levelUpCost = BInt("4900000000000000000000000000000000")
+            scorePerTap = BInt("112436584472656250000000000000")!
+            levelUpCost = BInt("4900000000000000000000000000000000")!
             break
             
         default:
-            scorePerTap = BInt("112436584472656250000000000000")
-            levelUpCost = BInt("4900000000000000000000000000000000")
+            scorePerTap = BInt("112436584472656250000000000000")!
+            levelUpCost = BInt("4900000000000000000000000000000000")!
             break
         }
     }

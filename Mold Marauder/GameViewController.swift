@@ -118,7 +118,14 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         
         //instantiate player inventory
         if let savedInventory = defaults.object(forKey: "inventory") as? Data {
-            inventory = NSKeyedUnarchiver.unarchiveObject(with: savedInventory) as? Inventory
+            do {
+                if let loadedInventory = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedInventory) as? Inventory {
+                    inventory = loadedInventory
+                }
+            } catch {
+                print("Couldn't load inventory.")
+            }
+//            inventory = NSKeyedUnarchiver.unarchiveObject(with: savedInventory) as? Inventory
         }
         else {
             inventory = Inventory()
@@ -537,10 +544,14 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             inventory.tutorialProgress = scene.tutorial
         }
         
-        let savedData = NSKeyedArchiver.archivedData(withRootObject: inventory!)
-        let defaults = UserDefaults.standard
-        defaults.set(savedData, forKey: "inventory")
-        print("saved")
+        do {
+            let savedData = try NSKeyedArchiver.archivedData(withRootObject: inventory!, requiringSecureCoding: false)
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "inventory")
+            print("saved")
+        } catch {
+            print("Couldn't save inventory")
+        }
     }
     
     @objc func sleepMode() {

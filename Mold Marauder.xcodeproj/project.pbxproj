@@ -631,13 +631,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = TCL5NNKKA5;
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.2;
 				NEW_SETTING = "";
@@ -655,13 +656,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = TCL5NNKKA5;
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.2;
 				NEW_SETTING = "";

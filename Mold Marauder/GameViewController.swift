@@ -183,24 +183,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             scene.backgroundName = inventory.background
             scene.setBackground()
         }
-        if inventory.background == "cave" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "crystal forest" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yurt" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "apartment" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yacht exterior" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "space" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
+        playBackgroundMusic(filename: "\(inventory.background).wav")
         scene.diamondCLabel.text = String(inventory.diamonds)
         
 //        reinvest count
@@ -236,14 +219,16 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             self.offlineCash()
         }
 
-        //TESTING - REMOVE
+//        TESTING - REMOVE
+//        inventory.autoTap = false
+//        inventory.autoTapLevel = 0
 //        inventory = Inventory()
 //        incrementDiamonds(newDiamonds: 500)
-//        inventory.level = 64
+//        inventory.level = 75
 //        incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
-        //inventory.molds.append(Mold(moldType: MoldType.invisible))
-        //inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
-        //inventory.reinvestmentCount = 8
+//        inventory.molds.append(Mold(moldType: MoldType.invisible))
+//        inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
+//        inventory.reinvestmentCount = 8
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -580,24 +565,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             skView.presentScene(scene)
             
             scene.menuPopUp.removeFromParent()
-            if inventory.background == "cave" {
-                playBackgroundMusic(filename: "cave_demo.wav")
-            }
-            if inventory.background == "crystal forest" {
-                playBackgroundMusic(filename: "cave_demo.wav")
-            }
-            if inventory.background == "yurt" {
-                playBackgroundMusic(filename: "cave_demo.wav")
-            }
-            if inventory.background == "apartment" {
-                playBackgroundMusic(filename: "cave_demo.wav")
-            }
-            if inventory.background == "yacht exterior" {
-                playBackgroundMusic(filename: "cave_demo.wav")
-            }
-            if inventory.background == "space" {
-                playBackgroundMusic(filename: "cave_demo.wav")
-            }
+            playBackgroundMusic(filename: "\(inventory.background).wav")
         }
         preventNoTapAbuse?.invalidate()
         cashTimer?.invalidate()
@@ -4488,15 +4456,15 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 print("RateApp \(success)")
             }
         }
-        if action == "listen" {
-            let url = URL(string: "https://soundcloud.com/vlad-pro-peccatis-nostris")!
-            UIApplication.shared.open(url)
-        }
+//        if action == "listen" {
+//            let url = URL(string: "https://soundcloud.com/vlad-pro-peccatis-nostris")!
+//            UIApplication.shared.open(url)
+//        }
         if action == "music" {
             if inventory.muteMusic {
                 inventory.muteMusic = false
                 creditsScene.removeMuteMusic()
-                playBackgroundMusic(filename: "menu_demo.wav")
+                playBackgroundMusic(filename: "menu.wav")
             }
             else {
                 inventory.muteMusic = true
@@ -5158,21 +5126,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if scene.diamondShop == false && action == "tap" {
             tapHelper()
             if inventory.autoTap {
-                if inventory.autoTapLevel == 1 {
-                    autoTapTimer = Timer.scheduledTimer(timeInterval: 0.06, target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
-                }
-                if inventory.autoTapLevel == 2 {
-                    autoTapTimer = Timer.scheduledTimer(timeInterval: 0.03, target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
-                }
-                if inventory.autoTapLevel == 3 {
-                    autoTapTimer = Timer.scheduledTimer(timeInterval: 0.02, target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
-                }
-                if inventory.autoTapLevel == 4 {
-                    autoTapTimer = Timer.scheduledTimer(timeInterval: 0.013, target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
-                }
-                if inventory.autoTapLevel == 5 {
-                    autoTapTimer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
-                }
+                let intervals = [0.06, 0.03, 0.02, 0.013, 0.01]
+                autoTapTimer = Timer.scheduledTimer(timeInterval: intervals[inventory.autoTapLevel-1], target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
             }
             if inventory.tutorialProgress == 16 {
                 scene.tutorialLayer.removeAllChildren()
@@ -5825,24 +5780,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 ARgameScene.menuPopUp.run(action)
             }
         }
-        if inventory.background == "cave" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "crystal forest" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yurt" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "apartment" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yacht exterior" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "space" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
+//        playBackgroundMusic(filename: "\(inventory.background).wav")
     }
     
     func exitMenu() {
@@ -5936,25 +5874,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 ARgameScene.menuPopUp.run(action)
             }
         }
-        if inventory.background == "cave" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "crystal forest" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yurt" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "apartment" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "yacht exterior" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        if inventory.background == "space" {
-            playBackgroundMusic(filename: "cave_demo.wav")
-        }
-        
+        playBackgroundMusic(filename: "\(inventory.background).wav")
     }
     
     
@@ -6078,7 +5998,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
         scene.isActive = false
         scene.isPaused = true
-        playBackgroundMusic(filename: "menu_demo.wav")
+        playBackgroundMusic(filename: "menu.wav")
     }
     
     func showInventory() {
@@ -6113,7 +6033,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
         scene.isActive = false
         scene.isPaused = true
-        playBackgroundMusic(filename: "menu_demo.wav")
+//        playBackgroundMusic(filename: "menu.wav")
     }
     
     @objc func enableTouch() {

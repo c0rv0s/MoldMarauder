@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0F1EE98B227D291D0026BF88 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1EE98A227D291D0026BF88 /* Bolts.framework */; };
+		0F7FED192418B76900C3BABB /* crystal forest.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED182418B76900C3BABB /* crystal forest.wav */; };
+		0F7FED1B2418BCBD00C3BABB /* yurt.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1A2418BCBD00C3BABB /* yurt.wav */; };
+		0F7FED1D2418C65200C3BABB /* space.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1C2418C65200C3BABB /* space.wav */; };
+		0F7FED1F2418C7A400C3BABB /* apartment.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1E2418C7A400C3BABB /* apartment.wav */; };
+		0F7FED212418CD9800C3BABB /* yacht exterior.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED202418CD9800C3BABB /* yacht exterior.wav */; };
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
 		0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A42411D02A0014A9BB /* Utils.swift */; };
 		0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A62411D4C60014A9BB /* CometLayer.swift */; };
@@ -42,8 +47,8 @@
 		210F06E81E94407C006EA0D5 /* sparkle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 210F06CC1E94407C006EA0D5 /* sparkle.mp3 */; };
 		210F06E91E94407C006EA0D5 /* worm appear.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06CD1E94407C006EA0D5 /* worm appear.wav */; };
 		210F06EB1E9440D9006EA0D5 /* Ka-Ching.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06EA1E9440D9006EA0D5 /* Ka-Ching.wav */; };
-		210F06EF1E9440F9006EA0D5 /* cave_demo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06ED1E9440F9006EA0D5 /* cave_demo.wav */; };
-		210F06F01E9440F9006EA0D5 /* menu_demo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06EE1E9440F9006EA0D5 /* menu_demo.wav */; };
+		210F06EF1E9440F9006EA0D5 /* cave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06ED1E9440F9006EA0D5 /* cave.wav */; };
+		210F06F01E9440F9006EA0D5 /* menu.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06EE1E9440F9006EA0D5 /* menu.wav */; };
 		210F06F41E9441CD006EA0D5 /* exit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06F11E9441CD006EA0D5 /* exit.wav */; };
 		210F06F51E9441CD006EA0D5 /* fight sound_mixdown.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06F21E9441CD006EA0D5 /* fight sound_mixdown.wav */; };
 		210F06F81E944496006EA0D5 /* card flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06F71E944496006EA0D5 /* card flip.wav */; };
@@ -83,6 +88,11 @@
 
 /* Begin PBXFileReference section */
 		0F1EE98A227D291D0026BF88 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		0F7FED182418B76900C3BABB /* crystal forest.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "crystal forest.wav"; sourceTree = "<group>"; };
+		0F7FED1A2418BCBD00C3BABB /* yurt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = yurt.wav; sourceTree = "<group>"; };
+		0F7FED1C2418C65200C3BABB /* space.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = space.wav; sourceTree = "<group>"; };
+		0F7FED1E2418C7A400C3BABB /* apartment.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = apartment.wav; sourceTree = "<group>"; };
+		0F7FED202418CD9800C3BABB /* yacht exterior.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "yacht exterior.wav"; sourceTree = "<group>"; };
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
 		0FC7D0A42411D02A0014A9BB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0FC7D0A62411D4C60014A9BB /* CometLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CometLayer.swift; sourceTree = "<group>"; };
@@ -117,8 +127,8 @@
 		210F06CC1E94407C006EA0D5 /* sparkle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sparkle.mp3; sourceTree = "<group>"; };
 		210F06CD1E94407C006EA0D5 /* worm appear.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "worm appear.wav"; sourceTree = "<group>"; };
 		210F06EA1E9440D9006EA0D5 /* Ka-Ching.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "Ka-Ching.wav"; sourceTree = "<group>"; };
-		210F06ED1E9440F9006EA0D5 /* cave_demo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cave_demo.wav; sourceTree = "<group>"; };
-		210F06EE1E9440F9006EA0D5 /* menu_demo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menu_demo.wav; sourceTree = "<group>"; };
+		210F06ED1E9440F9006EA0D5 /* cave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cave.wav; sourceTree = "<group>"; };
+		210F06EE1E9440F9006EA0D5 /* menu.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menu.wav; sourceTree = "<group>"; };
 		210F06F11E9441CD006EA0D5 /* exit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = exit.wav; sourceTree = "<group>"; };
 		210F06F21E9441CD006EA0D5 /* fight sound_mixdown.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "fight sound_mixdown.wav"; sourceTree = "<group>"; };
 		210F06F71E944496006EA0D5 /* card flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "card flip.wav"; sourceTree = "<group>"; };
@@ -190,8 +200,13 @@
 		210F06EC1E9440E2006EA0D5 /* music */ = {
 			isa = PBXGroup;
 			children = (
-				210F06ED1E9440F9006EA0D5 /* cave_demo.wav */,
-				210F06EE1E9440F9006EA0D5 /* menu_demo.wav */,
+				0F7FED182418B76900C3BABB /* crystal forest.wav */,
+				0F7FED1E2418C7A400C3BABB /* apartment.wav */,
+				0F7FED202418CD9800C3BABB /* yacht exterior.wav */,
+				210F06ED1E9440F9006EA0D5 /* cave.wav */,
+				0F7FED1C2418C65200C3BABB /* space.wav */,
+				0F7FED1A2418BCBD00C3BABB /* yurt.wav */,
+				210F06EE1E9440F9006EA0D5 /* menu.wav */,
 			);
 			name = music;
 			sourceTree = "<group>";
@@ -430,25 +445,30 @@
 				210F06CE1E94407C006EA0D5 /* achieve.wav in Resources */,
 				21655E0C1E6410E8003F9DB5 /* Lemondrop.ttf in Resources */,
 				210F06D61E94407C006EA0D5 /* camera.wav in Resources */,
-				210F06EF1E9440F9006EA0D5 /* cave_demo.wav in Resources */,
+				210F06EF1E9440F9006EA0D5 /* cave.wav in Resources */,
+				0F7FED212418CD9800C3BABB /* yacht exterior.wav in Resources */,
 				210F06E61E94407C006EA0D5 /* select.wav in Resources */,
 				210F06DC1E94407C006EA0D5 /* ding.wav in Resources */,
 				210F06D41E94407C006EA0D5 /* bubble.wav in Resources */,
 				210F06DA1E94407C006EA0D5 /* crunch.wav in Resources */,
-				210F06F01E9440F9006EA0D5 /* menu_demo.wav in Resources */,
+				210F06F01E9440F9006EA0D5 /* menu.wav in Resources */,
 				210F06F81E944496006EA0D5 /* card flip.wav in Resources */,
 				210F06D01E94407C006EA0D5 /* bad card.wav in Resources */,
 				21CB73411E412FD500DEAF4F /* Main.storyboard in Resources */,
+				0F7FED1D2418C65200C3BABB /* space.wav in Resources */,
 				210F06E31E94407C006EA0D5 /* lose.wav in Resources */,
 				210F06D91E94407C006EA0D5 /* chest.wav in Resources */,
+				0F7FED192418B76900C3BABB /* crystal forest.wav in Resources */,
 				210F06DF1E94407C006EA0D5 /* gem case.wav in Resources */,
 				210F06F51E9441CD006EA0D5 /* fight sound_mixdown.wav in Resources */,
 				210F06FA1E9444C3006EA0D5 /* awe.wav in Resources */,
 				210F06E21E94407C006EA0D5 /* laser.wav in Resources */,
 				21CB73431E412FD500DEAF4F /* Assets.xcassets in Resources */,
 				210F06FC1E9445B0006EA0D5 /* kiss.wav in Resources */,
+				0F7FED1B2418BCBD00C3BABB /* yurt.wav in Resources */,
 				210F06D11E94407C006EA0D5 /* bubble 2.wav in Resources */,
 				0FCB1D531F85D059006CE351 /* black_hole_bye.wav in Resources */,
+				0F7FED1F2418C7A400C3BABB /* apartment.wav in Resources */,
 				21666A2E1EF1C48A003EF84F /* plinking.wav in Resources */,
 				210F06E41E94407C006EA0D5 /* powerdown.wav in Resources */,
 				21CB73461E412FD500DEAF4F /* LaunchScreen.storyboard in Resources */,

@@ -84,7 +84,7 @@ class CreditsScene: SKScene {
         let labelThree = SKLabelNode(fontNamed: "Lemondrop")
         labelThree.fontSize = 13
         labelThree.fontColor = UIColor.black
-        labelThree.text = "Vlad Popovsky: "
+        labelThree.text = "valdez/Spacey Dreams: "
         labelThree.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+115)
         addChild(labelThree)
 
@@ -100,7 +100,7 @@ class CreditsScene: SKScene {
         // Place in scene
         listenButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+85)
         
-        self.addChild(listenButton)
+//        self.addChild(listenButton)
         
         let labelFive = SKLabelNode(fontNamed: "Lemondrop")
         labelFive.fontSize = 13

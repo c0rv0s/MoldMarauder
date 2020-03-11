@@ -37,7 +37,7 @@ class BlackHole: SKNode {
         let rotateL = SKAction.rotate(byAngle: 360, duration: 400)
         center?.run(SKAction.sequence([appear, bounce1, bounce2, rotateL]))
         
-        let rotateR = SKAction.rotate(byAngle: -1800, duration: 100)
+        let rotateR = SKAction.rotate(byAngle: -420, duration: 100)
         outer?.run(SKAction.sequence([SKAction.wait(forDuration: 0.3), appear, bounce1, bounce2, rotateR]))
     }
     
@@ -47,10 +47,6 @@ class BlackHole: SKNode {
         center?.run(SKAction.sequence([bounce1, bounce2]))
         outer?.run(SKAction.sequence([SKAction.wait(forDuration: 0.3), bounce1, bounce2]))
         gone = true
-    }
-    
-    private func randomInRange(lo: Int, hi : Int) -> Int {
-        return lo + Int(arc4random_uniform(UInt32(hi - lo + 1)))
     }
     
 }

@@ -177,6 +177,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F7FED172418ABDD00C3BABB /* Outside Code */ = {
+			isa = PBXGroup;
+			children = (
+				214A7D761E8E4F8000796E61 /* CircleFit.swift */,
+				21C16F0C1E480FBE003D109A /* SwiftySKScrollView.swift */,
+				0FC7D0AA24122B2B0014A9BB /* Swift-Big-Number-Core.swift */,
+			);
+			name = "Outside Code";
+			sourceTree = "<group>";
+		};
 		210F06EC1E9440E2006EA0D5 /* music */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,14 +194,6 @@
 				210F06EE1E9440F9006EA0D5 /* menu_demo.wav */,
 			);
 			name = music;
-			sourceTree = "<group>";
-		};
-		214A7D751E8E4F7100796E61 /* circle */ = {
-			isa = PBXGroup;
-			children = (
-				214A7D761E8E4F8000796E61 /* CircleFit.swift */,
-			);
-			name = circle;
 			sourceTree = "<group>";
 		};
 		21655E0A1E641038003F9DB5 /* fonts */ = {
@@ -252,7 +254,6 @@
 				0FC7D0A62411D4C60014A9BB /* CometLayer.swift */,
 				0FC7D0A82411DB0F0014A9BB /* Background.swift */,
 				21305B461E615C0A006343A4 /* progress_Bar.swift */,
-				214A7D751E8E4F7100796E61 /* circle */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -309,9 +310,8 @@
 				21655E0A1E641038003F9DB5 /* fonts */,
 				21D01DE91E590D8B008184C4 /* Mold Marauder.entitlements */,
 				21CB73351E412FD500DEAF4F /* AppDelegate.swift */,
-				21C16F0C1E480FBE003D109A /* SwiftySKScrollView.swift */,
-				0FC7D0AA24122B2B0014A9BB /* Swift-Big-Number-Core.swift */,
 				0FC7D0A42411D02A0014A9BB /* Utils.swift */,
+				0F7FED172418ABDD00C3BABB /* Outside Code */,
 				21C16F041E44F704003D109A /* Models */,
 				21C16F051E44F711003D109A /* Views */,
 				21C16F061E44F731003D109A /* Controllers */,

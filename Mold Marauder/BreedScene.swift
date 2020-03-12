@@ -68,11 +68,11 @@ class BreedScene: SKScene {
     
     var touchHandler: ((String) -> ())?
     
-    var selectedMolds: Array<Mold>!
+    var selectedMolds: Array<Mold>! = []
     
     var unlockedMolds: Array<Mold>!
-    var ownedMolds: Array<Mold>!
-    var possibleCombos: Array<Combo>!
+    var ownedMolds: Array<Mold> = []
+    var possibleCombos: Array<Combo> = []
     var currentDiamondCombo: Combo!
     var numDiamonds = 0
     
@@ -95,20 +95,11 @@ class BreedScene: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
-        selectedMolds = []
-        ownedMolds = []
-        possibleCombos = []
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
-        
         center = CGPoint(x:self.frame.midX, y:self.frame.midY)
     }
     
@@ -118,21 +109,17 @@ class BreedScene: SKScene {
     
     override func didMove(to view: SKView) {
         cometLayer.start(menu: false)
-        
         createButton()
         erectScroll()
     }
     
     func reloadScroll() {
-        
         self.removeAllChildren()
-        
         scrollView?.removeFromSuperview()
         scrollView = nil
         
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
         
         moveableNode.removeAllChildren()
@@ -143,19 +130,6 @@ class BreedScene: SKScene {
     
     func erectScroll() {
         bubbleLayer.removeFromParent()
-        //let pages = ceil(Double(unlockedMolds.count) / 2.0)
-        /*
-        var count = 0
-        if ownedMolds != nil {
-            for mold in unlockedMolds {
-                if moldOwned(mold: mold.moldType) {
-                    count += 1
-                }
-                if mold.moldType == MoldType.coconut || mold.moldType == MoldType.flower || mold.moldType == MoldType.bee {
-                    count += 0.5
-                }
-            }
-        }*/
         let height = 100 + (ownedMolds.count * 95)
         //addNode
         addChild(moveableNode)
@@ -187,7 +161,7 @@ class BreedScene: SKScene {
         }
         print("lengths",ownedMolds.count, unlockedMolds.count, height)
         //add each mold to the scene exactly one time
-        if ownedMolds != nil {
+        if ownedMolds.count > 0 {
             for mold in unlockedMolds {
                 if mold.moldType == MoldType.slime && moldOwned(mold: MoldType.slime) {
                     Texture = SKTexture(image: UIImage(named: "Slime Mold")!)
@@ -616,7 +590,6 @@ class BreedScene: SKScene {
         lastButton = breedinstructions.position
         self.addChild(breedinstructions)
         
-        
         // BREED
         Texture = SKTexture(image: UIImage(named: "breed action")!)
         breedButton = SKSpriteNode(texture:Texture)
@@ -682,7 +655,6 @@ class BreedScene: SKScene {
         }
     }
     
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if successLayer.children.count > 0 {
             successLayer.removeAllChildren()
@@ -703,7 +675,7 @@ class BreedScene: SKScene {
             }
             
             //check if touch was one of the mold buttons
-//            first cap at 5 molds to select
+// first cap at 5 molds to select
             if selectedMolds.count < 5 {
                 if slimeButton != nil {
                     if node == slimeButton {

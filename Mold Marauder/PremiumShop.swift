@@ -38,16 +38,11 @@ class PremiumShop: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         addChild(gameLayer)
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     

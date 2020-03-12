@@ -76,7 +76,7 @@ class MoldShop: SKScene {
     
     var tutorialLayer = SKNode()
     
-//    update current pps
+    //    update current pps
     var levDicc: [String:Int]!
     //    level molds
     //    after 400 just go by every 50 after that
@@ -87,7 +87,7 @@ class MoldShop: SKScene {
     
     //for background animations
     var background = Background()
-
+    
     //MARK: METHODS
     
     override init(size: CGSize) {
@@ -95,14 +95,10 @@ class MoldShop: SKScene {
         blockedMolds = Set<String>()
         prices = [String:BInt]()
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         addChild(gameLayer)
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     
@@ -116,7 +112,7 @@ class MoldShop: SKScene {
     }
     
     func ppsAmount(mold: MoldType) -> BInt {
-        //                check level to see how much more to add
+        //  check level to see how much more to add
         let hearts = levDicc[mold.spriteName]!
         var levs = 0
         if hearts < 426 {
@@ -247,7 +243,7 @@ class MoldShop: SKScene {
             maxLabel.position = CGPoint(x: lastButton.x, y: lastButton.y)
             page1ScrollView.addChild(maxLabel)
         }
-    
+        
         
         // angry
         Texture = SKTexture(image: UIImage(named: "Angry Mold")!)
@@ -1268,7 +1264,7 @@ class MoldShop: SKScene {
                 }
             }
         }
-        //            fill in black silhouettes for locked species
+        // fill in black silhouettes for locked species
         if unlockedMolds.count < 42 {
             var remainder = 42 - unlockedMolds.count
             
@@ -1359,37 +1355,37 @@ class MoldShop: SKScene {
             
             //check if user purchased a mold
             if (slimeButton) != nil {
-            if node == slimeButton {
-                print("slime")
-                if let handler = touchHandler {
-                    handler("slime")
+                if node == slimeButton {
+                    print("slime")
+                    if let handler = touchHandler {
+                        handler("slime")
+                    }
                 }
-            }
             }
             if (caveButton) != nil {
-            if node == caveButton {
-                print("cave")
-                
-                if let handler = touchHandler {
-                    handler("cave")
+                if node == caveButton {
+                    print("cave")
+                    
+                    if let handler = touchHandler {
+                        handler("cave")
+                    }
                 }
-            }
             }
             if (sadButton) != nil {
-            if node == sadButton {
-                print("sad")
-                if let handler = touchHandler {
-                    handler("sad")
+                if node == sadButton {
+                    print("sad")
+                    if let handler = touchHandler {
+                        handler("sad")
+                    }
                 }
-            }
             }
             if (angryButton) != nil {
-            if node == angryButton {
-                print("angry")
-                if let handler = touchHandler {
-                    handler("angry")
+                if node == angryButton {
+                    print("angry")
+                    if let handler = touchHandler {
+                        handler("angry")
+                    }
                 }
-            }
             }
             if (alienButton) != nil {
                 if node == alienButton {
@@ -1713,16 +1709,16 @@ class MoldShop: SKScene {
     
     func playSound(select: String) {
         if mute == false {
-        switch select {
-        case "levelup":
-            run(levelUpSound)
-        case "select":
-            run(selectSound)
-        case "buzzer":
-            run(buzzerSound)
-        default:
-            run(levelUpSound)
-        }
+            switch select {
+            case "levelup":
+                run(levelUpSound)
+            case "select":
+                run(selectSound)
+            case "buzzer":
+                run(buzzerSound)
+            default:
+                run(levelUpSound)
+            }
         }
     }
     
@@ -1852,7 +1848,7 @@ class MoldShop: SKScene {
     }
     
     func addLabels() {
-    
+        
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 13
         welcomeTitle.fontColor = UIColor.black

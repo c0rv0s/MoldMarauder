@@ -193,8 +193,8 @@ class MoldInventory: SKScene {
     
     var touchHandler: ((String) -> ())?
     
-    var unlockedMolds: Array<Mold>!
-    var ownedMolds: Array<Mold>!
+    var unlockedMolds: Array<Mold> = []
+    var ownedMolds: Array<Mold> = []
     var display: Array<Mold>!
     
     //to store last button postion to order buttons without blank space
@@ -213,19 +213,11 @@ class MoldInventory: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
-        ownedMolds = []
-        unlockedMolds = []
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
-        
         center = CGPoint(x:self.frame.midX, y:self.frame.midY)
     }
     
@@ -241,25 +233,11 @@ class MoldInventory: SKScene {
     }
     
     func erectScroll() {
-        //let pages = ceil(Double(unlockedMolds.count) / 2.0)
-        /*
-        var count = 0
-        if ownedMolds != nil {
-            for mold in unlockedMolds {
-                if moldOwned(mold: mold.moldType) {
-                    count += 1
-                }
-                if mold.moldType == MoldType.coconut || mold.moldType == MoldType.flower || mold.moldType == MoldType.bee {
-                    count += 1
-                }
-            }
-        }*/
         let height = 100 + (ownedMolds.count * 95)
         //addNode
         addChild(moveableNode)
         //set up the scrollView
         scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), moveableNode: moveableNode, direction: .vertical)
-        //scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: scrollView!.frame.height * CGFloat(pages)) // makes it 2 times the height
         scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(height))
         view?.addSubview(scrollView!)
         
@@ -304,7 +282,7 @@ class MoldInventory: SKScene {
         page1ScrollView.addChild(inLabel)
         
         //add each mold to the scene exactly one time
-        if ownedMolds != nil {
+        if ownedMolds.count > 0 {
             for mold in unlockedMolds {
                 if mold.moldType == MoldType.slime && moldOwned(mold: MoldType.slime) {
                     Texture = SKTexture(image: UIImage(named: "Slime Mold")!)

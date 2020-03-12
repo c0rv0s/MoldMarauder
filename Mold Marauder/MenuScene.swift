@@ -37,17 +37,11 @@ class MenuScene: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         createButton()
-        
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     
@@ -57,7 +51,6 @@ class MenuScene: SKScene {
     
     override func didMove(to view: SKView) {
         cometLayer.start(menu: true)
-        
         arSwitch = false
     }
     
@@ -119,10 +112,10 @@ class MenuScene: SKScene {
         
         self.addChild(achieveButton)
         
-//        leaderboards
+//    leaderboards
         Texture = SKTexture(image: UIImage(named: "leaderboards button")!)
         leaderboards = SKSpriteNode(texture: Texture)
-//        place in scene
+//    place in scene
         leaderboards.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+50);
         self.addChild(leaderboards)
         

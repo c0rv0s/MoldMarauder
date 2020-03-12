@@ -98,7 +98,7 @@ func fitCircle(_ points: [CGPoint]) -> CircleResult {
   mean.x = mean.x / dataLength
   mean.y = mean.y / dataLength
 
-  //     computing moments
+  // computing moments
 
   var Mxx = 0.0 as CGFloat
   var Myy = 0.0 as CGFloat
@@ -126,7 +126,7 @@ func fitCircle(_ points: [CGPoint]) -> CircleResult {
   Myz /= dataLength
   Mzz /= dataLength
 
-  //      computing coefficients of the characteristic polynomial
+  //  computing coefficients of the characteristic polynomial
 
   let Mz = Mxx + Myy
   let Cov_xy = Mxx*Myy - Mxy*Mxy
@@ -140,7 +140,7 @@ func fitCircle(_ points: [CGPoint]) -> CircleResult {
 
   //    finding the root of the characteristic polynomial
   //    using Newton's method starting at x=0
-  //     (it is guaranteed to converge to the right root)
+  // (it is guaranteed to converge to the right root)
 
   var x: CGFloat = 0
   var y = A0
@@ -157,13 +157,13 @@ func fitCircle(_ points: [CGPoint]) -> CircleResult {
     iter += 1
   }
 
-  //       computing paramters of the fitting circle
+  //   computing paramters of the fitting circle
 
   let DET = x*x - x*Mz + Cov_xy
   let Xcenter = (Mxz*(Myy - x) - Myz*Mxy)/DET/2.0
   let Ycenter = (Myz*(Mxx - x) - Mxz*Mxy)/DET/2.0
 
-  //       assembling the output
+  //   assembling the output
 
   var circle = CircleResult()
 

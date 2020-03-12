@@ -35,21 +35,14 @@ class ItemShop: SKScene {
     
     //for background animations
     var background = Background()
-
+    
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         addChild(gameLayer)
-        
-        
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     
@@ -59,8 +52,7 @@ class ItemShop: SKScene {
     
     override func didMove(to view: SKView) {
         cometLayer.start(menu: false)
-        
-       createButton()
+        createButton()
     }
     
     func createButton()
@@ -79,7 +71,7 @@ class ItemShop: SKScene {
         // Place in scene
         premiumButton.position = CGPoint(x:self.frame.midX-85, y:self.frame.midY+170);
         self.addChild(premiumButton)
-
+        
         
         // repellant
         Texture = SKTexture(image: UIImage(named: "repellant")!)
@@ -199,7 +191,7 @@ class ItemShop: SKScene {
         addChild(windfallLabel)
         
         self.addChild(cashWindfallButton)
-
+        
         switch UIDevice().screenType {
         case .iPhone4:
             //iPhone 5
@@ -330,20 +322,20 @@ class ItemShop: SKScene {
     
     func playSound(select: String) {
         if mute == false {
-        switch select {
-        case "levelup":
-            run(levelUpSound)
-        case "cash register":
-            run(cashRegisterSound)
-        case "select":
-            run(selectSound)
-        case "exit":
-            run(exitSound)
-        case "diamond pop":
-            run(diamondPopSound)
-        default:
-            run(levelUpSound)
-        }
+            switch select {
+            case "levelup":
+                run(levelUpSound)
+            case "cash register":
+                run(cashRegisterSound)
+            case "select":
+                run(selectSound)
+            case "exit":
+                run(exitSound)
+            case "diamond pop":
+                run(diamondPopSound)
+            default:
+                run(levelUpSound)
+            }
         }
     }
     

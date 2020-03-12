@@ -49,21 +49,14 @@ class AchievementsScene: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        //barLayer.zPosition = -200
         addChild(barLayer)
         labelLayer.zPosition = 200
         addChild(labelLayer)
         addChild(gameLayer)
-        
-       
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     

@@ -35,16 +35,11 @@ class CreditsScene: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         addChild(gameLayer)
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     
@@ -100,7 +95,7 @@ class CreditsScene: SKScene {
         // Place in scene
         listenButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+85)
         
-//        self.addChild(listenButton)
+//    self.addChild(listenButton)
         
         let labelFive = SKLabelNode(fontNamed: "Lemondrop")
         labelFive.fontSize = 13

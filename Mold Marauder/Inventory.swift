@@ -67,7 +67,6 @@ class Inventory: NSObject, NSCoding {
         level = 0
         scorePerTap = 10
         levelUpCost = 2500
-        //calculateScorePerTap()
         scorePerSecond = 0
         cash = BInt("250")!
         diamonds = 10
@@ -81,7 +80,7 @@ class Inventory: NSObject, NSCoding {
         wormsKilled = 0
         achieveDiamonds = 0
         
-        autoTap = true
+        autoTap = false
         autoTapLevel = 0
         
         repelTimer = 0

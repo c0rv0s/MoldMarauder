@@ -162,7 +162,6 @@ class ARScene: SKScene {
         
         if node == buyButton {
             if let handler = touchHandler {
-                print("buy butt")
                 handler("ar_scene_buy")
             }
         }
@@ -187,7 +186,7 @@ class ARScene: SKScene {
         let hit = nodes(at: location)
         // Get the first node (if any)
         if let node = hit.first {
-//            what if its a black hole?
+// what if its a black hole?
             if node.name == "hole" {
                 if randomInRange(lo: 1, hi: 20) == 5 {
                     if let handler = touchHandler {
@@ -262,7 +261,7 @@ class ARScene: SKScene {
                         SKAction.fadeOut(withDuration: (0.35)),
                         SKAction.removeFromParent()]))
                 }
-                //                    level up mold
+                // level up mold
                 if let handler = touchHandler {
                     moldName = node.name!
                     handler("level_mold")
@@ -431,7 +430,7 @@ class ARScene: SKScene {
         
         diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+262);
         
-        //        adjust for screen sizes
+        //    adjust for screen sizes
         switch UIDevice().screenType {
         case .iPhone4:
             header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+195)
@@ -459,7 +458,7 @@ class ARScene: SKScene {
         default:
             break
         }
-        //        now place the elements
+        //    now place the elements
         self.addChild(header)
         self.addChild(buyButton)
         self.addChild(diamondIcon)
@@ -541,7 +540,7 @@ class ARScene: SKScene {
             let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
             let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
             let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(6)) + 2)*10
@@ -564,7 +563,7 @@ class ARScene: SKScene {
         }
         else if (moldData.moldType == MoldType.samurai) {
             let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(3)) + 8)*10
@@ -588,7 +587,7 @@ class ARScene: SKScene {
         }
         else if (moldData.moldType == MoldType.magma) {
             let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(3)) + 8)*10
@@ -617,7 +616,7 @@ class ARScene: SKScene {
         }
         else if (moldData.moldType == MoldType.cryptid) {
             let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(3)) + 8)*10
@@ -650,7 +649,7 @@ class ARScene: SKScene {
             let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
             let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
             let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(6)) + 2)*4
@@ -676,7 +675,7 @@ class ARScene: SKScene {
         }
         else if (moldData.moldType == MoldType.hologram) {
             let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-            //            frames = [SKTexture]()
+            // frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(6)) + 2)*4
@@ -701,7 +700,7 @@ class ARScene: SKScene {
         }
         else if (moldData.moldType == MoldType.storm) {
             let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(6)) + 2)*4
@@ -725,7 +724,7 @@ class ARScene: SKScene {
         }
         else if (moldData.moldType == MoldType.coconut) {
             let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(6)) + 2)*4
@@ -756,7 +755,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.angry) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 1
             let numFrames = 5
@@ -789,7 +788,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.astronaut) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 1
             let numFrames = (Int(arc4random_uniform(5)) + 6)*10
@@ -808,7 +807,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.zombie) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             var numFrames = (Int(arc4random_uniform(3)) + 1)*10
@@ -842,7 +841,7 @@ class ARScene: SKScene {
         }
         else if (moldData.moldType == MoldType.virus) {
             let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
             frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
@@ -867,7 +866,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.x) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 2
             while(i<11) {
@@ -885,7 +884,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.hypno || moldData.moldType == MoldType.flower || moldData.moldType == MoldType.water) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 2
             let numFrames = 21
@@ -899,7 +898,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.pimply) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 1
             let numFrames = 16
@@ -919,7 +918,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.crystal) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 2
             let numFrames = 8
@@ -944,7 +943,7 @@ class ARScene: SKScene {
             let textureTwo = SKTexture(image: UIImage(named: "Alien Mold F2")!)
             let textureThree = SKTexture(image: UIImage(named: "Alien Mold F3")!)
             let textureFour = SKTexture(image: UIImage(named: "Alien Mold F4")!)
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(6)) + 8)*10
@@ -969,7 +968,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.rainbow) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 1
             let numFrames = 11
@@ -984,7 +983,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.slinky) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             var i = 1
             var numFrames = 11
@@ -1006,7 +1005,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.coffee) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             frames.append(SKTexture(image: UIImage(named: "Coffee Mold F1")!))
             frames.append(SKTexture(image: UIImage(named: "Coffee Mold F2")!))
@@ -1017,7 +1016,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.angel) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
             frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
@@ -1038,7 +1037,7 @@ class ARScene: SKScene {
             
         }
         else if (moldData.moldType == MoldType.star) {
-            //            var frames = [SKTexture]()
+            // var frames = [SKTexture]()
             
             frames.append(SKTexture(image: UIImage(named: "Star Mold")!))
             var i = 1
@@ -1058,7 +1057,7 @@ class ARScene: SKScene {
             let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
             let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
             let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-            //            var blinkFrames = [SKTexture]()
+            // var blinkFrames = [SKTexture]()
             
             var i = 0
             let numFrames = (Int(arc4random_uniform(6)) + 8)*10

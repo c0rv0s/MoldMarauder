@@ -38,7 +38,7 @@ class LevelScene: SKScene {
     var lastButton : CGPoint!
     
     var caveButton: SKNode!
-    var yachtExButton: SKNode!
+    var yachtButton: SKNode!
     var crysForestButton: SKNode!
     var apartmentButton: SKNode!
     var apartment2Button: SKNode!
@@ -64,19 +64,13 @@ class LevelScene: SKScene {
 
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         addChild(buttonLayer)
         addChild(gameLayer)
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
-        //calculateScorePerTap()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -293,13 +287,13 @@ class LevelScene: SKScene {
             page1ScrollView.addChild(apartmentButton)
         }
         if currentLevel >= 60 {
-            Texture = SKTexture(image: UIImage(named: "yachtExButton")!)
+            Texture = SKTexture(image: UIImage(named: "yachtButton")!)
             // slime
-            yachtExButton = SKSpriteNode(texture:Texture)
+            yachtButton = SKSpriteNode(texture:Texture)
             // Place in scene
-            yachtExButton.position = CGPoint(x: lastButton.x+120, y: lastButton.y)
-            lastButton = yachtExButton.position
-            page1ScrollView.addChild(yachtExButton)
+            yachtButton.position = CGPoint(x: lastButton.x+120, y: lastButton.y)
+            lastButton = yachtButton.position
+            page1ScrollView.addChild(yachtButton)
         }
         if currentLevel >= 75 {
             Texture = SKTexture(image: UIImage(named: "space button")!)
@@ -333,8 +327,8 @@ class LevelScene: SKScene {
             checkmark.position = yurtButton.position
             page1ScrollView.addChild(checkmark)
             break
-        case "yacht exterior":
-            checkmark.position = yachtExButton.position
+        case "yacht":
+            checkmark.position = yachtButton.position
             page1ScrollView.addChild(checkmark)
             break
         case "space":
@@ -346,7 +340,6 @@ class LevelScene: SKScene {
             page1ScrollView.addChild(checkmark)
             break
         }
-        
     }
     
     func reloadScroll() {
@@ -358,14 +351,12 @@ class LevelScene: SKScene {
         nilButtons()
         scrollView?.removeFromSuperview()
         scrollView = nil
-        
         erectScroll()
     }
     
     func nilButtons() {
-        
         caveButton = nil
-        yachtExButton = nil
+        yachtButton = nil
         crysForestButton = nil
         apartmentButton = nil
         apartment2Button = nil
@@ -373,7 +364,6 @@ class LevelScene: SKScene {
         sandButton = nil
         spaceButton = nil
         space2Button = nil
-        
         checkmark = nil
     }
     
@@ -385,20 +375,17 @@ class LevelScene: SKScene {
             
             point = touch.location(in: gameLayer)
             if node == backButton {
-                print("back")
                 if let handler = touchHandler {
                     handler("back")
                 }
             }
             
             if node == levelButton {
-                print("level")
                 if let handler = touchHandler {
                     handler("level")
                 }
             }
             if node == offlineLevelButton {
-                print("offlinelevel")
                 if let handler = touchHandler {
                     handler("offlinelevel")
                 }
@@ -412,7 +399,6 @@ class LevelScene: SKScene {
             }
             if caveButton != nil {
                 if node == caveButton {
-                    print("cave")
                     checkmark.position = caveButton.position
                     if let handler = touchHandler {
                         handler("cave")
@@ -421,43 +407,31 @@ class LevelScene: SKScene {
             }
             if crysForestButton != nil {
                 if node == crysForestButton {
-                    print("crysForest")
-                    
                     checkmark.position = crysForestButton.position
-                    
                     if let handler = touchHandler {
-                        handler("crysForest")
+                        handler("crystal forest")
                     }
                 }
             }
             if apartmentButton != nil {
                 if node == apartmentButton {
-                    print("apartment")
-                    
                     checkmark.position = apartmentButton.position
-                    
                     if let handler = touchHandler {
                         handler("apartment")
                     }
                 }
             }
-            if yachtExButton != nil {
-                if node == yachtExButton {
-                    print("yachtEx")
-                    
-                    checkmark.position = yachtExButton.position
-                    
+            if yachtButton != nil {
+                if node == yachtButton {
+                    checkmark.position = yachtButton.position
                     if let handler = touchHandler {
-                        handler("yachtEx")
+                        handler("yacht")
                     }
                 }
             }
             if apartment2Button != nil {
                 if node == apartment2Button {
-                    print("apartment2")
-                    
                     checkmark.position = apartment2Button.position
-                    
                     if let handler = touchHandler {
                         handler("apartment2")
                     }
@@ -465,10 +439,7 @@ class LevelScene: SKScene {
             }
             if yurtButton != nil {
                 if node == yurtButton {
-                    print("yurt")
-                    
                     checkmark.position = yurtButton.position
-                    
                     if let handler = touchHandler {
                         handler("yurt")
                     }
@@ -476,10 +447,7 @@ class LevelScene: SKScene {
             }
             if sandButton != nil {
                 if node == sandButton {
-                    print("sand")
-                    
                     checkmark.position = sandButton.position
-                    
                     if let handler = touchHandler {
                         handler("sand")
                     }
@@ -487,10 +455,7 @@ class LevelScene: SKScene {
             }
             if spaceButton != nil {
                 if node == spaceButton {
-                    print("space")
-                    
                     checkmark.position = spaceButton.position
-                    
                     if let handler = touchHandler {
                         handler("space")
                     }
@@ -498,10 +463,7 @@ class LevelScene: SKScene {
             }
             if space2Button != nil {
                 if node == space2Button {
-                    print("space2")
-                    
                     checkmark.position = space2Button.position
-                    
                     if let handler = touchHandler {
                         handler("space2")
                     }

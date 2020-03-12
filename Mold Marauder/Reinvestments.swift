@@ -37,17 +37,12 @@ class Reinvestments: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
         gameLayer.zPosition = 20
         addChild(gameLayer)
-        
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     
@@ -228,7 +223,7 @@ class Reinvestments: SKScene {
         popup.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
         gameLayer.addChild(popup)
         
-//        button
+//    button
         Texture = SKTexture(image: UIImage(named: "reinvest button 2")!)
         confirmReinvestButton = SKSpriteNode(texture:Texture)
         confirmReinvestButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 100)

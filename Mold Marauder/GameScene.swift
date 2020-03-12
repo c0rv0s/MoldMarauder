@@ -130,13 +130,10 @@ class GameScene: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background = SKSpriteNode(imageNamed: backgroundName)
-        background.size = size//CGSize(width: CGFloat(Int(size.width) * 2), height: size.height)
+        background.size = size
         addChild(background)
-        
         
         if ((molds) != nil) {
             updateMolds()
@@ -182,7 +179,6 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         //EVENT TRIGGER TIMER
-        //setDiamondLabel()
         if let handler = touchHandler {
             handler("reactivate timers")
         }
@@ -232,10 +228,10 @@ class GameScene: SKScene {
         diamondCLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondCLabel.fontSize = 18
         diamondCLabel.fontColor = UIColor.black
-        diamondCLabel.text = ""//String(numDiamonds)
+        diamondCLabel.text = ""
         diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+262);
        
-//        adjust for screen sizes
+//    adjust for screen sizes
         switch UIDevice().screenType {
         case .iPhone4:
             header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+235);
@@ -272,11 +268,11 @@ class GameScene: SKScene {
         default:
             break
         }
-//        now place the elements
+//    now place the elements
         self.addChild(header)
         self.addChild(buyButton)
         self.addChild(diamondIcon)
-//        self.addChild(diamondBuy)
+        self.addChild(diamondBuy)
         self.addChild(diamondCLabel)
         
         //CAMERA
@@ -379,7 +375,7 @@ class GameScene: SKScene {
             let node = atPoint(location)
             
 
-//            do te buttons
+// do te buttons
             if sleepButton != nil {
                 if node == sleepButton {
                     if let handler = touchHandler {
@@ -399,7 +395,7 @@ class GameScene: SKScene {
                     }
                 }
             }
-//            hadnel the cards
+// hadnel the cards
             if cardsActive {
                 if cardSelected == false{
                     if card1 != nil {
@@ -547,7 +543,7 @@ class GameScene: SKScene {
                     }
                 }
                 //booping complete
-//                black hole, chance to get a diamond
+// black hole, chance to get a diamond
                 let holeBonk = touch.location(in: holeLayer)
                 for hole in holeLayer.children {
                     if hole.contains(holeBonk) {
@@ -569,7 +565,7 @@ class GameScene: SKScene {
                 }
                 
                 
-//                more buttons
+// more buttons
                 if node == buyButton {
                     if eventTimer != nil {
                         eventTimer.invalidate()
@@ -603,7 +599,7 @@ class GameScene: SKScene {
                     }
                 }
                 
-//                diamonds purchase in the shop
+// diamonds purchase in the shop
                 if diamondShop {
                     if exitDiamond != nil {
                         if node == exitDiamond {
@@ -646,7 +642,7 @@ class GameScene: SKScene {
                     selectNodeForTouch(touchLocation: location)
                 }
             }
-            //            if its a mold animate the heart
+            // if its a mold animate the heart
             
             if node.name != nil {
                 if node.name!.count > 5 {
@@ -703,7 +699,7 @@ class GameScene: SKScene {
                             SKAction.fadeOut(withDuration: (0.35)),
                             SKAction.removeFromParent()]))
                     }
-//                    level up mold
+// level up mold
                     if let handler = touchHandler {
                         moldName = node.name!
                         handler("level_mold")
@@ -1799,8 +1795,6 @@ class GameScene: SKScene {
                                 withKey:"moldBlinking")
                     
                 }
-                
-                print(moldData.name + " added to scene")
                 quantity += 1
             }
         }
@@ -2372,7 +2366,7 @@ class GameScene: SKScene {
                     counter += 1
                 }
             }
-//            blak hole
+// blak hole
             if ran > 85 && ran <= 95 {
                 if isPaused == false {
                     print("ad black hole")
@@ -2461,7 +2455,7 @@ class GameScene: SKScene {
         if let handler = touchHandler {
             handler("succ_mold")
         }
-//        remove black hole
+//    remove black hole
         if randomInRange(lo: 0, hi: 2) == 1 {
             var when = DispatchTime.now() + 1.35
             DispatchQueue.main.asyncAfter(deadline: when) {
@@ -2493,7 +2487,7 @@ class GameScene: SKScene {
                 }
             }
         }
-//            succ another mold
+// succ another mold
         else {
             let when = DispatchTime.now() + 1.25
             DispatchQueue.main.asyncAfter(deadline: when) {

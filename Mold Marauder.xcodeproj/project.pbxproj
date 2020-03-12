@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0F1EE98B227D291D0026BF88 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1EE98A227D291D0026BF88 /* Bolts.framework */; };
+		0F41C973241AE7EE009254B0 /* yacht.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F41C972241AE7EE009254B0 /* yacht.wav */; };
 		0F7FED192418B76900C3BABB /* crystal forest.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED182418B76900C3BABB /* crystal forest.wav */; };
 		0F7FED1B2418BCBD00C3BABB /* yurt.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1A2418BCBD00C3BABB /* yurt.wav */; };
 		0F7FED1D2418C65200C3BABB /* space.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1C2418C65200C3BABB /* space.wav */; };
 		0F7FED1F2418C7A400C3BABB /* apartment.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1E2418C7A400C3BABB /* apartment.wav */; };
-		0F7FED212418CD9800C3BABB /* yacht exterior.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED202418CD9800C3BABB /* yacht exterior.wav */; };
 		0F7FED232418D3B500C3BABB /* cave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED222418D3B500C3BABB /* cave.wav */; };
 		0F7FED252418D45800C3BABB /* menu.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED242418D45800C3BABB /* menu.wav */; };
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
@@ -88,11 +88,11 @@
 
 /* Begin PBXFileReference section */
 		0F1EE98A227D291D0026BF88 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		0F41C972241AE7EE009254B0 /* yacht.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = yacht.wav; sourceTree = "<group>"; };
 		0F7FED182418B76900C3BABB /* crystal forest.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "crystal forest.wav"; sourceTree = "<group>"; };
 		0F7FED1A2418BCBD00C3BABB /* yurt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = yurt.wav; sourceTree = "<group>"; };
 		0F7FED1C2418C65200C3BABB /* space.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = space.wav; sourceTree = "<group>"; };
 		0F7FED1E2418C7A400C3BABB /* apartment.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = apartment.wav; sourceTree = "<group>"; };
-		0F7FED202418CD9800C3BABB /* yacht exterior.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "yacht exterior.wav"; sourceTree = "<group>"; };
 		0F7FED222418D3B500C3BABB /* cave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cave.wav; sourceTree = "<group>"; };
 		0F7FED242418D45800C3BABB /* menu.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menu.wav; sourceTree = "<group>"; };
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
@@ -203,8 +203,8 @@
 				0F7FED182418B76900C3BABB /* crystal forest.wav */,
 				0F7FED222418D3B500C3BABB /* cave.wav */,
 				0F7FED1E2418C7A400C3BABB /* apartment.wav */,
+				0F41C972241AE7EE009254B0 /* yacht.wav */,
 				0F7FED242418D45800C3BABB /* menu.wav */,
-				0F7FED202418CD9800C3BABB /* yacht exterior.wav */,
 				0F7FED1C2418C65200C3BABB /* space.wav */,
 				0F7FED1A2418BCBD00C3BABB /* yurt.wav */,
 			);
@@ -431,6 +431,7 @@
 			files = (
 				210F06E71E94407C006EA0D5 /* snip.wav in Resources */,
 				210F06D51E94407C006EA0D5 /* buzzer.wav in Resources */,
+				0F41C973241AE7EE009254B0 /* yacht.wav in Resources */,
 				210F06F41E9441CD006EA0D5 /* exit.wav in Resources */,
 				0FCB1D511F85D059006CE351 /* black_hole_hi.wav in Resources */,
 				210F06D81E94407C006EA0D5 /* cash register.wav in Resources */,
@@ -445,7 +446,6 @@
 				210F06CE1E94407C006EA0D5 /* achieve.wav in Resources */,
 				21655E0C1E6410E8003F9DB5 /* Lemondrop.ttf in Resources */,
 				210F06D61E94407C006EA0D5 /* camera.wav in Resources */,
-				0F7FED212418CD9800C3BABB /* yacht exterior.wav in Resources */,
 				210F06E61E94407C006EA0D5 /* select.wav in Resources */,
 				210F06DC1E94407C006EA0D5 /* ding.wav in Resources */,
 				210F06D41E94407C006EA0D5 /* bubble.wav in Resources */,

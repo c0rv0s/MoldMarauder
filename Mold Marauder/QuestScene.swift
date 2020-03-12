@@ -40,19 +40,14 @@ class QuestScene: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
-        
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        
         background.start(size: size)
         addChild(background.background)
-        
         addChild(cometLayer)
-        
         addChild(gameLayer)
         addChild(barLayer)
         labelLayer.zPosition = 200
         addChild(labelLayer)
-        
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     
@@ -119,7 +114,7 @@ class QuestScene: SKScene {
             questName.text = "Share a screenshot"
             screenshotHelp.text = "(Camera button, bottom right corner)"
         }
-//questName.text = currentQuest
+
         questName.position = CGPoint(x:self.frame.midX, y:self.frame.midY+90)
         labelLayer.addChild(questName)
         

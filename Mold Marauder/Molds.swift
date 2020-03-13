@@ -59,12 +59,6 @@ enum MoldType: Int, CustomStringConvertible {
         
         return spriteNames[rawValue - 1]
     }
-    var highlightedSpriteName: String {
-        return spriteName + "-Highlighted"
-    }
-    var greySpriteName: String {
-        return spriteName + " Grey"
-    }
     static func random() -> MoldType {
         return MoldType(rawValue: Int(arc4random_uniform(42)) + 1)!
     }

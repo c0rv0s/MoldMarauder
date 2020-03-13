@@ -3468,47 +3468,6 @@ GKGameCenterControllerDelegate {
             breedScene.cometLayer.cometTimer.invalidate()
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
-            
-            //looks liek the breeding experiemnt failed, oh well, genetic engineering is a dangerous task
-            if let orgy = breedScene.selectedMolds {
-                for mold in orgy {
-                    var index = 0
-                    for target in inventory.molds {
-                        if mold.moldType == target.moldType {
-                            inventory.molds.remove(at: index)
-                            inventory.scorePerSecond -= target.PPS
-                            //  check level to see how much more to remove
-                            let hearts = inventory.levDicc[target.name]!
-                            var levs = 0
-                            if hearts < 426 {
-                                for num in moldLevCounts {
-                                    if hearts > num {
-                                        levs += 1
-                                    }
-                                }
-                            }
-                            else {
-                                levs = moldLevCounts.count
-                                levs += ((hearts - 425) / 100)
-                            }
-                            
-                            inventory.scorePerSecond -= levs*target.PPS/5
-                            break
-                        }
-                        index += 1
-                    }
-                    index = 0
-                    for target in inventory.displayMolds {
-                        if mold.moldType == target.moldType {
-                            inventory.displayMolds.remove(at: index)
-                            break
-                        }
-                        index += 1
-                    }
-                }
-            }
-            breedScene.ownedMolds = inventory.molds
-            
             if aroff {
                 skView.presentScene(menu)
             }
@@ -3517,93 +3476,6 @@ GKGameCenterControllerDelegate {
             }
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
-        }
-        if action == "clear" {
-            //clear selection, tell the user they screwed up
-            if breedScene.selectedMolds.count > 0 {
-                breedScene.playSound(select: "loose")
-                breedScene.animateName(point: breedScene.center, name: "BREED FAILED", new: 2)
-            }
-            //kill the selected molds
-            if let orgy = breedScene.selectedMolds {
-                for mold in orgy {
-                    var index = 0
-                    for target in inventory.molds {
-                        if mold.moldType == target.moldType {
-                            inventory.molds.remove(at: index)
-                            inventory.scorePerSecond -= target.PPS
-                            //  check level to see how much more to remove
-                            let hearts = inventory.levDicc[target.name]!
-                            var levs = 0
-                            if hearts < 426 {
-                                for num in moldLevCounts {
-                                    if hearts > num {
-                                        levs += 1
-                                    }
-                                }
-                            }
-                            else {
-                                levs = moldLevCounts.count
-                                levs += ((hearts - 425) / 100)
-                            }
-                            
-                            inventory.scorePerSecond -= levs*target.PPS/5
-                            break
-                        }
-                        index += 1
-                    }
-                    index = 0
-                    for target in inventory.displayMolds {
-                        if mold.moldType == target.moldType {
-                            inventory.displayMolds.remove(at: index)
-                            break
-                        }
-                        index += 1
-                    }
-                }
-            }
-            //reset all the arrays
-            breedScene.ownedMolds = inventory.molds
-            //populate the possible combos array
-            breedScene.possibleCombos = []
-            if breedScene.ownedMolds.count > 0 {
-                for combo in combos.allCombos {
-                    var same = 0
-                    //now check if the parents in the combo are the same as the molds in the orgy
-                    //check same length
-                    //now check if the orgy and the combo members match
-                    for mold in breedScene.ownedMolds {
-                        for parent in combo.parents {
-                            if mold.name == parent.name {
-                                same += 1
-                            }
-                        }
-                    }
-                    if same == combo.parents.count {
-                        var letsAdd = true
-                        for mold in inventory.unlockedMolds {
-                            if mold.moldType == combo.child.moldType {
-                                letsAdd = false
-                            }
-                        }
-                        if letsAdd == true {
-                            breedScene.possibleCombos.append(combo)
-                        }
-                        
-                    }
-                }
-            }
-            //reset the diamonds
-            if breedScene.possibleCombos.count > 0 {
-                breedScene.currentDiamondCombo = breedScene.possibleCombos[0]
-                breedScene.diamondLabel.text = String(breedScene.currentDiamondCombo.parents.count)
-            }
-            else if breedScene.possibleCombos.count == 0 {
-                breedScene.currentDiamondCombo = nil
-                breedScene.diamondLabel.text = "0"
-            }
-            breedScene.selectedMolds = []
-            breedScene.reloadScroll()
         }
         if action == "diamonds" {
             //make sure the user has diamonds
@@ -3688,7 +3560,6 @@ GKGameCenterControllerDelegate {
                     //check same length
                     if combo.parents.count == orgy.count {
                         //now check if the orgy and the combo members match
-                        same = 0
                         for mold in orgy {
                             for parent in combo.parents {
                                 if mold.name == parent.name {
@@ -3762,40 +3633,13 @@ GKGameCenterControllerDelegate {
             if killMolds {
                 if let orgy = breedScene.selectedMolds {
                     for mold in orgy {
-                        var index = 0
                         //kill the molds
-                        for target in inventory.molds {
-                            if mold.moldType == target.moldType {
-                                inventory.molds.remove(at: index)
-                                inventory.scorePerSecond -= target.PPS
-                                //  check level to see how much more to remove
-                                let hearts = inventory.levDicc[target.name]!
-                                var levs = 0
-                                if hearts < 426 {
-                                    for num in moldLevCounts {
-                                        if hearts > num {
-                                            levs += 1
-                                        }
-                                    }
-                                }
-                                else {
-                                    levs = moldLevCounts.count
-                                    levs += ((hearts - 425) / 100)
-                                }
-                                
-                                inventory.scorePerSecond -= levs*target.PPS/5
-                                break
-                            }
-                            index += 1
-                        }
-                        index = 0
-                        for target in inventory.displayMolds {
-                            if mold.moldType == target.moldType {
-                                inventory.displayMolds.remove(at: index)
-                                break
-                            }
-                            index += 1
-                        }
+                        inventory.moldCountDicc[mold.name]! -= 1
+                        var index = inventory.molds.firstIndex(where: {$0.name == mold.name})
+                        inventory.molds.remove(at: index!)
+                        inventory.scorePerSecond -= mold.PPS
+                        index = inventory.displayMolds.firstIndex(where: {$0.name == mold.name})
+                        inventory.displayMolds.remove(at: index!)
                     }
                 }
                 breedScene.playSound(select: "buzzer")
@@ -4786,34 +4630,28 @@ GKGameCenterControllerDelegate {
         //this is the godo case
         let animation = SKAction.sequence([disappear, SKAction.removeFromParent()])
         if action == "level_mold" {
-            let curType = scene.moldName
-            inventory.levDicc[curType]! += 1
+            let currType = scene.currType
+            inventory.levDicc[currType]! += 1
             // now check if we level, first do the within predefined dictionary case
-            if inventory.levDicc[curType]! < 426 {
+            if inventory.levDicc[currType]! < 426 {
                 for num in moldLevCounts {
-                    if inventory.levDicc[curType]! == num {
+                    if inventory.levDicc[currType]! == num {
                         // just hit a new level, time to amp up the cash
-                        var additive = 0
                         var pps: BInt!
-                        for xmold in inventory.molds {
-                            if xmold.name == curType {
-                                additive += 1
-                            }
-                        }
                         findp: for xmold in inventory.molds {
-                            if xmold.name == curType {
+                            if xmold.name == currType {
                                 pps = xmold.PPS
                                 break findp
                             }
                         }
                         // increase PPS
-                        inventory.scorePerSecond += additive*pps/5
+                        inventory.scorePerSecond += inventory.moldCountDicc[currType]! * pps / 5
                         
                         // show user
                         // Add a label for the score that slowly floats up.
                         let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
                         scoreLabel.fontSize = 18
-                        scoreLabel.text = String(curType + " Level Up!")
+                        scoreLabel.text = String(currType + " Level Up!")
                         scoreLabel.position = scene.center
                         scoreLabel.fontColor = UIColor.green
                         scoreLabel.zPosition = 300
@@ -4828,29 +4666,23 @@ GKGameCenterControllerDelegate {
             }
                 //  count how far after
             else {
-                if (inventory.levDicc[curType]! - 425) % 100 == 0 {
-                    var additive = 0
+                if (inventory.levDicc[currType]! - 425) % 100 == 0 {
                     var pps: BInt!
-                    for xmold in inventory.molds {
-                        if xmold.name == curType {
-                            additive += 1
-                        }
-                    }
                     findp: for xmold in inventory.molds {
-                        if xmold.name == curType {
+                        if xmold.name == currType {
                             pps = xmold.PPS
                             break findp
                         }
                     }
                     // increase PPS
                     
-                    inventory.scorePerSecond += additive*pps/5
+                    inventory.scorePerSecond += inventory.moldCountDicc[currType]! * pps / 5
                     // show user
                     // Add a label for the score that slowly floats up.
                     let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
                     scoreLabel.fontSize = 18
                     scoreLabel.fontColor = UIColor.green
-                    scoreLabel.text = String(curType + " Level Up!")
+                    scoreLabel.text = String(currType + " Level Up!")
                     scoreLabel.position = scene.center
                     scoreLabel.zPosition = 300
                     

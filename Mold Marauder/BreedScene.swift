@@ -56,7 +56,6 @@ class BreedScene: SKScene {
     
     //other things
     var backButton: SKNode!
-    var clearButton: SKNode!
     var useDiamondsButton: SKNode!
     var buyDiamondsButton: SKNode!
     var breedinstructions: SKNode!
@@ -88,6 +87,7 @@ class BreedScene: SKScene {
     var center:  CGPoint!
     //scrollView
     var scrollView: SwiftySKScrollView?
+    var page1ScrollView: SKSpriteNode!
     let moveableNode = SKNode()
     
     //for background animations
@@ -142,7 +142,7 @@ class BreedScene: SKScene {
         // Add sprites for each page in the scrollView to make positioning your actual stuff later on much easier
         guard let scrollView = scrollView else { return } // unwrap  optional
         
-        let page1ScrollView = SKSpriteNode(color: .clear, size: CGSize(width: scrollView.frame.width, height: scrollView.frame.size.height))
+        page1ScrollView = SKSpriteNode(color: .clear, size: CGSize(width: scrollView.frame.width, height: scrollView.frame.size.height))
         page1ScrollView.position = CGPoint(x: frame.midX, y: frame.midY)
         moveableNode.addChild(page1ScrollView)
 
@@ -159,352 +159,300 @@ class BreedScene: SKScene {
         default:
             break
         }
-        print("lengths",ownedMolds.count, unlockedMolds.count, height)
         //add each mold to the scene exactly one time
         if ownedMolds.count > 0 {
             for mold in unlockedMolds {
+                Texture = SKTexture(image: UIImage(named: mold.name)!)
                 if mold.moldType == MoldType.slime && moldOwned(mold: MoldType.slime) {
-                    Texture = SKTexture(image: UIImage(named: "Slime Mold")!)
-                    // slime
                     slimeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    slimeButton.name = mold.name
                     slimeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = slimeButton.position
                     page1ScrollView.addChild(slimeButton)
-                    
                 }
                 if mold.moldType == MoldType.cave && moldOwned(mold: MoldType.cave) {
-                    // cave
-                    Texture = SKTexture(image: UIImage(named: "Cave Mold")!)
                     caveButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    caveButton.name = mold.name
                     caveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = caveButton.position
                     page1ScrollView.addChild(caveButton)
                 }
-                
                 if mold.moldType == MoldType.sad && moldOwned(mold: MoldType.sad) {
-                    // sad
-                    Texture = SKTexture(image: UIImage(named: "Sad Mold")!)
                     sadButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    sadButton.name = mold.name
                     sadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = sadButton.position
                     page1ScrollView.addChild(sadButton)
                 }
-                
                 if mold.moldType == MoldType.angry && moldOwned(mold: MoldType.angry) {
-                    //angry
-                    Texture = SKTexture(image: UIImage(named: "Angry Mold")!)
                     angryButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    angryButton.name = mold.name
                     angryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = angryButton.position
                     page1ScrollView.addChild(angryButton)
                 }
-                
                 if mold.moldType == MoldType.alien && moldOwned(mold: MoldType.alien) {
-                    //alien
-                    Texture = SKTexture(image: UIImage(named: "Alien Mold")!)
                     alienButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    alienButton.name = mold.name
                     alienButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = alienButton.position
                     page1ScrollView.addChild(alienButton)
                 }
                 if mold.moldType == MoldType.freckled && moldOwned(mold: MoldType.freckled) {
-                    //freckled
-                    Texture = SKTexture(image: UIImage(named: "Freckled Mold")!)
                     freckledButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    freckledButton.name = mold.name
                     freckledButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = freckledButton.position
                     page1ScrollView.addChild(freckledButton)
                 }
                 if mold.moldType == MoldType.hypno && moldOwned(mold: MoldType.hypno) {
-                    Texture = SKTexture(image: UIImage(named: "Hypno Mold")!)
                     hypnoButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    hypnoButton.name = mold.name
                     hypnoButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = hypnoButton.position
                     page1ScrollView.addChild(hypnoButton)
                 }
                 if mold.moldType == MoldType.pimply && moldOwned(mold: MoldType.pimply) {
-                    Texture = SKTexture(image: UIImage(named: "Pimply Mold")!)
                     pimplyButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    pimplyButton.name = mold.name
                     pimplyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = pimplyButton.position
                     page1ScrollView.addChild(pimplyButton)
                 }
                 if mold.moldType == MoldType.rainbow && moldOwned(mold: MoldType.rainbow) {
-                    Texture = SKTexture(image: UIImage(named: "Rainbow Mold")!)
                     rainbowButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    rainbowButton.name = mold.name
                     rainbowButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = rainbowButton.position
                     page1ScrollView.addChild(rainbowButton)
                 }
                 if mold.moldType == MoldType.aluminum && moldOwned(mold: MoldType.aluminum) {
-                    Texture = SKTexture(image: UIImage(named: "Aluminum Mold")!)
                     aluminumButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    aluminumButton.name = mold.name
                     aluminumButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = aluminumButton.position
                     page1ScrollView.addChild(aluminumButton)
                 }
                 if mold.moldType == MoldType.circuit && moldOwned(mold: MoldType.circuit) {
-                    Texture = SKTexture(image: UIImage(named: "Circuit Mold")!)
                     circuitButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    circuitButton.name = mold.name
                     circuitButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = circuitButton.position
                     page1ScrollView.addChild(circuitButton)
                 }
                 if mold.moldType == MoldType.hologram && moldOwned(mold: MoldType.hologram) {
-                    Texture = SKTexture(image: UIImage(named: "Hologram Mold")!)
                     hologramButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    hologramButton.name = mold.name
                     hologramButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = hologramButton.position
                     page1ScrollView.addChild(hologramButton)
                 }
                 if mold.moldType == MoldType.storm && moldOwned(mold: MoldType.storm) {
-                    Texture = SKTexture(image: UIImage(named: "Storm Mold")!)
                     stormButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    stormButton.name = mold.name
                     stormButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = stormButton.position
                     page1ScrollView.addChild(stormButton)
                 }
                 if mold.moldType == MoldType.bacteria && moldOwned(mold: MoldType.bacteria) {
-                    Texture = SKTexture(image: UIImage(named: "Bacteria Mold")!)
                     bacteriaButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    bacteriaButton.name = mold.name
                     bacteriaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = bacteriaButton.position
                     page1ScrollView.addChild(bacteriaButton)
                 }
                 if mold.moldType == MoldType.virus && moldOwned(mold: MoldType.virus) {
-                    Texture = SKTexture(image: UIImage(named: "Virus Mold")!)
                     virusButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    virusButton.name = mold.name
                     virusButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = virusButton.position
                     page1ScrollView.addChild(virusButton)
                 }
                 if mold.moldType == MoldType.flower && moldOwned(mold: MoldType.flower) {
-                    Texture = SKTexture(image: UIImage(named: "Flower Mold")!)
                     flowerButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    flowerButton.name = mold.name
                     flowerButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = flowerButton.position
                     page1ScrollView.addChild(flowerButton)
                 }
                 if mold.moldType == MoldType.bee && moldOwned(mold: MoldType.bee) {
-                    Texture = SKTexture(image: UIImage(named: "Bee Mold")!)
                     beeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    beeButton.name = mold.name
                     beeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = beeButton.position
                     page1ScrollView.addChild(beeButton)
                 }
                 if mold.moldType == MoldType.x && moldOwned(mold: MoldType.x) {
-                    Texture = SKTexture(image: UIImage(named: "X Mold")!)
                     xButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    xButton.name = mold.name
                     xButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = xButton.position
                     page1ScrollView.addChild(xButton)
                 }
                 if mold.moldType == MoldType.disaffected && moldOwned(mold: MoldType.disaffected) {
-                    Texture = SKTexture(image: UIImage(named: "Disaffected Mold")!)
                     disaffectedButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    disaffectedButton.name = mold.name
                     disaffectedButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = disaffectedButton.position
                     page1ScrollView.addChild(disaffectedButton)
                 }
                 if mold.moldType == MoldType.olive && moldOwned(mold: MoldType.olive) {
-                    Texture = SKTexture(image: UIImage(named: "Olive Mold")!)
                     oliveButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    oliveButton.name = mold.name
                     oliveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = oliveButton.position
                     page1ScrollView.addChild(oliveButton)
                 }
                 if mold.moldType == MoldType.coconut && moldOwned(mold: MoldType.coconut) {
-                    Texture = SKTexture(image: UIImage(named: "Coconut Mold")!)
                     coconutButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    coconutButton.name = mold.name
                     coconutButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = coconutButton.position
                     page1ScrollView.addChild(coconutButton)
                 }
                 if mold.moldType == MoldType.sick && moldOwned(mold: MoldType.sick) {
-                    Texture = SKTexture(image: UIImage(named: "Sick Mold")!)
                     sickButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    sickButton.name = mold.name
                     sickButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = sickButton.position
                     page1ScrollView.addChild(sickButton)
                 }
                 if mold.moldType == MoldType.dead && moldOwned(mold: MoldType.dead) {
-                    Texture = SKTexture(image: UIImage(named: "Dead Mold")!)
                     deadButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    deadButton.name = mold.name
                     deadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = deadButton.position
                     page1ScrollView.addChild(deadButton)
                 }
                 if mold.moldType == MoldType.zombie && moldOwned(mold: MoldType.zombie) {
-                    Texture = SKTexture(image: UIImage(named: "Zombie Mold")!)
                     zombieButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    zombieButton.name = mold.name
                     zombieButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = zombieButton.position
                     page1ScrollView.addChild(zombieButton)
                 }
                 if mold.moldType == MoldType.rock && moldOwned(mold: MoldType.rock) {
-                    Texture = SKTexture(image: UIImage(named: "Rock Mold")!)
                     rockButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    rockButton.name = mold.name
                     rockButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = rockButton.position
                     page1ScrollView.addChild(rockButton)
                 }
                 if mold.moldType == MoldType.cloud && moldOwned(mold: MoldType.cloud) {
-                    Texture = SKTexture(image: UIImage(named: "Cloud Mold")!)
                     cloudButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    cloudButton.name = mold.name
                     cloudButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = cloudButton.position
                     page1ScrollView.addChild(cloudButton)
                 }
                 if mold.moldType == MoldType.water && moldOwned(mold: MoldType.water) {
-                    Texture = SKTexture(image: UIImage(named: "Water Mold")!)
                     waterButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    waterButton.name = mold.name
                     waterButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = waterButton.position
                     page1ScrollView.addChild(waterButton)
                 }
                 if mold.moldType == MoldType.crystal && moldOwned(mold: MoldType.crystal) {
-                    Texture = SKTexture(image: UIImage(named: "Crystal Mold")!)
                     crystalButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    crystalButton.name = mold.name
                     crystalButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = crystalButton.position
                     page1ScrollView.addChild(crystalButton)
                 }
                 if mold.moldType == MoldType.nuclear && moldOwned(mold: MoldType.nuclear) {
-                    Texture = SKTexture(image: UIImage(named: "Nuclear Mold")!)
                     nuclearButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    nuclearButton.name = mold.name
                     nuclearButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = nuclearButton.position
                     page1ScrollView.addChild(nuclearButton)
                 }
                 if mold.moldType == MoldType.astronaut && moldOwned(mold: MoldType.astronaut) {
-                    Texture = SKTexture(image: UIImage(named: "Astronaut Mold")!)
                     astronautButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    astronautButton.name = mold.name
                     astronautButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = astronautButton.position
                     page1ScrollView.addChild(astronautButton)
                 }
                 if mold.moldType == MoldType.sand && moldOwned(mold: MoldType.sand) {
-                    Texture = SKTexture(image: UIImage(named: "Sand Mold")!)
                     sandButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    sandButton.name = mold.name
                     sandButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = sandButton.position
                     page1ScrollView.addChild(sandButton)
                 }
                 if mold.moldType == MoldType.glass && moldOwned(mold: MoldType.glass) {
-                    Texture = SKTexture(image: UIImage(named: "Glass Mold")!)
                     glassButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    glassButton.name = mold.name
                     glassButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = glassButton.position
                     page1ScrollView.addChild(glassButton)
                 }
                 if mold.moldType == MoldType.coffee && moldOwned(mold: MoldType.coffee) {
-                    Texture = SKTexture(image: UIImage(named: "Coffee Mold")!)
                     coffeeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    coffeeButton.name = mold.name
                     coffeeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = coffeeButton.position
                     page1ScrollView.addChild(coffeeButton)
                 }
                 if mold.moldType == MoldType.slinky && moldOwned(mold: MoldType.slinky) {
-                    Texture = SKTexture(image: UIImage(named: "Slinky Mold")!)
                     slinkyButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    slinkyButton.name = mold.name
                     slinkyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = slinkyButton.position
                     page1ScrollView.addChild(slinkyButton)
                 }
                 if mold.moldType == MoldType.magma && moldOwned(mold: MoldType.magma) {
-                    Texture = SKTexture(image: UIImage(named: "Magma Mold")!)
                     magmaButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    magmaButton.name = mold.name
                     magmaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = magmaButton.position
                     page1ScrollView.addChild(magmaButton)
                 }
                 if mold.moldType == MoldType.samurai && moldOwned(mold: MoldType.samurai) {
-                    Texture = SKTexture(image: UIImage(named: "Samurai Mold")!)
                     samuraiButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    samuraiButton.name = mold.name
                     samuraiButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = samuraiButton.position
                     page1ScrollView.addChild(samuraiButton)
                 }
                 if mold.moldType == MoldType.orange && moldOwned(mold: MoldType.orange) {
-                    Texture = SKTexture(image: UIImage(named: "Orange Mold")!)
                     orangeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    orangeButton.name = mold.name
                     orangeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = orangeButton.position
                     page1ScrollView.addChild(orangeButton)
                 }
                 if mold.moldType == MoldType.strawberry && moldOwned(mold: MoldType.strawberry) {
-                    Texture = SKTexture(image: UIImage(named: "Strawberry Mold")!)
                     strawberryButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    strawberryButton.name = mold.name
                     strawberryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = strawberryButton.position
                     page1ScrollView.addChild(strawberryButton)
                 }
                 if mold.moldType == MoldType.tshirt && moldOwned(mold: MoldType.tshirt) {
-                    Texture = SKTexture(image: UIImage(named: "TShirt Mold")!)
                     tshirtButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    tshirtButton.name = mold.name
                     tshirtButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = tshirtButton.position
                     page1ScrollView.addChild(tshirtButton)
                 }
                 if mold.moldType == MoldType.cryptid && moldOwned(mold: MoldType.cryptid) {
-                    Texture = SKTexture(image: UIImage(named: "Cryptid Mold")!)
                     cryptidButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    cryptidButton.name = mold.name
                     cryptidButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = cryptidButton.position
                     page1ScrollView.addChild(cryptidButton)
                 }
                 if mold.moldType == MoldType.angel && moldOwned(mold: MoldType.angel) {
-                    Texture = SKTexture(image: UIImage(named: "Angel Mold")!)
                     angelButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    angelButton.name = mold.name
                     angelButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = angelButton.position
                     page1ScrollView.addChild(angelButton)
                 }
                 if mold.moldType == MoldType.invisible && moldOwned(mold: MoldType.invisible) {
-                    Texture = SKTexture(image: UIImage(named: "Invisible Mold")!)
                     invisibleButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
+                    invisibleButton.name = mold.name
                     invisibleButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
                     lastButton = invisibleButton.position
                     page1ScrollView.addChild(invisibleButton)
@@ -617,14 +565,6 @@ class BreedScene: SKScene {
         diamondLabel.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY-80);
         self.addChild(diamondLabel)
         
-        // CLEAR
-        Texture = SKTexture(image: UIImage(named: "clear selection")!)
-        clearButton = SKSpriteNode(texture:Texture)
-        // Place in scene
-        clearButton.position = CGPoint(x:self.frame.midX+120, y:self.frame.midY-175);
-        
-        self.addChild(clearButton)
-        
         switch UIDevice().screenType {
         case .iPhone4:
             //iPhone 5
@@ -634,7 +574,6 @@ class BreedScene: SKScene {
             breedButton.setScale(0.8)
             useDiamondsButton.setScale(0.8)
             diamondLabel.setScale(0.8)
-            clearButton.setScale(0.8)
             breedinstructions.position = CGPoint(x: self.frame.midX+110, y: self.frame.midY+100)
             breedButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+10)
             break
@@ -646,7 +585,6 @@ class BreedScene: SKScene {
             breedButton.setScale(0.8)
             useDiamondsButton.setScale(0.8)
             diamondLabel.setScale(0.8)
-            clearButton.setScale(0.8)
             breedinstructions.position = CGPoint(x: self.frame.midX+110, y: self.frame.midY+100)
             breedButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+10)
             break
@@ -662,360 +600,610 @@ class BreedScene: SKScene {
                 handler("check tutorial progress")
             }
         }
-        
         else {
         /* Called when a touch begins */
         for touch in touches {
-            let location = touch.location(in: self)
+            let location = touch.location(in: page1ScrollView)
             let node = atPoint(location)
+            let nodeStack = nodes(at: location)
             if tutorialLayer.children.count > 0 {
                 if let handler = touchHandler {
                     handler("check tutorial progress")
                 }
             }
-            
-            //check if touch was one of the mold buttons
-// first cap at 5 molds to select
-            if selectedMolds.count < 5 {
+            // check if touch was one of the mold buttons
+            // first cap at 5 molds to select
+            if selectedMolds.count <= 5 {
                 if slimeButton != nil {
-                    if node == slimeButton {
-                        selectedMolds.append(Mold(moldType: MoldType.slime))
+                    if nodeStack[0] == slimeButton || nodeStack[1] == slimeButton {
+                        if selectedMolds.contains(where: {$0.name == "Slime Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Slime Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.slime))
+                            addBubble(point: slimeButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.slime.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: slimeButton.position, type: 0)
                     }
                 }
                 if caveButton != nil {
-                    if node == caveButton {
-                        selectedMolds.append(Mold(moldType: MoldType.cave))
-                        animateName(point: touch.location(in: gameLayer), name: MoldType.cave.description, new: 0)
+                    if nodeStack[0] == caveButton || nodeStack[1] == caveButton {
+                        if selectedMolds.contains(where: {$0.name == "Cave Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Cave Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.cave))
+                            addBubble(point: caveButton.position, type: 0)
+                        }
+                        animateName(point: touch.location(in: gameLayer), name: MoldType.sad.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: caveButton.position, type: 0)
                     }
                 }
                 if sadButton != nil {
-                    if node == sadButton {
-                        selectedMolds.append(Mold(moldType: MoldType.sad))
+                    if nodeStack[0] == sadButton || nodeStack[1] == sadButton {
+                        if selectedMolds.contains(where: {$0.name == "Sad Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Sad Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.sad))
+                            addBubble(point: sadButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.sad.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: sadButton.position, type: 0)
                     }
                 }
                 if angryButton != nil {
-                    if node == angryButton {
-                        selectedMolds.append(Mold(moldType: MoldType.angry))
+                    if nodeStack[0] == angryButton || nodeStack[1] == angryButton {
+                        if selectedMolds.contains(where: {$0.name == "Angry Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Angry Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.angry))
+                            addBubble(point: angryButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.angry.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: angryButton.position, type: 0)
                     }
                 }
                 if (alienButton) != nil {
-                    if node == alienButton {
-                        selectedMolds.append(Mold(moldType: MoldType.alien))
+                    if nodeStack[0] == alienButton || nodeStack[1] == alienButton {
+                        if selectedMolds.contains(where: {$0.name == "Alien Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Alien Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.alien))
+                            addBubble(point: alienButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.alien.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: alienButton.position, type: 0)
                     }
                 }
                 
                 if (pimplyButton) != nil {
-                    if node == pimplyButton {
-                        selectedMolds.append(Mold(moldType: MoldType.pimply))
+                    if nodeStack[0] == pimplyButton || nodeStack[1] == pimplyButton {
+                        if selectedMolds.contains(where: {$0.name == "Pimply Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Pimply Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.pimply))
+                            addBubble(point: pimplyButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.pimply.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: pimplyButton.position, type: 0)
                     }
                 }
                 if (freckledButton) != nil {
-                    if node == freckledButton {
-                        selectedMolds.append(Mold(moldType: MoldType.freckled))
+                    if nodeStack[0] == freckledButton || nodeStack[1] == freckledButton {
+                        if selectedMolds.contains(where: {$0.name == "Freckled Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Freckled Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.freckled))
+                            addBubble(point: freckledButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.freckled.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: freckledButton.position, type: 0)
                     }
                 }
                 if (hypnoButton) != nil {
-                    if node == hypnoButton {
-                        selectedMolds.append(Mold(moldType: MoldType.hypno))
+                    if nodeStack[0] == hypnoButton || nodeStack[1] == hypnoButton {
+                        if selectedMolds.contains(where: {$0.name == "Hypno Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Hypno Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.hypno))
+                            addBubble(point: hypnoButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.hypno.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: hypnoButton.position, type: 0)
                     }
                 }
                 if (rainbowButton) != nil {
-                    if node == rainbowButton {
-                        selectedMolds.append(Mold(moldType: MoldType.rainbow))
+                    if nodeStack[0] == rainbowButton || nodeStack[1] == rainbowButton {
+                        if selectedMolds.contains(where: {$0.name == "Rainbow Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Rainbow Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.rainbow))
+                            addBubble(point: rainbowButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.rainbow.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: rainbowButton.position, type: 0)
                     }
                 }
                 if (aluminumButton) != nil {
-                    if node == aluminumButton {
-                        selectedMolds.append(Mold(moldType: MoldType.aluminum))
+                    if nodeStack[0] == aluminumButton || nodeStack[1] == aluminumButton {
+                        if selectedMolds.contains(where: {$0.name == "Aluminum Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Aluminum Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.aluminum))
+                            addBubble(point: aluminumButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.aluminum.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: aluminumButton.position, type: 0)
                     }
                 }
                 if (circuitButton) != nil {
-                    if node == circuitButton {
-                        selectedMolds.append(Mold(moldType: MoldType.circuit))
+                    if nodeStack[0] == circuitButton || nodeStack[1] == circuitButton {
+                        if selectedMolds.contains(where: {$0.name == "Circuit Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Circuit Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.circuit))
+                            addBubble(point: circuitButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.circuit.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: circuitButton.position, type: 0)
                     }
                 }
                 if (hologramButton) != nil {
-                    if node == hologramButton {
-                        selectedMolds.append(Mold(moldType: MoldType.hologram))
+                    if nodeStack[0] == hologramButton || nodeStack[1] == hologramButton {
+                        if selectedMolds.contains(where: {$0.name == "Hologram Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Hologram Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.hologram))
+                            addBubble(point: hologramButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.hologram.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: hologramButton.position, type: 0)
                     }
                 }
                 if (stormButton) != nil {
-                    if node == stormButton {
-                        selectedMolds.append(Mold(moldType: MoldType.storm))
+                    if nodeStack[0] == stormButton || nodeStack[1] == stormButton {
+                        if selectedMolds.contains(where: {$0.name == "Storm Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Storm Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.storm))
+                            addBubble(point: stormButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.storm.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: stormButton.position, type: 0)
                     }
                 }
                 if (bacteriaButton) != nil {
-                    if node == bacteriaButton {
-                        selectedMolds.append(Mold(moldType: MoldType.bacteria))
+                    if nodeStack[0] == bacteriaButton || nodeStack[1] == bacteriaButton {
+                        if selectedMolds.contains(where: {$0.name == "Bacteria Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Bacteria Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.bacteria))
+                            addBubble(point: bacteriaButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.bacteria.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: bacteriaButton.position, type: 0)
                     }
                 }
                 if (virusButton) != nil {
-                    if node == virusButton {
-                        selectedMolds.append(Mold(moldType: MoldType.virus))
+                    if nodeStack[0] == virusButton || nodeStack[1] == virusButton {
+                        if selectedMolds.contains(where: {$0.name == "Virus Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Virus Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.virus))
+                            addBubble(point: virusButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.virus.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: virusButton.position, type: 0)
                     }
                 }
                 if (flowerButton) != nil {
-                    if node == flowerButton {
-                        selectedMolds.append(Mold(moldType: MoldType.flower))
+                    if nodeStack[0] == flowerButton || nodeStack[1] == flowerButton {
+                        if selectedMolds.contains(where: {$0.name == "Flower Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Flower Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.flower))
+                            addBubble(point: flowerButton.position, type: 1)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.flower.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: flowerButton.position, type: 1)
                     }
                 }
                 if (beeButton) != nil {
-                    if node == beeButton {
-                        selectedMolds.append(Mold(moldType: MoldType.bee))
+                    if nodeStack[0] == beeButton || nodeStack[1] == beeButton {
+                        if selectedMolds.contains(where: {$0.name == "Bee Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Bee Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.bee))
+                            addBubble(point: beeButton.position, type: 1)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.bee.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: beeButton.position, type: 1)
                     }
                 }
                 if (xButton) != nil {
-                    if node == xButton {
-                        selectedMolds.append(Mold(moldType: MoldType.x))
+                    if nodeStack[0] == xButton || nodeStack[1] == xButton {
+                        if selectedMolds.contains(where: {$0.name == "X Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "X Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.x))
+                            addBubble(point: xButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.x.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: xButton.position, type: 0)
                     }
                 }
                 if (disaffectedButton) != nil {
-                    if node == disaffectedButton {
-                        selectedMolds.append(Mold(moldType: MoldType.disaffected))
+                    if nodeStack[0] == disaffectedButton || nodeStack[1] == disaffectedButton {
+                        if selectedMolds.contains(where: {$0.name == "Disaffected Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Disaffected Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.disaffected))
+                            addBubble(point: disaffectedButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.disaffected.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: disaffectedButton.position, type: 0)
                     }
                 }
                 if (oliveButton) != nil {
-                    if node == oliveButton {
-                        selectedMolds.append(Mold(moldType: MoldType.olive))
+                    if nodeStack[0] == oliveButton || nodeStack[1] == oliveButton {
+                        if selectedMolds.contains(where: {$0.name == "Olive Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Olive Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.olive))
+                            addBubble(point: oliveButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.olive.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: oliveButton.position, type: 0)
                     }
                 }
                 if (coconutButton) != nil {
-                    if node == coconutButton {
-                        selectedMolds.append(Mold(moldType: MoldType.coconut))
+                    if nodeStack[0] == coconutButton || nodeStack[1] == coconutButton {
+                        if selectedMolds.contains(where: {$0.name == "Coconut Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Coconut Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.coconut))
+                            addBubble(point: coconutButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.coconut.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: coconutButton.position, type: 1)
                     }
                 }
                 if (sickButton) != nil {
-                    if node == sickButton {
-                        selectedMolds.append(Mold(moldType: MoldType.sick))
+                    if nodeStack[0] == sickButton || nodeStack[1] == sickButton {
+                        if selectedMolds.contains(where: {$0.name == "Sick Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Sick Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.sick))
+                            addBubble(point: sickButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.sick.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: sickButton.position, type: 0)
                     }
                 }
                 if (deadButton) != nil {
-                    if node == deadButton {
-                        selectedMolds.append(Mold(moldType: MoldType.dead))
+                    if nodeStack[0] == deadButton || nodeStack[1] == deadButton {
+                        if selectedMolds.contains(where: {$0.name == "Dead Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Dead Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.dead))
+                            addBubble(point: deadButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.dead.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: deadButton.position, type: 0)
                     }
                 }
                 if (zombieButton) != nil {
-                    if node == zombieButton {
-                        selectedMolds.append(Mold(moldType: MoldType.zombie))
+                    if nodeStack[0] == zombieButton || nodeStack[1] == zombieButton {
+                        if selectedMolds.contains(where: {$0.name == "Zombie Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Zombie Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.zombie))
+                            addBubble(point: zombieButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.zombie.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: zombieButton.position, type: 0)
                     }
                 }
                 if (cloudButton) != nil {
-                    if node == cloudButton {
-                        selectedMolds.append(Mold(moldType: MoldType.cloud))
+                    if nodeStack[0] == cloudButton || nodeStack[1] == cloudButton {
+                        if selectedMolds.contains(where: {$0.name == "Cloud Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Cloud Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.cloud))
+                            addBubble(point: cloudButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.cloud.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: cloudButton.position, type: 0)
                     }
                 }
                 if (rockButton) != nil {
-                    if node == rockButton {
-                        selectedMolds.append(Mold(moldType: MoldType.rock))
+                    if nodeStack[0] == rockButton || nodeStack[1] == rockButton {
+                        if selectedMolds.contains(where: {$0.name == "Rock Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Rock Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.rock))
+                            addBubble(point: rockButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.rock.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: rockButton.position, type: 0)
                     }
                 }
                 if (waterButton) != nil {
-                    if node == waterButton {
-                        selectedMolds.append(Mold(moldType: MoldType.water))
+                    if nodeStack[0] == waterButton || nodeStack[1] == waterButton {
+                        if selectedMolds.contains(where: {$0.name == "Water Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Water Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.water))
+                            addBubble(point: waterButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.water.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: waterButton.position, type: 0)
                     }
                 }
                 if (crystalButton) != nil {
-                    if node == crystalButton {
-                        selectedMolds.append(Mold(moldType: MoldType.crystal))
+                    if nodeStack[0] == crystalButton || nodeStack[1] == crystalButton {
+                        if selectedMolds.contains(where: {$0.name == "Crystal Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Crystal Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.crystal))
+                            addBubble(point: crystalButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.crystal.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: crystalButton.position, type: 0)
                     }
                 }
                 if (nuclearButton) != nil {
-                    if node == nuclearButton {
-                        selectedMolds.append(Mold(moldType: MoldType.nuclear))
+                    if nodeStack[0] == nuclearButton || nodeStack[1] == nuclearButton {
+                        if selectedMolds.contains(where: {$0.name == "Nuclear Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Nuclear Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.nuclear))
+                            addBubble(point: nuclearButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.nuclear.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: nuclearButton.position, type: 0)
                     }
                 }
                 if (astronautButton) != nil {
-                    if node == astronautButton {
-                        selectedMolds.append(Mold(moldType: MoldType.astronaut))
+                    if nodeStack[0] == astronautButton || nodeStack[1] == astronautButton {
+                        if selectedMolds.contains(where: {$0.name == "Astronaut Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Astronaut Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.astronaut))
+                            addBubble(point: astronautButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.astronaut.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: astronautButton.position, type: 0)
                     }
                 }
                 if (sandButton) != nil {
-                    if node == sandButton {
-                        selectedMolds.append(Mold(moldType: MoldType.sand))
+                    if nodeStack[0] == sandButton || nodeStack[1] == sandButton {
+                        if selectedMolds.contains(where: {$0.name == "Sand Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Sand Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.sand))
+                            addBubble(point: sandButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.sand.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: sandButton.position, type: 0)
                     }
                 }
                 if (glassButton) != nil {
-                    if node == glassButton {
-                        selectedMolds.append(Mold(moldType: MoldType.glass))
+                    if nodeStack[0] == glassButton || nodeStack[1] == glassButton {
+                        if selectedMolds.contains(where: {$0.name == "Glass Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Glass Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.glass))
+                            addBubble(point: glassButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.glass.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: glassButton.position, type: 0)
                     }
                 }
                 if (coffeeButton) != nil {
-                    if node == coffeeButton {
-                        selectedMolds.append(Mold(moldType: MoldType.coffee))
+                    if nodeStack[0] == coffeeButton || nodeStack[1] == coffeeButton {
+                        if selectedMolds.contains(where: {$0.name == "Coffee Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Coffee Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.coffee))
+                            addBubble(point: coffeeButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.coffee.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: coffeeButton.position, type: 0)
                     }
                 }
                 if (slinkyButton) != nil {
-                    if node == slinkyButton {
-                        selectedMolds.append(Mold(moldType: MoldType.slinky))
+                    if nodeStack[0] == slinkyButton || nodeStack[1] == slinkyButton {
+                        if selectedMolds.contains(where: {$0.name == "Slinky Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Slinky Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.slinky))
+                            addBubble(point: slinkyButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.slinky.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: slinkyButton.position, type: 0)
                     }
                 }
                 if (magmaButton) != nil {
-                    if node == magmaButton {
-                        selectedMolds.append(Mold(moldType: MoldType.magma))
+                    if nodeStack[0] == magmaButton || nodeStack[1] == magmaButton {
+                        if selectedMolds.contains(where: {$0.name == "Magma Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Magma Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.magma))
+                            addBubble(point: magmaButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.magma.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: magmaButton.position, type: 0)
                     }
                 }
                 if (samuraiButton) != nil {
-                    if node == samuraiButton {
-                        selectedMolds.append(Mold(moldType: MoldType.samurai))
+                    if nodeStack[0] == samuraiButton || nodeStack[1] == samuraiButton {
+                        if selectedMolds.contains(where: {$0.name == "Samurai Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Samurai Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.samurai))
+                            addBubble(point: samuraiButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.samurai.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: samuraiButton.position, type: 0)
                     }
                 }
                 if (orangeButton) != nil {
-                    if node == orangeButton {
-                        selectedMolds.append(Mold(moldType: MoldType.orange))
+                    if nodeStack[0] == orangeButton || nodeStack[1] == orangeButton {
+                        if selectedMolds.contains(where: {$0.name == "Orange Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Orange Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.orange))
+                            addBubble(point: orangeButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.orange.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: orangeButton.position, type: 0)
                     }
                 }
                 if (strawberryButton) != nil {
-                    if node == strawberryButton {
-                        selectedMolds.append(Mold(moldType: MoldType.strawberry))
+                    if nodeStack[0] == strawberryButton || nodeStack[1] == strawberryButton {
+                        if selectedMolds.contains(where: {$0.name == "Strawberry Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Strawberry Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.strawberry))
+                            addBubble(point: strawberryButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.strawberry.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: strawberryButton.position, type: 0)
                     }
                 }
                 if (tshirtButton) != nil {
-                    if node == tshirtButton {
-                        selectedMolds.append(Mold(moldType: MoldType.tshirt))
+                    if nodeStack[0] == tshirtButton || nodeStack[1] == tshirtButton {
+                        if selectedMolds.contains(where: {$0.name == "TShirt Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "TShirt Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.tshirt))
+                            addBubble(point: tshirtButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.tshirt.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: tshirtButton.position, type: 0)
                     }
                 }
                 if (cryptidButton) != nil {
-                    if node == cryptidButton {
-                        selectedMolds.append(Mold(moldType: MoldType.cryptid))
+                    if nodeStack[0] == cryptidButton || nodeStack[1] == cryptidButton {
+                        if selectedMolds.contains(where: {$0.name == "Cryptid Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Cryptid Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.cryptid))
+                            addBubble(point: cryptidButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.cryptid.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: cryptidButton.position, type: 0)
                     }
                 }
                 if (angelButton) != nil {
-                    if node == angelButton {
-                        selectedMolds.append(Mold(moldType: MoldType.angel))
+                    if nodeStack[0] == angelButton || nodeStack[1] == angelButton {
+                        if selectedMolds.contains(where: {$0.name == "Angel Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Angel Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.angel))
+                            addBubble(point: angelButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.angel.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: angelButton.position, type: 0)
                     }
                 }
                 if (invisibleButton) != nil {
-                    if node == invisibleButton {
-                        selectedMolds.append(Mold(moldType: MoldType.invisible))
+                    if nodeStack[0] == invisibleButton || nodeStack[1] == invisibleButton {
+                        if selectedMolds.contains(where: {$0.name == "Invisible Mold"}) {
+                            selectedMolds = selectedMolds.filter {$0.name != "Invisible Mold"}
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                        }
+                        else {
+                            selectedMolds.append(Mold(moldType: MoldType.invisible))
+                            addBubble(point: invisibleButton.position, type: 0)
+                        }
                         animateName(point: touch.location(in: gameLayer), name: MoldType.invisible.description, new: 0)
                         playSound(select: "select mold")
-                        addBubble(pont: invisibleButton.position, type: 0)
                     }
                 }
             }
-            
             //this is for resetting the diamond thing
             if selectedMolds.count > 0 {
                 currentDiamondCombo = nil
@@ -1081,24 +1269,6 @@ class BreedScene: SKScene {
             print("use le d")
             if let handler = touchHandler {
                 handler("diamonds")
-            }
-        }
-        
-        if clearButton.contains(touchLocation) {
-            print("clear")
-            bubbleLayer.removeAllChildren()
-            //selectedMolds = []
-            if possibleCombos.count > 0 {
-                currentDiamondCombo = possibleCombos[0]
-                numDiamonds = currentDiamondCombo.parents.count * 2
-                diamondLabel.text = String(numDiamonds)
-            }
-            else {
-                diamondLabel.text = String(0)
-            }
-            
-            if let handler = touchHandler {
-                handler("clear")
             }
         }
         
@@ -1437,7 +1607,7 @@ class BreedScene: SKScene {
     }
     
     //MARK: - ANIMATIONS
-    func addBubble(pont: CGPoint, type: Int) {
+    func addBubble(point: CGPoint, type: Int) {
         //shiny thing1
         var Texture = SKTexture(image: UIImage(named: "bubble 2")!)
         if type == 1 {
@@ -1445,10 +1615,9 @@ class BreedScene: SKScene {
         }
         let bubble = SKSpriteNode(texture:Texture)
         // Place in scene
-        bubble.position = pont
+        bubble.position = point
         
         bubble.setScale(0.01)
-        //this is the godo case
         let appear = SKAction.scale(to: 1, duration: 0.12)
         let actionS = SKAction.sequence([appear])
         bubble.run(actionS)
@@ -1484,7 +1653,6 @@ class BreedScene: SKScene {
         shinyOne.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 40);
         
         shinyOne.setScale(0.01)
-        //this is the godo case
         let rotateL = SKAction.rotate(byAngle: 360, duration: 400)
         let actionS = SKAction.sequence([appear, rotateL])
         shinyOne.run(actionS)
@@ -1510,7 +1678,6 @@ class BreedScene: SKScene {
         moldPic.position = CGPoint(x:self.frame.midX, y:self.frame.midY - 40);
         
         moldPic.setScale(0.01)
-        //this is the godo case
         let actionM = SKAction.sequence([appear])
         moldPic.run(actionM)
         successLayer.addChild(moldPic)
@@ -1533,7 +1700,6 @@ class BreedScene: SKScene {
         let reappear = SKAction.scale(to: 1.3, duration: 0.2)
         let bounce1 = SKAction.scale(to: 0.8, duration: 0.1)
         let bounce2 = SKAction.scale(to: 1, duration: 0.1)
-        //this is the godo case
         let action2 = SKAction.sequence([reappear, bounce1, bounce2])
         
         let Texture = SKTexture(image: UIImage(named: "add diamonds button")!)

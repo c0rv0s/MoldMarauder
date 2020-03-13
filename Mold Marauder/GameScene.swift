@@ -119,7 +119,7 @@ class GameScene: SKScene {
     
     var isActive = true
 //    hold the mold name to level it
-    var moldName = ""
+    var currType = ""
     
     //tutorial
     var tutorial = 0
@@ -701,7 +701,7 @@ class GameScene: SKScene {
                     }
 // level up mold
                     if let handler = touchHandler {
-                        moldName = node.name!
+                        currType = node.name!
                         handler("level_mold")
                     }
                 }

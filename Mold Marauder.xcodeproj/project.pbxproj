@@ -658,7 +658,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.2;
 				NEW_SETTING = "";
@@ -683,7 +683,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 1.1.2;
 				NEW_SETTING = "";

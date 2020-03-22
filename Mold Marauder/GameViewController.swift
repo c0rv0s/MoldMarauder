@@ -221,8 +221,9 @@ GKGameCenterControllerDelegate {
         //    inventory.level = 75
 //            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
         //    inventory.molds.append(Mold(moldType: MoldType.invisible))
-        //    inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
-        //    inventory.reinvestmentCount = 8
+//            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
+//            inventory.molds.append(Mold(moldType: MoldType.invisible))
+//            inventory.reinvestmentCount = 3
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1004,8 +1005,6 @@ GKGameCenterControllerDelegate {
             reinvestments.confirmReinvest()
         }
         if action == "confirm reinvest" {
-            inventory.reinvestmentCount += 1
-            
             reinvestments.gameLayer.removeAllChildren()
             
             let tempDiamonds = inventory.diamonds
@@ -1016,7 +1015,7 @@ GKGameCenterControllerDelegate {
             let tempFB = inventory.likedFB
             let tempMuteM = inventory.muteMusic
             let tempMuteS = inventory.muteSound
-            let tempReinvest = inventory.reinvestmentCount
+            let tempReinvest = inventory.reinvestmentCount + 1
             
             inventory = Inventory()
             inventory.diamonds = tempDiamonds
@@ -1029,25 +1028,18 @@ GKGameCenterControllerDelegate {
             inventory.muteMusic = tempMuteM
             inventory.reinvestmentCount = tempReinvest
             
+            if inventory.reinvestmentCount >= 5 {
+                print("the voice of god")
+            }
+            
             let disappear = SKAction.scale(to: 0, duration: 0.1)
-            //this is the godo case
             let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             reinvestments.scrollView?.removeFromSuperview()
             reinvestments.cometLayer.removeAllChildren()
             reinvestments.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
-            if inventory.level < 3 {
-                scene.wormDifficulty = 4 - inventory.laser + 1
-            }
-                
-            else if inventory.level < 29 {
-                scene.wormDifficulty = 5 - inventory.laser
-            }
-            else {
-                scene.wormDifficulty = 9 - inventory.laser
-            }
-            
+            scene.wormDifficulty = 4 - inventory.laser + 1
             scene.updateMolds()
             scene.isActive = true
             scene.isPaused = false
@@ -1063,6 +1055,7 @@ GKGameCenterControllerDelegate {
             generateQuest()
             scene.playSound(select: "reinvest")
             scene.reinvestCount = inventory.reinvestmentCount
+            playBackgroundMusic(filename: "\(inventory.background).wav")
         }
     }
     //LEVEL SCENE HANDLER
@@ -6395,11 +6388,11 @@ GKGameCenterControllerDelegate {
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                     
                     if productID == TINY_PRODUCT_ID {
-                        incrementDiamonds(newDiamonds: 18)
+                        incrementDiamonds(newDiamonds: 11)
                         save()
                     }
                     else if productID == SMALL_PRODUCT_ID {
-                        incrementDiamonds(newDiamonds: 60)
+                        incrementDiamonds(newDiamonds: 55)
                         save()
                     }
                     else if productID == MEDIUM_PRODUCT_ID {
@@ -6407,7 +6400,7 @@ GKGameCenterControllerDelegate {
                         save()
                     }
                     else if productID == LARGE_PRODUCT_ID {
-                        incrementDiamonds(newDiamonds: 1060)
+                        incrementDiamonds(newDiamonds: 1200)
                         save()
                     }
                     break

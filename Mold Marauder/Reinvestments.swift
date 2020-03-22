@@ -195,7 +195,7 @@ class Reinvestments: SKScene {
                 }
             }
         }
-        if confirmReinvestButton != nil {
+        else if confirmReinvestButton != nil {
             if confirmReinvestButton.contains(touchLocation) {
                 print("confirm reinvest")
                 if canReinvest {
@@ -203,6 +203,9 @@ class Reinvestments: SKScene {
                         handler("confirm reinvest")
                     }
                 }
+            }
+            else {
+                gameLayer.removeAllChildren()
             }
         }
     }

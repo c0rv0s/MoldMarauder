@@ -867,7 +867,7 @@ class GameScene: SKScene {
         diamondLayer.addChild(diamondTiny)
         let diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel.fontSize = 20
-        diamondLabel.text = "18 Diamonds"
+        diamondLabel.text = "11 Diamonds"
         diamondLabel.position = CGPoint(x: 30, y: 160)
         diamondLabel.color = UIColor.black
         diamondLayer.addChild(diamondLabel)
@@ -891,7 +891,7 @@ class GameScene: SKScene {
         diamondLayer.addChild(diamondSmall)
         let diamondLabel2 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel2.fontSize = 20
-        diamondLabel2.text = "60 Diamonds"
+        diamondLabel2.text = "55 Diamonds"
         diamondLabel2.position = CGPoint(x: 30, y: 50)
         diamondLabel2.color = UIColor.black
         diamondLayer.addChild(diamondLabel2)
@@ -939,7 +939,7 @@ class GameScene: SKScene {
         diamondLayer.addChild(diamondLarge)
         let diamondLabel4 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel4.fontSize = 16
-        diamondLabel4.text = "1060 Diamonds"
+        diamondLabel4.text = "1200 Diamonds"
         diamondLabel4.position = CGPoint(x: 30, y: -170)
         diamondLabel4.color = UIColor.black
         diamondLayer.addChild(diamondLabel4)
@@ -1498,12 +1498,14 @@ class GameScene: SKScene {
                 else if (moldData.moldType == MoldType.x) {
                     var frames = [SKTexture]()
                     
-                    var i = 2
-                    while(i<11) {
+                    var i = 0
+                    var arr = Array(2...10)
+                    arr.shuffle()
+                    while(i<arr.count) {
                         var j = 1
                         let numFrames = (Int(arc4random_uniform(6)) + 2)*2
                         while(j < numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(arr[i])"))!))
                             j += 1
                         }
                         i += 1

@@ -1288,7 +1288,6 @@ class MoldShop: SKScene {
                 priceLabel.fontColor = UIColor.black
                 ppsLabel.fontColor = UIColor.black
                 remainder -= 1
-                print(remainder)
             }
             
         }

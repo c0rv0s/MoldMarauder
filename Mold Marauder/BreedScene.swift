@@ -145,7 +145,7 @@ class BreedScene: SKScene {
         page1ScrollView = SKSpriteNode(color: .clear, size: CGSize(width: scrollView.frame.width, height: scrollView.frame.size.height))
         page1ScrollView.position = CGPoint(x: frame.midX, y: frame.midY)
         moveableNode.addChild(page1ScrollView)
-
+        
         //initialize these values, they get updated to be reused for each new button added
         var Texture = SKTexture(image: UIImage(named: "Slime Mold")!)
         lastButton = CGPoint(x: -75, y: 270)
@@ -601,26 +601,23 @@ class BreedScene: SKScene {
             }
         }
         else {
-        /* Called when a touch begins */
-        for touch in touches {
-            let location = touch.location(in: page1ScrollView)
-            let node = atPoint(location)
-            let nodeStack = nodes(at: location)
-            if tutorialLayer.children.count > 0 {
-                if let handler = touchHandler {
-                    handler("check tutorial progress")
+            /* Called when a touch begins */
+            for touch in touches {
+                let location = touch.location(in: self)
+                let nodeStack = nodes(at: location)
+                if tutorialLayer.children.count > 0 {
+                    if let handler = touchHandler {
+                        handler("check tutorial progress")
+                    }
                 }
-            }
-            // check if touch was one of the mold buttons
-            // first cap at 5 molds to select
-            if selectedMolds.count <= 5 {
+                
                 if slimeButton != nil {
-                    if nodeStack[0] == slimeButton || nodeStack[1] == slimeButton {
+                    if nodeStack.contains(slimeButton)  {
                         if selectedMolds.contains(where: {$0.name == "Slime Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Slime Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(slimeButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.slime))
                             addBubble(point: slimeButton.position, type: 0)
                         }
@@ -629,26 +626,26 @@ class BreedScene: SKScene {
                     }
                 }
                 if caveButton != nil {
-                    if nodeStack[0] == caveButton || nodeStack[1] == caveButton {
+                    if nodeStack.contains(caveButton) {
                         if selectedMolds.contains(where: {$0.name == "Cave Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Cave Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(caveButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.cave))
                             addBubble(point: caveButton.position, type: 0)
                         }
-                        animateName(point: touch.location(in: gameLayer), name: MoldType.sad.description, new: 0)
+                        animateName(point: touch.location(in: gameLayer), name: MoldType.cave.description, new: 0)
                         playSound(select: "select mold")
                     }
                 }
                 if sadButton != nil {
-                    if nodeStack[0] == sadButton || nodeStack[1] == sadButton {
+                    if nodeStack.contains(sadButton) {
                         if selectedMolds.contains(where: {$0.name == "Sad Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Sad Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(sadButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.sad))
                             addBubble(point: sadButton.position, type: 0)
                         }
@@ -657,12 +654,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if angryButton != nil {
-                    if nodeStack[0] == angryButton || nodeStack[1] == angryButton {
+                    if nodeStack.contains(angryButton) {
                         if selectedMolds.contains(where: {$0.name == "Angry Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Angry Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(angryButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.angry))
                             addBubble(point: angryButton.position, type: 0)
                         }
@@ -671,12 +668,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (alienButton) != nil {
-                    if nodeStack[0] == alienButton || nodeStack[1] == alienButton {
+                    if nodeStack.contains(alienButton) {
                         if selectedMolds.contains(where: {$0.name == "Alien Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Alien Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(alienButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.alien))
                             addBubble(point: alienButton.position, type: 0)
                         }
@@ -686,12 +683,12 @@ class BreedScene: SKScene {
                 }
                 
                 if (pimplyButton) != nil {
-                    if nodeStack[0] == pimplyButton || nodeStack[1] == pimplyButton {
+                    if nodeStack.contains(pimplyButton) {
                         if selectedMolds.contains(where: {$0.name == "Pimply Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Pimply Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(pimplyButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.pimply))
                             addBubble(point: pimplyButton.position, type: 0)
                         }
@@ -700,12 +697,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (freckledButton) != nil {
-                    if nodeStack[0] == freckledButton || nodeStack[1] == freckledButton {
+                    if nodeStack.contains(freckledButton) {
                         if selectedMolds.contains(where: {$0.name == "Freckled Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Freckled Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(freckledButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.freckled))
                             addBubble(point: freckledButton.position, type: 0)
                         }
@@ -714,12 +711,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (hypnoButton) != nil {
-                    if nodeStack[0] == hypnoButton || nodeStack[1] == hypnoButton {
+                    if nodeStack.contains(hypnoButton) {
                         if selectedMolds.contains(where: {$0.name == "Hypno Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Hypno Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(hypnoButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.hypno))
                             addBubble(point: hypnoButton.position, type: 0)
                         }
@@ -728,12 +725,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (rainbowButton) != nil {
-                    if nodeStack[0] == rainbowButton || nodeStack[1] == rainbowButton {
+                    if nodeStack.contains(rainbowButton) {
                         if selectedMolds.contains(where: {$0.name == "Rainbow Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Rainbow Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(rainbowButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.rainbow))
                             addBubble(point: rainbowButton.position, type: 0)
                         }
@@ -742,12 +739,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (aluminumButton) != nil {
-                    if nodeStack[0] == aluminumButton || nodeStack[1] == aluminumButton {
+                    if nodeStack.contains(aluminumButton) {
                         if selectedMolds.contains(where: {$0.name == "Aluminum Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Aluminum Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(aluminumButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.aluminum))
                             addBubble(point: aluminumButton.position, type: 0)
                         }
@@ -756,12 +753,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (circuitButton) != nil {
-                    if nodeStack[0] == circuitButton || nodeStack[1] == circuitButton {
+                    if nodeStack.contains(circuitButton) {
                         if selectedMolds.contains(where: {$0.name == "Circuit Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Circuit Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(circuitButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.circuit))
                             addBubble(point: circuitButton.position, type: 0)
                         }
@@ -770,12 +767,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (hologramButton) != nil {
-                    if nodeStack[0] == hologramButton || nodeStack[1] == hologramButton {
+                    if nodeStack.contains(hologramButton) {
                         if selectedMolds.contains(where: {$0.name == "Hologram Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Hologram Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(hologramButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.hologram))
                             addBubble(point: hologramButton.position, type: 0)
                         }
@@ -784,12 +781,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (stormButton) != nil {
-                    if nodeStack[0] == stormButton || nodeStack[1] == stormButton {
+                    if nodeStack.contains(stormButton) {
                         if selectedMolds.contains(where: {$0.name == "Storm Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Storm Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(stormButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.storm))
                             addBubble(point: stormButton.position, type: 0)
                         }
@@ -798,12 +795,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (bacteriaButton) != nil {
-                    if nodeStack[0] == bacteriaButton || nodeStack[1] == bacteriaButton {
+                    if nodeStack.contains(bacteriaButton) {
                         if selectedMolds.contains(where: {$0.name == "Bacteria Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Bacteria Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(bacteriaButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.bacteria))
                             addBubble(point: bacteriaButton.position, type: 0)
                         }
@@ -812,12 +809,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (virusButton) != nil {
-                    if nodeStack[0] == virusButton || nodeStack[1] == virusButton {
+                    if nodeStack.contains(virusButton) {
                         if selectedMolds.contains(where: {$0.name == "Virus Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Virus Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(virusButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.virus))
                             addBubble(point: virusButton.position, type: 0)
                         }
@@ -826,12 +823,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (flowerButton) != nil {
-                    if nodeStack[0] == flowerButton || nodeStack[1] == flowerButton {
+                    if nodeStack.contains(flowerButton) {
                         if selectedMolds.contains(where: {$0.name == "Flower Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Flower Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(flowerButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.flower))
                             addBubble(point: flowerButton.position, type: 1)
                         }
@@ -840,12 +837,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (beeButton) != nil {
-                    if nodeStack[0] == beeButton || nodeStack[1] == beeButton {
+                    if nodeStack.contains(beeButton) {
                         if selectedMolds.contains(where: {$0.name == "Bee Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Bee Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(beeButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.bee))
                             addBubble(point: beeButton.position, type: 1)
                         }
@@ -854,12 +851,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (xButton) != nil {
-                    if nodeStack[0] == xButton || nodeStack[1] == xButton {
+                    if nodeStack.contains(xButton) {
                         if selectedMolds.contains(where: {$0.name == "X Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "X Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(xButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.x))
                             addBubble(point: xButton.position, type: 0)
                         }
@@ -868,12 +865,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (disaffectedButton) != nil {
-                    if nodeStack[0] == disaffectedButton || nodeStack[1] == disaffectedButton {
+                    if nodeStack.contains(disaffectedButton) {
                         if selectedMolds.contains(where: {$0.name == "Disaffected Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Disaffected Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(disaffectedButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.disaffected))
                             addBubble(point: disaffectedButton.position, type: 0)
                         }
@@ -882,12 +879,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (oliveButton) != nil {
-                    if nodeStack[0] == oliveButton || nodeStack[1] == oliveButton {
+                    if nodeStack.contains(oliveButton) {
                         if selectedMolds.contains(where: {$0.name == "Olive Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Olive Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(oliveButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.olive))
                             addBubble(point: oliveButton.position, type: 0)
                         }
@@ -896,12 +893,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (coconutButton) != nil {
-                    if nodeStack[0] == coconutButton || nodeStack[1] == coconutButton {
+                    if nodeStack.contains(coconutButton) {
                         if selectedMolds.contains(where: {$0.name == "Coconut Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Coconut Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(coconutButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.coconut))
                             addBubble(point: coconutButton.position, type: 0)
                         }
@@ -910,12 +907,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (sickButton) != nil {
-                    if nodeStack[0] == sickButton || nodeStack[1] == sickButton {
+                    if nodeStack.contains(sickButton) {
                         if selectedMolds.contains(where: {$0.name == "Sick Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Sick Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(sickButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.sick))
                             addBubble(point: sickButton.position, type: 0)
                         }
@@ -924,12 +921,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (deadButton) != nil {
-                    if nodeStack[0] == deadButton || nodeStack[1] == deadButton {
+                    if nodeStack.contains(deadButton) {
                         if selectedMolds.contains(where: {$0.name == "Dead Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Dead Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(deadButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.dead))
                             addBubble(point: deadButton.position, type: 0)
                         }
@@ -938,12 +935,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (zombieButton) != nil {
-                    if nodeStack[0] == zombieButton || nodeStack[1] == zombieButton {
+                    if nodeStack.contains(zombieButton) {
                         if selectedMolds.contains(where: {$0.name == "Zombie Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Zombie Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(zombieButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.zombie))
                             addBubble(point: zombieButton.position, type: 0)
                         }
@@ -952,12 +949,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (cloudButton) != nil {
-                    if nodeStack[0] == cloudButton || nodeStack[1] == cloudButton {
+                    if nodeStack.contains(cloudButton) {
                         if selectedMolds.contains(where: {$0.name == "Cloud Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Cloud Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(cloudButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.cloud))
                             addBubble(point: cloudButton.position, type: 0)
                         }
@@ -966,12 +963,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (rockButton) != nil {
-                    if nodeStack[0] == rockButton || nodeStack[1] == rockButton {
+                    if nodeStack.contains(rockButton) {
                         if selectedMolds.contains(where: {$0.name == "Rock Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Rock Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(rockButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.rock))
                             addBubble(point: rockButton.position, type: 0)
                         }
@@ -980,12 +977,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (waterButton) != nil {
-                    if nodeStack[0] == waterButton || nodeStack[1] == waterButton {
+                    if nodeStack.contains(waterButton) {
                         if selectedMolds.contains(where: {$0.name == "Water Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Water Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(waterButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.water))
                             addBubble(point: waterButton.position, type: 0)
                         }
@@ -994,12 +991,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (crystalButton) != nil {
-                    if nodeStack[0] == crystalButton || nodeStack[1] == crystalButton {
+                    if nodeStack.contains(crystalButton) {
                         if selectedMolds.contains(where: {$0.name == "Crystal Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Crystal Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(crystalButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.crystal))
                             addBubble(point: crystalButton.position, type: 0)
                         }
@@ -1008,12 +1005,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (nuclearButton) != nil {
-                    if nodeStack[0] == nuclearButton || nodeStack[1] == nuclearButton {
+                    if nodeStack.contains(nuclearButton) {
                         if selectedMolds.contains(where: {$0.name == "Nuclear Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Nuclear Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(nuclearButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.nuclear))
                             addBubble(point: nuclearButton.position, type: 0)
                         }
@@ -1022,12 +1019,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (astronautButton) != nil {
-                    if nodeStack[0] == astronautButton || nodeStack[1] == astronautButton {
+                    if nodeStack.contains(astronautButton) {
                         if selectedMolds.contains(where: {$0.name == "Astronaut Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Astronaut Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(astronautButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.astronaut))
                             addBubble(point: astronautButton.position, type: 0)
                         }
@@ -1036,12 +1033,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (sandButton) != nil {
-                    if nodeStack[0] == sandButton || nodeStack[1] == sandButton {
+                    if nodeStack.contains(sandButton) {
                         if selectedMolds.contains(where: {$0.name == "Sand Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Sand Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(sandButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.sand))
                             addBubble(point: sandButton.position, type: 0)
                         }
@@ -1050,12 +1047,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (glassButton) != nil {
-                    if nodeStack[0] == glassButton || nodeStack[1] == glassButton {
+                    if nodeStack.contains(glassButton) {
                         if selectedMolds.contains(where: {$0.name == "Glass Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Glass Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(glassButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.glass))
                             addBubble(point: glassButton.position, type: 0)
                         }
@@ -1064,12 +1061,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (coffeeButton) != nil {
-                    if nodeStack[0] == coffeeButton || nodeStack[1] == coffeeButton {
+                    if nodeStack.contains(coffeeButton) {
                         if selectedMolds.contains(where: {$0.name == "Coffee Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Coffee Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(coffeeButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.coffee))
                             addBubble(point: coffeeButton.position, type: 0)
                         }
@@ -1078,12 +1075,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (slinkyButton) != nil {
-                    if nodeStack[0] == slinkyButton || nodeStack[1] == slinkyButton {
+                    if nodeStack.contains(slinkyButton) {
                         if selectedMolds.contains(where: {$0.name == "Slinky Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Slinky Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(slinkyButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.slinky))
                             addBubble(point: slinkyButton.position, type: 0)
                         }
@@ -1092,12 +1089,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (magmaButton) != nil {
-                    if nodeStack[0] == magmaButton || nodeStack[1] == magmaButton {
+                    if nodeStack.contains(magmaButton) {
                         if selectedMolds.contains(where: {$0.name == "Magma Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Magma Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(magmaButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.magma))
                             addBubble(point: magmaButton.position, type: 0)
                         }
@@ -1106,12 +1103,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (samuraiButton) != nil {
-                    if nodeStack[0] == samuraiButton || nodeStack[1] == samuraiButton {
+                    if nodeStack.contains(samuraiButton) {
                         if selectedMolds.contains(where: {$0.name == "Samurai Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Samurai Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(samuraiButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.samurai))
                             addBubble(point: samuraiButton.position, type: 0)
                         }
@@ -1120,12 +1117,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (orangeButton) != nil {
-                    if nodeStack[0] == orangeButton || nodeStack[1] == orangeButton {
+                    if nodeStack.contains(orangeButton) {
                         if selectedMolds.contains(where: {$0.name == "Orange Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Orange Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(orangeButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.orange))
                             addBubble(point: orangeButton.position, type: 0)
                         }
@@ -1134,12 +1131,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (strawberryButton) != nil {
-                    if nodeStack[0] == strawberryButton || nodeStack[1] == strawberryButton {
+                    if nodeStack.contains(strawberryButton) {
                         if selectedMolds.contains(where: {$0.name == "Strawberry Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Strawberry Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(strawberryButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.strawberry))
                             addBubble(point: strawberryButton.position, type: 0)
                         }
@@ -1148,12 +1145,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (tshirtButton) != nil {
-                    if nodeStack[0] == tshirtButton || nodeStack[1] == tshirtButton {
+                    if nodeStack.contains(tshirtButton) {
                         if selectedMolds.contains(where: {$0.name == "TShirt Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "TShirt Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(tshirtButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.tshirt))
                             addBubble(point: tshirtButton.position, type: 0)
                         }
@@ -1162,12 +1159,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (cryptidButton) != nil {
-                    if nodeStack[0] == cryptidButton || nodeStack[1] == cryptidButton {
+                    if nodeStack.contains(cryptidButton) {
                         if selectedMolds.contains(where: {$0.name == "Cryptid Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Cryptid Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(cryptidButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.cryptid))
                             addBubble(point: cryptidButton.position, type: 0)
                         }
@@ -1176,12 +1173,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (angelButton) != nil {
-                    if nodeStack[0] == angelButton || nodeStack[1] == angelButton {
+                    if nodeStack.contains(angelButton) {
                         if selectedMolds.contains(where: {$0.name == "Angel Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Angel Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(angelButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.angel))
                             addBubble(point: angelButton.position, type: 0)
                         }
@@ -1190,12 +1187,12 @@ class BreedScene: SKScene {
                     }
                 }
                 if (invisibleButton) != nil {
-                    if nodeStack[0] == invisibleButton || nodeStack[1] == invisibleButton {
+                    if nodeStack.contains(invisibleButton) {
                         if selectedMolds.contains(where: {$0.name == "Invisible Mold"}) {
                             selectedMolds = selectedMolds.filter {$0.name != "Invisible Mold"}
-                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(touch.location(in: gameLayer))])
+                            bubbleLayer.removeChildren(in: [bubbleLayer.atPoint(invisibleButton.position)])
                         }
-                        else {
+                        else if selectedMolds.count < 5 {
                             selectedMolds.append(Mold(moldType: MoldType.invisible))
                             addBubble(point: invisibleButton.position, type: 0)
                         }
@@ -1228,35 +1225,42 @@ class BreedScene: SKScene {
                         break outerLoop
                     }
                 }
-                //update labels
-                if currentDiamondCombo != nil {
-                    numDiamonds = (currentDiamondCombo.parents.count - selectedMolds.count) * 2
-                    diamondLabel.text = String(numDiamonds)
-                    if numDiamonds == 0 {
-                        diamondLabel.fontColor = UIColor.green
-                    }
+            }
+            else {
+                if possibleCombos.count > 0 {
+                    currentDiamondCombo = possibleCombos[0]
                 }
-                else if currentDiamondCombo == nil {
-                    numDiamonds = 0
-                    diamondLabel.text = String(numDiamonds)
+            }
+            
+            if currentDiamondCombo != nil {
+                numDiamonds = (currentDiamondCombo.parents.count - selectedMolds.count) * 2
+                diamondLabel.text = String(numDiamonds)
+                if numDiamonds == 0 {
+                    diamondLabel.fontColor = UIColor.green
+                }
+                else {
                     diamondLabel.fontColor = UIColor.black
-                    
                 }
             }
-        }
-        
-        //for the rest of the buttons
-        let touch = touches.first
-        let touchLocation = touch!.location(in: self)
-        // Check if the location of the touch is within the button's bounds
-        if backButton.contains(touchLocation) {
-            print("back")
-            if let handler = touchHandler {
-                scrollView?.removeFromSuperview()
-                handler("back")
+            else {
+                numDiamonds = 0
+                diamondLabel.text = String(numDiamonds)
+                diamondLabel.fontColor = UIColor.black
             }
-        }
-        
+            
+            
+            //for the rest of the buttons
+            let touch = touches.first
+            let touchLocation = touch!.location(in: self)
+            // Check if the location of the touch is within the button's bounds
+            if backButton.contains(touchLocation) {
+                print("back")
+                if let handler = touchHandler {
+                    scrollView?.removeFromSuperview()
+                    handler("back")
+                }
+            }
+            
             if buyDiamondsButton != nil {
                 if buyDiamondsButton.contains(touchLocation) {
                     if let handler = touchHandler {
@@ -1264,43 +1268,43 @@ class BreedScene: SKScene {
                     }
                 }
             }
-        
-        if useDiamondsButton.contains(touchLocation) {
-            print("use le d")
-            if let handler = touchHandler {
-                handler("diamonds")
+            
+            if useDiamondsButton.contains(touchLocation) {
+                print("use le d")
+                if let handler = touchHandler {
+                    handler("diamonds")
+                }
             }
-        }
-        
-        if breedButton.contains(touchLocation) {
-            print("try to breed")
-            if let handler = touchHandler {
-                handler("breed")
+            
+            if breedButton.contains(touchLocation) {
+                print("try to breed")
+                if let handler = touchHandler {
+                    handler("breed")
+                }
             }
-        }
         }
     }
     
     func playSound(select: String) {
         if mute == false {
-        switch select {
-        case "levelup":
-            run(levelUpSound)
-        case "select mold":
-            run(bubbleLowSound)
-        case "awe":
-            run(aweSound)
-        case "buzzer":
-            run(buzzerSound)
-        case "loose":
-            run(looseSound)
-        case "select":
-            run(selectSound)
-        case "diamond pop":
-            run(diamondPopSound)
-        default:
-            run(levelUpSound)
-        }
+            switch select {
+            case "levelup":
+                run(levelUpSound)
+            case "select mold":
+                run(bubbleLowSound)
+            case "awe":
+                run(aweSound)
+            case "buzzer":
+                run(buzzerSound)
+            case "loose":
+                run(looseSound)
+            case "select":
+                run(selectSound)
+            case "diamond pop":
+                run(diamondPopSound)
+            default:
+                run(levelUpSound)
+            }
         }
     }
     
@@ -1693,7 +1697,7 @@ class BreedScene: SKScene {
         nameLabel.run(actionM)
         successLayer.addChild(nameLabel)
         
-
+        
     }
     
     func addBuyDiamondsButton() {

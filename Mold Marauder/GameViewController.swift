@@ -216,9 +216,9 @@ GKGameCenterControllerDelegate {
         //    inventory = Inventory()
         //    inventory.autoTap = false
         //    inventory.autoTapLevel = 0
-        //    incrementDiamonds(newDiamonds: 500)
+//            incrementDiamonds(newDiamonds: 500)
         //    inventory.level = 75
-        //    incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
+//            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
         //    inventory.molds.append(Mold(moldType: MoldType.invisible))
         //    inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
         //    inventory.reinvestmentCount = 8
@@ -843,58 +843,36 @@ GKGameCenterControllerDelegate {
             breedScene.touchHandler = breedHandler
             
             //populate the owned molds array
+            var moldSet = Set<String>()
             for mold in inventory.molds {
-                var transferred = false
-                if breedScene.ownedMolds.count > 0 {
-                    for ownedMold in breedScene.ownedMolds {
-                        if mold.moldType == ownedMold.moldType {
-                            transferred = true
-                            break
-                        }
-                    }
-                    if transferred == false {
-                        breedScene.ownedMolds.append(mold)
-                    }
-                }
-                else {
+                if !moldSet.contains(mold.description) {
                     breedScene.ownedMolds.append(mold)
+                    moldSet.insert(mold.description)
                 }
             }
             //populate the possible combos array
             if breedScene.ownedMolds.count > 0 {
                 for combo in combos.allCombos {
-                    var same = 0
-                    //now check if the parents in the combo are the same as the molds in the orgy
-                    //check same length
-                    //now check if the orgy and the combo members match
-                    for mold in breedScene.ownedMolds {
-                        for parent in combo.parents {
-                            if mold.name == parent.name {
-                                same += 1
-                            }
+                    if inventory.unlockedMolds.contains(where: {$0.name == combo.child.name}) {
+                        continue
+                    }
+                    var addCombo = true
+                    for parent in combo.parents {
+                        if !moldSet.contains(parent.description) {
+                            addCombo = false
+                            break
                         }
                     }
-                    if same == combo.parents.count {
-                        var letsAdd = true
-                        for mold in inventory.unlockedMolds {
-                            if mold.moldType == combo.child.moldType {
-                                letsAdd = false
-                            }
-                        }
-                        if letsAdd == true {
-                            breedScene.possibleCombos.append(combo)
-                        }
-                        
+                    if addCombo {
+                        breedScene.possibleCombos.append(combo)
                     }
                 }
             }
             
             print("possible combos")
+            breedScene.possibleCombos.forEach{combo in print(combo.child.description)}
             if breedScene.possibleCombos.count > 0 {
                 breedScene.currentDiamondCombo = breedScene.possibleCombos[0]
-                for combo in breedScene.possibleCombos {
-                    print(combo.child.name)
-                }
             }
             if aroff {
                 skView.presentScene(breedScene)
@@ -3394,15 +3372,11 @@ GKGameCenterControllerDelegate {
                         inventory.achieveDiamonds += 10
                     }
                 }
-                print("name")
-                print(mold.name)
-                print("current")
+                
                 // calculate if a quest has been achieved
-                print(inventory.currentQuest)
                 if inventory.currentQuest.count > 1 {
                     if inventory.currentQuest.suffix(1) == "&" {
                         let name = inventory.currentQuest[..<inventory.currentQuest.index(before: inventory.currentQuest.endIndex)]
-                        print("&")
                         
                         if mold.name == name {
                             inventory.questAmount += 1
@@ -3498,37 +3472,7 @@ GKGameCenterControllerDelegate {
                     updateBreedAchievements()
                     //update possiblecombos
                     //populate the possible combos array
-                    breedScene.possibleCombos = []
-                    if breedScene.ownedMolds.count > 0 {
-                        for combo in combos.allCombos {
-                            var same = 0
-                            //now check if the parents in the combo are the same as the molds in the orgy
-                            //check same length
-                            //now check if the orgy and the combo members match
-                            for mold in breedScene.ownedMolds {
-                                for parent in combo.parents {
-                                    if mold.name == parent.name {
-                                        same += 1
-                                    }
-                                }
-                            }
-                            if same == combo.parents.count {
-                                var letsAdd = true
-                                for mold in inventory.unlockedMolds {
-                                    if mold.moldType == combo.child.moldType {
-                                        letsAdd = false
-                                    }
-                                }
-                                if combo.child.moldType == newCombo?.child.moldType {
-                                    letsAdd = false
-                                }
-                                if letsAdd == true {
-                                    breedScene.possibleCombos.append(combo)
-                                }
-                                
-                            }
-                        }
-                    }
+                    breedScene.possibleCombos = breedScene.possibleCombos.filter {$0.child.description != newCombo?.child.description}
                     if breedScene.possibleCombos.count > 0 {
                         breedScene.currentDiamondCombo = breedScene.possibleCombos[0]
                         breedScene.numDiamonds = breedScene.currentDiamondCombo.parents.count * 2
@@ -3602,15 +3546,7 @@ GKGameCenterControllerDelegate {
                                 //achievements
                                 updateBreedAchievements()
                                 //update possiblecombos
-                                
-                                var index = 0
-                                for posCombo in breedScene.possibleCombos {
-                                    if posCombo.child.moldType == combo.child.moldType {
-                                        breedScene.possibleCombos.remove(at: index)
-                                        break
-                                    }
-                                    index += 1
-                                }
+                                breedScene.possibleCombos = breedScene.possibleCombos.filter {$0.child.description != combo.child.description}
                                 //    this is the code toe update tflnewA
                                 if breedScene.possibleCombos.count > 0 {
                                     breedScene.currentDiamondCombo = breedScene.possibleCombos[0]
@@ -3639,54 +3575,54 @@ GKGameCenterControllerDelegate {
                         inventory.molds.remove(at: index!)
                         inventory.scorePerSecond -= mold.PPS
                         index = inventory.displayMolds.firstIndex(where: {$0.name == mold.name})
-                        inventory.displayMolds.remove(at: index!)
+                        if index != nil {
+                            inventory.displayMolds.remove(at: index!)
+                        }
                     }
                 }
                 breedScene.playSound(select: "buzzer")
                 breedScene.animateName(point: breedScene.center, name: "BREED FAILED", new: 2)
                 breedScene.bubbleLayer.removeAllChildren()
-                breedScene.ownedMolds = inventory.molds
-                //populate the possible combos array
+                breedScene.selectedMolds = []
+                breedScene.ownedMolds = []
                 breedScene.possibleCombos = []
+                //populate the owned molds array
+                var moldSet = Set<String>()
+                for mold in inventory.molds {
+                    if !moldSet.contains(mold.description) {
+                        breedScene.ownedMolds.append(mold)
+                        moldSet.insert(mold.description)
+                    }
+                }
+                //populate the possible combos array
                 if breedScene.ownedMolds.count > 0 {
                     for combo in combos.allCombos {
-                        var same = 0
-                        //now check if the parents in the combo are the same as the molds in the orgy
-                        //check same length
-                        //now check if the orgy and the combo members match
-                        for mold in breedScene.ownedMolds {
-                            for parent in combo.parents {
-                                if mold.name == parent.name {
-                                    same += 1
-                                }
+                        if inventory.unlockedMolds.contains(where: {$0.name == combo.child.name}) {
+                            continue
+                        }
+                        var addCombo = true
+                        for parent in combo.parents {
+                            if !moldSet.contains(parent.description) {
+                                addCombo = false
+                                break
                             }
                         }
-                        if same == combo.parents.count {
-                            var letsAdd = true
-                            for mold in inventory.unlockedMolds {
-                                if mold.moldType == combo.child.moldType {
-                                    letsAdd = false
-                                }
-                            }
-                            if letsAdd == true {
-                                breedScene.possibleCombos.append(combo)
-                            }
-                            
+                        if addCombo {
+                            breedScene.possibleCombos.append(combo)
                         }
                     }
                 }
                 if breedScene.possibleCombos.count > 0 {
                     breedScene.currentDiamondCombo = breedScene.possibleCombos[0]
-                    breedScene.diamondLabel.text = String(breedScene.currentDiamondCombo.parents.count)
+                    breedScene.numDiamonds = breedScene.currentDiamondCombo.parents.count * 2
                 }
-                else if breedScene.possibleCombos.count == 0 {
+                else {
                     breedScene.currentDiamondCombo = nil
-                    breedScene.diamondLabel.text = "0"
+                    breedScene.numDiamonds = 0
                 }
+                breedScene.diamondLabel.text = String(breedScene.numDiamonds)
                 breedScene.reloadScroll()
             }
-            //clear the selection buffer
-            breedScene.selectedMolds = []
         }
         //tutorial handlers
         if action == "check tutorial progress" {

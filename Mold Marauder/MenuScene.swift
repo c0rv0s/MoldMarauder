@@ -12,8 +12,6 @@ class MenuScene: SKScene {
     
     var buyButton: SKNode!
     var exitButton: SKNode!
-    var cheatButton: SKNode!
-    //var resetButton: SKNode!
     var breedButton: SKNode!
     var levelButton: SKNode!
     var itemButton: SKNode!
@@ -142,14 +140,6 @@ class MenuScene: SKScene {
         helpButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY)
         
         self.addChild(helpButton)
-        
-        // CHEAT BUTTON
-        Texture = SKTexture(image: UIImage(named: "cheat")!)
-        cheatButton = SKSpriteNode(texture:Texture)
-        // Place in scene
-        cheatButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-150);
-        
-        //self.addChild(cheatButton)
 
         //level button
         Texture = SKTexture(image: UIImage(named: "level_up")!)
@@ -173,7 +163,7 @@ class MenuScene: SKScene {
         // Place in scene
         arButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
         
-        self.addChild(arButton)
+//        self.addChild(arButton)
  
     }
     
@@ -193,13 +183,6 @@ class MenuScene: SKScene {
                 handler("exit")
             }
         }
-        if cheatButton.contains(touchLocation) {
-            print("cheater :(")
-            if let handler = touchHandler {
-                handler("cheat")
-            }
-        }
-        
         if breedButton.contains(touchLocation) {
             print("sexy-tieemmm")
             if let handler = touchHandler {

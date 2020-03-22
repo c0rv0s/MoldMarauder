@@ -95,6 +95,8 @@ class GameScene: SKScene {
     var center:  CGPoint!
     var tapLoc: CGPoint!
     
+    var kfPoint: CGPoint!
+    
     let gameLayer = SKNode()
     let holeLayer = SKNode()
     let moldLayer = SKNode()
@@ -643,7 +645,6 @@ class GameScene: SKScene {
                 }
             }
             // if its a mold animate the heart
-            
             if node.name != nil {
                 if node.name!.count > 5 {
                     //animate heart
@@ -699,7 +700,7 @@ class GameScene: SKScene {
                             SKAction.fadeOut(withDuration: (0.35)),
                             SKAction.removeFromParent()]))
                     }
-// level up mold
+                    // level up mold
                     if let handler = touchHandler {
                         currType = node.name!
                         handler("level_mold")
@@ -711,7 +712,6 @@ class GameScene: SKScene {
     
     //helper clean up method
     func wormKill() {
-
             for worm in wormLayer.children {
                 wormLayer.removeChildren(in: [worm])
                 //animate dead worm
@@ -725,7 +725,6 @@ class GameScene: SKScene {
                                                                 resize: false,
                                                                 restore: true), SKAction.removeFromParent()]))
             }
-    
     }
 
     func endRepelTimer() {
@@ -2792,10 +2791,10 @@ class GameScene: SKScene {
     //
     func kissOrFight() {
         //find the midpoint between the two sprites that are nearest each other on the screen and also within the maxdistance
-        let kfPoint = findTwoClosestSprites(maxDistance: CGFloat(100))
+        kfPoint = findTwoClosestSprites(maxDistance: CGFloat(50))
         if kfPoint.x < CGFloat(10000) {
             //kiss
-            if Int(arc4random_uniform(2)) == 1 {
+            if Int(arc4random_uniform(3)) <= 1 {
                 //animate haert
                 var Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
                 let rando = randomInRange(lo: 1, hi: 6)
@@ -2850,7 +2849,7 @@ class GameScene: SKScene {
                 }
                 
                 //small chance for a baby
-                if Int(arc4random_uniform(250)) <= 3 {
+                if Int(arc4random_uniform(5)) <= 1 {
                     if let handler = touchHandler {
                         handler("kiss baby")
                     }
@@ -2865,11 +2864,11 @@ class GameScene: SKScene {
                     fightFrames.append(SKTexture(image: UIImage(named: "fight \(i)")!))
                     i += 1
                 }
-                var killChance = Int(arc4random_uniform(250))
+                var killChance = Int(arc4random_uniform(50))
                 if reinvestCount > 3 {
-                    killChance = Int(arc4random_uniform(20))
+                    killChance = Int(arc4random_uniform(5))
                 }
-                if killChance <= 5 {
+                if killChance <= 1 {
                     fightFrames.append(SKTexture(image: UIImage(named: "knockout")!))
                     if let handler = touchHandler {
                         handler("knockout")

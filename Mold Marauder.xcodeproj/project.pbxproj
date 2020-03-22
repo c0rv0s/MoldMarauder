@@ -294,14 +294,6 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		21C16F061E44F731003D109A /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				21CB733D1E412FD500DEAF4F /* GameViewController.swift */,
-			);
-			name = Controllers;
-			sourceTree = "<group>";
-		};
 		21CB73291E412FD400DEAF4F = {
 			isa = PBXGroup;
 			children = (
@@ -329,7 +321,7 @@
 				0F7FED172418ABDD00C3BABB /* Outside Code */,
 				21C16F041E44F704003D109A /* Models */,
 				21C16F051E44F711003D109A /* Views */,
-				21C16F061E44F731003D109A /* Controllers */,
+				21CB733D1E412FD500DEAF4F /* GameViewController.swift */,
 				21CB733F1E412FD500DEAF4F /* Main.storyboard */,
 				21CB73421E412FD500DEAF4F /* Assets.xcassets */,
 				210F06EC1E9440E2006EA0D5 /* music */,

@@ -139,6 +139,7 @@ GKGameCenterControllerDelegate {
         scene.name = "scene"
         scene.scaleMode = .aspectFill
         scene.touchHandler = handleTap
+        scene.mute = inventory.muteSound
         
         //load the data that's displayed in the scene
         scene.molds = inventory.displayMolds   //this line might be unnecessary
@@ -4646,18 +4647,18 @@ GKGameCenterControllerDelegate {
                     moldPic.run(SKAction.sequence([fade, SKAction.removeFromParent()]))
                     scene.playSound(select: "mold succ")
                     
-                    var eatcount = 0
-                    displayLoop: for molds in inventory.displayMolds {
-                        if molds.moldType == inventory.molds[pick].moldType {
-                            inventory.displayMolds.remove(at: eatcount)
-                            break displayLoop
-                        }
-                        eatcount += 1
+                    inventory.molds.remove(at: pick)
+                    
+                    var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
+                    if index != nil {
+                        inventory.displayMolds.remove(at: index!)
+                        scene.molds = inventory.displayMolds
+                        index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
+                        scene.moldLayer.children[index!].removeFromParent()
                     }
-                    inventory.scorePerSecond -= inventory.molds[pick].PPS
                     
                     // check level to see how much more to remove
-                    let hearts = inventory.levDicc[inventory.molds[pick].name]!
+                    let hearts = inventory.levDicc[moldData.name]!
                     var levs = 0
                     if hearts < 426 {
                         for num in moldLevCounts {
@@ -4670,11 +4671,8 @@ GKGameCenterControllerDelegate {
                         levs = moldLevCounts.count
                         levs += ((hearts - 425) / 100)
                     }
-                    
-                    inventory.scorePerSecond -= levs*inventory.molds[pick].PPS/5
-                    
-                    inventory.molds.remove(at: pick)
-                    scene.molds = inventory.displayMolds
+                    inventory.scorePerSecond -= moldData.PPS
+                    inventory.scorePerSecond -= levs*moldData.PPS/5
                 }
             }
         }
@@ -4738,17 +4736,19 @@ GKGameCenterControllerDelegate {
             autoTapTimer = nil
         }
         if action == "kiss baby" {
-            let mold = Mold(moldType: MoldType.random())
-            inventory.molds.append(mold)
+            let moldData = Mold(moldType: MoldType.random())
+            inventory.molds.append(moldData)
             if inventory.displayMolds.count < 25 {
-                inventory.displayMolds.append(mold)
+                inventory.displayMolds.append(moldData)
+                scene.molds = inventory.displayMolds
                 scene.updateMolds()
             }
-            inventory.scorePerSecond += mold.PPS
+            inventory.scorePerSecond += moldData.PPS
             // Add a label for the score that slowly floats up.
             let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
             scoreLabel.fontSize = 16
-            scoreLabel.text = String(mold.description)
+            scoreLabel.fontColor = UIColor.magenta
+            scoreLabel.text = "New Baby! \(moldData.description)"
             scoreLabel.position = scene.center
             scoreLabel.zPosition = 300
             
@@ -4759,37 +4759,63 @@ GKGameCenterControllerDelegate {
             scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
         }
         if action == "knockout" {
-            if inventory.molds.count > 0 {
-                let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                if inventory.molds[indexToEat].moldType != MoldType.star {
-                    var eatcount = 0
-                    displayLoop: for molds in inventory.displayMolds {
-                        if molds.moldType == inventory.molds[indexToEat].moldType {
-                            inventory.displayMolds.remove(at: eatcount)
-                            break displayLoop
-                        }
-                        eatcount += 1
+            var array = [SKNode]()
+            for node in scene.moldLayer.children {
+                if node is SKSpriteNode {
+                    let dx = scene.kfPoint.x - node.position.x
+                    let dy = scene.kfPoint.y - node.position.y
+
+                    let distance = sqrt(dx*dx + dy*dy)
+                    if (distance <= 50) {
+                        array.append(node)
+                        break
                     }
-                    inventory.scorePerSecond -= inventory.molds[indexToEat].PPS
-                    inventory.molds.remove(at: indexToEat)
-                    scene.molds = inventory.displayMolds
-                    scene.updateMolds()
-                    // Add a label for the score that slowly floats up.
-                    let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    scoreLabel.fontSize = 16
-                    scoreLabel.fontColor = UIColor.red
-                    scoreLabel.text = String(inventory.molds[indexToEat].description)
-                    scoreLabel.position = scene.center
-                    scoreLabel.zPosition = 300
-                    
-                    scene.gameLayer.addChild(scoreLabel)
-                    
-                    let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
-                    moveAction.timingMode = .easeOut
-                    scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
                 }
             }
             
+            var index = inventory.displayMolds.firstIndex(where: {$0.name == array[0].name})
+            let moldData = inventory.displayMolds[index!]
+            
+            if index != nil {
+                inventory.displayMolds.remove(at: index!)
+                index = inventory.molds.firstIndex(where: {$0.name == moldData.name})
+                inventory.molds.remove(at: index!)
+                scene.molds = inventory.displayMolds
+                index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
+                scene.moldLayer.children[index!].removeFromParent()
+            }
+            
+            // check level to see how much more to remove
+            let hearts = inventory.levDicc[moldData.name]!
+            var levs = 0
+            if hearts < 426 {
+                for num in moldLevCounts {
+                    if hearts > num {
+                        levs += 1
+                    }
+                }
+            }
+            else {
+                levs = moldLevCounts.count
+                levs += ((hearts - 425) / 100)
+            }
+            inventory.scorePerSecond -= moldData.PPS
+            inventory.scorePerSecond -= levs*moldData.PPS/5
+                    
+            // Add a label for the score that slowly floats up.
+            let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
+            scoreLabel.fontSize = 16
+            scoreLabel.fontColor = UIColor.red
+            scoreLabel.text = "A death: \(moldData.description)"
+            scoreLabel.position = scene.center
+            scoreLabel.zPosition = 300
+            
+            scene.gameLayer.addChild(scoreLabel)
+            
+            let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
+            moveAction.timingMode = .easeOut
+            scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+
         }
         if scene.diamondShop == false && action == "tap" {
             tapHelper()
@@ -5093,18 +5119,20 @@ GKGameCenterControllerDelegate {
             if inventory.molds.count > 0 {
                 let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
                 if inventory.molds[indexToEat].moldType != MoldType.star {
-                    var eatcount = 0
-                    displayLoop: for molds in inventory.displayMolds {
-                        if molds.moldType == inventory.molds[indexToEat].moldType {
-                            inventory.displayMolds.remove(at: eatcount)
-                            break displayLoop
-                        }
-                        eatcount += 1
+                    let moldData = inventory.molds[indexToEat]
+                    scene.playSound(select: "crunch")
+                    inventory.molds.remove(at: indexToEat)
+                    
+                    var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
+                    if index != nil {
+                        inventory.displayMolds.remove(at: index!)
+                        scene.molds = inventory.displayMolds
+                        index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
+                        scene.moldLayer.children[index!].removeFromParent()
                     }
-                    inventory.scorePerSecond -= inventory.molds[indexToEat].PPS
                     
                     // check level to see how much more to remove
-                    let hearts = inventory.levDicc[inventory.molds[indexToEat].name]!
+                    let hearts = inventory.levDicc[moldData.name]!
                     var levs = 0
                     if hearts < 426 {
                         for num in moldLevCounts {
@@ -5117,13 +5145,8 @@ GKGameCenterControllerDelegate {
                         levs = moldLevCounts.count
                         levs += ((hearts - 425) / 100)
                     }
-                    
-                    inventory.scorePerSecond -= levs*inventory.molds[indexToEat].PPS/5
-                    
-                    inventory.molds.remove(at: indexToEat)
-                    scene.molds = inventory.displayMolds
-                    scene.playSound(select: "crunch")
-                    scene.updateMolds()
+                    inventory.scorePerSecond -= moldData.PPS
+                    inventory.scorePerSecond -= levs*moldData.PPS/5
                 }
             }
         }
@@ -5665,6 +5688,7 @@ GKGameCenterControllerDelegate {
     func showInventory() {
         if aroff {
             inventoryScene = MoldInventory(size: skView.bounds.size)
+            inventoryScene.mute = inventory.muteSound
         }
         else {
             ARgameScene.isPaused = true

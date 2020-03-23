@@ -134,45 +134,88 @@ class Reinvestments: SKScene {
         reinvestButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 50)
         page1ScrollView.addChild(reinvestButton)
         lastButton = reinvestButton.position
-
-        print("checkin the count")
-        print(reinvestList)
+        
         if reinvestList > 0 {
+            let reinvestLab0 = SKLabelNode(fontNamed: "Lemondrop")
+            reinvestLab0.fontSize = 20
+            reinvestLab0.text = "Active Challenges:"
+            reinvestLab0.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+            page1ScrollView.addChild(reinvestLab0)
+            reinvestLab0.fontColor = UIColor.black
+            lastButton = reinvestLab0.position
+            
             let reinvestLab1 = SKLabelNode(fontNamed: "Lemondrop")
-            reinvestLab1.fontSize = 20
+            reinvestLab1.fontSize = 16
             reinvestLab1.text = "Double worms"
-            reinvestLab1.position = CGPoint(x: lastButton.x, y: lastButton.y - 80)
+            reinvestLab1.position = CGPoint(x: lastButton.x, y: lastButton.y - 40)
             page1ScrollView.addChild(reinvestLab1)
             reinvestLab1.fontColor = UIColor.black
             lastButton = reinvestLab1.position
         }
         if reinvestList > 1 {
             let reinvestLab2 = SKLabelNode(fontNamed: "Lemondrop")
-            reinvestLab2.fontSize = 20
-            reinvestLab2.text = "-50% PPS"
-            reinvestLab2.position = CGPoint(x: lastButton.x, y: lastButton.y - 50)
+            reinvestLab2.fontSize = 16
+            reinvestLab2.text = "-50% Points/Second"
+            reinvestLab2.position = CGPoint(x: lastButton.x, y: lastButton.y - 30)
             page1ScrollView.addChild(reinvestLab2)
             reinvestLab2.fontColor = UIColor.black
             lastButton = reinvestLab2.position
         }
         if reinvestList > 2 {
             let reinvestLab3 = SKLabelNode(fontNamed: "Lemondrop")
-            reinvestLab3.fontSize = 20
+            reinvestLab3.fontSize = 16
             reinvestLab3.text = "-50% Tap Value"
-            reinvestLab3.position = CGPoint(x: lastButton.x, y: lastButton.y - 50)
+            reinvestLab3.position = CGPoint(x: lastButton.x, y: lastButton.y - 30)
             page1ScrollView.addChild(reinvestLab3)
             reinvestLab3.fontColor = UIColor.black
             lastButton = reinvestLab3.position
         }
         if reinvestList > 3 {
             let reinvestLab4 = SKLabelNode(fontNamed: "Lemondrop")
-            reinvestLab4.fontSize = 20
+            reinvestLab4.fontSize = 16
             reinvestLab4.text = "Molds more vicious"
-            reinvestLab4.position = CGPoint(x: lastButton.x, y: lastButton.y - 50)
+            reinvestLab4.position = CGPoint(x: lastButton.x, y: lastButton.y - 30)
             page1ScrollView.addChild(reinvestLab4)
             reinvestLab4.fontColor = UIColor.black
             lastButton = reinvestLab4.position
         }
+        
+//      "A tickle in the back of your mind tells you there could be something waiting for you after a few successful reinvestments..."
+        let hintLabel1 = SKLabelNode(fontNamed: "Lemondrop")
+        hintLabel1.fontSize = 12
+        hintLabel1.text = "A tickle in the back of your"
+        hintLabel1.position = CGPoint(x: lastButton.x, y: lastButton.y - 60)
+        page1ScrollView.addChild(hintLabel1)
+        hintLabel1.fontColor = UIColor.black
+        lastButton = hintLabel1.position
+        let hintLabel2 = SKLabelNode(fontNamed: "Lemondrop")
+        hintLabel2.fontSize = 12
+        hintLabel2.text = "mind tells you there could"
+        hintLabel2.position = CGPoint(x: lastButton.x, y: lastButton.y - 14)
+        page1ScrollView.addChild(hintLabel2)
+        hintLabel2.fontColor = UIColor.black
+        lastButton = hintLabel2.position
+        let hintLabel3 = SKLabelNode(fontNamed: "Lemondrop")
+        hintLabel3.fontSize = 12
+        hintLabel3.text = "be something waiting for you"
+        hintLabel3.position = CGPoint(x: lastButton.x, y: lastButton.y - 14)
+        page1ScrollView.addChild(hintLabel3)
+        hintLabel3.fontColor = UIColor.black
+        lastButton = hintLabel3.position
+        let hintLabel4 = SKLabelNode(fontNamed: "Lemondrop")
+        hintLabel4.fontSize = 12
+        hintLabel4.text = "after a few successful"
+        hintLabel4.position = CGPoint(x: lastButton.x, y: lastButton.y - 14)
+        page1ScrollView.addChild(hintLabel4)
+        hintLabel4.fontColor = UIColor.black
+        lastButton = hintLabel4.position
+        let hintLabel5 = SKLabelNode(fontNamed: "Lemondrop")
+        hintLabel5.fontSize = 12
+        hintLabel5.text = "reinvestments..."
+        hintLabel5.position = CGPoint(x: lastButton.x, y: lastButton.y - 14)
+        page1ScrollView.addChild(hintLabel5)
+        hintLabel5.fontColor = UIColor.black
+        lastButton = hintLabel5.position
         
     }
     

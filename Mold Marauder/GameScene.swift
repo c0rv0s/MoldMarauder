@@ -342,6 +342,16 @@ class GameScene: SKScene {
             diamondBuy.position.y -= 50
             diamondCLabel.position.y -= 50
             diamondCLabel.position.x -= 10
+            wormRepelLabel.position.y -= 20
+            spritzLabel.position.y -= 20
+            xTapLabel.position.y -= 20
+            break
+        case .iPhone8Plus:
+            cameraButton.position.y += 80
+            inventoryButton.position.y += 80
+            wormRepelLabel.position.y -= 20
+            spritzLabel.position.y -= 20
+            xTapLabel.position.y -= 20
             break
         default:
             break

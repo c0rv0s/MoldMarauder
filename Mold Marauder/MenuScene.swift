@@ -257,7 +257,7 @@ class MenuScene: SKScene {
     
     func buyMoldTut() {
         self.addChild(tutorialLayer)
-        let appear = SKAction.scale(to: 1.1, duration: 0.5)
+        let appear = SKAction.scale(to: 1.15, duration: 0.5)
         //this is the godo case
         let Texture = SKTexture(image: UIImage(named: "intro box")!)
         let introNode = SKSpriteNode(texture:Texture)

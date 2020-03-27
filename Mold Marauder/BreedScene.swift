@@ -1463,7 +1463,7 @@ class BreedScene: SKScene {
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle.fontSize = 12
         welcomeTitle.fontColor = UIColor.black
-        welcomeTitle.text = "Congrats, you bred you're first mold!"
+        welcomeTitle.text = "Congrats, that's your first breed!"
         welcomeTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+130);
         tutorialLayer.addChild(welcomeTitle)
         let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")

@@ -297,16 +297,16 @@ class GameScene: SKScene {
         self.addChild(inventoryButton)
         
         wormRepelLabel = SKLabelNode(fontNamed: "Lemondrop")
-        wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+190)
+        wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+250)
         self.addChild(wormRepelLabel)
         
         spritzLabel = SKLabelNode(fontNamed: "Lemondrop")
-        spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+190)
+        spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+250)
         spritzLabel.fontColor = UIColor.yellow
         self.addChild(spritzLabel)
         
         xTapLabel = SKLabelNode(fontNamed: "Lemondrop")
-        xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+190)
+        xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+250)
         xTapLabel.fontColor = UIColor.green
         self.addChild(xTapLabel)
         
@@ -1855,7 +1855,7 @@ class GameScene: SKScene {
         //eventTimer.invalidate()
         tutorial = 1
         self.addChild(tutorialLayer)
-        let appear = SKAction.scale(to: 1.1, duration: 0.5)
+        let appear = SKAction.scale(to: 1.15, duration: 0.5)
         //this is the godo case
         let Texture = SKTexture(image: UIImage(named: "intro box")!)
         let introNode = SKSpriteNode(texture:Texture)
@@ -2330,14 +2330,14 @@ class GameScene: SKScene {
         let welcomeTitle4 = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle4.fontSize = 14
         welcomeTitle4.fontColor = UIColor.black
-        welcomeTitle4.text = "Draw a circle around fairies"
+        welcomeTitle4.text = "Draw a circle around"
         welcomeTitle4.position = CGPoint(x:introNode.position.x, y:introNode.position.y + 10);
         tutorialLayer.addChild(welcomeTitle4)
         
         let welcomeTitle5 = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle5.fontSize = 14
         welcomeTitle5.fontColor = UIColor.black
-        welcomeTitle5.text = "to capture them"
+        welcomeTitle5.text = "faeries to capture them"
         welcomeTitle5.position = CGPoint(x:introNode.position.x, y:introNode.position.y - 10);
         tutorialLayer.addChild(welcomeTitle5)
         
@@ -2415,7 +2415,7 @@ class GameScene: SKScene {
                 }
             }
 // blak hole
-            if ran > 85 && ran <= 95 {
+            if ran > 85 && ran <= 95 && tutorial >= 19 {
                 if isPaused == false {
                     print("ad black hole")
                     addBlackHole()

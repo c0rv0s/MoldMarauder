@@ -225,9 +225,9 @@ GKGameCenterControllerDelegate {
 //        inventory.tutorialProgress = 19
         //    inventory.autoTap = false
         //    inventory.autoTapLevel = 0
-//            incrementDiamonds(newDiamonds: 500)
+            incrementDiamonds(newDiamonds: 500)
         //    inventory.level = 75
-//            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
+            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
 //            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
 //            inventory.molds.append(Mold(moldType: MoldType.invisible))
 //        inventory.moldCountDicc["Metaphase Mold"] = 3
@@ -1029,7 +1029,6 @@ GKGameCenterControllerDelegate {
             var metaphaseCount = inventory.moldCountDicc["Metaphase Mold"] ?? 0
             var starCount = inventory.moldCountDicc["Star Mold"] ?? 0
             
-            print(inventory.moldCountDicc["Metaphase Mold"], metaphaseCount)
             inventory = Inventory()
             inventory.diamonds = tempDiamonds
             inventory.deathRay = tempdeath
@@ -3525,6 +3524,7 @@ GKGameCenterControllerDelegate {
                     if inventory.tutorialProgress == 18 {
                         breedScene.tutorialLayer.removeAllChildren()
                         inventory.tutorialProgress = 19
+                        scene.tutorial = 19
                     }
                     let newCombo = breedScene.currentDiamondCombo
                     //ok, this breed hasnt been unlocked yet, time to unlock it!
@@ -3607,6 +3607,7 @@ GKGameCenterControllerDelegate {
                                 if inventory.tutorialProgress == -1 {
                                     breedScene.tutorialLayer.removeAllChildren()
                                     inventory.tutorialProgress = 19
+                                    scene.tutorial = 19
                                 }
                                 
                                 breedScene.showNewBreed(breed: combo.child.moldType)

@@ -1761,6 +1761,7 @@ class MoldShop: SKScene {
             break
         }
         introNode.position = CGPoint(x:frame.midX, y:frame.midY);
+        introNode.setScale(1.1)
         tutorialLayer.addChild(introNode)
         
         let welcomeTitle = SKLabelNode(fontNamed: "Lemondrop")
@@ -1865,7 +1866,7 @@ class MoldShop: SKScene {
         let welcomeTitle2 = SKLabelNode(fontNamed: "Lemondrop")
         welcomeTitle2.fontSize = 13
         welcomeTitle2.fontColor = UIColor.black
-        welcomeTitle2.text = "and then return to the home screen"
+        welcomeTitle2.text = "and then exit the menu"
         welcomeTitle2.position = CGPoint(x:frame.midX, y:frame.midY-150);
         tutorialLayer.addChild(welcomeTitle2)
         let when = DispatchTime.now() + 9

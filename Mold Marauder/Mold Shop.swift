@@ -1750,11 +1750,11 @@ class MoldShop: SKScene {
         let introNode = SKSpriteNode(texture:Texture)
         // Place in scene
         switch UIDevice().screenType {
-        case .iPhone6:
+        case .iPhone8:
             //iPhone 5
             introNode.setScale(1.15)
             break
-        case .iPhone6Plus:
+        case .iPhone8Plus:
             introNode.setScale(1.15)
             break
         default:

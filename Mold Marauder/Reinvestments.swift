@@ -184,7 +184,7 @@ class Reinvestments: SKScene {
         let hintLabel1 = SKLabelNode(fontNamed: "Lemondrop")
         hintLabel1.fontSize = 12
         hintLabel1.text = "A tickle in the back of your"
-        hintLabel1.position = CGPoint(x: lastButton.x, y: lastButton.y - 60)
+        hintLabel1.position = CGPoint(x: lastButton.x, y: lastButton.y - 80)
         page1ScrollView.addChild(hintLabel1)
         hintLabel1.fontColor = UIColor.black
         lastButton = hintLabel1.position

@@ -177,7 +177,8 @@ class Inventory: NSObject, NSCoding {
             "Cryptid Mold":0,
             "Angel Mold":0,
             "Invisible Mold":0,
-            "Star Mold":0
+            "Star Mold":0,
+            "Metaphase Mold":0
         ]
         
         moldCountDicc = [
@@ -223,7 +224,8 @@ class Inventory: NSObject, NSCoding {
             "Cryptid Mold":0,
             "Angel Mold":0,
             "Invisible Mold":0,
-            "Star Mold":0
+            "Star Mold":0,
+            "Metaphase Mold":0
         ]
     }
     
@@ -327,7 +329,8 @@ class Inventory: NSObject, NSCoding {
                 "Cryptid Mold":0,
                 "Angel Mold":0,
                 "Invisible Mold":0,
-                "Star Mold":0
+                "Star Mold":0,
+                "Metaphase Mold":0
             ]
         }
         
@@ -378,7 +381,8 @@ class Inventory: NSObject, NSCoding {
                 "Cryptid Mold":0,
                 "Angel Mold":0,
                 "Invisible Mold":0,
-                "Star Mold":0
+                "Star Mold":0,
+                "Metaphase Mold":0
             ]
             
             for m in self.molds {

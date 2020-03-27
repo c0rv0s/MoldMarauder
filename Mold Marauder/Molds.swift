@@ -9,7 +9,7 @@
 import SpriteKit
 
 enum MoldType: Int, CustomStringConvertible {
-    case unknown = 0, slime, cave, sad, angry, alien, freckled, bacteria, flower, rock, hypno, pimply, aluminum, virus, bee, sick, rainbow,circuit, olive, coconut, dead, water, hologram,  zombie, cloud, sand, coffee, storm, x, glass, orange, crystal, disaffected, nuclear, astronaut, slinky, magma, samurai, strawberry, tshirt, cryptid, angel, invisible, star
+    case unknown = 0, slime, cave, sad, angry, alien, freckled, bacteria, flower, rock, hypno, pimply, aluminum, virus, bee, sick, rainbow,circuit, olive, coconut, dead, water, hologram,  zombie, cloud, sand, coffee, storm, x, glass, orange, crystal, disaffected, nuclear, astronaut, slinky, magma, samurai, strawberry, tshirt, cryptid, angel, invisible, star, metaphase
     
     var spriteName: String {
         let spriteNames = [
@@ -55,7 +55,8 @@ enum MoldType: Int, CustomStringConvertible {
             "Cryptid Mold",
             "Angel Mold",
             "Invisible Mold",
-            "Star Mold"]
+            "Star Mold",
+            "Metaphase Mold"]
         
         return spriteNames[rawValue - 1]
     }
@@ -109,7 +110,9 @@ enum MoldType: Int, CustomStringConvertible {
             BInt("64378000000000000000000"),
             BInt("75927800000000000000000"),
             BInt("999999999999999999999999999"),
-            BInt("0")]
+            BInt("0"),
+            BInt("0")
+        ]
         
         return prices[rawValue - 1]!
     }
@@ -157,7 +160,9 @@ enum MoldType: Int, CustomStringConvertible {
             BInt("5437990000000000000"),
             BInt("6592737800000000000"),
             BInt("999999999999999999999"),
-            BInt("999999")]
+            BInt("999999"),
+            BInt("0"),
+        ]
         
         return PPS[rawValue - 1]!
     }

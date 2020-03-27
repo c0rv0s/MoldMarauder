@@ -208,30 +208,30 @@ class GameScene: SKScene {
         header = SKSpriteNode(texture: Texture)
         header.setScale(0.42)
         // Place in scene
-        header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+270);
+        header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+350);
         
         // BUY
         Texture = SKTexture(image: UIImage(named: "BUY")!)
         buyButton = SKSpriteNode(texture: Texture)
         // Place in scene
-        buyButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+270);
+        buyButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+350);
         
         //DIAMOND ICON
         Texture = SKTexture(image: UIImage(named: "diamond")!)
         diamondIcon = SKSpriteNode(texture: Texture)
-        diamondIcon.position = CGPoint(x:self.frame.midX-120, y:self.frame.midY+270);
+        diamondIcon.position = CGPoint(x:self.frame.midX-120, y:self.frame.midY+350);
         
         //DIAMOND BUY
         Texture = SKTexture(image: UIImage(named: "plus")!)
         diamondBuy = SKSpriteNode(texture: Texture)
-        diamondBuy.position = CGPoint(x:self.frame.midX-155, y:self.frame.midY+270);
+        diamondBuy.position = CGPoint(x:self.frame.midX-155, y:self.frame.midY+350);
         
         // DIAMOND LABEL
         diamondCLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondCLabel.fontSize = 18
         diamondCLabel.fontColor = UIColor.black
         diamondCLabel.text = ""
-        diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+262);
+        diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+342);
        
 //    adjust for screen sizes
         switch UIDevice().screenType {
@@ -250,22 +250,29 @@ class GameScene: SKScene {
             diamondBuy.position = CGPoint(x:self.frame.midX-155, y:self.frame.midY+275);
             diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+267);
             break
-        case .iPhone6Plus:
+        case .iPhone8Plus:
             // Code for iPhone 6 Plus & iPhone 7 Plus
-            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+270)
-            buyButton.position = CGPoint(x:self.frame.midX+105, y:self.frame.midY+270)
-            diamondIcon.position = CGPoint(x:self.frame.midX-115, y:self.frame.midY+270)
-            diamondBuy.position = CGPoint(x:self.frame.midX-150, y:self.frame.midY+270)
-            diamondCLabel.position = CGPoint(x:self.frame.midX-70, y:self.frame.midY+262)
+            buyButton.setScale(0.9)
+            diamondIcon.setScale(0.7)
+            diamondBuy.setScale(0.9)
+            diamondCLabel.fontSize = 15
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+300)
+            buyButton.position = CGPoint(x:self.frame.midX+105, y:self.frame.midY+300)
+            diamondIcon.position = CGPoint(x:self.frame.midX-120, y:self.frame.midY+300)
+            diamondBuy.position = CGPoint(x:self.frame.midX-150, y:self.frame.midY+300)
+            diamondCLabel.position = CGPoint(x:self.frame.midX-80, y:self.frame.midY+292)
             break
         case .iPhoneX:
-            header.setScale(0.38)
+            header.setScale(0.4)
             buyButton.setScale(0.9)
             diamondIcon.setScale(0.8)
             diamondBuy.setScale(0.9)
             diamondCLabel.fontSize = 15
-            diamondIcon.position = CGPoint(x:self.frame.midX-110, y:self.frame.midY+270);
-            diamondBuy.position = CGPoint(x:self.frame.midX-142, y:self.frame.midY+270);
+            diamondIcon.position = CGPoint(x:self.frame.midX-110, y:self.frame.midY+350);
+            diamondBuy.position = CGPoint(x:self.frame.midX-142, y:self.frame.midY+350);
+            diamondCLabel.position = CGPoint(x:self.frame.midX-75, y:self.frame.midY+342);
+            header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+350);
+            buyButton.position = CGPoint(x:self.frame.midX+110, y:self.frame.midY+350);
             break
         default:
             break
@@ -324,9 +331,17 @@ class GameScene: SKScene {
             spritzLabel.setScale(0.75)
             xTapLabel.setScale(0.75)
             break
-        case .iPhoneX:
-            cameraButton.position = CGPoint(x:self.frame.maxX - 60, y:self.frame.minY + 100);
-            inventoryButton.position = CGPoint(x:self.frame.maxX - 60, y:self.frame.minY + 40);
+        case .iPhone8:
+            cameraButton.position.y += 80
+            inventoryButton.position.y += 80
+            header.position.y -= 50
+            buyButton.position.y -= 50
+            diamondIcon.position.y -= 50
+            diamondIcon.setScale(0.8)
+            diamondCLabel.fontSize = 14
+            diamondBuy.position.y -= 50
+            diamondCLabel.position.y -= 50
+            diamondCLabel.position.x -= 10
             break
         default:
             break
@@ -372,6 +387,16 @@ class GameScene: SKScene {
             tutorialLayer.removeAllChildren()
             buyMoldTutorial()
         }
+        
+        //metaphase mold tapped
+        if atPoint(touch.location(in: moldLayer)).name == MoldType.metaphase.spriteName {
+            let hex = SKSpriteNode(imageNamed: "hex_pattern")
+            hex.size = self.size
+            hex.alpha = 0.0
+            gameLayer.addChild(hex)
+            hex.run(SKAction.sequence([SKAction.fadeIn(withDuration: 0.2), SKAction.fadeOut(withDuration: 0.8), SKAction.removeFromParent()]))
+        }
+        
         for touch in touches {
             let location = touch.location(in: self)
             let node = atPoint(location)
@@ -845,7 +870,6 @@ class GameScene: SKScene {
     }
     
     func doDiamondShop() {
-        print("do the shop")
         //turn of score animation
         diamondShop = true
         //present shop
@@ -857,37 +881,37 @@ class GameScene: SKScene {
         var Texture = SKTexture(image: UIImage(named: "exit")!)
         exitDiamond = SKSpriteNode(texture:Texture)
         // Place in scene
-        exitDiamond.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+235);
+        exitDiamond.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+285);
         diamondLayer.addChild(exitDiamond)
         
         Texture = SKTexture(image: UIImage(named: "tiny diamonds")!)
         diamondTiny = SKSpriteNode(texture:Texture)
         // Place in scene
-        diamondTiny.position = CGPoint(x: -75, y: 155)
+        diamondTiny.position = CGPoint(x: -90, y: 190)
         diamondLayer.addChild(diamondTiny)
         let diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel.fontSize = 20
         diamondLabel.text = "11 Diamonds"
-        diamondLabel.position = CGPoint(x: 30, y: 160)
+        diamondLabel.position = CGPoint(x: 30, y: 190)
         diamondLabel.color = UIColor.black
         diamondLayer.addChild(diamondLabel)
         let priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 20
         priceLabel.text = "0.99$"
-        priceLabel.position = CGPoint(x: 30, y: 135)
+        priceLabel.position = CGPoint(x: 30, y: 170)
         diamondLayer.addChild(priceLabel)
         priceLabel.fontColor = UIColor.black
         diamondLabel.fontColor = UIColor.black
         //tiny diamond button
         tinyButton = SKSpriteNode(texture:SKTexture(image: UIImage(named: "diamond_button_invisible")!))
-        tinyButton.position = CGPoint(x: 0, y: 165)
+        tinyButton.position = CGPoint(x: 0, y: 200)
         //tinyButton.fillColor = SKColor.white
         diamondLayer.addChild(tinyButton)
         
         Texture = SKTexture(image: UIImage(named: "small diamonds")!)
         diamondSmall = SKSpriteNode(texture:Texture)
         // Place in scene
-        diamondSmall.position = CGPoint(x: -75, y: 45)
+        diamondSmall.position = CGPoint(x: -90, y: 45)
         diamondLayer.addChild(diamondSmall)
         let diamondLabel2 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel2.fontSize = 20
@@ -911,48 +935,48 @@ class GameScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "medium diamonds")!)
         diamondMedium = SKSpriteNode(texture:Texture)
         // Place in scene
-        diamondMedium.position = CGPoint(x: -75, y: -65)
+        diamondMedium.position = CGPoint(x: -90, y: -95)
         diamondLayer.addChild(diamondMedium)
         let diamondLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel3.fontSize = 20
         diamondLabel3.text = "200 Diamonds"
-        diamondLabel3.position = CGPoint(x: 30, y: -60)
+        diamondLabel3.position = CGPoint(x: 30, y: -90)
         diamondLabel3.color = UIColor.black
         diamondLayer.addChild(diamondLabel3)
         let priceLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel3.fontSize = 20
         priceLabel3.text = "9.99$"
-        priceLabel3.position = CGPoint(x: 30, y: -85)
+        priceLabel3.position = CGPoint(x: 30, y: -115)
         diamondLayer.addChild(priceLabel3)
         priceLabel3.fontColor = UIColor.black
         diamondLabel3.fontColor = UIColor.black
         //medium diamond button
         mediumButton = SKSpriteNode(texture:SKTexture(image: UIImage(named: "diamond_button_invisible")!))
-        mediumButton.position = CGPoint(x: 0, y: -50)
+        mediumButton.position = CGPoint(x: 0, y: -80)
         //mediumButton.fillColor = SKColor.white
         diamondLayer.addChild(mediumButton)
         
         Texture = SKTexture(image: UIImage(named: "big diamonds")!)
         diamondLarge = SKSpriteNode(texture:Texture)
         // Place in scene
-        diamondLarge.position = CGPoint(x: -75, y: -175)
+        diamondLarge.position = CGPoint(x: -90, y: -240)
         diamondLayer.addChild(diamondLarge)
         let diamondLabel4 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel4.fontSize = 16
         diamondLabel4.text = "1200 Diamonds"
-        diamondLabel4.position = CGPoint(x: 30, y: -170)
+        diamondLabel4.position = CGPoint(x: 30, y: -235)
         diamondLabel4.color = UIColor.black
         diamondLayer.addChild(diamondLabel4)
         let priceLabel4 = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel4.fontSize = 16
         priceLabel4.text = "49.99$"
-        priceLabel4.position = CGPoint(x: 30, y: -195)
+        priceLabel4.position = CGPoint(x: 30, y: -260)
         diamondLayer.addChild(priceLabel4)
         priceLabel4.fontColor = UIColor.black
         diamondLabel4.fontColor = UIColor.black
         //large diamond button
         largeButton = SKSpriteNode(texture:SKTexture(image: UIImage(named: "diamond_button_invisible")!))
-        largeButton.position = CGPoint(x: 0, y: -160)
+        largeButton.position = CGPoint(x: 0, y: -225)
         //largeButton.fillColor = SKColor.white
         diamondLayer.addChild(largeButton)
         
@@ -1013,25 +1037,48 @@ class GameScene: SKScene {
             priceLabel4.position = CGPoint(x: 30, y: -165)
             largeButton.position = CGPoint(x: 0, y: -145)
             break
-        case .iPhone6Plus:
+        case .iPhone8:
+            for child in diamondLayer.children {
+                child.setScale(0.9)
+            }
+            diamondTiny.position.y -= 15
+            diamondLabel.position.y -= 15
+            priceLabel.position.y -= 15
+            diamondLarge.position.y += 20
+            diamondLabel4.position.y += 20
+            priceLabel4.position.y += 20
+            break
+        case .iPhone8Plus:
             // Code for iPhone 6 Plus & iPhone 7 Plus
             for child in diamondLayer.children {
-                child.setScale(1.1)
+                child.setScale(0.9)
             }
+            diamondTiny.position.y -= 15
+            diamondLabel.position.y -= 15
+            priceLabel.position.y -= 15
+            diamondMedium.position.y += 10
+            diamondLabel3.position.y += 10
+            priceLabel3.position.y += 10
+            diamondLarge.position.y += 20
+            diamondLabel4.position.y += 20
+            priceLabel4.position.y += 20
+            break
+        case .iPhoneX:
+            // Code for iPhone X and 11
             diamondShelves.size = background.size
-            exitDiamond.position = CGPoint(x:self.frame.midX+150, y:self.frame.midY+245)
-            diamondTiny.position = CGPoint(x: -95, y: 165)
-            diamondLabel.position = CGPoint(x: 30, y: 180)
-            priceLabel.position = CGPoint(x: 30, y: 155)
-            diamondSmall.position = CGPoint(x: -95, y: 45)
-            diamondLabel2.position = CGPoint(x: 30, y: 50)
-            priceLabel2.position = CGPoint(x: 30, y: 25)
-            diamondMedium.position = CGPoint(x: -95, y: -75)
-            diamondLabel3.position = CGPoint(x: 30, y: -70)
-            priceLabel3.position = CGPoint(x: 30, y: -95)
-            diamondLarge.position = CGPoint(x: -95, y: -195)
-            diamondLabel4.position = CGPoint(x: 30, y: -190)
-            priceLabel4.position = CGPoint(x: 30, y: -215)
+            diamondTiny.position.x -= 10
+            diamondSmall.position.y += 0
+            diamondSmall.position.x -= 10
+            diamondLabel2.position.y += 0
+            priceLabel2.position.y += 0
+            diamondMedium.position.y -= 10
+            diamondMedium.position.x -= 10
+            diamondLabel3.position.y -= 10
+            priceLabel3.position.y -= 0
+            diamondLarge.position.y -= 10
+            diamondLarge.position.x -= 10
+            diamondLabel4.position.y -= 10
+            priceLabel4.position.y -= 10
             break
         default:
             break

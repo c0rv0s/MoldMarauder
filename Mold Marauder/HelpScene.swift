@@ -63,7 +63,7 @@ class HelpScene: SKScene {
         addChild(moveableNode)
         //set up the scrollView
         scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), moveableNode: moveableNode, direction: .vertical)
-        scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(2000)) // makes it 2 times the height
+        scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(2100)) // makes it 2 times the height
         view?.addSubview(scrollView!)
         
         // Add sprites for each page in the scrollView to make positioning your actual stuff later on much easier

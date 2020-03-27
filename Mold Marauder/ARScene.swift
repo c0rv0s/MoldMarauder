@@ -447,7 +447,7 @@ class ARScene: SKScene {
             diamondBuy.position = CGPoint(x:self.frame.midX-140, y:self.frame.midY+230)
             diamondCLabel.position = CGPoint(x:self.frame.midX-60, y:self.frame.midY+222)
             break
-        case .iPhone6Plus:
+        case .iPhone8Plus:
             // Code for iPhone 6 Plus & iPhone 7 Plus
             header.position = CGPoint(x:self.frame.midX, y:self.frame.midY+310)
             buyButton.position = CGPoint(x:self.frame.midX+100, y:self.frame.midY+310)

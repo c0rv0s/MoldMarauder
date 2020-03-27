@@ -203,18 +203,24 @@ GKGameCenterControllerDelegate {
             cashHeader.font = cashHeader.font.withSize(12)
             cashLabel.font = cashLabel.font.withSize(12)
             break
+        case .iPhone8:
+            topMargin.constant += 25
+        case .iPhone8Plus:
+            topMargin.constant += 30
         case .iPhoneX:
-            topMargin.constant -= 35
+            topMargin.constant -= 10
         default:
             break
         }
+        
         let when = DispatchTime.now() + 2
         DispatchQueue.main.asyncAfter(deadline: when) {
             self.offlineCash()
         }
         
         //    TESTING - REMOVE
-        //    inventory = Inventory()
+//            inventory = Inventory()
+//        inventory.tutorialProgress = 19
         //    inventory.autoTap = false
         //    inventory.autoTapLevel = 0
 //            incrementDiamonds(newDiamonds: 500)
@@ -224,6 +230,8 @@ GKGameCenterControllerDelegate {
 //            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
 //            inventory.molds.append(Mold(moldType: MoldType.invisible))
 //            inventory.reinvestmentCount = 3
+//        inventory.molds.append(Mold(moldType: MoldType.metaphase))
+//        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -3095,6 +3103,50 @@ GKGameCenterControllerDelegate {
             }
             inventoryScene.starLabel.text = String(count)
         }
+        if action == "metaPlus" {
+            type = MoldType.metaphase
+            if inventory.displayMolds.count < 25 {
+                var mCount = 0
+                for mMold in inventory.molds {
+                    if mMold.moldType == type {
+                        mCount += 1
+                    }
+                }
+                var count = 0
+                for pMold in inventory.displayMolds {
+                    if pMold.moldType == type {
+                        count += 1
+                    }
+                }
+                if count < mCount {
+                    inventory.displayMolds.append(Mold(moldType: type))
+                    inventoryScene.totalNum += 1
+                    inventoryScene.totalLabel.text = String(inventoryScene.totalNum)
+                    
+                    inventoryScene.metaLabel.text = String(count + 1)
+                }
+            }
+        }
+        if action == "metaMinus" {
+            type = MoldType.metaphase
+            var index = 0
+            loop: for pMold in inventory.displayMolds {
+                if pMold.moldType == type {
+                    inventory.displayMolds.remove(at: index)
+                    inventoryScene.totalNum -= 1
+                    inventoryScene.totalLabel.text = String(inventoryScene.totalNum)
+                    break loop
+                }
+                index += 1
+            }
+            var count = 0
+            for pMold in inventory.displayMolds {
+                if pMold.moldType == type {
+                    count += 1
+                }
+            }
+            inventoryScene.metaLabel.text = String(count)
+        }
         
         if (action == "exit") {
             exitInventory()
@@ -4628,7 +4680,7 @@ GKGameCenterControllerDelegate {
             // trigger the blak hole mold death
             let pick = randomInRange(lo: 0, hi: inventory.molds.count - 1)
             if inventory.molds.count > 0 {
-                if inventory.molds[pick].moldType != MoldType.star {
+                if inventory.molds[pick].moldType != MoldType.star && inventory.molds[pick].moldType != MoldType.metaphase {
                     let moldData = inventory.molds[pick]
                     let fade = SKAction.scale(to: 0.0, duration: 0.75)
                     let imName = String(moldData.name)
@@ -4769,46 +4821,47 @@ GKGameCenterControllerDelegate {
             var index = inventory.displayMolds.firstIndex(where: {$0.name == array[0].name})
             let moldData = inventory.displayMolds[index!]
             
-            if index != nil {
-                inventory.displayMolds.remove(at: index!)
-                index = inventory.molds.firstIndex(where: {$0.name == moldData.name})
-                inventory.molds.remove(at: index!)
-                scene.molds = inventory.displayMolds
-                index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
-                scene.moldLayer.children[index!].removeFromParent()
-            }
-            
-            // check level to see how much more to remove
-            let hearts = inventory.levDicc[moldData.name]!
-            var levs = 0
-            if hearts < 426 {
-                for num in moldLevCounts {
-                    if hearts > num {
-                        levs += 1
+            if moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.star {
+                if index != nil {
+                    inventory.displayMolds.remove(at: index!)
+                    index = inventory.molds.firstIndex(where: {$0.name == moldData.name})
+                    inventory.molds.remove(at: index!)
+                    scene.molds = inventory.displayMolds
+                    index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
+                    scene.moldLayer.children[index!].removeFromParent()
+                }
+                
+                // check level to see how much more to remove
+                let hearts = inventory.levDicc[moldData.name]!
+                var levs = 0
+                if hearts < 426 {
+                    for num in moldLevCounts {
+                        if hearts > num {
+                            levs += 1
+                        }
                     }
                 }
+                else {
+                    levs = moldLevCounts.count
+                    levs += ((hearts - 425) / 100)
+                }
+                inventory.scorePerSecond -= moldData.PPS
+                inventory.scorePerSecond -= levs*moldData.PPS/5
+                        
+                // Add a label for the score that slowly floats up.
+                let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
+                scoreLabel.fontSize = 16
+                scoreLabel.fontColor = UIColor.red
+                scoreLabel.text = "A death: \(moldData.description)"
+                scoreLabel.position = scene.center
+                scoreLabel.zPosition = 300
+                
+                scene.gameLayer.addChild(scoreLabel)
+                
+                let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
+                moveAction.timingMode = .easeOut
+                scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
             }
-            else {
-                levs = moldLevCounts.count
-                levs += ((hearts - 425) / 100)
-            }
-            inventory.scorePerSecond -= moldData.PPS
-            inventory.scorePerSecond -= levs*moldData.PPS/5
-                    
-            // Add a label for the score that slowly floats up.
-            let scoreLabel = SKLabelNode(fontNamed: "Lemondrop")
-            scoreLabel.fontSize = 16
-            scoreLabel.fontColor = UIColor.red
-            scoreLabel.text = "A death: \(moldData.description)"
-            scoreLabel.position = scene.center
-            scoreLabel.zPosition = 300
-            
-            scene.gameLayer.addChild(scoreLabel)
-            
-            let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 3)
-            moveAction.timingMode = .easeOut
-            scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
-
         }
         if scene.diamondShop == false && action == "tap" {
             tapHelper()
@@ -5111,7 +5164,7 @@ GKGameCenterControllerDelegate {
         if action == "eat_mold" {
             if inventory.molds.count > 0 {
                 let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                if inventory.molds[indexToEat].moldType != MoldType.star {
+                if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase {
                     let moldData = inventory.molds[indexToEat]
                     scene.playSound(select: "crunch")
                     inventory.molds.remove(at: indexToEat)
@@ -6466,8 +6519,8 @@ public extension UIDevice {
         case iPad
         case iPhone4
         case iPhone5
-        case iPhone6
-        case iPhone6Plus
+        case iPhone8
+        case iPhone8Plus
         case iPhoneX
         case Unknown
     }
@@ -6483,10 +6536,10 @@ public extension UIDevice {
                 return .iPhone5
             case 1334:
                 print("6,7,8")
-                return .iPhone6
+                return .iPhone8
             case 2208:
                 print("6+,7+,8+")
-                return .iPhone6Plus
+                return .iPhone8Plus
             case 2436:
                 print("X")
                 return .iPhoneX

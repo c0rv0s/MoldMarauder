@@ -183,6 +183,10 @@ class MoldInventory: SKScene {
     var starPlus: SKNode!
     var starMinus: SKNode!
     var starLabel: SKLabelNode!
+    var metaButton: SKNode!
+    var metaPlus: SKNode!
+    var metaMinus: SKNode!
+    var metaLabel: SKLabelNode!
     
     var totalLabel: SKLabelNode!
     var totalNum = 0
@@ -1368,6 +1372,31 @@ class MoldInventory: SKScene {
                     starMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
                     page1ScrollView.addChild(starMinus)
                 }
+                if mold.moldType == MoldType.metaphase && moldOwned(mold: MoldType.metaphase) {
+                    Texture = SKTexture(image: UIImage(named: "Metaphase Mold")!)
+                    metaButton = SKSpriteNode(texture:Texture)
+                    // Place in scene
+                    metaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                    lastButton = metaButton.position
+                    page1ScrollView.addChild(metaButton)
+                    
+                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                    metaPlus = SKSpriteNode(texture:Texture)
+                    metaPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                    page1ScrollView.addChild(metaPlus)
+                    
+                    metaLabel = SKLabelNode(fontNamed: "Lemondrop")
+                    metaLabel.fontSize = 20
+                    metaLabel.fontColor = UIColor.black
+                    metaLabel.text = String(numOfMold(mold: MoldType.metaphase))
+                    metaLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                    page1ScrollView.addChild(metaLabel)
+                    
+                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                    metaMinus = SKSpriteNode(texture:Texture)
+                    metaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                    page1ScrollView.addChild(metaMinus)
+                }
             }
         }
         addChild(gameLayer)
@@ -1375,12 +1404,7 @@ class MoldInventory: SKScene {
     
     //quick check if the player owns the requested mold
     func moldOwned(mold: MoldType) -> Bool {
-        for maybeMold in ownedMolds {
-            if maybeMold.moldType == mold {
-                return true
-            }
-        }
-        return false
+        return ownedMolds.contains(where: {$0.moldType == mold})
     }
     
     //get number of specific mold
@@ -2211,6 +2235,24 @@ class MoldInventory: SKScene {
                     if let handler = touchHandler {
                         playSound(select: "remove")
                         handler("starMinus")
+                    }
+                }
+            }
+            if (metaButton) != nil {
+                if node == metaButton {
+                    
+                    animateName(point: touch.location(in: gameLayer), name: MoldType.metaphase.description, new: 0)
+                }
+                if node == metaPlus {
+                    if let handler = touchHandler {
+                        playSound(select: "add")
+                        handler("metaPlus")
+                    }
+                }
+                if node == metaMinus {
+                    if let handler = touchHandler {
+                        playSound(select: "remove")
+                        handler("metaMinus")
                     }
                 }
             }

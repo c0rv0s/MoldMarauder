@@ -209,6 +209,8 @@ GKGameCenterControllerDelegate {
             topMargin.constant += 30
         case .iPhoneX:
             topMargin.constant -= 10
+            cashHeader.font = cashHeader.font.withSize(14)
+            cashLabel.font = cashLabel.font.withSize(14)
         default:
             break
         }
@@ -226,9 +228,9 @@ GKGameCenterControllerDelegate {
 //            incrementDiamonds(newDiamonds: 500)
         //    inventory.level = 75
 //            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
-        //    inventory.molds.append(Mold(moldType: MoldType.invisible))
 //            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
 //            inventory.molds.append(Mold(moldType: MoldType.invisible))
+//        inventory.moldCountDicc["Metaphase Mold"] = 3
 //            inventory.reinvestmentCount = 3
 //        inventory.molds.append(Mold(moldType: MoldType.metaphase))
 //        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
@@ -1024,7 +1026,10 @@ GKGameCenterControllerDelegate {
             let tempMuteM = inventory.muteMusic
             let tempMuteS = inventory.muteSound
             let tempReinvest = inventory.reinvestmentCount + 1
+            var metaphaseCount = inventory.moldCountDicc["Metaphase Mold"] ?? 0
+            var starCount = inventory.moldCountDicc["Star Mold"] ?? 0
             
+            print(inventory.moldCountDicc["Metaphase Mold"], metaphaseCount)
             inventory = Inventory()
             inventory.diamonds = tempDiamonds
             inventory.deathRay = tempdeath
@@ -1035,6 +1040,22 @@ GKGameCenterControllerDelegate {
             inventory.muteSound = tempMuteS
             inventory.muteMusic = tempMuteM
             inventory.reinvestmentCount = tempReinvest
+            if metaphaseCount > 0 {
+                inventory.moldCountDicc["Metaphase Mold"] = metaphaseCount
+                inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
+                while metaphaseCount > 0 {
+                    inventory.molds.append(Mold(moldType: MoldType.metaphase))
+                    metaphaseCount -= 1
+                }
+            }
+            if starCount > 0 {
+                inventory.moldCountDicc["Star Mold"] = starCount
+                inventory.unlockedMolds.append(Mold(moldType: MoldType.star))
+                while starCount > 0 {
+                    inventory.molds.append(Mold(moldType: MoldType.star))
+                    starCount -= 1
+                }
+            }
             
             if inventory.reinvestmentCount >= 5 {
                 print("the voice of god")

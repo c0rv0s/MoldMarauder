@@ -225,9 +225,9 @@ GKGameCenterControllerDelegate {
 //        inventory.tutorialProgress = 19
         //    inventory.autoTap = false
         //    inventory.autoTapLevel = 0
-            incrementDiamonds(newDiamonds: 500)
+//            incrementDiamonds(newDiamonds: 500)
         //    inventory.level = 75
-            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
+//            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
 //            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
 //            inventory.molds.append(Mold(moldType: MoldType.invisible))
 //        inventory.moldCountDicc["Metaphase Mold"] = 3
@@ -1056,7 +1056,7 @@ GKGameCenterControllerDelegate {
                 }
             }
             
-            if inventory.reinvestmentCount >= 5 {
+            if inventory.reinvestmentCount >= 4 {
                 print("the voice of god")
             }
             

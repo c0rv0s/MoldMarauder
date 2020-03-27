@@ -170,15 +170,6 @@ class Reinvestments: SKScene {
             reinvestLab3.fontColor = UIColor.black
             lastButton = reinvestLab3.position
         }
-        if reinvestList > 3 {
-            let reinvestLab4 = SKLabelNode(fontNamed: "Lemondrop")
-            reinvestLab4.fontSize = 16
-            reinvestLab4.text = "Molds more vicious"
-            reinvestLab4.position = CGPoint(x: lastButton.x, y: lastButton.y - 30)
-            page1ScrollView.addChild(reinvestLab4)
-            reinvestLab4.fontColor = UIColor.black
-            lastButton = reinvestLab4.position
-        }
         
 //      "A tickle in the back of your mind tells you there could be something waiting for you after a few successful reinvestments..."
         let hintLabel1 = SKLabelNode(fontNamed: "Lemondrop")

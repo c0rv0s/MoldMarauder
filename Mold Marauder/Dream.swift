@@ -31,14 +31,19 @@ class Dream: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func start() {
+    func start(stars: Bool, clouds: Bool) {
         starLayer = SKNode()
         cloudLayer = SKNode()
         addChild(starLayer)
         addChild(cloudLayer)
-        addStars()
-        animateClouds()
-        cloudTimer = Timer.scheduledTimer(timeInterval: 35, target: self, selector: #selector(animateClouds), userInfo: nil, repeats: true)
+        if stars {
+            addStars()
+
+        }
+        if clouds {
+            animateClouds()
+            cloudTimer = Timer.scheduledTimer(timeInterval: 35, target: self, selector: #selector(animateClouds), userInfo: nil, repeats: true)
+        }
     }
     
     func addStars() {

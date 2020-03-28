@@ -205,7 +205,10 @@ class GameScene: SKScene {
         }
         background.run(action)
         if backgroundName == "dream" {
-            dream.start()
+            dream.start(stars: true, clouds: true)
+        }
+        else if backgroundName == "yurt" {
+            dream.start(stars: false, clouds: true)
         }
         else {
             dream.cloudLayer.removeFromParent()

@@ -82,7 +82,7 @@ GKGameCenterControllerDelegate {
     var iapProducts = [SKProduct]()
     var nonConsumablePurchaseMade = UserDefaults.standard.bool(forKey: "nonConsumablePurchaseMade")
     var diamonds = UserDefaults.standard.integer(forKey: "diamonds")
-    let backgrounds: Set = ["cave", "crystal forest", "yurt", "apartment", "yacht", "space"]
+    let backgrounds: Set = ["cave", "crystal forest", "yurt", "apartment", "yacht", "space", "dream"]
     
     //    iclodu thing
     var iCloudKeyStore: NSUbiquitousKeyValueStore? = NSUbiquitousKeyValueStore()
@@ -921,6 +921,7 @@ GKGameCenterControllerDelegate {
             levelScene = LevelScene(size: skView.bounds.size)
             levelScene.name = "levelScene"
             levelScene.scaleMode = .aspectFill
+            levelScene.timePrisonEnabled = inventory.timePrisonEnabled
             levelScene.touchHandler = levelHandler
             levelScene.currentLevel = inventory.level
             levelScene.currentScorePerTap = inventory.scorePerTap
@@ -930,6 +931,7 @@ GKGameCenterControllerDelegate {
             levelScene.diamonds = inventory.diamonds
             levelScene.offlineLev = inventory.offlineLevel
             levelScene.current = inventory.background
+            
             if aroff {
                 skView.presentScene(levelScene)
             }

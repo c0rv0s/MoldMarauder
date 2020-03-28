@@ -41,11 +41,11 @@ class LevelScene: SKScene {
     var yachtButton: SKNode!
     var crysForestButton: SKNode!
     var apartmentButton: SKNode!
-    var apartment2Button: SKNode!
     var yurtButton:SKNode!
-    var sandButton: SKNode!
     var spaceButton: SKNode!
-    var space2Button: SKNode!
+    var dreamButton: SKNode!
+    
+    var timePrisonEnabled = false
     
     var checkmark: SKNode!
     var current: String!
@@ -304,6 +304,15 @@ class LevelScene: SKScene {
             lastButton = spaceButton.position
             page1ScrollView.addChild(spaceButton)
         }
+        if timePrisonEnabled {
+            Texture = SKTexture(image: UIImage(named: "dream button")!)
+            // slime
+            dreamButton = SKSpriteNode(texture:Texture)
+            // Place in scene
+            dreamButton.position = CGPoint(x: lastButton.x+120, y: lastButton.y)
+            lastButton = dreamButton.position
+            page1ScrollView.addChild(dreamButton)
+        }
         
         if checkmark != nil {
             checkmark.removeFromParent()
@@ -335,6 +344,10 @@ class LevelScene: SKScene {
             checkmark.position = spaceButton.position
             page1ScrollView.addChild(checkmark)
             break
+        case "dream":
+            checkmark.position = dreamButton.position
+            page1ScrollView.addChild(checkmark)
+            break
         default:
             checkmark.position = caveButton.position
             page1ScrollView.addChild(checkmark)
@@ -359,11 +372,8 @@ class LevelScene: SKScene {
         yachtButton = nil
         crysForestButton = nil
         apartmentButton = nil
-        apartment2Button = nil
         yurtButton = nil
-        sandButton = nil
         spaceButton = nil
-        space2Button = nil
         checkmark = nil
     }
     
@@ -429,27 +439,11 @@ class LevelScene: SKScene {
                     }
                 }
             }
-            if apartment2Button != nil {
-                if node == apartment2Button {
-                    checkmark.position = apartment2Button.position
-                    if let handler = touchHandler {
-                        handler("apartment2")
-                    }
-                }
-            }
             if yurtButton != nil {
                 if node == yurtButton {
                     checkmark.position = yurtButton.position
                     if let handler = touchHandler {
                         handler("yurt")
-                    }
-                }
-            }
-            if sandButton != nil {
-                if node == sandButton {
-                    checkmark.position = sandButton.position
-                    if let handler = touchHandler {
-                        handler("sand")
                     }
                 }
             }
@@ -461,11 +455,11 @@ class LevelScene: SKScene {
                     }
                 }
             }
-            if space2Button != nil {
-                if node == space2Button {
-                    checkmark.position = space2Button.position
+            if dreamButton != nil {
+                if node == dreamButton {
+                    checkmark.position = dreamButton.position
                     if let handler = touchHandler {
-                        handler("space2")
+                        handler("dream")
                     }
                 }
             }

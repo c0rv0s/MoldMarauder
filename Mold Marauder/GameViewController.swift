@@ -5083,19 +5083,35 @@ GKGameCenterControllerDelegate {
                 case 11:
                     if inventory.molds.count > 0 {
                         let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                        if inventory.molds[indexToEat].moldType != MoldType.star {
-                            var eatcount = 0
-                            displayLoop: for molds in inventory.displayMolds {
-                                if molds.moldType == inventory.molds[indexToEat].moldType {
-                                    inventory.displayMolds.remove(at: eatcount)
-                                    break displayLoop
-                                }
-                                eatcount += 1
-                            }
-                            inventory.scorePerSecond -= inventory.molds[indexToEat].PPS
+                        if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase {
+                            let moldData = inventory.molds[indexToEat]
+                            scene.playSound(select: "crunch")
                             inventory.molds.remove(at: indexToEat)
-                            scene.molds = inventory.displayMolds
-                            scene.updateMolds()
+                            
+                            var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
+                            if index != nil {
+                                inventory.displayMolds.remove(at: index!)
+                                scene.molds = inventory.displayMolds
+                                index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
+                                scene.moldLayer.children[index!].removeFromParent()
+                            }
+                            
+                            // check level to see how much more to remove
+                            let hearts = inventory.levDicc[moldData.name]!
+                            var levs = 0
+                            if hearts < 426 {
+                                for num in moldLevCounts {
+                                    if hearts > num {
+                                        levs += 1
+                                    }
+                                }
+                            }
+                            else {
+                                levs = moldLevCounts.count
+                                levs += ((hearts - 425) / 100)
+                            }
+                            inventory.scorePerSecond -= moldData.PPS
+                            inventory.scorePerSecond -= levs*moldData.PPS/5
                         }
                     }
                     scene.playSound(select: "bad card")
@@ -5105,17 +5121,35 @@ GKGameCenterControllerDelegate {
                         var runCount = 0
                         while (runCount < 3) {
                             let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                            if inventory.molds[indexToEat].moldType != MoldType.star {
-                                var eatcount = 0
-                                displayLoop: for molds in inventory.displayMolds {
-                                    if molds.moldType == inventory.molds[indexToEat].moldType {
-                                        inventory.displayMolds.remove(at: eatcount)
-                                        break displayLoop
-                                    }
-                                    eatcount += 1
-                                }
-                                inventory.scorePerSecond -= inventory.molds[indexToEat].PPS
+                            if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase {
+                                let moldData = inventory.molds[indexToEat]
+                                scene.playSound(select: "crunch")
                                 inventory.molds.remove(at: indexToEat)
+                                
+                                var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
+                                if index != nil {
+                                    inventory.displayMolds.remove(at: index!)
+                                    scene.molds = inventory.displayMolds
+                                    index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
+                                    scene.moldLayer.children[index!].removeFromParent()
+                                }
+                                
+                                // check level to see how much more to remove
+                                let hearts = inventory.levDicc[moldData.name]!
+                                var levs = 0
+                                if hearts < 426 {
+                                    for num in moldLevCounts {
+                                        if hearts > num {
+                                            levs += 1
+                                        }
+                                    }
+                                }
+                                else {
+                                    levs = moldLevCounts.count
+                                    levs += ((hearts - 425) / 100)
+                                }
+                                inventory.scorePerSecond -= moldData.PPS
+                                inventory.scorePerSecond -= levs*moldData.PPS/5
                             }
                             runCount += 1
                         }

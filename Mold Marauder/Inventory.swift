@@ -61,6 +61,7 @@ class Inventory: NSObject, NSCoding {
     var offlineLevel: Int
     
     var reinvestmentCount: Int
+    var timePrisonEnabled: Bool
 
     
     override init() {
@@ -105,6 +106,7 @@ class Inventory: NSObject, NSCoding {
         offlineLevel = 0
         
         reinvestmentCount = 0
+        timePrisonEnabled = false
         
         achievementsDicc = [
             "own 5" : false,
@@ -262,6 +264,7 @@ class Inventory: NSObject, NSCoding {
         tutorialProgress = aDecoder.decodeInteger(forKey: "tutorialProgress")
         
         reinvestmentCount = aDecoder.decodeInteger(forKey: "reinvestmentCount")
+        timePrisonEnabled = aDecoder.decodeBool(forKey: "timePrisonEnabled")
         
         
         let saveMolds = aDecoder.decodeObject(forKey: "molds") as! Array<Int>
@@ -436,6 +439,7 @@ class Inventory: NSObject, NSCoding {
         aCoder.encode(tutorialProgress, forKey: "tutorialProgress")
         
         aCoder.encode(reinvestmentCount, forKey: "reinvestmentCount")
+        aCoder.encode(timePrisonEnabled, forKey: "timePrisonEnabled")
         
         //now for achievmeents and molds
         var saveMolds = [Int]()

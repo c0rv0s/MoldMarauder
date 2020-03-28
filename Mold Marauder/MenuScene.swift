@@ -21,7 +21,10 @@ class MenuScene: SKScene {
     var helpButton: SKNode!
     var reinvestButton: SKNode!
     var arButton: SKNode!
+    var timePrison: SKNode!
     var leaderboards: SKNode!
+    
+    var timePrisonEnabled: Bool!
     
 //    rmeber ar state
     var arSwitch = false
@@ -39,7 +42,6 @@ class MenuScene: SKScene {
         background.start(size: size)
         addChild(background.background)
         addChild(cometLayer)
-        createButton()
         let _ = SKLabelNode(fontNamed: "Lemondrop")
     }
     
@@ -49,6 +51,7 @@ class MenuScene: SKScene {
     
     override func didMove(to view: SKView) {
         cometLayer.start(menu: true)
+        createButton()
         arSwitch = false
     }
     
@@ -158,12 +161,21 @@ class MenuScene: SKScene {
         self.addChild(reinvestButton)
         
         //AR button
-        Texture = SKTexture(image: UIImage(named: "armodeoff")!)
-        arButton = SKSpriteNode(texture: Texture)
-        // Place in scene
-        arButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
+//        Texture = SKTexture(image: UIImage(named: "armodeoff")!)
+//        arButton = SKSpriteNode(texture: Texture)
+//        // Place in scene
+//        arButton.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
         
 //        self.addChild(arButton)
+        
+        //TIME PRISON button (put in AR button location since AR button removed in current v.)
+        Texture = SKTexture(image: UIImage(named: "time prison button")!)
+        timePrison = SKSpriteNode(texture: Texture)
+        // Place in scene
+        if timePrisonEnabled {
+            timePrison.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
+            self.addChild(timePrison)
+        }
  
     }
     
@@ -238,16 +250,22 @@ class MenuScene: SKScene {
             }
         }
         
-        if arButton.contains(touchLocation) {
-            print("ar")
+//        if arButton.contains(touchLocation) {
+//            print("ar")
+//            if let handler = touchHandler {
+//                if arSwitch {
+//                    arSwitch = false
+//                }
+//                else {
+//                    arSwitch = true
+//                }
+//                handler("ar")
+//            }
+//        }
+        if timePrisonEnabled && timePrison.contains(touchLocation) {
+            print("time prison")
             if let handler = touchHandler {
-                if arSwitch {
-                    arSwitch = false
-                }
-                else {
-                    arSwitch = true
-                }
-                handler("ar")
+                handler("time prison")
             }
         }
  

@@ -37,6 +37,7 @@ GKGameCenterControllerDelegate {
     var questScene: QuestScene!
     var helpScene: HelpScene!
     var reinvestments: Reinvestments!
+    var timePrison: TimePrison!
     
     @IBOutlet weak var skView: SKView!
     
@@ -234,6 +235,7 @@ GKGameCenterControllerDelegate {
 //            inventory.reinvestmentCount = 3
 //        inventory.molds.append(Mold(moldType: MoldType.metaphase))
 //        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
+//        inventory.timePrisonEnabled = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -337,6 +339,7 @@ GKGameCenterControllerDelegate {
         iCloudKeyStore?.set(inventory.tutorialProgress, forKey: "tutorialProgress")
         
         iCloudKeyStore?.set(inventory.reinvestmentCount, forKey: "reinvestmentCount")
+        iCloudKeyStore?.set(inventory.timePrisonEnabled, forKey: "timePrisonEnabled")
         
         //now for achievmeents and molds
         var saveMolds = [Int]()
@@ -420,6 +423,7 @@ GKGameCenterControllerDelegate {
         inventory.tutorialProgress = iCloudKeyStore?.object(forKey: "tutorialProgress") as! Int
         
         inventory.reinvestmentCount = iCloudKeyStore?.object(forKey: "reinvestmentCount") as! Int
+        inventory.timePrisonEnabled = iCloudKeyStore?.object(forKey: "timePrisonEnabled") as! Bool
         
         let saveMolds = iCloudKeyStore?.object(forKey: "molds") as! Array<Int>
         let saveDisplayMolds = iCloudKeyStore?.object(forKey: "displayMolds") as! Array<Int>
@@ -985,12 +989,47 @@ GKGameCenterControllerDelegate {
             menu.arButton = SKSpriteNode(texture: texSwitch)
             menu.arButton.position = CGPoint(x:menu.frame.midX-65, y:menu.frame.midY-100);
             menu.addChild(menu.arButton)
+        }
+        if (action == "time prison") {
+            timePrison = TimePrison(size: skView.bounds.size)
+            timePrison.name = "timePrison"
+            timePrison.scaleMode = .aspectFill
+            timePrison.touchHandler = timePrisonHandler
+            if aroff {
+                skView.presentScene(timePrison)
+            }
+            else {
+                skView.presentScene(timePrison)
+            }
             
-            
+            menu.cometLayer.removeAllChildren()
+            menu.cometLayer.cometTimer.invalidate()
+            timePrison.mute = inventory.muteSound
+            timePrison.playSound(select: "select")
+            cashLabel.isHidden = true
+            cashHeader.isHidden = true
         }
         
     }
     
+    //TIME PRISON HANDLER
+    func timePrisonHandler(action: String) {
+        activateSleepTimer()
+        if (action == "back") {
+            menu.scaleMode = .aspectFill
+            menu.touchHandler = menuHandler
+            if aroff {
+                skView.presentScene(menu)
+            }
+            else {
+                skView.presentScene(menu)
+            }
+            cashLabel.isHidden = false
+            cashHeader.isHidden = false
+            menu.mute = inventory.muteSound
+            menu.playSound(select: "exit")
+        }
+    }
     
     //REINVEST HANDLER
     func reinvestHandler(action: String) {
@@ -3712,7 +3751,6 @@ GKGameCenterControllerDelegate {
         if (action == "back") {
             itemShop.cometLayer.removeAllChildren()
             itemShop.cometLayer.cometTimer.invalidate()
-            //menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
             
@@ -4267,6 +4305,7 @@ GKGameCenterControllerDelegate {
             menu = MenuScene(size: skView.bounds.size)
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
+            menu.timePrisonEnabled = inventory.timePrisonEnabled
             
             if aroff {
                 skView.presentScene(menu)
@@ -5721,6 +5760,7 @@ GKGameCenterControllerDelegate {
         menu.name = "menu"
         menu.scaleMode = .aspectFill
         menu.touchHandler = menuHandler
+        menu.timePrisonEnabled = inventory.timePrisonEnabled
         if aroff {
             skView.presentScene(menu)
         }

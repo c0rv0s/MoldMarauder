@@ -15,6 +15,7 @@
 		0F7FED1F2418C7A400C3BABB /* apartment.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1E2418C7A400C3BABB /* apartment.wav */; };
 		0F7FED232418D3B500C3BABB /* cave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED222418D3B500C3BABB /* cave.wav */; };
 		0F7FED252418D45800C3BABB /* menu.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED242418D45800C3BABB /* menu.wav */; };
+		0F96D45E242F279100F2EC43 /* TimePrison.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D45D242F279100F2EC43 /* TimePrison.swift */; };
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
 		0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A42411D02A0014A9BB /* Utils.swift */; };
 		0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A62411D4C60014A9BB /* CometLayer.swift */; };
@@ -95,6 +96,7 @@
 		0F7FED1E2418C7A400C3BABB /* apartment.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = apartment.wav; sourceTree = "<group>"; };
 		0F7FED222418D3B500C3BABB /* cave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cave.wav; sourceTree = "<group>"; };
 		0F7FED242418D45800C3BABB /* menu.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menu.wav; sourceTree = "<group>"; };
+		0F96D45D242F279100F2EC43 /* TimePrison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePrison.swift; sourceTree = "<group>"; };
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
 		0FC7D0A42411D02A0014A9BB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0FC7D0A62411D4C60014A9BB /* CometLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CometLayer.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 				21FCFDD71E5CE6C90042D55A /* ItemShop.swift */,
 				0FC242531F10BC56004A98A9 /* Reinvestments.swift */,
 				21FCFDD91E5D19320042D55A /* PremiumShop.swift */,
+				0F96D45D242F279100F2EC43 /* TimePrison.swift */,
 				21E339981E5EDB3600083261 /* AchievementsScene.swift */,
 				217E3FD31E677CE800DC2EDB /* Mold Inventory.swift */,
 				21F134B61E7E710300627246 /* QuestScene.swift */,
@@ -484,6 +487,7 @@
 				0FCB1D4C1F85CCAE006CE351 /* ARScene.swift in Sources */,
 				21C16F0D1E480FBE003D109A /* SwiftySKScrollView.swift in Sources */,
 				21C16EFA1E43F6CB003D109A /* Inventory.swift in Sources */,
+				0F96D45E242F279100F2EC43 /* TimePrison.swift in Sources */,
 				0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */,
 				21F134B71E7E710300627246 /* QuestScene.swift in Sources */,
 				214FB0FE1E7359A200E428AA /* LevelScene.swift in Sources */,

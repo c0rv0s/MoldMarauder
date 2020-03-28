@@ -2923,10 +2923,7 @@ class GameScene: SKScene {
                     fightFrames.append(SKTexture(image: UIImage(named: "fight \(i)")!))
                     i += 1
                 }
-                var killChance = Int(arc4random_uniform(50))
-                if reinvestCount > 3 {
-                    killChance = Int(arc4random_uniform(5))
-                }
+                let killChance = Int(arc4random_uniform(10))
                 if killChance <= 1 {
                     fightFrames.append(SKTexture(image: UIImage(named: "knockout")!))
                     if let handler = touchHandler {

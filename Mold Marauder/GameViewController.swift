@@ -1030,7 +1030,7 @@ GKGameCenterControllerDelegate {
             var starCount = inventory.moldCountDicc["Star Mold"] ?? 0
             
             inventory = Inventory()
-            inventory.diamonds = tempDiamonds
+            inventory.diamonds += tempDiamonds
             inventory.deathRay = tempdeath
             inventory.autoTap = tempAuto
             inventory.autoTapLevel = tempAutoLev

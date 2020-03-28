@@ -65,8 +65,8 @@ class CreditsScene: SKScene {
         let labelOne = SKLabelNode(fontNamed: "Lemondrop")
         labelOne.fontSize = 13
         labelOne.fontColor = UIColor.black
-        labelOne.text = "Nathan Mueller: "
-        labelOne.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+150)
+        labelOne.text = "Nathan Mueller:"
+        labelOne.position = CGPoint(x:self.frame.midX, y:self.frame.midY+150)
         addChild(labelOne)
         
         let labelTwo = SKLabelNode(fontNamed: "Lemondrop")
@@ -79,29 +79,29 @@ class CreditsScene: SKScene {
         let labelThree = SKLabelNode(fontNamed: "Lemondrop")
         labelThree.fontSize = 13
         labelThree.fontColor = UIColor.black
-        labelThree.text = "valdez/Spacey Dreams: "
-        labelThree.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+115)
+        labelThree.text = "valdez and Spacey Dreams:"
+        labelThree.position = CGPoint(x:self.frame.midX, y:self.frame.midY+115)
         addChild(labelThree)
 
         let labelFour = SKLabelNode(fontNamed: "Lemondrop")
         labelFour.fontSize = 13
         labelFour.fontColor = UIColor.black
         labelFour.text = "Music"
-        labelFour.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+102)
+        labelFour.position = CGPoint(x:self.frame.midX, y:self.frame.midY+102)
         addChild(labelFour)
         
         Texture = SKTexture(image: UIImage(named: "listen button")!)
         listenButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        listenButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+85)
+        listenButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY+85)
         
 //    self.addChild(listenButton)
         
         let labelFive = SKLabelNode(fontNamed: "Lemondrop")
         labelFive.fontSize = 13
         labelFive.fontColor = UIColor.black
-        labelFive.text = "Special Thanks: "
-        labelFive.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+40)
+        labelFive.text = "Special Thanks:"
+        labelFive.position = CGPoint(x:self.frame.midX, y:self.frame.midY+40)
         addChild(labelFive)
         
         let labelSix = SKLabelNode(fontNamed: "Lemondrop")
@@ -122,49 +122,49 @@ class CreditsScene: SKScene {
         labelEight.fontSize = 13
         labelEight.fontColor = UIColor.black
         labelEight.text = "Github user crashoverride777:"
-        labelEight.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY-10)
+        labelEight.position = CGPoint(x:self.frame.midX, y:self.frame.midY-8)
         addChild(labelEight)
         
         let labelNine = SKLabelNode(fontNamed: "Lemondrop")
         labelNine.fontSize = 13
         labelNine.fontColor = UIColor.black
         labelNine.text = "for SwiftySKScrollView"
-        labelNine.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY-20)
+        labelNine.position = CGPoint(x:self.frame.midX, y:self.frame.midY-22)
         addChild(labelNine)
         
         let labelTen = SKLabelNode(fontNamed: "Lemondrop")
         labelTen.fontSize = 13
         labelTen.fontColor = UIColor.black
-        labelTen.text = "Github user mkrd: "
-        labelTen.position = CGPoint(x:self.frame.midX-30, y:self.frame.midY-41)
+        labelTen.text = "Github user mkrd:"
+        labelTen.position = CGPoint(x:self.frame.midX, y:self.frame.midY-44)
         addChild(labelTen)
         
         let label11 = SKLabelNode(fontNamed: "Lemondrop")
         label11.fontSize = 13
         label11.fontColor = UIColor.black
         label11.text = "for Swift-Big-Integer"
-        label11.position = CGPoint(x:self.frame.midX, y:self.frame.midY-54)
+        label11.position = CGPoint(x:self.frame.midX, y:self.frame.midY-58)
         addChild(label11)
         
         let label12 = SKLabelNode(fontNamed: "Lemondrop")
         label12.fontSize = 13
         label12.fontColor = UIColor.black
         label12.text = "And RayWenderleich.com"
-        label12.position = CGPoint(x:self.frame.midX, y:self.frame.midY-76)
+        label12.position = CGPoint(x:self.frame.midX, y:self.frame.midY-80)
         addChild(label12)
         
         let label13 = SKLabelNode(fontNamed: "Lemondrop")
         label13.fontSize = 13
         label13.fontColor = UIColor.black
         label13.text = "For countless invaluable tutorials"
-        label13.position = CGPoint(x:self.frame.midX, y:self.frame.midY-89)
+        label13.position = CGPoint(x:self.frame.midX, y:self.frame.midY-94)
         addChild(label13)
         
         // Review
         Texture = SKTexture(image: UIImage(named: "review button")!)
         revButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        revButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-121)
+        revButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-130)
         
         self.addChild(revButton)
         
@@ -213,7 +213,7 @@ class CreditsScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "music_mute")!)
         musicButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        musicButton.position = CGPoint(x:self.frame.midX-50, y:self.frame.midY-175)
+        musicButton.position = CGPoint(x:self.frame.midX-50, y:self.frame.midY-190)
         
         self.addChild(musicButton)
         
@@ -221,7 +221,7 @@ class CreditsScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "sound_mute")!)
         soundButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        soundButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-175)
+        soundButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-190)
         
         self.addChild(soundButton)
     }

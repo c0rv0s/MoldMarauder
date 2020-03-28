@@ -101,20 +101,20 @@ class CreditsScene: SKScene {
         labelFive.fontSize = 13
         labelFive.fontColor = UIColor.black
         labelFive.text = "Special Thanks:"
-        labelFive.position = CGPoint(x:self.frame.midX, y:self.frame.midY+40)
+        labelFive.position = CGPoint(x:self.frame.midX, y:self.frame.midY+50)
         addChild(labelFive)
         
         let labelSix = SKLabelNode(fontNamed: "Lemondrop")
         labelSix.fontSize = 13
         labelSix.fontColor = UIColor.black
-        labelSix.text = "Github user mkrd:"
+        labelSix.text = "Vecteezy.com"
         labelSix.position = CGPoint(x:self.frame.midX, y:self.frame.midY+27)
         addChild(labelSix)
         
         let labelSeven = SKLabelNode(fontNamed: "Lemondrop")
         labelSeven.fontSize = 13
         labelSeven.fontColor = UIColor.black
-        labelSeven.text = "for Swift-Big-Integer"
+        labelSeven.text = "for Yurt and City Skyline vectors"
         labelSeven.position = CGPoint(x:self.frame.midX, y:self.frame.midY+14)
         addChild(labelSeven)
         
@@ -135,16 +135,30 @@ class CreditsScene: SKScene {
         let labelTen = SKLabelNode(fontNamed: "Lemondrop")
         labelTen.fontSize = 13
         labelTen.fontColor = UIColor.black
-        labelTen.text = "And RayWenderleich.com"
+        labelTen.text = "Github user mkrd:"
         labelTen.position = CGPoint(x:self.frame.midX, y:self.frame.midY-44)
         addChild(labelTen)
         
         let label11 = SKLabelNode(fontNamed: "Lemondrop")
         label11.fontSize = 13
         label11.fontColor = UIColor.black
-        label11.text = "For countless invaluable tutorials"
+        label11.text = "for Swift-Big-Integer"
         label11.position = CGPoint(x:self.frame.midX, y:self.frame.midY-58)
         addChild(label11)
+        
+        let label12 = SKLabelNode(fontNamed: "Lemondrop")
+        label12.fontSize = 13
+        label12.fontColor = UIColor.black
+        label12.text = "And RayWenderleich.com"
+        label12.position = CGPoint(x:self.frame.midX, y:self.frame.midY-80)
+        addChild(label12)
+        
+        let label13 = SKLabelNode(fontNamed: "Lemondrop")
+        label13.fontSize = 13
+        label13.fontColor = UIColor.black
+        label13.text = "For countless invaluable tutorials"
+        label13.position = CGPoint(x:self.frame.midX, y:self.frame.midY-94)
+        addChild(label13)
         
         // Review
         Texture = SKTexture(image: UIImage(named: "review button")!)
@@ -170,6 +184,8 @@ class CreditsScene: SKScene {
             labelNine.setScale(0.75)
             labelTen.setScale(0.75)
             label11.setScale(0.75)
+            label12.setScale(0.75)
+            label13.setScale(0.75)
             break
         case .iPhone5:
             //iPhone 5
@@ -186,6 +202,8 @@ class CreditsScene: SKScene {
             labelNine.setScale(0.75)
             labelTen.setScale(0.75)
             label11.setScale(0.75)
+            label12.setScale(0.75)
+            label13.setScale(0.75)
             break
         default:
             break

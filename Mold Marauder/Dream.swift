@@ -31,14 +31,13 @@ class Dream: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func start(stars: Bool, clouds: Bool) {
+    func start(stars: Bool, clouds: Bool, starsHigher: Bool) {
         starLayer = SKNode()
         cloudLayer = SKNode()
         addChild(starLayer)
         addChild(cloudLayer)
         if stars {
-            addStars()
-
+            addStars(starsHigher: starsHigher)
         }
         if clouds {
             animateClouds()
@@ -46,11 +45,27 @@ class Dream: SKNode {
         }
     }
     
-    func addStars() {
+    func reset() {
+        if self.cloudTimer != nil {
+            self.cloudTimer.invalidate()
+        }
+        if self.cloudLayer != nil {
+            self.cloudLayer.removeFromParent()
+        }
+        if self.starLayer != nil {
+            self.starLayer.removeFromParent()
+        }
+    }
+    
+    func addStars(starsHigher: Bool) {
         for _ in 0..<15 {
             let star = SKSpriteNode(texture: SKTexture(image: UIImage(named: "star")!))
             star.setScale(CGFloat(Float.random(in: 0.3 ..< 0.8)))
-            let y = randomInRange(lo: Int(midY) - 140, hi: Int(maxY) - 25)
+            var yConstant = -140
+            if starsHigher {
+                yConstant = 100
+            }
+            let y = randomInRange(lo: Int(midY) + yConstant, hi: Int(maxY) - 25)
             let x = randomInRange(lo: Int(minX) - 20, hi: Int(maxX) - 20)
             star.position = CGPoint(x: x, y: y)
             starLayer.addChild(star)

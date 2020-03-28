@@ -126,6 +126,8 @@ class GameScene: SKScene {
     //tutorial
     var tutorial = 0
     
+    var dream: Dream!
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
     }
@@ -156,6 +158,8 @@ class GameScene: SKScene {
             i += 1
         }
         
+        dream = Dream(midY: self.frame.midY, maxY: self.frame.maxY, minX: self.frame.minX, maxX: self.frame.maxX)
+        addChild(dream)
         addChild(gameLayer)
         addChild(moldLayer)
         diamondLayer.zPosition = 700
@@ -200,6 +204,13 @@ class GameScene: SKScene {
             self.background.run(action2)
         }
         background.run(action)
+        if backgroundName == "dream" {
+            dream.start()
+        }
+        else {
+            dream.cloudLayer.removeFromParent()
+            dream.starLayer.removeFromParent()
+        }
     }
     
     func createButton() {

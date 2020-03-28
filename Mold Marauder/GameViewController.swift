@@ -130,6 +130,23 @@ GKGameCenterControllerDelegate {
             }
         }
         
+        //    TESTING - REMOVE
+//            inventory = Inventory()
+//        inventory.tutorialProgress = 19
+        //    inventory.autoTap = false
+        //    inventory.autoTapLevel = 0
+//            incrementDiamonds(newDiamonds: 500)
+//            inventory.level = 75
+//            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
+//            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
+//            inventory.molds.append(Mold(moldType: MoldType.invisible))
+//        inventory.moldCountDicc["Metaphase Mold"] = 3
+//            inventory.reinvestmentCount = 3
+//        inventory.molds.append(Mold(moldType: MoldType.metaphase))
+//        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
+//        inventory.timePrisonEnabled = true
+//        inventory.background = "dream"
+        
         // Configure the view.
         ARgameScene = ARScene(size: arskView.bounds.size)
         // Tell the session to automatically detect horizontal planes
@@ -221,21 +238,7 @@ GKGameCenterControllerDelegate {
             self.offlineCash()
         }
         
-        //    TESTING - REMOVE
-//            inventory = Inventory()
-//        inventory.tutorialProgress = 19
-        //    inventory.autoTap = false
-        //    inventory.autoTapLevel = 0
-//            incrementDiamonds(newDiamonds: 500)
-        //    inventory.level = 75
-//            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
-//            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
-//            inventory.molds.append(Mold(moldType: MoldType.invisible))
-//        inventory.moldCountDicc["Metaphase Mold"] = 3
-//            inventory.reinvestmentCount = 3
-//        inventory.molds.append(Mold(moldType: MoldType.metaphase))
-//        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
-//        inventory.timePrisonEnabled = true
+        shiftTimerLabels()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -16,6 +16,8 @@
 		0F7FED232418D3B500C3BABB /* cave.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED222418D3B500C3BABB /* cave.wav */; };
 		0F7FED252418D45800C3BABB /* menu.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED242418D45800C3BABB /* menu.wav */; };
 		0F96D45E242F279100F2EC43 /* TimePrison.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D45D242F279100F2EC43 /* TimePrison.swift */; };
+		0F96D460242F314800F2EC43 /* Dream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D45F242F314800F2EC43 /* Dream.swift */; };
+		0F96D462242F32A900F2EC43 /* dream.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F96D461242F32A900F2EC43 /* dream.wav */; };
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
 		0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A42411D02A0014A9BB /* Utils.swift */; };
 		0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A62411D4C60014A9BB /* CometLayer.swift */; };
@@ -97,6 +99,8 @@
 		0F7FED222418D3B500C3BABB /* cave.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cave.wav; sourceTree = "<group>"; };
 		0F7FED242418D45800C3BABB /* menu.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = menu.wav; sourceTree = "<group>"; };
 		0F96D45D242F279100F2EC43 /* TimePrison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePrison.swift; sourceTree = "<group>"; };
+		0F96D45F242F314800F2EC43 /* Dream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dream.swift; sourceTree = "<group>"; };
+		0F96D461242F32A900F2EC43 /* dream.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dream.wav; sourceTree = "<group>"; };
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
 		0FC7D0A42411D02A0014A9BB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0FC7D0A62411D4C60014A9BB /* CometLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CometLayer.swift; sourceTree = "<group>"; };
@@ -202,12 +206,13 @@
 		210F06EC1E9440E2006EA0D5 /* music */ = {
 			isa = PBXGroup;
 			children = (
-				0F7FED182418B76900C3BABB /* crystal forest.wav */,
-				0F7FED222418D3B500C3BABB /* cave.wav */,
 				0F7FED1E2418C7A400C3BABB /* apartment.wav */,
-				0F41C972241AE7EE009254B0 /* yacht.wav */,
+				0F7FED222418D3B500C3BABB /* cave.wav */,
+				0F7FED182418B76900C3BABB /* crystal forest.wav */,
+				0F96D461242F32A900F2EC43 /* dream.wav */,
 				0F7FED242418D45800C3BABB /* menu.wav */,
 				0F7FED1C2418C65200C3BABB /* space.wav */,
+				0F41C972241AE7EE009254B0 /* yacht.wav */,
 				0F7FED1A2418BCBD00C3BABB /* yurt.wav */,
 			);
 			name = music;
@@ -270,6 +275,7 @@
 				21F8395C1E4B19E80071B689 /* Breeding Combos.swift */,
 				0FC7D0A62411D4C60014A9BB /* CometLayer.swift */,
 				0FC7D0A82411DB0F0014A9BB /* Background.swift */,
+				0F96D45F242F314800F2EC43 /* Dream.swift */,
 				21305B461E615C0A006343A4 /* progress_Bar.swift */,
 			);
 			name = Models;
@@ -449,6 +455,7 @@
 				210F06D01E94407C006EA0D5 /* bad card.wav in Resources */,
 				21CB73411E412FD500DEAF4F /* Main.storyboard in Resources */,
 				0F7FED1D2418C65200C3BABB /* space.wav in Resources */,
+				0F96D462242F32A900F2EC43 /* dream.wav in Resources */,
 				210F06E31E94407C006EA0D5 /* lose.wav in Resources */,
 				210F06D91E94407C006EA0D5 /* chest.wav in Resources */,
 				0F7FED192418B76900C3BABB /* crystal forest.wav in Resources */,
@@ -494,6 +501,7 @@
 				21C16EFF1E4408F8003D109A /* Molds.swift in Sources */,
 				21C16F0A1E47F060003D109A /* BreedScene.swift in Sources */,
 				21CB733C1E412FD500DEAF4F /* GameScene.swift in Sources */,
+				0F96D460242F314800F2EC43 /* Dream.swift in Sources */,
 				21C16F031E44F28F003D109A /* MenuScene.swift in Sources */,
 				0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */,
 				21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */,

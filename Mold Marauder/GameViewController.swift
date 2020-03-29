@@ -151,6 +151,7 @@ GKGameCenterControllerDelegate {
 //        inventory.unlockedMolds.append(Mold(moldType: MoldType.god))
 //        inventory.moldCountDicc["God Mold"] = 1
 //        inventory.scorePerSecond += MoldType.god.pointsPerSecond
+//        inventory.phaseCrystals = BInt("10000000")!
         
         
         // Configure the view.
@@ -1012,6 +1013,7 @@ GKGameCenterControllerDelegate {
             timePrison.scaleMode = .aspectFill
             timePrison.touchHandler = timePrisonHandler
             timePrison.freedFromTimePrison = inventory.freedFromTimePrison
+            timePrison.phaseCrystals = inventory.phaseCrystals
             if aroff {
                 skView.presentScene(timePrison)
             }
@@ -1032,6 +1034,9 @@ GKGameCenterControllerDelegate {
     //TIME PRISON HANDLER
     func timePrisonHandler(action: String) {
         activateSleepTimer()
+        if timePrison.successLayer.children.count > 0 {
+            timePrison.successLayer.removeAllChildren()
+        }
         if (action == "back") {
             menu.scaleMode = .aspectFill
             menu.touchHandler = menuHandler
@@ -1045,6 +1050,175 @@ GKGameCenterControllerDelegate {
             cashHeader.isHidden = false
             menu.mute = inventory.muteSound
             menu.playSound(select: "exit")
+        }
+        else if action == "god" {
+            let metaFree = inventory.freedFromTimePrison[..<8].allSatisfy({$0 == true})
+            if inventory.phaseCrystals < 1000000 || !metaFree {
+                var text1Text = "You must free all Metaphase"
+                var text2Text = "Molds before you can free"
+                var text3Text = "the Mold God"
+                if metaFree {
+                    text1Text = "You need 1 million phase"
+                    text2Text = "crystals to free the Mold God"
+                    text3Text = ""
+                }
+                let textBox = SKSpriteNode(texture: SKTexture(image: UIImage(named: "pink dialogue")!))
+                textBox.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY)
+                textBox.setScale(1.25)
+                timePrison.dialogueLayer.addChild(textBox)
+                
+                let text1 = SKLabelNode(fontNamed: "Lemondrop")
+                text1.fontSize = 15
+                text1.fontColor = UIColor.black
+                text1.text = text1Text
+                text1.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY+30);
+                timePrison.dialogueLayer.addChild(text1)
+                
+                let text2 = SKLabelNode(fontNamed: "Lemondrop")
+                text2.fontSize = 15
+                text2.fontColor = UIColor.black
+                text2.text = text2Text
+                text2.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY+10);
+                timePrison.dialogueLayer.addChild(text2)
+                
+                let text3 = SKLabelNode(fontNamed: "Lemondrop")
+                text3.fontSize = 15
+                text3.fontColor = UIColor.black
+                text3.text = text3Text
+                text3.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY-10);
+                timePrison.dialogueLayer.addChild(text3)
+                
+                timePrison.noButton = SKLabelNode(fontNamed: "Lemondrop")
+                timePrison.noButton.fontSize = 15
+                timePrison.noButton.fontColor = UIColor.black
+                timePrison.noButton.text = "Close"
+                timePrison.noButton.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY-60);
+                timePrison.dialogueLayer.addChild(timePrison.noButton)
+            }
+            else {
+                let textBox = SKSpriteNode(texture: SKTexture(image: UIImage(named: "pink dialogue")!))
+                textBox.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY)
+                textBox.setScale(1.25)
+                timePrison.dialogueLayer.addChild(textBox)
+                
+                let text1 = SKLabelNode(fontNamed: "Lemondrop")
+                text1.fontSize = 15
+                text1.fontColor = UIColor.black
+                text1.text = "Spend 1 million phase crystals"
+                text1.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY+10);
+                timePrison.dialogueLayer.addChild(text1)
+                
+                let text2 = SKLabelNode(fontNamed: "Lemondrop")
+                text2.fontSize = 15
+                text2.fontColor = UIColor.black
+                text2.text = "to free the Mold God?"
+                text2.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY-10);
+                timePrison.dialogueLayer.addChild(text2)
+                
+                timePrison.yesButton = SKLabelNode(fontNamed: "Lemondrop")
+                timePrison.yesButton.fontSize = 15
+                timePrison.yesButton.fontColor = UIColor.black
+                timePrison.yesButton.text = "Yes"
+                timePrison.yesButton.position = CGPoint(x:timePrison.frame.midX-60, y:timePrison.frame.midY-60);
+                timePrison.dialogueLayer.addChild(timePrison.yesButton)
+                
+                timePrison.noButton = SKLabelNode(fontNamed: "Lemondrop")
+                timePrison.noButton.fontSize = 15
+                timePrison.noButton.fontColor = UIColor.black
+                timePrison.noButton.text = "No"
+                timePrison.noButton.position = CGPoint(x:timePrison.frame.midX+60, y:timePrison.frame.midY-60);
+                timePrison.dialogueLayer.addChild(timePrison.noButton)
+            }
+        }
+        if action == "meta" {
+            if inventory.phaseCrystals < 1000000 {
+                let textBox = SKSpriteNode(texture: SKTexture(image: UIImage(named: "pink dialogue")!))
+                textBox.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY)
+                textBox.setScale(1.25)
+                timePrison.dialogueLayer.addChild(textBox)
+                
+                let text1 = SKLabelNode(fontNamed: "Lemondrop")
+                text1.fontSize = 15
+                text1.fontColor = UIColor.black
+                text1.text = "You need 1 million phase crystals"
+                text1.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY+10);
+                timePrison.dialogueLayer.addChild(text1)
+                
+                let text2 = SKLabelNode(fontNamed: "Lemondrop")
+                text2.fontSize = 15
+                text2.fontColor = UIColor.black
+                text2.text = "to free the Metaphase Mold"
+                text2.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY-10);
+                timePrison.dialogueLayer.addChild(text2)
+                
+                timePrison.noButton = SKLabelNode(fontNamed: "Lemondrop")
+                timePrison.noButton.fontSize = 15
+                timePrison.noButton.fontColor = UIColor.black
+                timePrison.noButton.text = "Close"
+                timePrison.noButton.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY-60);
+                timePrison.dialogueLayer.addChild(timePrison.noButton)
+            }
+            else {
+                let textBox = SKSpriteNode(texture: SKTexture(image: UIImage(named: "pink dialogue")!))
+                textBox.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY)
+                textBox.setScale(1.25)
+                timePrison.dialogueLayer.addChild(textBox)
+                
+                let text1 = SKLabelNode(fontNamed: "Lemondrop")
+                text1.fontSize = 15
+                text1.fontColor = UIColor.black
+                text1.text = "Spend 1 million phase crystals"
+                text1.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY+10);
+                timePrison.dialogueLayer.addChild(text1)
+                
+                let text2 = SKLabelNode(fontNamed: "Lemondrop")
+                text2.fontSize = 15
+                text2.fontColor = UIColor.black
+                text2.text = "to free the Metaphase Mold?"
+                text2.position = CGPoint(x:timePrison.frame.midX, y:timePrison.frame.midY-10);
+                timePrison.dialogueLayer.addChild(text2)
+                
+                timePrison.yesButton = SKLabelNode(fontNamed: "Lemondrop")
+                timePrison.yesButton.fontSize = 15
+                timePrison.yesButton.fontColor = UIColor.black
+                timePrison.yesButton.text = "Yes"
+                timePrison.yesButton.position = CGPoint(x:timePrison.frame.midX-60, y:timePrison.frame.midY-60);
+                timePrison.dialogueLayer.addChild(timePrison.yesButton)
+                
+                timePrison.noButton = SKLabelNode(fontNamed: "Lemondrop")
+                timePrison.noButton.fontSize = 15
+                timePrison.noButton.fontColor = UIColor.black
+                timePrison.noButton.text = "No"
+                timePrison.noButton.position = CGPoint(x:timePrison.frame.midX+60, y:timePrison.frame.midY-60);
+                timePrison.dialogueLayer.addChild(timePrison.noButton)
+            }
+        }
+        if action == "yes" {
+            var moldData = Mold(moldType: MoldType.metaphase)
+            if timePrison.metaNum == 8 {
+                moldData = Mold(moldType: MoldType.god)
+            }
+            inventory.freedFromTimePrison[timePrison.metaNum] = true
+            inventory.phaseCrystals -= 1000000
+            timePrison.phaseCrystals = inventory.phaseCrystals
+            timePrison.freedFromTimePrison = inventory.freedFromTimePrison
+            if !inventory.unlockedMolds.contains(where: {$0.name == moldData.name}) {
+                inventory.unlockedMolds.append(moldData)
+            }
+            inventory.molds.append(moldData)
+            inventory.moldCountDicc[moldData.name]! += 1
+            inventory.scorePerSecond += moldData.PPS
+            if inventory.displayMolds.count < 25 {
+                inventory.displayMolds.append(moldData)
+            }
+            timePrison.gameLayer.removeAllChildren()
+            timePrison.dialogueLayer.removeAllChildren()
+            timePrison.createButton()
+            timePrison.playSound(select: "awe")
+            timePrison.showNewBreed(breed: moldData.moldType)
+        }
+        if action == "no" {
+            timePrison.dialogueLayer.removeAllChildren()
         }
     }
     

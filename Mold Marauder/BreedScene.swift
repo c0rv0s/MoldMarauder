@@ -1686,8 +1686,6 @@ class BreedScene: SKScene {
         moldPic.run(actionM)
         successLayer.addChild(moldPic)
         
-        
-        
         let nameLabel = SKLabelNode(fontNamed: "Lemondrop")
         nameLabel.fontSize = 16
         nameLabel.fontColor = UIColor.black
@@ -1696,8 +1694,6 @@ class BreedScene: SKScene {
         nameLabel.setScale(0.01)
         nameLabel.run(actionM)
         successLayer.addChild(nameLabel)
-        
-        
     }
     
     func addBuyDiamondsButton() {

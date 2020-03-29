@@ -147,6 +147,11 @@ GKGameCenterControllerDelegate {
 //        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
 //        inventory.timePrisonEnabled = true
 //        inventory.background = "dream"
+//        inventory.molds.append(Mold(moldType: MoldType.god))
+//        inventory.unlockedMolds.append(Mold(moldType: MoldType.god))
+//        inventory.moldCountDicc["God Mold"] = 1
+//        inventory.scorePerSecond += MoldType.god.pointsPerSecond
+        
         
         // Configure the view.
         ARgameScene = ARScene(size: arskView.bounds.size)
@@ -3212,6 +3217,50 @@ GKGameCenterControllerDelegate {
             }
             inventoryScene.metaLabel.text = String(count)
         }
+        if action == "godPlus" {
+            type = MoldType.god
+            if inventory.displayMolds.count < 25 {
+                var mCount = 0
+                for mMold in inventory.molds {
+                    if mMold.moldType == type {
+                        mCount += 1
+                    }
+                }
+                var count = 0
+                for pMold in inventory.displayMolds {
+                    if pMold.moldType == type {
+                        count += 1
+                    }
+                }
+                if count < mCount {
+                    inventory.displayMolds.append(Mold(moldType: type))
+                    inventoryScene.totalNum += 1
+                    inventoryScene.totalLabel.text = String(inventoryScene.totalNum)
+                    
+                    inventoryScene.godLabel.text = String(count + 1)
+                }
+            }
+        }
+        if action == "godMinus" {
+            type = MoldType.god
+            var index = 0
+            loop: for pMold in inventory.displayMolds {
+                if pMold.moldType == type {
+                    inventory.displayMolds.remove(at: index)
+                    inventoryScene.totalNum -= 1
+                    inventoryScene.totalLabel.text = String(inventoryScene.totalNum)
+                    break loop
+                }
+                index += 1
+            }
+            var count = 0
+            for pMold in inventory.displayMolds {
+                if pMold.moldType == type {
+                    count += 1
+                }
+            }
+            inventoryScene.godLabel.text = String(count)
+        }
         
         if (action == "exit") {
             exitInventory()
@@ -4747,7 +4796,7 @@ GKGameCenterControllerDelegate {
             // trigger the blak hole mold death
             let pick = randomInRange(lo: 0, hi: inventory.molds.count - 1)
             if inventory.molds.count > 0 {
-                if inventory.molds[pick].moldType != MoldType.star && inventory.molds[pick].moldType != MoldType.metaphase {
+                if inventory.molds[pick].moldType != MoldType.star && inventory.molds[pick].moldType != MoldType.metaphase && inventory.molds[pick].moldType != MoldType.god {
                     let moldData = inventory.molds[pick]
                     let fade = SKAction.scale(to: 0.0, duration: 0.75)
                     let imName = String(moldData.name)
@@ -4888,7 +4937,7 @@ GKGameCenterControllerDelegate {
             var index = inventory.displayMolds.firstIndex(where: {$0.name == array[0].name})
             let moldData = inventory.displayMolds[index!]
             
-            if moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.star {
+            if moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.star && moldData.moldType != MoldType.god {
                 if index != nil {
                     inventory.displayMolds.remove(at: index!)
                     index = inventory.molds.firstIndex(where: {$0.name == moldData.name})
@@ -5089,7 +5138,7 @@ GKGameCenterControllerDelegate {
                 case 11:
                     if inventory.molds.count > 0 {
                         let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                        if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase {
+                        if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase && inventory.molds[indexToEat].moldType != MoldType.god {
                             let moldData = inventory.molds[indexToEat]
                             scene.playSound(select: "crunch")
                             inventory.molds.remove(at: indexToEat)
@@ -5127,7 +5176,7 @@ GKGameCenterControllerDelegate {
                         var runCount = 0
                         while (runCount < 3) {
                             let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                            if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase {
+                            if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase && inventory.molds[indexToEat].moldType != MoldType.god {
                                 let moldData = inventory.molds[indexToEat]
                                 scene.playSound(select: "crunch")
                                 inventory.molds.remove(at: indexToEat)
@@ -5265,7 +5314,7 @@ GKGameCenterControllerDelegate {
         if action == "eat_mold" {
             if inventory.molds.count > 0 {
                 let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase {
+                if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase && inventory.molds[indexToEat].moldType != MoldType.god {
                     let moldData = inventory.molds[indexToEat]
                     scene.playSound(select: "crunch")
                     inventory.molds.remove(at: indexToEat)

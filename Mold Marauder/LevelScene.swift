@@ -833,16 +833,16 @@ class LevelScene: SKScene {
             break
         case 74:
             nextScorePerTap = BInt("7243658447265625000000000000")!
-            levelUpCost = BInt("56000000000000000000000000000000")!
+            levelUpCost = BInt("5600000000000000000000000000000")!
             break
         case 75:
             nextScorePerTap = BInt("112436584472656250000000000000")!
-            levelUpCost = BInt("4900000000000000000000000000000000")!
+            levelUpCost = BInt("49000000000000000000000000000000")!
             break
             
         default:
             nextScorePerTap = BInt("112436584472656250000000000000")!
-            levelUpCost = BInt("4900000000000000000000000000000000")!
+            levelUpCost = BInt("49000000000000000000000000000000")!
             break
         }
     }

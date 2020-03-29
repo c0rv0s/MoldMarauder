@@ -62,7 +62,6 @@ class Inventory: NSObject, NSCoding {
     
     var reinvestmentCount: Int
     var timePrisonEnabled: Bool
-
     
     override init() {
         level = 0
@@ -180,7 +179,8 @@ class Inventory: NSObject, NSCoding {
             "Angel Mold":0,
             "Invisible Mold":0,
             "Star Mold":0,
-            "Metaphase Mold":0
+            "Metaphase Mold":0,
+            "God Mold": 0
         ]
         
         moldCountDicc = [
@@ -227,7 +227,8 @@ class Inventory: NSObject, NSCoding {
             "Angel Mold":0,
             "Invisible Mold":0,
             "Star Mold":0,
-            "Metaphase Mold":0
+            "Metaphase Mold":0,
+            "God Mold": 0
         ]
     }
     
@@ -333,7 +334,8 @@ class Inventory: NSObject, NSCoding {
                 "Angel Mold":0,
                 "Invisible Mold":0,
                 "Star Mold":0,
-                "Metaphase Mold":0
+                "Metaphase Mold":0,
+                "God Mold": 0
             ]
         }
         
@@ -385,7 +387,8 @@ class Inventory: NSObject, NSCoding {
                 "Angel Mold":0,
                 "Invisible Mold":0,
                 "Star Mold":0,
-                "Metaphase Mold":0
+                "Metaphase Mold":0,
+                "God Mold": 0
             ]
             
             for m in self.molds {
@@ -783,16 +786,16 @@ class Inventory: NSObject, NSCoding {
             break
         case 74:
             scorePerTap = BInt("7243658447265625000000000000")!
-            levelUpCost = BInt("56000000000000000000000000000000")!
+            levelUpCost = BInt("5600000000000000000000000000000")!
             break
         case 75:
             scorePerTap = BInt("112436584472656250000000000000")!
-            levelUpCost = BInt("4900000000000000000000000000000000")!
+            levelUpCost = BInt("49000000000000000000000000000000")!
             break
             
         default:
             scorePerTap = BInt("112436584472656250000000000000")!
-            levelUpCost = BInt("4900000000000000000000000000000000")!
+            levelUpCost = BInt("49000000000000000000000000000000")!
             break
         }
     }

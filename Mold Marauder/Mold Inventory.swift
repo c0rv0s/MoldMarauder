@@ -187,6 +187,10 @@ class MoldInventory: SKScene {
     var metaPlus: SKNode!
     var metaMinus: SKNode!
     var metaLabel: SKLabelNode!
+    var godButton: SKNode!
+    var godPlus: SKNode!
+    var godMinus: SKNode!
+    var godLabel: SKLabelNode!
     
     var totalLabel: SKLabelNode!
     var totalNum = 0
@@ -237,7 +241,16 @@ class MoldInventory: SKScene {
     }
     
     func erectScroll() {
-        let height = 100 + (ownedMolds.count * 95)
+        var height = 100 + (ownedMolds.count * 95)
+        if ownedMolds.contains(where: {$0.name == MoldType.god.spriteName}) {
+            height += 160
+        }
+        if ownedMolds.contains(where: {$0.name == MoldType.flower.spriteName}) {
+            height += 160
+        }
+        if ownedMolds.contains(where: {$0.name == MoldType.star.spriteName}) {
+            height += 160
+        }
         //addNode
         addChild(moveableNode)
         //set up the scrollView
@@ -676,7 +689,7 @@ class MoldInventory: SKScene {
                     Texture = SKTexture(image: UIImage(named: "Flower Mold")!)
                     flowerButton = SKSpriteNode(texture:Texture)
                     // Place in scene
-                    flowerButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                    flowerButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 120)
                     lastButton = flowerButton.position
                     page1ScrollView.addChild(flowerButton)
                     
@@ -696,6 +709,7 @@ class MoldInventory: SKScene {
                     flowerMinus = SKSpriteNode(texture:Texture)
                     flowerMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
                     page1ScrollView.addChild(flowerMinus)
+                    lastButton = CGPoint(x: lastButton.x, y: lastButton.y - 60)
                 }
                 if mold.moldType == MoldType.bee && moldOwned(mold: MoldType.bee) {
                     Texture = SKTexture(image: UIImage(named: "Bee Mold")!)
@@ -1351,7 +1365,7 @@ class MoldInventory: SKScene {
                     Texture = SKTexture(image: UIImage(named: "Star Mold small")!)
                     starButton = SKSpriteNode(texture:Texture)
                     // Place in scene
-                    starButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                    starButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 120)
                     lastButton = starButton.position
                     page1ScrollView.addChild(starButton)
                     
@@ -1396,6 +1410,32 @@ class MoldInventory: SKScene {
                     metaMinus = SKSpriteNode(texture:Texture)
                     metaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
                     page1ScrollView.addChild(metaMinus)
+                }
+                if mold.moldType == MoldType.god && moldOwned(mold: MoldType.god) {
+                    Texture = SKTexture(image: UIImage(named: "God Mold")!)
+                    godButton = SKSpriteNode(texture:Texture)
+                    // Place in scene
+                    godButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 150)
+                    lastButton = godButton.position
+                    page1ScrollView.addChild(godButton)
+                    
+                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                    godPlus = SKSpriteNode(texture:Texture)
+                    godPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                    page1ScrollView.addChild(godPlus)
+                    
+                    godLabel = SKLabelNode(fontNamed: "Lemondrop")
+                    godLabel.fontSize = 20
+                    godLabel.fontColor = UIColor.black
+                    godLabel.text = String(numOfMold(mold: MoldType.god))
+                    godLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                    page1ScrollView.addChild(godLabel)
+                    
+                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                    godMinus = SKSpriteNode(texture:Texture)
+                    godMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                    page1ScrollView.addChild(godMinus)
+                    lastButton = CGPoint(x: lastButton.x, y: lastButton.y - 80)
                 }
             }
         }
@@ -2253,6 +2293,24 @@ class MoldInventory: SKScene {
                     if let handler = touchHandler {
                         playSound(select: "remove")
                         handler("metaMinus")
+                    }
+                }
+            }
+            if (godButton) != nil {
+                if node == godButton {
+                    
+                    animateName(point: touch.location(in: gameLayer), name: MoldType.god.description, new: 0)
+                }
+                if node == godPlus {
+                    if let handler = touchHandler {
+                        playSound(select: "add")
+                        handler("godPlus")
+                    }
+                }
+                if node == godMinus {
+                    if let handler = touchHandler {
+                        playSound(select: "remove")
+                        handler("godMinus")
                     }
                 }
             }

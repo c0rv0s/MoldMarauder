@@ -2438,8 +2438,8 @@ class GameScene: SKScene {
                     counter += 1
                 }
             }
-// blak hole
-            if ran > 85 && ran <= 95 && (tutorial >= 19 || tutorial < 0) {
+            // blak hole
+            if ran > 85 && ran <= 95 {
                 if isPaused == false {
                     print("ad black hole")
                     addBlackHole()

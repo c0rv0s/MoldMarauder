@@ -118,28 +118,29 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         
-        //    TESTING - REMOVE
-//            inventory = Inventory()
-//        inventory.tutorialProgress = 19
-        //    inventory.autoTap = false
-        //    inventory.autoTapLevel = 0
-//        inventory.diamonds += 500
-//            inventory.level = 75
-//            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
-            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
-            inventory.molds.append(Mold(moldType: MoldType.invisible))
-//        inventory.moldCountDicc["Metaphase Mold"] = 3
-//            inventory.reinvestmentCount = 3
-//        inventory.molds.append(Mold(moldType: MoldType.metaphase))
-//        inventory.moldCountDicc["Metaphase Mold"] = 1
-//        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
-//        inventory.timePrisonEnabled = true
-//        inventory.background = "dream"
-//        inventory.molds.append(Mold(moldType: MoldType.god))
-//        inventory.unlockedMolds.append(Mold(moldType: MoldType.god))
-//        inventory.moldCountDicc["God Mold"] = 1
-//        inventory.scorePerSecond += MoldType.god.pointsPerSecond
-//        inventory.phaseCrystals = BInt("10000000")!
+//      TESTING - REMOVE
+//      inventory = Inventory()
+//      inventory.tutorialProgress = 19
+//      inventory.autoTap = false
+//      inventory.autoTapLevel = 0
+//      inventory.diamonds += 500
+//      inventory.level = 75
+//      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
+//      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
+//      inventory.molds.append(Mold(moldType: MoldType.invisible))
+//      inventory.moldCountDicc["Invisible Mold"] = 6
+//      inventory.moldCountDicc["Metaphase Mold"] = 3
+//      inventory.reinvestmentCount = 3
+//      inventory.molds.append(Mold(moldType: MoldType.metaphase))
+//      inventory.moldCountDicc["Metaphase Mold"] = 1
+//      inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
+//      inventory.timePrisonEnabled = true
+//      inventory.background = "dream"
+//      inventory.molds.append(Mold(moldType: MoldType.god))
+//      inventory.unlockedMolds.append(Mold(moldType: MoldType.god))
+//      inventory.moldCountDicc["God Mold"] = 1
+//      inventory.scorePerSecond += MoldType.god.pointsPerSecond
+//      inventory.phaseCrystals = BInt("10000000")!
         
         
         // Configure the view.
@@ -300,8 +301,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         iCloudKeyStore?.set(inventory.reinvestmentCount, forKey: "reinvestmentCount")
         iCloudKeyStore?.set(inventory.timePrisonEnabled, forKey: "timePrisonEnabled")
         iCloudKeyStore?.set(inventory.freedFromTimePrison, forKey: "freedFromTimePrison")
-        let sCrystals = String(describing: inventory.phaseCrystals)
-        iCloudKeyStore?.set(sCrystals, forKey: "phaseCrystals")
+        iCloudKeyStore?.set(String(describing: inventory.phaseCrystals), forKey: "phaseCrystals")
+        iCloudKeyStore?.set(String(describing: inventory.newPhaseCrystals), forKey: "newPhaseCrystals")
         
         //now for achievmeents and molds
         var saveMolds = [Int]()
@@ -388,6 +389,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         inventory.timePrisonEnabled = iCloudKeyStore?.object(forKey: "timePrisonEnabled") as! Bool
         inventory.freedFromTimePrison = iCloudKeyStore?.object(forKey: "freedFromTimePrison") as! Array<Bool>
         inventory.phaseCrystals = BInt(iCloudKeyStore?.object(forKey: "phaseCrystals") as! String)!
+        inventory.newPhaseCrystals = BInt(iCloudKeyStore?.object(forKey: "newPhaseCrystals") as! String)!
         
         let saveMolds = iCloudKeyStore?.object(forKey: "molds") as! Array<Int>
         let saveDisplayMolds = iCloudKeyStore?.object(forKey: "displayMolds") as! Array<Int>
@@ -1163,6 +1165,57 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
     }
     
+    //DREAMSCENE HANDLER
+    func dreamSceneHandler(action: String) {
+        let blackOut = SKSpriteNode(texture: SKTexture(image: UIImage(named: "black out")!))
+        // Place in scene
+        blackOut.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY);
+        dreamScene.addChild(blackOut)
+        
+        let textBox = SKSpriteNode(texture: SKTexture(image: UIImage(named: "pink dialogue")!))
+        textBox.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY)
+        textBox.setScale(1.25)
+        dreamScene.addChild(textBox)
+        
+        let phaseEarnedText1 = SKLabelNode(fontNamed: "Lemondrop")
+        phaseEarnedText1.fontSize = 15
+        phaseEarnedText1.fontColor = UIColor.black
+        phaseEarnedText1.text = "You have earned"
+        phaseEarnedText1.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY+10);
+        dreamScene.addChild(phaseEarnedText1)
+        
+        let phaseEarnedText2 = SKLabelNode(fontNamed: "Lemondrop")
+        phaseEarnedText2.fontSize = 15
+        phaseEarnedText2.fontColor = UIColor.black
+        phaseEarnedText2.text = "\(formatNumber(points: inventory.newPhaseCrystals)) phase crystals!"
+        phaseEarnedText2.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY-20);
+        dreamScene.addChild(phaseEarnedText2)
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+            self.inventory.phaseCrystals += self.inventory.newPhaseCrystals
+            self.inventory.newPhaseCrystals = BInt("0")!
+            self.inventory.timePrisonEnabled = true
+            
+            self.dreamScene.removeAllChildren()
+            self.scene.menuPopUp.removeFromParent()
+            self.scene.updateMolds()
+            self.scene.isActive = true
+            self.scene.isPaused = false
+            self.scene.reinvestCount = self.inventory.reinvestmentCount
+            self.cashLabel.isHidden = false
+            self.cashHeader.isHidden = false
+            self.skView.presentScene(self.scene)
+            if self.inventory.background != self.scene.backgroundName {
+                self.scene.backgroundName = self.inventory.background
+                self.scene.setBackground()
+            }
+            self.updateLabels()
+            self.shiftTimerLabels()
+            self.generateQuest()
+            self.playBackgroundMusic(filename: "\(self.inventory.background).wav")
+        }
+    }
+    
     //REINVEST HANDLER
     func reinvestHandler(action: String) {
         activateSleepTimer()
@@ -1200,6 +1253,22 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             var metaphaseCount = inventory.moldCountDicc["Metaphase Mold"] ?? 0
             var starCount = inventory.moldCountDicc["Star Mold"] ?? 0
             var godCount = inventory.moldCountDicc["God Mold"] ?? 0
+            var tempNewPhaseCrystals = inventory.newPhaseCrystals
+            let tempPhaseCrystals = inventory.phaseCrystals
+            let tempTimePrisonEnabled = inventory.timePrisonEnabled
+            let tempFreedFromTimePrison = inventory.freedFromTimePrison
+            
+            for i in 0..<inventory.moldCountDicc["Invisible Mold", default: 1]  {
+                if i < 4 {
+                    tempNewPhaseCrystals += BInt(250000)
+                }
+                else if i < 44 {
+                    tempNewPhaseCrystals += BInt(25000)
+                }
+                else {
+                    tempNewPhaseCrystals += BInt(2500)
+                }
+            }
             
             inventory = Inventory()
             inventory.diamonds += tempDiamonds
@@ -1211,6 +1280,10 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             inventory.muteSound = tempMuteS
             inventory.muteMusic = tempMuteM
             inventory.reinvestmentCount = tempReinvest
+            inventory.newPhaseCrystals = tempNewPhaseCrystals
+            inventory.phaseCrystals = tempPhaseCrystals
+            inventory.timePrisonEnabled = tempTimePrisonEnabled
+            inventory.freedFromTimePrison = tempFreedFromTimePrison
             if metaphaseCount > 0 {
                 inventory.moldCountDicc["Metaphase Mold"] = metaphaseCount
                 inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
@@ -1246,12 +1319,19 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             scene.reinvestCount = inventory.reinvestmentCount
             
             if inventory.reinvestmentCount >= 4 {
-                cashLabel.isHidden = true
-                cashHeader.isHidden = true
-                dreamScene = DreamScene(size: skView.bounds.size)
-                dreamScene.timePrisonEnabled = inventory.timePrisonEnabled
-                skView.presentScene(dreamScene)
-                playBackgroundMusic(filename: "dream.wav")
+                inventory.reinvestmentCount = 0
+                if godCount > 0 {
+                    print("seal the rift")
+                }
+                else {
+                    cashLabel.isHidden = true
+                    cashHeader.isHidden = true
+                    dreamScene = DreamScene(size: skView.bounds.size)
+                    dreamScene.timePrisonEnabled = inventory.timePrisonEnabled
+                    dreamScene.touchHandler = dreamSceneHandler
+                    skView.presentScene(dreamScene)
+                    playBackgroundMusic(filename: "dream.wav")
+                }
             }
             else {
                 let disappear = SKAction.scale(to: 0, duration: 0.1)

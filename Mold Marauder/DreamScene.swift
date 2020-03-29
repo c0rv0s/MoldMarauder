@@ -12,7 +12,16 @@ class DreamScene: SKScene {
 
     var dream: Dream!
     var background: SKSpriteNode!
+    var dialogueLabel: SKLabelNode!
     var timePrisonEnabled = false
+    
+    var charsPerLine = 18
+    var lineWidth = 400
+    var dialogueStarted = false
+    var dialogueIndex = 0
+    
+    //touch handler
+    var touchHandler: ((String) -> ())?
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder) is not used in this app")
@@ -74,5 +83,51 @@ class DreamScene: SKScene {
         blackOut.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
         self.addChild(blackOut)
         blackOut.run( SKAction.sequence([.fadeOut(withDuration: 3), .removeFromParent()]) )
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 6) {
+            self.displayDialogue(index: 0)
+        }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        dialogueIndex += 1
+        if timePrisonEnabled {
+            if dialogueIndex < subsequentDialogueArray.count {
+                dialogueLabel.removeFromParent()
+                displayDialogue(index: dialogueIndex)
+            }
+            else {
+                if let handler = touchHandler {
+                    handler("subsequent dialogue")
+                }
+            }
+        }
+        else {
+            if dialogueIndex < firstDialogueArray.count {
+                dialogueLabel.removeFromParent()
+                displayDialogue(index: dialogueIndex)
+            }
+            else {
+                if let handler = touchHandler {
+                    handler("first dialogue")
+                }
+            }
+        }
+    }
+    
+    func displayDialogue(index: Int) {
+        var textString = firstDialogueArray[index]
+        if timePrisonEnabled {
+            textString = subsequentDialogueArray[index]
+        }
+        dialogueLabel = SKLabelNode(fontNamed: "Lemondrop")
+        dialogueLabel.text = textString
+        dialogueLabel.numberOfLines = (textString.count / charsPerLine) + 1
+        dialogueLabel.preferredMaxLayoutWidth = CGFloat(lineWidth)
+        dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+240)
+        dialogueLabel.fontSize = 18
+        dialogueLabel.fontColor = UIColor.black
+        self.addChild(dialogueLabel)
+        dialogueStarted = true
     }
 }

@@ -62,6 +62,8 @@ class Inventory: NSObject, NSCoding {
     
     var reinvestmentCount: Int
     var timePrisonEnabled: Bool
+    var freedFromTimePrison: Array<Bool>
+    var phaseCrystals: BInt
     
     override init() {
         level = 0
@@ -106,6 +108,8 @@ class Inventory: NSObject, NSCoding {
         
         reinvestmentCount = 0
         timePrisonEnabled = false
+        phaseCrystals = BInt("0")!
+        freedFromTimePrison = [false, false, false, false, false, false, false, false, false]
         
         achievementsDicc = [
             "own 5" : false,
@@ -266,7 +270,8 @@ class Inventory: NSObject, NSCoding {
         
         reinvestmentCount = aDecoder.decodeInteger(forKey: "reinvestmentCount")
         timePrisonEnabled = aDecoder.decodeBool(forKey: "timePrisonEnabled")
-        
+        phaseCrystals = BInt(aDecoder.decodeObject(forKey: "phaseCrystals") as! String)!
+        freedFromTimePrison = aDecoder.decodeObject(forKey: "freedFromTimePrison") as! Array<Bool>
         
         let saveMolds = aDecoder.decodeObject(forKey: "molds") as! Array<Int>
         let saveDisplayMolds = aDecoder.decodeObject(forKey: "displayMolds") as! Array<Int>
@@ -443,6 +448,8 @@ class Inventory: NSObject, NSCoding {
         
         aCoder.encode(reinvestmentCount, forKey: "reinvestmentCount")
         aCoder.encode(timePrisonEnabled, forKey: "timePrisonEnabled")
+        aCoder.encode(String(describing: phaseCrystals), forKey: "phaseCrystals")
+        aCoder.encode(freedFromTimePrison, forKey: "freedFromTimePrison")
         
         //now for achievmeents and molds
         var saveMolds = [Int]()

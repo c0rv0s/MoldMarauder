@@ -349,6 +349,9 @@ GKGameCenterControllerDelegate {
         
         iCloudKeyStore?.set(inventory.reinvestmentCount, forKey: "reinvestmentCount")
         iCloudKeyStore?.set(inventory.timePrisonEnabled, forKey: "timePrisonEnabled")
+        iCloudKeyStore?.set(inventory.freedFromTimePrison, forKey: "freedFromTimePrison")
+        let sCrystals = String(describing: inventory.phaseCrystals)
+        iCloudKeyStore?.set(sCrystals, forKey: "phaseCrystals")
         
         //now for achievmeents and molds
         var saveMolds = [Int]()
@@ -433,6 +436,8 @@ GKGameCenterControllerDelegate {
         
         inventory.reinvestmentCount = iCloudKeyStore?.object(forKey: "reinvestmentCount") as! Int
         inventory.timePrisonEnabled = iCloudKeyStore?.object(forKey: "timePrisonEnabled") as! Bool
+        inventory.freedFromTimePrison = iCloudKeyStore?.object(forKey: "freedFromTimePrison") as! Array<Bool>
+        inventory.phaseCrystals = BInt(iCloudKeyStore?.object(forKey: "phaseCrystals") as! String)!
         
         let saveMolds = iCloudKeyStore?.object(forKey: "molds") as! Array<Int>
         let saveDisplayMolds = iCloudKeyStore?.object(forKey: "displayMolds") as! Array<Int>
@@ -1006,6 +1011,7 @@ GKGameCenterControllerDelegate {
             timePrison.name = "timePrison"
             timePrison.scaleMode = .aspectFill
             timePrison.touchHandler = timePrisonHandler
+            timePrison.freedFromTimePrison = inventory.freedFromTimePrison
             if aroff {
                 skView.presentScene(timePrison)
             }

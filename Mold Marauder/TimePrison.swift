@@ -40,7 +40,7 @@ class TimePrison: SKScene {
     func createButton()
     {
         // BACK MENU
-        var Texture = SKTexture(image: UIImage(named: "exit")!)
+        let Texture = SKTexture(image: UIImage(named: "exit")!)
         backButton = SKSpriteNode(texture:Texture)
         // Place in scene
         backButton.position = CGPoint(x:self.frame.midX+160, y:self.frame.midY+320);

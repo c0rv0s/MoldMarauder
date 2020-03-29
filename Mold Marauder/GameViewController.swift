@@ -143,6 +143,7 @@ GKGameCenterControllerDelegate {
 //        inventory.moldCountDicc["Metaphase Mold"] = 3
 //            inventory.reinvestmentCount = 3
 //        inventory.molds.append(Mold(moldType: MoldType.metaphase))
+//        inventory.moldCountDicc["Metaphase Mold"] = 1
 //        inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
 //        inventory.timePrisonEnabled = true
 //        inventory.background = "dream"
@@ -5904,8 +5905,8 @@ GKGameCenterControllerDelegate {
     
     //per second function
     @objc func addCash() {
+        let metaMult = 1 + inventory.moldCountDicc["Metaphase Mold"]!
         //hotpatch: delete extra worms
-        
         if scene.wormLayer.children.count > 0 && scene.wormHP.count == 0 {  
             scene.wormKill()
         }
@@ -5922,12 +5923,12 @@ GKGameCenterControllerDelegate {
         if arskView.isHidden {
             //adjust spritz counter
             if inventory.spritzCount > 0 {
+                let div = inventory.scorePerSecond * inventory.spritzAmount * metaMult
                 if inventory.reinvestmentCount >= 2 {
-                    let div = (inventory.scorePerSecond * inventory.spritzAmount)
                     incrementCash(pointsToAdd: div / 2)
                 }
                 else{
-                    incrementCash(pointsToAdd: (inventory.scorePerSecond * inventory.spritzAmount))
+                    incrementCash(pointsToAdd: div)
                 }
                 
                 inventory.spritzCount -= 1
@@ -5940,12 +5941,12 @@ GKGameCenterControllerDelegate {
             }
                 //no spritz just add normal cash
             else {
+                let div = inventory.scorePerSecond * metaMult
                 if inventory.reinvestmentCount >= 2 {
-                    let div = inventory.scorePerSecond
                     incrementCash(pointsToAdd: div / 2)
                 }
                 else{
-                    incrementCash(pointsToAdd: inventory.scorePerSecond)
+                    incrementCash(pointsToAdd: div)
                 }
                 
                 scene.spritzLabel.text = ""
@@ -5955,10 +5956,10 @@ GKGameCenterControllerDelegate {
                 if scene.diamondShop == false && scene.isActive == true {
                     if inventory.spritzCount > 0 && inventory.spritzAmount > 0 {
                         if inventory.reinvestmentCount >= 2 {
-                            scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*inventory.spritzAmount)/2, tap: false, fairy: false, offline: false)
+                            scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*inventory.spritzAmount*metaMult)/2, tap: false, fairy: false, offline: false)
                         }
                         else {
-                            scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*inventory.spritzAmount), tap: false, fairy: false, offline: false)
+                            scene.animateScore(point: scene.center, amount: (inventory.scorePerSecond*inventory.spritzAmount*metaMult), tap: false, fairy: false, offline: false)
                         }
                     }
                     else if inventory.spritzCount > 0 && inventory.spritzAmount == 0 {
@@ -5966,10 +5967,10 @@ GKGameCenterControllerDelegate {
                     }
                     else {
                         if inventory.reinvestmentCount >= 2 {
-                            scene.animateScore(point: scene.center, amount: inventory.scorePerSecond/2, tap: false, fairy: false, offline: false)
+                            scene.animateScore(point: scene.center, amount: inventory.scorePerSecond*metaMult/2, tap: false, fairy: false, offline: false)
                         }
                         else {
-                            scene.animateScore(point: scene.center, amount: inventory.scorePerSecond, tap: false, fairy: false, offline: false)
+                            scene.animateScore(point: scene.center, amount: inventory.scorePerSecond*metaMult, tap: false, fairy: false, offline: false)
                         }
                         
                     }
@@ -6008,12 +6009,12 @@ GKGameCenterControllerDelegate {
         else {
             //adjust spritz counter
             if inventory.spritzCount > 0 {
+                let div = inventory.scorePerSecond * inventory.spritzAmount * metaMult
                 if inventory.reinvestmentCount >= 2 {
-                    let div = (inventory.scorePerSecond * inventory.spritzAmount)
                     incrementCash(pointsToAdd: div / 2)
                 }
                 else{
-                    incrementCash(pointsToAdd: (inventory.scorePerSecond * inventory.spritzAmount))
+                    incrementCash(pointsToAdd: div)
                 }
                 
                 inventory.spritzCount -= 1
@@ -6026,12 +6027,12 @@ GKGameCenterControllerDelegate {
             }
                 //no spritz just add normal cash
             else {
+                let div = inventory.scorePerSecond * metaMult
                 if inventory.reinvestmentCount >= 2 {
-                    let div = inventory.scorePerSecond
                     incrementCash(pointsToAdd: div / 2)
                 }
                 else{
-                    incrementCash(pointsToAdd: inventory.scorePerSecond)
+                    incrementCash(pointsToAdd: div)
                 }
                 
                 ARgameScene.spritzLabel.text = ""

@@ -12,7 +12,9 @@ class CreditsScene: SKScene {
     
     var backButton: SKNode!
     var revButton: SKNode!
-    var listenButton: SKNode!
+    
+    var twitterButton: SKNode!
+    var soundcloudButton: SKNode!
     
     var musicButton: SKNode!
     var soundButton: SKNode!
@@ -90,81 +92,84 @@ class CreditsScene: SKScene {
         labelFour.position = CGPoint(x:self.frame.midX, y:self.frame.midY+102)
         addChild(labelFour)
         
-        Texture = SKTexture(image: UIImage(named: "listen button")!)
-        listenButton = SKSpriteNode(texture:Texture)
-        // Place in scene
-        listenButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY+85)
+        Texture = SKTexture(image: UIImage(named: "soundcloud")!)
+        soundcloudButton = SKSpriteNode(texture:Texture)
+        soundcloudButton.position = CGPoint(x:self.frame.midX-80, y:self.frame.midY+70)
+        self.addChild(soundcloudButton)
         
-//    self.addChild(listenButton)
+        Texture = SKTexture(image: UIImage(named: "twitter")!)
+        twitterButton = SKSpriteNode(texture:Texture)
+        twitterButton.position = CGPoint(x:self.frame.midX+80, y:self.frame.midY+70)
+        self.addChild(twitterButton)
         
         let labelFive = SKLabelNode(fontNamed: "Lemondrop")
         labelFive.fontSize = 13
         labelFive.fontColor = UIColor.black
         labelFive.text = "Special Thanks:"
-        labelFive.position = CGPoint(x:self.frame.midX, y:self.frame.midY+50)
+        labelFive.position = CGPoint(x:self.frame.midX, y:self.frame.midY+20)
         addChild(labelFive)
         
         let labelSix = SKLabelNode(fontNamed: "Lemondrop")
         labelSix.fontSize = 13
         labelSix.fontColor = UIColor.black
         labelSix.text = "Vecteezy.com"
-        labelSix.position = CGPoint(x:self.frame.midX, y:self.frame.midY+27)
+        labelSix.position = CGPoint(x:self.frame.midX, y:self.frame.midY-3)
         addChild(labelSix)
         
         let labelSeven = SKLabelNode(fontNamed: "Lemondrop")
         labelSeven.fontSize = 13
         labelSeven.fontColor = UIColor.black
         labelSeven.text = "for Yurt and City Skyline vectors"
-        labelSeven.position = CGPoint(x:self.frame.midX, y:self.frame.midY+14)
+        labelSeven.position = CGPoint(x:self.frame.midX, y:self.frame.midY-16)
         addChild(labelSeven)
         
         let labelEight = SKLabelNode(fontNamed: "Lemondrop")
         labelEight.fontSize = 13
         labelEight.fontColor = UIColor.black
         labelEight.text = "Github user crashoverride777:"
-        labelEight.position = CGPoint(x:self.frame.midX, y:self.frame.midY-8)
+        labelEight.position = CGPoint(x:self.frame.midX, y:self.frame.midY-38)
         addChild(labelEight)
         
         let labelNine = SKLabelNode(fontNamed: "Lemondrop")
         labelNine.fontSize = 13
         labelNine.fontColor = UIColor.black
         labelNine.text = "for SwiftySKScrollView"
-        labelNine.position = CGPoint(x:self.frame.midX, y:self.frame.midY-22)
+        labelNine.position = CGPoint(x:self.frame.midX, y:self.frame.midY-52)
         addChild(labelNine)
         
         let labelTen = SKLabelNode(fontNamed: "Lemondrop")
         labelTen.fontSize = 13
         labelTen.fontColor = UIColor.black
         labelTen.text = "Github user mkrd:"
-        labelTen.position = CGPoint(x:self.frame.midX, y:self.frame.midY-44)
+        labelTen.position = CGPoint(x:self.frame.midX, y:self.frame.midY-74)
         addChild(labelTen)
         
         let label11 = SKLabelNode(fontNamed: "Lemondrop")
         label11.fontSize = 13
         label11.fontColor = UIColor.black
         label11.text = "for Swift-Big-Integer"
-        label11.position = CGPoint(x:self.frame.midX, y:self.frame.midY-58)
+        label11.position = CGPoint(x:self.frame.midX, y:self.frame.midY-88)
         addChild(label11)
         
         let label12 = SKLabelNode(fontNamed: "Lemondrop")
         label12.fontSize = 13
         label12.fontColor = UIColor.black
         label12.text = "And RayWenderleich.com"
-        label12.position = CGPoint(x:self.frame.midX, y:self.frame.midY-80)
+        label12.position = CGPoint(x:self.frame.midX, y:self.frame.midY-110)
         addChild(label12)
         
         let label13 = SKLabelNode(fontNamed: "Lemondrop")
         label13.fontSize = 13
         label13.fontColor = UIColor.black
         label13.text = "For countless invaluable tutorials"
-        label13.position = CGPoint(x:self.frame.midX, y:self.frame.midY-94)
+        label13.position = CGPoint(x:self.frame.midX, y:self.frame.midY-124)
         addChild(label13)
         
         // Review
         Texture = SKTexture(image: UIImage(named: "review button")!)
         revButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        revButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-130)
+        revButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-160)
         
         self.addChild(revButton)
         
@@ -213,7 +218,7 @@ class CreditsScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "music_mute")!)
         musicButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        musicButton.position = CGPoint(x:self.frame.midX-50, y:self.frame.midY-190)
+        musicButton.position = CGPoint(x:self.frame.midX-50, y:self.frame.midY-220)
         
         self.addChild(musicButton)
         
@@ -221,7 +226,7 @@ class CreditsScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "sound_mute")!)
         soundButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        soundButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-190)
+        soundButton.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-220)
         
         self.addChild(soundButton)
     }
@@ -266,10 +271,14 @@ class CreditsScene: SKScene {
                 handler("review")
             }
         }
-        if listenButton.contains(touchLocation) {
-            print("listen")
+        if soundcloudButton.contains(touchLocation) {
             if let handler = touchHandler {
-                handler("listen")
+                handler("soundcloud")
+            }
+        }
+        if twitterButton.contains(touchLocation) {
+            if let handler = touchHandler {
+                handler("twitter")
             }
         }
         if musicButton.contains(touchLocation) {

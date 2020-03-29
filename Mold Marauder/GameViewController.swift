@@ -4520,6 +4520,14 @@ GKGameCenterControllerDelegate {
                 creditsScene.addMuteSound()
             }
         }
+        if action == "twitter" {
+            let url = URL(string: "https://twitter.com/c0rv0s")!
+            UIApplication.shared.open(url)
+        }
+        if action == "soundcloud" {
+            let url = URL(string: "https://soundcloud.com/spaceydreams")!
+            UIApplication.shared.open(url)
+        }
     }
     
     //Help HANDLER

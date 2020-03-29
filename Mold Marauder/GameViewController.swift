@@ -37,6 +37,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     var helpScene: HelpScene!
     var reinvestments: Reinvestments!
     var timePrison: TimePrison!
+    var dreamScene: DreamScene!
     
     @IBOutlet weak var skView: SKView!
     
@@ -125,8 +126,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //        inventory.diamonds += 500
 //            inventory.level = 75
 //            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
-//            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
-//            inventory.molds.append(Mold(moldType: MoldType.invisible))
+            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
+            inventory.molds.append(Mold(moldType: MoldType.invisible))
 //        inventory.moldCountDicc["Metaphase Mold"] = 3
 //            inventory.reinvestmentCount = 3
 //        inventory.molds.append(Mold(moldType: MoldType.metaphase))
@@ -1235,34 +1236,40 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 }
             }
             
-            if inventory.reinvestmentCount >= 4 {
-                print("the voice of god")
-            }
-            
-            let disappear = SKAction.scale(to: 0, duration: 0.1)
-            let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
             reinvestments.scrollView?.removeFromSuperview()
             reinvestments.cometLayer.removeAllChildren()
             reinvestments.cometLayer.cometTimer.invalidate()
             scene.molds = inventory.displayMolds
             incrementDiamonds(newDiamonds: 0)
             scene.wormDifficulty = 4 - inventory.laser + 1
-            scene.updateMolds()
-            scene.isActive = true
-            scene.isPaused = false
-            skView.presentScene(scene)
-            scene.menuPopUp.run(action)
-            
-            if inventory.background != scene.backgroundName {
-                scene.backgroundName = inventory.background
-                scene.setBackground()
-            }
-            updateLabels()
-            shiftTimerLabels()
-            generateQuest()
             scene.playSound(select: "reinvest")
             scene.reinvestCount = inventory.reinvestmentCount
-            playBackgroundMusic(filename: "\(inventory.background).wav")
+            
+            if inventory.reinvestmentCount >= 4 {
+                cashLabel.isHidden = true
+                cashHeader.isHidden = true
+                dreamScene = DreamScene(size: skView.bounds.size)
+                dreamScene.timePrisonEnabled = inventory.timePrisonEnabled
+                skView.presentScene(dreamScene)
+                playBackgroundMusic(filename: "dream.wav")
+            }
+            else {
+                let disappear = SKAction.scale(to: 0, duration: 0.1)
+                let action = SKAction.sequence([disappear, SKAction.removeFromParent()])
+                scene.updateMolds()
+                scene.isActive = true
+                scene.isPaused = false
+                skView.presentScene(scene)
+                scene.menuPopUp.run(action)
+                if inventory.background != scene.backgroundName {
+                    scene.backgroundName = inventory.background
+                    scene.setBackground()
+                }
+                updateLabels()
+                shiftTimerLabels()
+                generateQuest()
+                playBackgroundMusic(filename: "\(inventory.background).wav")
+            }
         }
     }
     //LEVEL SCENE HANDLER

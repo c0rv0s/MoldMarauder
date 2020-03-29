@@ -128,13 +128,13 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
 //      inventory.molds.append(Mold(moldType: MoldType.invisible))
-//      inventory.moldCountDicc["Invisible Mold"] = 6
+//      inventory.moldCountDicc["Invisible Mold"] = 1
 //      inventory.moldCountDicc["Metaphase Mold"] = 3
 //      inventory.reinvestmentCount = 3
 //      inventory.molds.append(Mold(moldType: MoldType.metaphase))
 //      inventory.moldCountDicc["Metaphase Mold"] = 1
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
-//      inventory.timePrisonEnabled = true
+//      inventory.timePrisonEnabled = false
 //      inventory.background = "dream"
 //      inventory.molds.append(Mold(moldType: MoldType.god))
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.god))
@@ -1167,52 +1167,58 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     //DREAMSCENE HANDLER
     func dreamSceneHandler(action: String) {
-        let blackOut = SKSpriteNode(texture: SKTexture(image: UIImage(named: "black out")!))
-        // Place in scene
-        blackOut.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY);
-        dreamScene.addChild(blackOut)
-        
-        let textBox = SKSpriteNode(texture: SKTexture(image: UIImage(named: "pink dialogue")!))
-        textBox.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY)
-        textBox.setScale(1.25)
-        dreamScene.addChild(textBox)
-        
-        let phaseEarnedText1 = SKLabelNode(fontNamed: "Lemondrop")
-        phaseEarnedText1.fontSize = 15
-        phaseEarnedText1.fontColor = UIColor.black
-        phaseEarnedText1.text = "You have earned"
-        phaseEarnedText1.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY+10);
-        dreamScene.addChild(phaseEarnedText1)
-        
-        let phaseEarnedText2 = SKLabelNode(fontNamed: "Lemondrop")
-        phaseEarnedText2.fontSize = 15
-        phaseEarnedText2.fontColor = UIColor.black
-        phaseEarnedText2.text = "\(formatNumber(points: inventory.newPhaseCrystals)) phase crystals!"
-        phaseEarnedText2.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY-20);
-        dreamScene.addChild(phaseEarnedText2)
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-            self.inventory.phaseCrystals += self.inventory.newPhaseCrystals
-            self.inventory.newPhaseCrystals = BInt("0")!
-            self.inventory.timePrisonEnabled = true
+        if dreamScene.dialogueLabel != nil {
+            dreamScene.dialogueLabel.removeFromParent()
+            dreamScene.dialogueLabel = nil
+            let blackOut = SKSpriteNode(texture: SKTexture(image: UIImage(named: "black out")!))
+            // Place in scene
+            blackOut.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY);
+            dreamScene.addChild(blackOut)
             
-            self.dreamScene.removeAllChildren()
-            self.scene.menuPopUp.removeFromParent()
-            self.scene.updateMolds()
-            self.scene.isActive = true
-            self.scene.isPaused = false
-            self.scene.reinvestCount = self.inventory.reinvestmentCount
-            self.cashLabel.isHidden = false
-            self.cashHeader.isHidden = false
-            self.skView.presentScene(self.scene)
-            if self.inventory.background != self.scene.backgroundName {
-                self.scene.backgroundName = self.inventory.background
-                self.scene.setBackground()
+            let textBox = SKSpriteNode(texture: SKTexture(image: UIImage(named: "pink dialogue")!))
+            textBox.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY)
+            textBox.setScale(1.25)
+            dreamScene.addChild(textBox)
+            
+            let phaseEarnedText1 = SKLabelNode(fontNamed: "Lemondrop")
+            phaseEarnedText1.fontSize = 15
+            phaseEarnedText1.fontColor = UIColor.black
+            phaseEarnedText1.text = "You have earned"
+            phaseEarnedText1.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY+10);
+            dreamScene.addChild(phaseEarnedText1)
+            
+            let phaseEarnedText2 = SKLabelNode(fontNamed: "Lemondrop")
+            phaseEarnedText2.fontSize = 15
+            phaseEarnedText2.fontColor = UIColor.black
+            phaseEarnedText2.text = "\(formatNumber(points: inventory.newPhaseCrystals)) phase crystals!"
+            phaseEarnedText2.position = CGPoint(x:dreamScene.frame.midX, y:dreamScene.frame.midY-20);
+            dreamScene.addChild(phaseEarnedText2)
+            
+            dreamScene.playSound(select: "ding")
+            
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+                self.inventory.phaseCrystals += self.inventory.newPhaseCrystals
+                self.inventory.newPhaseCrystals = BInt("0")!
+                self.inventory.timePrisonEnabled = true
+                
+                self.dreamScene.removeAllChildren()
+                self.scene.menuPopUp.removeFromParent()
+                self.scene.updateMolds()
+                self.scene.isActive = true
+                self.scene.isPaused = false
+                self.scene.reinvestCount = self.inventory.reinvestmentCount
+                self.cashLabel.isHidden = false
+                self.cashHeader.isHidden = false
+                self.skView.presentScene(self.scene)
+                if self.inventory.background != self.scene.backgroundName {
+                    self.scene.backgroundName = self.inventory.background
+                    self.scene.setBackground()
+                }
+                self.updateLabels()
+                self.shiftTimerLabels()
+                self.generateQuest()
+                self.playBackgroundMusic(filename: "\(self.inventory.background).wav")
             }
-            self.updateLabels()
-            self.shiftTimerLabels()
-            self.generateQuest()
-            self.playBackgroundMusic(filename: "\(self.inventory.background).wav")
         }
     }
     
@@ -1328,6 +1334,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     cashHeader.isHidden = true
                     dreamScene = DreamScene(size: skView.bounds.size)
                     dreamScene.timePrisonEnabled = inventory.timePrisonEnabled
+                    dreamScene.dialogueIndex = 0
+                    dreamScene.mute = inventory.muteSound
                     dreamScene.touchHandler = dreamSceneHandler
                     skView.presentScene(dreamScene)
                     playBackgroundMusic(filename: "dream.wav")

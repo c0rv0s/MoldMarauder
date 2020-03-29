@@ -19,6 +19,7 @@ class DreamScene: SKScene {
     var lineWidth = 400
     var dialogueStarted = false
     var dialogueIndex = 0
+    var mute = false
     
     //touch handler
     var touchHandler: ((String) -> ())?
@@ -90,11 +91,15 @@ class DreamScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        dialogueIndex += 1
+        if dialogueLabel != nil {
+            dialogueIndex += 1
+        }
         if timePrisonEnabled {
             if dialogueIndex < subsequentDialogueArray.count {
-                dialogueLabel.removeFromParent()
-                displayDialogue(index: dialogueIndex)
+                if dialogueLabel != nil {
+                    dialogueLabel.removeFromParent()
+                    displayDialogue(index: dialogueIndex)
+                }
             }
             else {
                 if let handler = touchHandler {
@@ -104,8 +109,10 @@ class DreamScene: SKScene {
         }
         else {
             if dialogueIndex < firstDialogueArray.count {
-                dialogueLabel.removeFromParent()
-                displayDialogue(index: dialogueIndex)
+                if dialogueLabel != nil {
+                    dialogueLabel.removeFromParent()
+                    displayDialogue(index: dialogueIndex)
+                }
             }
             else {
                 if let handler = touchHandler {
@@ -129,5 +136,16 @@ class DreamScene: SKScene {
         dialogueLabel.fontColor = UIColor.black
         self.addChild(dialogueLabel)
         dialogueStarted = true
+    }
+    
+    func playSound(select: String) {
+        if mute == false {
+            switch select {
+            case "ding":
+                run(dingSound)
+            default:
+                run(dingSound)
+            }
+        }
     }
 }

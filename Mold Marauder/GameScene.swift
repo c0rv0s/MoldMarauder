@@ -503,98 +503,84 @@ class GameScene: SKScene {
             else {
                 //Boop the worms
                 let wormBoop = touch.location(in: wormLayer)
-                let boopedWorm = self.atPoint(wormBoop)
+                let boopedWorm = wormLayer.atPoint(wormBoop)
                 if boopedWorm is SKSpriteNode {
-                    // 2
-                    var index = 0   //this is for trackign something
-                    for worm in wormLayer.children {
-                        if worm.position == boopedWorm.position {
-                            if index < wormHP.count {
-
-                                //laser animation
-                                let rotation = Int(arc4random_uniform(15)) * 24
-                                let finalLaserFrame = laserFrames[3]
-                                let laserPic = SKSpriteNode(texture:finalLaserFrame)
-                                laserPic.position = worm.position
-                                let rotateR = SKAction.rotate(byAngle: CGFloat(rotation), duration: 0.01)
-                                let actionST = SKAction.sequence([rotateR])
-                                laserPic.run(actionST)
-                                deadLayer.addChild(laserPic)
-                                playSound(select: "laser")
-                                laserPic.run(SKAction.sequence([SKAction.animate(with: laserFrames,
-                                                                                timePerFrame: 0.1,
-                                                                                resize: false,
-                                                                                restore: true), SKAction.removeFromParent()]))
-
+                    let index = wormLayer.children.firstIndex(of: boopedWorm)
+                    //laser animation
+                    let rotation = Int(arc4random_uniform(15)) * 24
+                    let finalLaserFrame = laserFrames[3]
+                    let laserPic = SKSpriteNode(texture:finalLaserFrame)
+                    laserPic.position = boopedWorm.position
+                    let rotateR = SKAction.rotate(byAngle: CGFloat(rotation), duration: 0.01)
+                    let actionST = SKAction.sequence([rotateR])
+                    laserPic.run(actionST)
+                    deadLayer.addChild(laserPic)
+                    playSound(select: "laser")
+                    laserPic.run(SKAction.sequence([SKAction.animate(with: laserFrames,
+                                                                    timePerFrame: 0.1,
+                                                                    resize: false,
+                                                                    restore: true), SKAction.removeFromParent()]))
+                    if deathRay {
+                        wormHP[index ?? 0] = 0
+                    }
+                    else {
+                        wormHP[index ?? 0] -= 1
+                    }
                                 
-                                if deathRay {
-                                    wormHP[index] = 0
-                                }
-                                else {
-                                    wormHP[index] -= 1
-                                }
-                                
-                                if wormHP[index] == 0 {
-                                    //wurm ded
-                                    if let handler = touchHandler {
-                                        handler("wurmded")
-                                    }
-                                    wormHP.remove(at: index)
-                                    wormChompTimers[index].invalidate()
-                                    wormChompTimers.remove(at: index)
-                                    wormLayer.removeChildren(in: [worm])
-                                    //animate dead worm
-                                    let finalFrame = deadFrames[0]
-                                    let deadPic = SKSpriteNode(texture:finalFrame)
-                                    deadPic.position = worm.position
-                                    deadLayer.addChild(deadPic)
-                                    playSound(select: "dead")
-                                    deadPic.run(SKAction.sequence([SKAction.animate(with: deadFrames,
-                                                                                     timePerFrame: 0.1,
-                                                                                     resize: false,
-                                                                                     restore: true), SKAction.removeFromParent()]))
-                                    
-                                    
-                                    //one in 6 chance to get diamond
-                                    let diamondGrab = Int(arc4random_uniform(15))
-                                    if  diamondGrab == 1 ||  diamondGrab == 2 {
-                                        if let handler = touchHandler {
-                                            handler("addDiamond")
-                                        }
-                                        //animate dimmond
-                                        let Texture = SKTexture(image: UIImage(named: "diamond_glow")!)
-                                        let animDiamond = SKSpriteNode(texture:Texture)
-                                        animDiamond.position = wormBoop
-                                        wormLayer.addChild(animDiamond)
-                                        let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 1.2)
-                                        moveAction.timingMode = .easeOut
-                                        playSound(select: "gem collect")
-                                        animDiamond.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
-                                    }
-                                    // 1 in 12 t oget 2 diamonds
-                                    if  diamondGrab == 3 {
-                                        if let handler = touchHandler {
-                                            handler("add2Diamond")
-                                        }
-                                        //animate dimmond
-                                        let Texture = SKTexture(image: UIImage(named: "diamond_glow_double")!)
-                                        let animDiamond = SKSpriteNode(texture:Texture)
-                                        animDiamond.position = wormBoop
-                                        wormLayer.addChild(animDiamond)
-                                        let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 1.2)
-                                        moveAction.timingMode = .easeOut
-                                        playSound(select: "gem collect")
-                                        animDiamond.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
-                                    }
-                                    
-                                }
-                            }
+                    if wormHP[index ?? 0] == 0 {
+                        //wurm ded
+                        if let handler = touchHandler {
+                            handler("wurmded")
                         }
-                        index += 1
+                        wormHP.remove(at: index ?? 0)
+                        wormChompTimers[index ?? 0].invalidate()
+                        wormChompTimers.remove(at: index ?? 0)
+                        wormLayer.removeChildren(in: [boopedWorm])
+                        //animate dead worm
+                        let finalFrame = deadFrames[0]
+                        let deadPic = SKSpriteNode(texture:finalFrame)
+                        deadPic.position = boopedWorm.position
+                        deadLayer.addChild(deadPic)
+                        playSound(select: "dead")
+                        deadPic.run(SKAction.sequence([SKAction.animate(with: deadFrames,
+                                                                         timePerFrame: 0.1,
+                                                                         resize: false,
+                                                                         restore: true), SKAction.removeFromParent()]))
+                        //one in 6 chance to get diamond
+                        let diamondGrab = Int(arc4random_uniform(15))
+                        if  diamondGrab == 1 ||  diamondGrab == 2 {
+                            if let handler = touchHandler {
+                                handler("addDiamond")
+                            }
+                            //animate dimmond
+                            let Texture = SKTexture(image: UIImage(named: "diamond_glow")!)
+                            let animDiamond = SKSpriteNode(texture:Texture)
+                            animDiamond.position = wormBoop
+                            deadLayer.addChild(animDiamond)
+                            let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 1.2)
+                            moveAction.timingMode = .easeOut
+                            playSound(select: "gem collect")
+                            animDiamond.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+                        }
+                        // 1 in 12 t oget 2 diamonds
+                        if  diamondGrab == 3 {
+                            if let handler = touchHandler {
+                                handler("add2Diamond")
+                            }
+                            //animate dimmond
+                            let Texture = SKTexture(image: UIImage(named: "diamond_glow_double")!)
+                            let animDiamond = SKSpriteNode(texture:Texture)
+                            animDiamond.position = wormBoop
+                            deadLayer.addChild(animDiamond)
+                            let moveAction = SKAction.move(by: CGVector(dx: 0, dy: 20), duration: 1.2)
+                            moveAction.timingMode = .easeOut
+                            playSound(select: "gem collect")
+                            animDiamond.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
+                        }
                     }
                 }
-                //booping complete
-// black hole, chance to get a diamond
+
+                // black hole, chance to get a diamond
                 let holeBonk = touch.location(in: holeLayer)
                 for hole in holeLayer.children {
                     if hole.contains(holeBonk) {

@@ -1433,7 +1433,6 @@ GKGameCenterControllerDelegate {
             if inventory.level < 3 {
                 scene.wormDifficulty = 4 - inventory.laser + 1
             }
-                
             else if inventory.level < 29 {
                 scene.wormDifficulty = 5 - inventory.laser
             }

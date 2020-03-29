@@ -22,7 +22,6 @@ class MenuScene: SKScene {
     var reinvestButton: SKNode!
     var arButton: SKNode!
     var timePrison: SKNode!
-    var leaderboards: SKNode!
     
     var timePrisonEnabled: Bool!
     
@@ -112,19 +111,12 @@ class MenuScene: SKScene {
         achieveButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+100);
         
         self.addChild(achieveButton)
-        
-//    leaderboards
-        Texture = SKTexture(image: UIImage(named: "leaderboards button")!)
-        leaderboards = SKSpriteNode(texture: Texture)
-//    place in scene
-        leaderboards.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+50);
-        self.addChild(leaderboards)
-        
+ 
         // CREDITS BUTTON
         Texture = SKTexture(image: UIImage(named: "credits button")!)
         creditsButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        creditsButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY-50);
+        creditsButton.position =  CGPoint(x:self.frame.midX+65, y:self.frame.midY)
         
         self.addChild(creditsButton)
         
@@ -140,7 +132,7 @@ class MenuScene: SKScene {
         Texture = SKTexture(image: UIImage(named: "help button")!)
         helpButton = SKSpriteNode(texture:Texture)
         // Place in scene
-        helpButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY)
+        helpButton.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+50);
         
         self.addChild(helpButton)
 
@@ -173,7 +165,7 @@ class MenuScene: SKScene {
         timePrison = SKSpriteNode(texture: Texture)
         // Place in scene
         if timePrisonEnabled {
-            timePrison.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY-100);
+            timePrison.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY-50);
             self.addChild(timePrison)
         }
  
@@ -223,12 +215,6 @@ class MenuScene: SKScene {
             print("credits")
             if let handler = touchHandler {
                 handler("credits")
-            }
-        }
-        if leaderboards.contains(touchLocation) {
-            print("leaderboards")
-            if let handler = touchHandler {
-                handler("leaderboards")
             }
         }
         if questButton.contains(touchLocation) {

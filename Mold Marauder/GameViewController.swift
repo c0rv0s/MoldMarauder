@@ -20,8 +20,7 @@ import GameKit
 //import FBSDKShareKit
 //import FBSDKCoreKit.FBSDKAppEvents
 
-class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver,
-GKGameCenterControllerDelegate {
+class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     var scene: GameScene!
     var ARgameScene: ARScene!
     var moldShop: MoldShop!
@@ -59,17 +58,7 @@ GKGameCenterControllerDelegate {
     
     var cashTimer: Timer? = nil
     var autoTapTimer: Timer? = nil
-    
-    //    leaderboard stuff
-    /* Variables */
-    var gcEnabled = Bool() // Check if the user has Game Center enabled
-    var gcDefaultLeaderBoard = String() // Check the default leaderboardID
-    
-    var score = 0
-    
-    // IMPORTANT: replace the red string below with your own Leaderboard ID (the one you've set in iTunes Connect)
-    let LEADERBOARD_ID = "num_molds"
-    
+
     //IAP
     var available = false
     let TINY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_99_cent_diamond"
@@ -105,8 +94,6 @@ GKGameCenterControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Call the GC authentication controller
-        authenticateLocalPlayer()
         //    get purchaseable products
         fetchAvailableProducts()
         
@@ -266,45 +253,6 @@ GKGameCenterControllerDelegate {
             arskView.session.pause()
         }
         
-    }
-    //    auth game center
-    // MARK: - GAME CENTER
-    func authenticateLocalPlayer() {
-        let localPlayer: GKLocalPlayer = GKLocalPlayer.local
-        
-        localPlayer.authenticateHandler = {(ViewController, error) -> Void in
-            if((ViewController) != nil) {
-                // 1. Show login if player is not logged in
-                self.present(ViewController!, animated: true, completion: nil)
-            } else if (localPlayer.isAuthenticated) {
-                // 2. Player is already authenticated & logged in, load game center
-                self.gcEnabled = true
-            } else {
-                // 3. Game center is not enabled on the users device
-                self.gcEnabled = false
-                print("Local player could not be authenticated!")
-                print(error as Any)
-            }
-        }
-    }
-    
-    func SubmitToGC(_ sender: AnyObject) {
-        
-        // Submit score to GC leaderboard
-        let bestScoreInt = GKScore(leaderboardIdentifier: LEADERBOARD_ID)
-        bestScoreInt.value = Int64(inventory.molds.count)
-        GKScore.report([bestScoreInt]) { (error) in
-            if error != nil {
-                print(error!.localizedDescription)
-            } else {
-                print("Best Score submitted to your Leaderboard!")
-            }
-        }
-    }
-    
-    // Delegate to dismiss the GC controller
-    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
-        gameCenterViewController.dismiss(animated: true, completion: nil)
     }
     
     //    MARK: - ICLOUD
@@ -979,14 +927,6 @@ GKGameCenterControllerDelegate {
             menu.cometLayer.cometTimer.invalidate()
             reinvestments.mute = inventory.muteSound
             reinvestments.playSound(select: "select")
-        }
-        if (action == "leaderboards") {
-            SubmitToGC(self)
-            let gcVC = GKGameCenterViewController()
-            gcVC.gameCenterDelegate = self
-            gcVC.viewState = .leaderboards
-            gcVC.leaderboardIdentifier = LEADERBOARD_ID
-            present(gcVC, animated: true, completion: nil)
         }
         if (action == "ar") {
             //   switch var

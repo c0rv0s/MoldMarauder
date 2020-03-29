@@ -1258,6 +1258,7 @@ GKGameCenterControllerDelegate {
             let tempReinvest = inventory.reinvestmentCount + 1
             var metaphaseCount = inventory.moldCountDicc["Metaphase Mold"] ?? 0
             var starCount = inventory.moldCountDicc["Star Mold"] ?? 0
+            var godCount = inventory.moldCountDicc["God Mold"] ?? 0
             
             inventory = Inventory()
             inventory.diamonds += tempDiamonds
@@ -1283,6 +1284,14 @@ GKGameCenterControllerDelegate {
                 while starCount > 0 {
                     inventory.molds.append(Mold(moldType: MoldType.star))
                     starCount -= 1
+                }
+            }
+            if godCount > 0 {
+                inventory.moldCountDicc["God Mold"] = godCount
+                inventory.unlockedMolds.append(Mold(moldType: MoldType.god))
+                while godCount > 0 {
+                    inventory.molds.append(Mold(moldType: MoldType.god))
+                    godCount -= 1
                 }
             }
             

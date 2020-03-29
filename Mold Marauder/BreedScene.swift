@@ -130,7 +130,7 @@ class BreedScene: SKScene {
     
     func erectScroll() {
         bubbleLayer.removeFromParent()
-        let height = 100 + (ownedMolds.count * 95)
+        let height = 150 + (ownedMolds.count * 100)
         //addNode
         addChild(moveableNode)
         //set up the scrollView
@@ -1201,54 +1201,7 @@ class BreedScene: SKScene {
                     }
                 }
             }
-            //this is for resetting the diamond thing
-            if selectedMolds.count > 0 {
-                currentDiamondCombo = nil
-                
-                outerLoop: for combo in possibleCombos {
-                    var same = 0
-                    middleLoop: for parent in combo.parents {
-                        innerLoop: for mold in selectedMolds {
-                            if parent.moldType == mold.moldType {
-                                same += 1
-                            }
-                            if same == selectedMolds.count {
-                                currentDiamondCombo = combo
-                                break innerLoop
-                            }
-                        }
-                        if same == selectedMolds.count {
-                            break middleLoop
-                        }
-                    }
-                    if same == selectedMolds.count {
-                        break outerLoop
-                    }
-                }
-            }
-            else {
-                if possibleCombos.count > 0 {
-                    currentDiamondCombo = possibleCombos[0]
-                }
-            }
-            
-            if currentDiamondCombo != nil {
-                numDiamonds = (currentDiamondCombo.parents.count - selectedMolds.count) * 2
-                diamondLabel.text = String(numDiamonds)
-                if numDiamonds == 0 {
-                    diamondLabel.fontColor = UIColor.green
-                }
-                else {
-                    diamondLabel.fontColor = UIColor.black
-                }
-            }
-            else {
-                numDiamonds = 0
-                diamondLabel.text = String(numDiamonds)
-                diamondLabel.fontColor = UIColor.black
-            }
-            
-            
+
             //for the rest of the buttons
             let touch = touches.first
             let touchLocation = touch!.location(in: self)
@@ -1282,6 +1235,52 @@ class BreedScene: SKScene {
                     handler("breed")
                 }
             }
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //this is for resetting the diamond thing
+        currentDiamondCombo = nil
+        var shortest = 50
+        if possibleCombos.count > 0 {
+            if selectedMolds.count > 0 {
+                for combo in possibleCombos {
+                    var selectedSet = Set<String>()
+                    var comboSet = Set<String>()
+                    for mold in selectedMolds {
+                        selectedSet.insert(mold.name)
+                    }
+                    for mold in combo.parents {
+                        comboSet.insert(mold.name)
+                    }
+                    if selectedSet.isSubset(of: comboSet) {
+                        if combo.parents.count < shortest {
+                            currentDiamondCombo = combo
+                            shortest = combo.parents.count
+                        }
+                    }
+                }
+            }
+            else {
+                currentDiamondCombo = possibleCombos[0]
+            }
+        }
+        
+        //set label for currentDiamondCombo
+        if currentDiamondCombo != nil {
+            numDiamonds = (currentDiamondCombo.parents.count - selectedMolds.count) * 2
+            diamondLabel.text = String(numDiamonds)
+            if numDiamonds == 0 {
+                diamondLabel.fontColor = UIColor.green
+            }
+            else {
+                diamondLabel.fontColor = UIColor.black
+            }
+        }
+        else {
+            numDiamonds = 0
+            diamondLabel.text = String(numDiamonds)
+            diamondLabel.fontColor = UIColor.black
         }
     }
     

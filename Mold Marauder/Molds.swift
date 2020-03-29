@@ -173,6 +173,13 @@ enum MoldType: Int, CustomStringConvertible {
 }
 
 class Mold: CustomStringConvertible {
+    static func == (lhs: Mold, rhs: Mold) -> Bool {
+        if lhs.name == rhs.name {
+            return true
+        }
+        return false
+    }
+    
     let moldType: MoldType
     let name: String
     var price: BInt

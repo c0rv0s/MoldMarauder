@@ -31,7 +31,7 @@ class Combos {
     var comboStorm = [Mold(moldType: MoldType.hypno), Mold(moldType: MoldType.cloud)]
     var comboBacteria = [Mold(moldType: MoldType.slime), Mold(moldType: MoldType.cave)]
     var comboVirus = [Mold(moldType: MoldType.bacteria)]
-    var comboFlower = [Mold(moldType: MoldType.slime), Mold(moldType: MoldType.cave)]
+    var comboFlower = [Mold(moldType: MoldType.slime), Mold(moldType: MoldType.bacteria), Mold(moldType: MoldType.rock)]
     var comboBee = [Mold(moldType: MoldType.flower), Mold(moldType: MoldType.freckled)]
     var comboX = [Mold(moldType: MoldType.rainbow), Mold(moldType: MoldType.hologram)]
     var comboDisaffected = [Mold(moldType: MoldType.rainbow), Mold(moldType: MoldType.circuit), Mold(moldType: MoldType.crystal)]

@@ -135,7 +135,7 @@ GKGameCenterControllerDelegate {
 //        inventory.tutorialProgress = 19
         //    inventory.autoTap = false
         //    inventory.autoTapLevel = 0
-//            incrementDiamonds(newDiamonds: 500)
+//        inventory.diamonds += 500
 //            inventory.level = 75
 //            incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
 //            inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
@@ -3814,6 +3814,8 @@ GKGameCenterControllerDelegate {
                     //update possiblecombos
                     //populate the possible combos array
                     breedScene.possibleCombos = breedScene.possibleCombos.filter {$0.child.description != newCombo?.child.description}
+                    breedScene.selectedMolds = []
+                    breedScene.bubbleLayer.removeAllChildren()
                     if breedScene.possibleCombos.count > 0 {
                         breedScene.currentDiamondCombo = breedScene.possibleCombos[0]
                         breedScene.numDiamonds = breedScene.currentDiamondCombo.parents.count * 2
@@ -3889,6 +3891,8 @@ GKGameCenterControllerDelegate {
                                 updateBreedAchievements()
                                 //update possiblecombos
                                 breedScene.possibleCombos = breedScene.possibleCombos.filter {$0.child.description != combo.child.description}
+                                breedScene.selectedMolds = []
+                                breedScene.bubbleLayer.removeAllChildren()
                                 //    this is the code toe update tflnewA
                                 if breedScene.possibleCombos.count > 0 {
                                     breedScene.currentDiamondCombo = breedScene.possibleCombos[0]
@@ -6435,7 +6439,7 @@ GKGameCenterControllerDelegate {
         scene.diamondCLabel.text = String(inventory.diamonds)
     }
     
-    //tap for cash funciotn
+    //tap for cash function
     func incrementCash(pointsToAdd: BInt) {
         inventory.cash += pointsToAdd
         if inventory.cash > BInt("10000000000000000000000000000000000")! {

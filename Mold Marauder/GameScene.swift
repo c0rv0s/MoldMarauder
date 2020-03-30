@@ -1096,765 +1096,763 @@ class GameScene: SKScene {
     }
     
     func updateMolds() {
-        var quantity = 0
-        
         if molds.count != moldLayer.children.count {
             moldLayer.removeAllChildren()
-            mainLoop: while(moldLayer.children.count < molds.count){
-                quantity = moldLayer.children.count
-                let moldData = molds[quantity]
-                
-                let ranX = randomInRange(lo: -125, hi: 125)
-                let ranY = randomInRange(lo: -200, hi: 175)
-                //molds w/ no animation
-                if (moldData.moldType == MoldType.invisible || moldData.moldType == MoldType.disaffected || moldData.moldType == MoldType.dead) {
-                    let imName = String(moldData.name)
-                    let Image = UIImage(named: imName)
-                    let Texture = SKTexture(image: Image!)
-                    
-                    let moldPic = SKSpriteNode(texture:Texture)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                }
-                    //MOLDS WITH CUSTOM ANIMATION INSTRUCTIONS
-                else if (moldData.moldType == MoldType.circuit || moldData.moldType == MoldType.nuclear) {
-                    let textureOn = SKTexture(image: UIImage(named: moldData.name)!)
-                    let textureOff = SKTexture(image: UIImage(named: moldData.name + " Off")!)
-                    let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
-                    let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
-                    let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 2)*10
-                    while(i<numFrames) {
-                        frames.append(textureOn)
-                        frames.append(textureOff)
-                        i += 2
-                    }
-                    
-                    frames.append(textureTwo)
-                    frames.append(textureThree)
-                    frames.append(textureFour)
-                    frames.append(textureThree)
-                    frames.append(textureTwo)
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldCircuit")
-                }
-                else if (moldData.moldType == MoldType.samurai) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(3)) + 8)*10
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        i += 1
-                    }
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
-                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
-                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
-                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldSamurai")
-                    
-                }
-                else if (moldData.moldType == MoldType.magma) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(3)) + 8)*10
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        i += 1
-                    }
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldMagma")
-                    
-                }
-                else if (moldData.moldType == MoldType.cryptid) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(3)) + 8)*10
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        i += 1
-                    }
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
-                    
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldCryptid")
-                    
-                }
-                else if (moldData.moldType == MoldType.cloud) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
-                    let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
-                    let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        var j = 1
-                        while(j <= 5) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                            j += 1
-                        }
-                        i += 1
-                    }
-                    
-                    frames.append(textureTwo)
-                    frames.append(textureThree)
-                    frames.append(textureFour)
-                    frames.append(textureThree)
-                    frames.append(textureTwo)
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldCloud")
-                }
-                else if (moldData.moldType == MoldType.hologram) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        var j = 2
-                        while(j < 8) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                            j += 1
-                        }
-                        i += 1
-                    }
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F8")!))
-                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F9")!))
-                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F10")!))
-                    frames.append(SKTexture(image: UIImage(named: "Hologram Mold F11")!))
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldHologram")
-                }
-                else if (moldData.moldType == MoldType.storm) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        var j = 1
-                        while(j < 6) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                            j += 1
-                        }
-                        i += 1
-                    }
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Storm Mold L1")!))
-                    frames.append(SKTexture(image: UIImage(named: "Storm Mold L2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Storm Mold L3")!))
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldStorm")
-                }
-                else if (moldData.moldType == MoldType.coconut) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        var j = 1
-                        while(j < 4) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
-                            j += 1
-                        }
-                        i += 1
-                    }
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldCoconut")
-                }
-                else if (moldData.moldType == MoldType.angry) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 1
-                    let numFrames = 5
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldAngry")
-                }
-                else if (moldData.moldType == MoldType.bacteria || moldData.moldType == MoldType.bee) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 1
-                    let numFrames = 6
-                    while(i <= numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i += 1
-                    }
-                    i -= 1
-                    while(i > 0) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i -= 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldBacteria")
-                }
-                else if (moldData.moldType == MoldType.astronaut) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 1
-                    let numFrames = (Int(arc4random_uniform(5)) + 6)*10
-                    while(i <= numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
-                        i += 1
-                    }
-                    i = 1
-                    while(i < 22) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F2"))!))
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldAstronaut")
-                }
-                else if (moldData.moldType == MoldType.zombie) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    var numFrames = (Int(arc4random_uniform(3)) + 1)*10
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
-                        i += 1
-                    }
-                    
-                    i = 1
-                    numFrames = 8
-                    while(i <= numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i += 1
-                    }
-                    i -= 1
-                    while(i > 0) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i -= 1
-                    }
-                    
-                    i = 0
-                    numFrames = (Int(arc4random_uniform(3)) + 1)*10
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldZombie")
-                }
-                else if (moldData.moldType == MoldType.virus) {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    var frames = [SKTexture]()
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
-                    frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
-                    frames.append(SKTexture(image: UIImage(named: "Virus Mold F Blink")!))
-                    frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
-                    frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 2)*4
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        var j = 1
-                        while(j < 8) {
-                            frames.append(SKTexture(image: UIImage(named: "Virus Mold F\(j)")!))
-                            j += 1
-                        }
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldVirus")
-                }
-                else if (moldData.moldType == MoldType.x) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    var arr = Array(2...10)
-                    arr.shuffle()
-                    while(i<arr.count) {
-                        var j = 1
-                        let numFrames = (Int(arc4random_uniform(6)) + 2)*2
-                        while(j < numFrames) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(arr[i])"))!))
-                            j += 1
-                        }
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldX")
-                }
-                else if (moldData.moldType == MoldType.hypno || moldData.moldType == MoldType.flower || moldData.moldType == MoldType.water) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 2
-                    let numFrames = 21
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldHypno")
-                }
-                else if (moldData.moldType == MoldType.pimply) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 1
-                    let numFrames = 16
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i += 1
-                    }
-                    var j = 1
-                    let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
-                    while(j<numFrames2) {
-                        frames.append(SKTexture(image: UIImage(named: "Slime Mold")!))
-                        j += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldPimply")
-                }
-                else if (moldData.moldType == MoldType.crystal) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 2
-                    let numFrames = 8
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i += 1
-                    }
-                    var j = 1
-                    let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
-                    while(j<numFrames2) {
-                        frames.append(SKTexture(image: UIImage(named: "Crystal Mold")!))
-                        j += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldCrystal")
-                }
-                else if (moldData.moldType == MoldType.alien) {
-                    
-                    let textureOne = SKTexture(image: UIImage(named: "Alien Mold")!)
-                    let textureTwo = SKTexture(image: UIImage(named: "Alien Mold F2")!)
-                    let textureThree = SKTexture(image: UIImage(named: "Alien Mold F3")!)
-                    let textureFour = SKTexture(image: UIImage(named: "Alien Mold F4")!)
-                    var frames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 8)*10
-                    while(i<numFrames) {
-                        frames.append(textureOne)
-                        frames.append(textureTwo)
-                        frames.append(textureFour)
-                        i += 3
-                    }
-                    
-                    frames.append(textureThree)
-                    frames.append(textureFour)
-                    frames.append(textureThree)
-                    frames.append(textureFour)
-                    frames.append(textureThree)
-                    frames.append(textureFour)
-                    frames.append(textureTwo)
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldAlien")
-                    
-                }
-                else if (moldData.moldType == MoldType.rainbow) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 1
-                    let numFrames = 11
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: "Rainbow Mold F\(i)")!))
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldRainbow")
-                    
-                }
-                else if (moldData.moldType == MoldType.slinky) {
-                    var frames = [SKTexture]()
-                    
-                    var i = 1
-                    var numFrames = 11
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: "Slinky Mold F\(i)")!))
-                        i += 1
-                    }
-                    
-                    i = 0
-                    numFrames = (Int(arc4random_uniform(6)) + 8)*10
-                    while(i<numFrames) {
-                        frames.append(SKTexture(image: UIImage(named: "Slinky Mold")!))
-                        i += 3
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldSlinky")
-                    
-                }
-                else if (moldData.moldType == MoldType.coffee) {
-                    var frames = [SKTexture]()
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Coffee Mold F1")!))
-                    frames.append(SKTexture(image: UIImage(named: "Coffee Mold F2")!))
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldCoffee")
-                    
-                }
-                else if (moldData.moldType == MoldType.angel) {
-                    var frames = [SKTexture]()
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
-                    frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
-                    frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
-                    var i = 2
-                    while(i<7) {
-                        var j = 1
-                        while(j < 4) {
-                            frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                            j += 1
-                        }
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldAngel")
-                    
-                }
-                else if (moldData.moldType == MoldType.star) {
-                    var frames = [SKTexture]()
-                    
-                    frames.append(SKTexture(image: UIImage(named: "Star Mold")!))
-                    var i = 1
-                    while(i<8) {
-                        frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
-                        i += 1
-                    }
-                    
-                    let firstFrame = frames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: frames,
-                                         timePerFrame: 0.15,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldStar")
-                    
-                }
-                    //THIS IS FOR MOLDS THAT JUST BLINK
-                else {
-                    let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
-                    let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
-                    let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
-                    let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
-                    var blinkFrames = [SKTexture]()
-                    
-                    var i = 0
-                    let numFrames = (Int(arc4random_uniform(6)) + 8)*10
-                    while(i<numFrames) {
-                        blinkFrames.append(textureOne)
-                        i += 1
-                    }
-                    blinkFrames.append(textureTwo)
-                    blinkFrames.append(textureThree)
-                    blinkFrames.append(textureFour)
-                    blinkFrames.append(textureThree)
-                    blinkFrames.append(textureTwo)
-                    
-                    let firstFrame = blinkFrames[0]
-                    let moldPic = SKSpriteNode(texture:firstFrame)
-                    moldPic.name = moldData.name
-                    moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
-                    moldLayer.addChild(moldPic)
-                    moldPic.run(SKAction.repeatForever(
-                        SKAction.animate(with: blinkFrames,
-                                         timePerFrame: 0.1,
-                                         resize: false,
-                                         restore: true)),
-                                withKey:"moldBlinking")
-                    
-                }
-                quantity += 1
+            for newMold in molds {
+                addMold(moldData: newMold)
             }
+        }
+    }
+    
+    func addMold(moldData: Mold) {
+        let ranX = randomInRange(lo: -125, hi: 125)
+        let ranY = randomInRange(lo: -200, hi: 175)
+        //molds w/ no animation
+        if (moldData.moldType == MoldType.invisible || moldData.moldType == MoldType.disaffected || moldData.moldType == MoldType.dead) {
+            let imName = String(moldData.name)
+            let Image = UIImage(named: imName)
+            let Texture = SKTexture(image: Image!)
+            
+            let moldPic = SKSpriteNode(texture:Texture)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+        }
+            //MOLDS WITH CUSTOM ANIMATION INSTRUCTIONS
+        else if (moldData.moldType == MoldType.circuit || moldData.moldType == MoldType.nuclear) {
+            let textureOn = SKTexture(image: UIImage(named: moldData.name)!)
+            let textureOff = SKTexture(image: UIImage(named: moldData.name + " Off")!)
+            let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
+            let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
+            let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 2)*10
+            while(i<numFrames) {
+                frames.append(textureOn)
+                frames.append(textureOff)
+                i += 2
+            }
+            
+            frames.append(textureTwo)
+            frames.append(textureThree)
+            frames.append(textureFour)
+            frames.append(textureThree)
+            frames.append(textureTwo)
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldCircuit")
+        }
+        else if (moldData.moldType == MoldType.samurai) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(3)) + 8)*10
+            while(i<numFrames) {
+                frames.append(textureOne)
+                i += 1
+            }
+            
+            frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
+            frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
+            frames.append(SKTexture(image: UIImage(named: "Samurai Mold F1")!))
+            frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+            frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+            frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+            frames.append(SKTexture(image: UIImage(named: "Samurai Mold F2")!))
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldSamurai")
+            
+        }
+        else if (moldData.moldType == MoldType.magma) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(3)) + 8)*10
+            while(i<numFrames) {
+                frames.append(textureOne)
+                i += 1
+            }
+            
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F5")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F6")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F4")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Magma Mold F2")!))
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldMagma")
+            
+        }
+        else if (moldData.moldType == MoldType.cryptid) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(3)) + 8)*10
+            while(i<numFrames) {
+                frames.append(textureOne)
+                i += 1
+            }
+            
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F3")!))
+            frames.append(SKTexture(image: UIImage(named: "Cryptid Mold F2")!))
+            
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldCryptid")
+            
+        }
+        else if (moldData.moldType == MoldType.cloud) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
+            let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
+            let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+            while(i<numFrames) {
+                frames.append(textureOne)
+                var j = 1
+                while(j <= 5) {
+                    frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                    j += 1
+                }
+                i += 1
+            }
+            
+            frames.append(textureTwo)
+            frames.append(textureThree)
+            frames.append(textureFour)
+            frames.append(textureThree)
+            frames.append(textureTwo)
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldCloud")
+        }
+        else if (moldData.moldType == MoldType.hologram) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+            while(i<numFrames) {
+                frames.append(textureOne)
+                var j = 2
+                while(j < 8) {
+                    frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                    j += 1
+                }
+                i += 1
+            }
+            
+            frames.append(SKTexture(image: UIImage(named: "Hologram Mold F8")!))
+            frames.append(SKTexture(image: UIImage(named: "Hologram Mold F9")!))
+            frames.append(SKTexture(image: UIImage(named: "Hologram Mold F10")!))
+            frames.append(SKTexture(image: UIImage(named: "Hologram Mold F11")!))
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldHologram")
+        }
+        else if (moldData.moldType == MoldType.storm) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+            while(i<numFrames) {
+                frames.append(textureOne)
+                var j = 1
+                while(j < 6) {
+                    frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                    j += 1
+                }
+                i += 1
+            }
+            
+            frames.append(SKTexture(image: UIImage(named: "Storm Mold L1")!))
+            frames.append(SKTexture(image: UIImage(named: "Storm Mold L2")!))
+            frames.append(SKTexture(image: UIImage(named: "Storm Mold L3")!))
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldStorm")
+        }
+        else if (moldData.moldType == MoldType.coconut) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+            while(i<numFrames) {
+                frames.append(textureOne)
+                var j = 1
+                while(j < 4) {
+                    frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(j)"))!))
+                    j += 1
+                }
+                i += 1
+            }
+            
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C5")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C4")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C3")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C2")!))
+            frames.append(SKTexture(image: UIImage(named: "Coconut Mold C1")!))
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldCoconut")
+        }
+        else if (moldData.moldType == MoldType.angry) {
+            var frames = [SKTexture]()
+            
+            var i = 1
+            let numFrames = 5
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldAngry")
+        }
+        else if (moldData.moldType == MoldType.bacteria || moldData.moldType == MoldType.bee) {
+            var frames = [SKTexture]()
+            
+            var i = 1
+            let numFrames = 6
+            while(i <= numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i += 1
+            }
+            i -= 1
+            while(i > 0) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i -= 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldBacteria")
+        }
+        else if (moldData.moldType == MoldType.astronaut) {
+            var frames = [SKTexture]()
+            
+            var i = 1
+            let numFrames = (Int(arc4random_uniform(5)) + 6)*10
+            while(i <= numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
+                i += 1
+            }
+            i = 1
+            while(i < 22) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F2"))!))
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldAstronaut")
+        }
+        else if (moldData.moldType == MoldType.zombie) {
+            var frames = [SKTexture]()
+            
+            var i = 0
+            var numFrames = (Int(arc4random_uniform(3)) + 1)*10
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
+                i += 1
+            }
+            
+            i = 1
+            numFrames = 8
+            while(i <= numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i += 1
+            }
+            i -= 1
+            while(i > 0) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i -= 1
+            }
+            
+            i = 0
+            numFrames = (Int(arc4random_uniform(3)) + 1)*10
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name))!))
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldZombie")
+        }
+        else if (moldData.moldType == MoldType.virus) {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            var frames = [SKTexture]()
+            
+            frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
+            frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
+            frames.append(SKTexture(image: UIImage(named: "Virus Mold F Blink")!))
+            frames.append(SKTexture(image: UIImage(named: "Virus Mold B Blink")!))
+            frames.append(SKTexture(image: UIImage(named: "Virus Mold T Blink")!))
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 2)*4
+            while(i<numFrames) {
+                frames.append(textureOne)
+                var j = 1
+                while(j < 8) {
+                    frames.append(SKTexture(image: UIImage(named: "Virus Mold F\(j)")!))
+                    j += 1
+                }
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldVirus")
+        }
+        else if (moldData.moldType == MoldType.x) {
+            var frames = [SKTexture]()
+            
+            var i = 0
+            var arr = Array(2...10)
+            arr.shuffle()
+            while(i<arr.count) {
+                var j = 1
+                let numFrames = (Int(arc4random_uniform(6)) + 2)*2
+                while(j < numFrames) {
+                    frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(arr[i])"))!))
+                    j += 1
+                }
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldX")
+        }
+        else if (moldData.moldType == MoldType.hypno || moldData.moldType == MoldType.flower || moldData.moldType == MoldType.water) {
+            var frames = [SKTexture]()
+            
+            var i = 2
+            let numFrames = 21
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldHypno")
+        }
+        else if (moldData.moldType == MoldType.pimply) {
+            var frames = [SKTexture]()
+            
+            var i = 1
+            let numFrames = 16
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i += 1
+            }
+            var j = 1
+            let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
+            while(j<numFrames2) {
+                frames.append(SKTexture(image: UIImage(named: "Slime Mold")!))
+                j += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldPimply")
+        }
+        else if (moldData.moldType == MoldType.crystal) {
+            var frames = [SKTexture]()
+            
+            var i = 2
+            let numFrames = 8
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i += 1
+            }
+            var j = 1
+            let numFrames2 = (Int(arc4random_uniform(2)) + 3)*10
+            while(j<numFrames2) {
+                frames.append(SKTexture(image: UIImage(named: "Crystal Mold")!))
+                j += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldCrystal")
+        }
+        else if (moldData.moldType == MoldType.alien) {
+            
+            let textureOne = SKTexture(image: UIImage(named: "Alien Mold")!)
+            let textureTwo = SKTexture(image: UIImage(named: "Alien Mold F2")!)
+            let textureThree = SKTexture(image: UIImage(named: "Alien Mold F3")!)
+            let textureFour = SKTexture(image: UIImage(named: "Alien Mold F4")!)
+            var frames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 8)*10
+            while(i<numFrames) {
+                frames.append(textureOne)
+                frames.append(textureTwo)
+                frames.append(textureFour)
+                i += 3
+            }
+            
+            frames.append(textureThree)
+            frames.append(textureFour)
+            frames.append(textureThree)
+            frames.append(textureFour)
+            frames.append(textureThree)
+            frames.append(textureFour)
+            frames.append(textureTwo)
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldAlien")
+            
+        }
+        else if (moldData.moldType == MoldType.rainbow) {
+            var frames = [SKTexture]()
+            
+            var i = 1
+            let numFrames = 11
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: "Rainbow Mold F\(i)")!))
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldRainbow")
+            
+        }
+        else if (moldData.moldType == MoldType.slinky) {
+            var frames = [SKTexture]()
+            
+            var i = 1
+            var numFrames = 11
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: "Slinky Mold F\(i)")!))
+                i += 1
+            }
+            
+            i = 0
+            numFrames = (Int(arc4random_uniform(6)) + 8)*10
+            while(i<numFrames) {
+                frames.append(SKTexture(image: UIImage(named: "Slinky Mold")!))
+                i += 3
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldSlinky")
+            
+        }
+        else if (moldData.moldType == MoldType.coffee) {
+            var frames = [SKTexture]()
+            
+            frames.append(SKTexture(image: UIImage(named: "Coffee Mold F1")!))
+            frames.append(SKTexture(image: UIImage(named: "Coffee Mold F2")!))
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldCoffee")
+            
+        }
+        else if (moldData.moldType == MoldType.angel) {
+            var frames = [SKTexture]()
+            
+            frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
+            frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
+            frames.append(SKTexture(image: UIImage(named: "Angel Mold")!))
+            var i = 2
+            while(i<7) {
+                var j = 1
+                while(j < 4) {
+                    frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                    j += 1
+                }
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldAngel")
+            
+        }
+        else if (moldData.moldType == MoldType.star) {
+            var frames = [SKTexture]()
+            
+            frames.append(SKTexture(image: UIImage(named: "Star Mold")!))
+            var i = 1
+            while(i<8) {
+                frames.append(SKTexture(image: UIImage(named: String(moldData.name + " F\(i)"))!))
+                i += 1
+            }
+            
+            let firstFrame = frames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: frames,
+                                 timePerFrame: 0.15,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldStar")
+            
+        }
+            //THIS IS FOR MOLDS THAT JUST BLINK
+        else {
+            let textureOne = SKTexture(image: UIImage(named: moldData.name)!)
+            let textureTwo = SKTexture(image: UIImage(named: moldData.name + " T Blink")!)
+            let textureThree = SKTexture(image: UIImage(named: moldData.name + " B Blink")!)
+            let textureFour = SKTexture(image: UIImage(named: moldData.name + " F Blink")!)
+            var blinkFrames = [SKTexture]()
+            
+            var i = 0
+            let numFrames = (Int(arc4random_uniform(6)) + 8)*10
+            while(i<numFrames) {
+                blinkFrames.append(textureOne)
+                i += 1
+            }
+            blinkFrames.append(textureTwo)
+            blinkFrames.append(textureThree)
+            blinkFrames.append(textureFour)
+            blinkFrames.append(textureThree)
+            blinkFrames.append(textureTwo)
+            
+            let firstFrame = blinkFrames[0]
+            let moldPic = SKSpriteNode(texture:firstFrame)
+            moldPic.name = moldData.name
+            moldPic.position = CGPoint(x:self.frame.midX+CGFloat(ranX), y:self.frame.midY+CGFloat(ranY))
+            moldLayer.addChild(moldPic)
+            moldPic.run(SKAction.repeatForever(
+                SKAction.animate(with: blinkFrames,
+                                 timePerFrame: 0.1,
+                                 resize: false,
+                                 restore: true)),
+                        withKey:"moldBlinking")
+            
         }
     }
     

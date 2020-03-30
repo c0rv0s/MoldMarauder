@@ -126,7 +126,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //      inventory.autoTapLevel = 0
 //      inventory.diamonds += 500
 //      inventory.level = 75
-//      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
+      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
 //      inventory.molds.append(Mold(moldType: MoldType.invisible))
 //      inventory.moldCountDicc["Invisible Mold"] = 1
@@ -5190,7 +5190,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             if inventory.displayMolds.count < 25 {
                 inventory.displayMolds.append(moldData)
                 scene.molds = inventory.displayMolds
-                scene.updateMolds()
+                scene.addMold(moldData: moldData)
             }
             inventory.scorePerSecond += moldData.PPS
             // Add a label for the score that slowly floats up.

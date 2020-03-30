@@ -38,6 +38,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     var reinvestments: Reinvestments!
     var timePrison: TimePrison!
     var dreamScene: DreamScene!
+    var riftScene: RiftScene!
     
     @IBOutlet weak var skView: SKView!
     
@@ -126,11 +127,11 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //      inventory.diamonds += 500
 //      inventory.level = 75
 //      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
-//      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
-//      inventory.molds.append(Mold(moldType: MoldType.invisible))
-//      inventory.moldCountDicc["Invisible Mold"] = 1
-//      inventory.moldCountDicc["Metaphase Mold"] = 3
-//      inventory.reinvestmentCount = 3
+      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
+      inventory.molds.append(Mold(moldType: MoldType.invisible))
+      inventory.moldCountDicc["Invisible Mold"] = 1
+      inventory.reinvestmentCount = 3
+      inventory.freedFromTimePrison = [true,true,true,true,true,true,true,true,true]
 //      inventory.molds.append(Mold(moldType: MoldType.metaphase))
 //      inventory.moldCountDicc["Metaphase Mold"] = 1
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
@@ -1222,6 +1223,51 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
     }
     
+    func riftSceneHandler(action: String) {
+        if action == "explosion" {
+            playBackgroundMusic(filename: "rift2.wav")
+        }
+        if action == "done" {
+            scene.menuPopUp.removeFromParent()
+            riftScene.removeAllChildren()
+            
+            let tempDiamonds = inventory.diamonds
+            let tempdeath = inventory.deathRay
+            let tempAuto = inventory.autoTap
+            let tempAutoLev = inventory.autoTapLevel
+            let tempTut = inventory.tutorialProgress
+            let tempFB = inventory.likedFB
+            let tempMuteM = inventory.muteMusic
+            let tempMuteS = inventory.muteSound
+            
+            inventory = Inventory()
+            inventory.diamonds += tempDiamonds
+            inventory.deathRay = tempdeath
+            inventory.autoTap = tempAuto
+            inventory.autoTapLevel = tempAutoLev
+            inventory.tutorialProgress = tempTut
+            inventory.likedFB = tempFB
+            inventory.muteSound = tempMuteS
+            inventory.muteMusic = tempMuteM
+            
+            scene.updateMolds()
+            scene.isActive = true
+            scene.isPaused = false
+            scene.reinvestCount = inventory.reinvestmentCount
+            cashLabel.isHidden = false
+            cashHeader.isHidden = false
+            skView.presentScene(self.scene)
+            if inventory.background != scene.backgroundName {
+                scene.backgroundName = inventory.background
+                scene.setBackground()
+            }
+            updateLabels()
+            shiftTimerLabels()
+            generateQuest()
+            playBackgroundMusic(filename: "\(self.inventory.background).wav")
+        }
+    }
+    
     //REINVEST HANDLER
     func reinvestHandler(action: String) {
         activateSleepTimer()
@@ -1327,7 +1373,14 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             if inventory.reinvestmentCount >= 4 {
                 inventory.reinvestmentCount = 0
                 if inventory.freedFromTimePrison.allSatisfy({$0 == true}) {
-                    print("seal the rift")
+                    cashLabel.isHidden = true
+                    cashHeader.isHidden = true
+                    riftScene = RiftScene(size: skView.bounds.size)
+                    riftScene.dialogueIndex = 0
+                    riftScene.mute = inventory.muteSound
+                    riftScene.touchHandler = riftSceneHandler
+                    skView.presentScene(riftScene)
+                    playBackgroundMusic(filename: "rift.wav")
                 }
                 else {
                     cashLabel.isHidden = true

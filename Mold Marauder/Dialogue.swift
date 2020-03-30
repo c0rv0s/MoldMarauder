@@ -43,3 +43,16 @@ let subsequentDialogueArray = [
     "Your quest has been most fruitful!",
     "I believe some crystals are owed for your troubles"
 ]
+
+let finalDialogueArray = [
+    "Behold...",
+    "The Rift!",
+    "Right through the center of OUR Space Time!",
+    "...",
+    "Destroy it!!!",
+    "All together!",
+    "READY UP!",
+    "...",
+    "...",
+    "FIRE!!!!!"
+]

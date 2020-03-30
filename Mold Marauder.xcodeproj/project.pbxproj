@@ -20,6 +20,7 @@
 		0F96D462242F32A900F2EC43 /* dream.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F96D461242F32A900F2EC43 /* dream.wav */; };
 		0F96D4642431290100F2EC43 /* DreamScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D4632431290100F2EC43 /* DreamScene.swift */; };
 		0F96D4662431344200F2EC43 /* Dialogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D4652431344200F2EC43 /* Dialogue.swift */; };
+		0F96D4682431910200F2EC43 /* RiftScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D4672431910200F2EC43 /* RiftScene.swift */; };
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
 		0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A42411D02A0014A9BB /* Utils.swift */; };
 		0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A62411D4C60014A9BB /* CometLayer.swift */; };
@@ -105,6 +106,7 @@
 		0F96D461242F32A900F2EC43 /* dream.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = dream.wav; sourceTree = "<group>"; };
 		0F96D4632431290100F2EC43 /* DreamScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamScene.swift; sourceTree = "<group>"; };
 		0F96D4652431344200F2EC43 /* Dialogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialogue.swift; sourceTree = "<group>"; };
+		0F96D4672431910200F2EC43 /* RiftScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiftScene.swift; sourceTree = "<group>"; };
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
 		0FC7D0A42411D02A0014A9BB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0FC7D0A62411D4C60014A9BB /* CometLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CometLayer.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				215B49101E7BCA0D009107DF /* CreditsScene.swift */,
 				216D42371E8650CC000FAC70 /* HelpScene.swift */,
 				0F96D4632431290100F2EC43 /* DreamScene.swift */,
+				0F96D4672431910200F2EC43 /* RiftScene.swift */,
 				0F96D4652431344200F2EC43 /* Dialogue.swift */,
 			);
 			name = Views;
@@ -504,6 +507,7 @@
 				0F96D45E242F279100F2EC43 /* TimePrison.swift in Sources */,
 				0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */,
 				21F134B71E7E710300627246 /* QuestScene.swift in Sources */,
+				0F96D4682431910200F2EC43 /* RiftScene.swift in Sources */,
 				214FB0FE1E7359A200E428AA /* LevelScene.swift in Sources */,
 				21C16EFF1E4408F8003D109A /* Molds.swift in Sources */,
 				21C16F0A1E47F060003D109A /* BreedScene.swift in Sources */,

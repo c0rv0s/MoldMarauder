@@ -3771,6 +3771,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 // incubator roll
                 if  Int(arc4random_uniform(7)) < inventory.incubator {
                     inventory.molds.append(mold)
+                    inventory.moldCountDicc[mold.name]! += 1
                     inventory.scorePerSecond += mold.PPS
                     moldShop.animateName(name: "+1")
                     
@@ -5087,6 +5088,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     scene.playSound(select: "mold succ")
                     
                     inventory.molds.remove(at: pick)
+                    inventory.moldCountDicc[moldData.name]! -= 1
                     
                     var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
                     if index != nil {
@@ -5181,6 +5183,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 inventory.displayMolds.append(moldData)
                 scene.molds = inventory.displayMolds
                 scene.addMold(moldData: moldData)
+                inventory.moldCountDicc[moldData.name]! += 1
             }
             inventory.scorePerSecond += moldData.PPS
             // Add a label for the score that slowly floats up.
@@ -5220,6 +5223,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     inventory.displayMolds.remove(at: index!)
                     index = inventory.molds.firstIndex(where: {$0.name == moldData.name})
                     inventory.molds.remove(at: index!)
+                    inventory.moldCountDicc[moldData.name]! -= 1
                     scene.molds = inventory.displayMolds
                     index = scene.moldLayer.children.firstIndex(where: {$0.name == moldData.name})
                     scene.moldLayer.children[index!].removeFromParent()
@@ -5420,6 +5424,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                             let moldData = inventory.molds[indexToEat]
                             scene.playSound(select: "crunch")
                             inventory.molds.remove(at: indexToEat)
+                            inventory.moldCountDicc[moldData.name]! -= 1
                             
                             var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
                             if index != nil {
@@ -5458,6 +5463,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                                 let moldData = inventory.molds[indexToEat]
                                 scene.playSound(select: "crunch")
                                 inventory.molds.remove(at: indexToEat)
+                                inventory.moldCountDicc[moldData.name]! -= 1
                                 
                                 var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
                                 if index != nil {
@@ -5596,6 +5602,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     let moldData = inventory.molds[indexToEat]
                     scene.playSound(select: "crunch")
                     inventory.molds.remove(at: indexToEat)
+                    inventory.moldCountDicc[moldData.name]! -= 1
                     
                     var index = inventory.displayMolds.firstIndex(where: {$0.name == moldData.name})
                     if index != nil {
@@ -6180,9 +6187,19 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         inventoryScene.scaleMode = .aspectFill
         inventoryScene.touchHandler = inventorySceneHandler
         inventoryScene.unlockedMolds = inventory.unlockedMolds
-        inventoryScene.ownedMolds = inventory.molds
+        
+        inventoryScene.moldCountDicc = inventory.moldCountDicc
         inventoryScene.totalNum = inventory.displayMolds.count
         inventoryScene.display = inventory.displayMolds
+        //populate the owned molds array
+        var moldSet = Set<String>()
+        for mold in inventory.molds {
+            if !moldSet.contains(mold.description) {
+                inventoryScene.ownedMolds.append(mold)
+                moldSet.insert(mold.description)
+            }
+        }
+        
         if aroff {
             skView.presentScene(inventoryScene)
         }
@@ -6676,6 +6693,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             inventory.scorePerSecond -= levs*inventory.molds[pick].PPS/5
             
             inventory.molds.remove(at: pick)
+            inventory.moldCountDicc[moldData.name]! -= 1
         }
         //    now either remove hole or call worms and 'ave another go
         if randomInRange(lo: 0, hi: 2) == 1 {
@@ -6770,8 +6788,9 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 }
                 index += 1
             }
-            
+            let moldData = inventory.molds[pick]
             inventory.molds.remove(at: pick)
+            inventory.moldCountDicc[moldData.name]! -= 1
         }
         
         

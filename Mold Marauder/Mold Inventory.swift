@@ -195,6 +195,8 @@ class MoldInventory: SKScene {
     var totalLabel: SKLabelNode!
     var totalNum = 0
     
+    var moldCountDicc: [String:Int]!
+    
     //other things
     var backButton: SKNode!
     var clearButton: SKNode!
@@ -299,1144 +301,1142 @@ class MoldInventory: SKScene {
         page1ScrollView.addChild(inLabel)
         
         //add each mold to the scene exactly one time
-        if ownedMolds.count > 0 {
-            for mold in unlockedMolds {
-                if mold.moldType == MoldType.slime && moldOwned(mold: MoldType.slime) {
-                    Texture = SKTexture(image: UIImage(named: "Slime Mold")!)
-                    // slime
-                    slimeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    slimeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = slimeButton.position
-                    page1ScrollView.addChild(slimeButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    slimePlus = SKSpriteNode(texture:Texture)
-                    slimePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(slimePlus)
-                    
-                    slimeLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    slimeLabel.fontSize = 20
-                    slimeLabel.fontColor = UIColor.black
-                    slimeLabel.text = String(numOfMold(mold: MoldType.slime))
-                    slimeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(slimeLabel)
- 
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    slimeMinus = SKSpriteNode(texture:Texture)
-                    slimeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(slimeMinus)
-                }
-                if mold.moldType == MoldType.cave && moldOwned(mold: MoldType.cave) {
-                    // cave
-                    Texture = SKTexture(image: UIImage(named: "Cave Mold")!)
-                    caveButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    caveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = caveButton.position
-                    page1ScrollView.addChild(caveButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    cavePlus = SKSpriteNode(texture:Texture)
-                    cavePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(cavePlus)
-                    
-                    caveLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    caveLabel.fontSize = 20
-                    caveLabel.fontColor = UIColor.black
-                    caveLabel.text = String(numOfMold(mold: MoldType.cave))
-                    caveLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(caveLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    caveMinus = SKSpriteNode(texture:Texture)
-                    caveMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(caveMinus)
-                }
+        for mold in ownedMolds {
+            if mold.moldType == MoldType.slime {
+                Texture = SKTexture(image: UIImage(named: "Slime Mold")!)
+                // slime
+                slimeButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                slimeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = slimeButton.position
+                page1ScrollView.addChild(slimeButton)
                 
-                if mold.moldType == MoldType.sad && moldOwned(mold: MoldType.sad) {
-                    // sad
-                    Texture = SKTexture(image: UIImage(named: "Sad Mold")!)
-                    sadButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    sadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = sadButton.position
-                    page1ScrollView.addChild(sadButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    sadPlus = SKSpriteNode(texture:Texture)
-                    sadPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(sadPlus)
-                    
-                    sadLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    sadLabel.fontSize = 20
-                    sadLabel.fontColor = UIColor.black
-                    sadLabel.text = String(numOfMold(mold: MoldType.sad))
-                    sadLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(sadLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    sadMinus = SKSpriteNode(texture:Texture)
-                    sadMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(sadMinus)
-                }
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                slimePlus = SKSpriteNode(texture:Texture)
+                slimePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(slimePlus)
                 
-                if mold.moldType == MoldType.angry && moldOwned(mold: MoldType.angry) {
-                    //angry
-                    Texture = SKTexture(image: UIImage(named: "Angry Mold")!)
-                    angryButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    angryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = angryButton.position
-                    page1ScrollView.addChild(angryButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    angryPlus = SKSpriteNode(texture:Texture)
-                    angryPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(angryPlus)
-                    
-                    angryLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    angryLabel.fontSize = 20
-                    angryLabel.fontColor = UIColor.black
-                    angryLabel.text = String(numOfMold(mold: MoldType.angry))
-                    angryLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(angryLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    angryMinus = SKSpriteNode(texture:Texture)
-                    angryMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(angryMinus)
-                }
+                slimeLabel = SKLabelNode(fontNamed: "Lemondrop")
+                slimeLabel.fontSize = 20
+                slimeLabel.fontColor = UIColor.black
+                slimeLabel.text = String(numOfMold(mold: MoldType.slime))
+                slimeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(slimeLabel)
+
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                slimeMinus = SKSpriteNode(texture:Texture)
+                slimeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(slimeMinus)
+            }
+            if mold.moldType == MoldType.cave {
+                // cave
+                Texture = SKTexture(image: UIImage(named: "Cave Mold")!)
+                caveButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                caveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = caveButton.position
+                page1ScrollView.addChild(caveButton)
                 
-                if mold.moldType == MoldType.alien && moldOwned(mold: MoldType.alien) {
-                    //alien
-                    Texture = SKTexture(image: UIImage(named: "Alien Mold")!)
-                    alienButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    alienButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = alienButton.position
-                    page1ScrollView.addChild(alienButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    alienPlus = SKSpriteNode(texture:Texture)
-                    alienPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(alienPlus)
-                    
-                    alienLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    alienLabel.fontSize = 20
-                    alienLabel.fontColor = UIColor.black
-                    alienLabel.text = String(numOfMold(mold: MoldType.alien))
-                    alienLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(alienLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    alienMinus = SKSpriteNode(texture:Texture)
-                    alienMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(alienMinus)
-                }
-                if mold.moldType == MoldType.freckled && moldOwned(mold: MoldType.freckled) {
-                    //freckled
-                    Texture = SKTexture(image: UIImage(named: "Freckled Mold")!)
-                    freckledButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    freckledButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = freckledButton.position
-                    page1ScrollView.addChild(freckledButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    freckledPlus = SKSpriteNode(texture:Texture)
-                    freckledPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(freckledPlus)
-                    
-                    freckledLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    freckledLabel.fontSize = 20
-                    freckledLabel.fontColor = UIColor.black
-                    freckledLabel.text = String(numOfMold(mold: MoldType.freckled))
-                    freckledLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(freckledLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    freckledMinus = SKSpriteNode(texture:Texture)
-                    freckledMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(freckledMinus)
-                }
-                if mold.moldType == MoldType.hypno && moldOwned(mold: MoldType.hypno) {
-                    Texture = SKTexture(image: UIImage(named: "Hypno Mold")!)
-                    hypnoButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    hypnoButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = hypnoButton.position
-                    page1ScrollView.addChild(hypnoButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    hypnoPlus = SKSpriteNode(texture:Texture)
-                    hypnoPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(hypnoPlus)
-                    
-                    hypnoLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    hypnoLabel.fontSize = 20
-                    hypnoLabel.fontColor = UIColor.black
-                    hypnoLabel.text = String(numOfMold(mold: MoldType.hypno))
-                    hypnoLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(hypnoLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    hypnoMinus = SKSpriteNode(texture:Texture)
-                    hypnoMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(hypnoMinus)
-                }
-                if mold.moldType == MoldType.pimply && moldOwned(mold: MoldType.pimply) {
-                    Texture = SKTexture(image: UIImage(named: "Pimply Mold")!)
-                    pimplyButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    pimplyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = pimplyButton.position
-                    page1ScrollView.addChild(pimplyButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    pimplyPlus = SKSpriteNode(texture:Texture)
-                    pimplyPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(pimplyPlus)
-                    
-                    pimplyLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    pimplyLabel.fontSize = 20
-                    pimplyLabel.fontColor = UIColor.black
-                    pimplyLabel.text = String(numOfMold(mold: MoldType.pimply))
-                    pimplyLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(pimplyLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    pimplyMinus = SKSpriteNode(texture:Texture)
-                    pimplyMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(pimplyMinus)
-                }
-                if mold.moldType == MoldType.rainbow && moldOwned(mold: MoldType.rainbow) {
-                    Texture = SKTexture(image: UIImage(named: "Rainbow Mold")!)
-                    rainbowButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    rainbowButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = rainbowButton.position
-                    page1ScrollView.addChild(rainbowButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    rainbowPlus = SKSpriteNode(texture:Texture)
-                    rainbowPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(rainbowPlus)
-                    
-                    rainbowLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    rainbowLabel.fontSize = 20
-                    rainbowLabel.fontColor = UIColor.black
-                    rainbowLabel.text = String(numOfMold(mold: MoldType.rainbow))
-                    rainbowLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(rainbowLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    rainbowMinus = SKSpriteNode(texture:Texture)
-                    rainbowMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(rainbowMinus)
-                }
-                if mold.moldType == MoldType.aluminum && moldOwned(mold: MoldType.aluminum) {
-                    Texture = SKTexture(image: UIImage(named: "Aluminum Mold")!)
-                    aluminumButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    aluminumButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = aluminumButton.position
-                    page1ScrollView.addChild(aluminumButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    aluminumPlus = SKSpriteNode(texture:Texture)
-                    aluminumPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(aluminumPlus)
-                    
-                    aluminumLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    aluminumLabel.fontSize = 20
-                    aluminumLabel.fontColor = UIColor.black
-                    aluminumLabel.text = String(numOfMold(mold: MoldType.aluminum))
-                    aluminumLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(aluminumLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    aluminumMinus = SKSpriteNode(texture:Texture)
-                    aluminumMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(aluminumMinus)
-                }
-                if mold.moldType == MoldType.circuit && moldOwned(mold: MoldType.circuit) {
-                    Texture = SKTexture(image: UIImage(named: "Circuit Mold")!)
-                    circuitButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    circuitButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = circuitButton.position
-                    page1ScrollView.addChild(circuitButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    circuitPlus = SKSpriteNode(texture:Texture)
-                    circuitPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(circuitPlus)
-                    
-                    circuitLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    circuitLabel.fontSize = 20
-                    circuitLabel.fontColor = UIColor.black
-                    circuitLabel.text = String(numOfMold(mold: MoldType.circuit))
-                    circuitLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(circuitLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    circuitMinus = SKSpriteNode(texture:Texture)
-                    circuitMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(circuitMinus)
-                }
-                if mold.moldType == MoldType.hologram && moldOwned(mold: MoldType.hologram) {
-                    Texture = SKTexture(image: UIImage(named: "Hologram Mold")!)
-                    hologramButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    hologramButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = hologramButton.position
-                    page1ScrollView.addChild(hologramButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    hologramPlus = SKSpriteNode(texture:Texture)
-                    hologramPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(hologramPlus)
-                    
-                    hologramLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    hologramLabel.fontSize = 20
-                    hologramLabel.fontColor = UIColor.black
-                    hologramLabel.text = String(numOfMold(mold: MoldType.hologram))
-                    hologramLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(hologramLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    hologramMinus = SKSpriteNode(texture:Texture)
-                    hologramMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(hologramMinus)
-                }
-                if mold.moldType == MoldType.storm && moldOwned(mold: MoldType.storm) {
-                    Texture = SKTexture(image: UIImage(named: "Storm Mold")!)
-                    stormButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    stormButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = stormButton.position
-                    page1ScrollView.addChild(stormButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    stormPlus = SKSpriteNode(texture:Texture)
-                    stormPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(stormPlus)
-                    
-                    stormLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    stormLabel.fontSize = 20
-                    stormLabel.fontColor = UIColor.black
-                    stormLabel.text = String(numOfMold(mold: MoldType.storm))
-                    stormLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(stormLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    stormMinus = SKSpriteNode(texture:Texture)
-                    stormMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(stormMinus)
-                }
-                if mold.moldType == MoldType.bacteria && moldOwned(mold: MoldType.bacteria) {
-                    Texture = SKTexture(image: UIImage(named: "Bacteria Mold")!)
-                    bacteriaButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    bacteriaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = bacteriaButton.position
-                    page1ScrollView.addChild(bacteriaButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    bacteriaPlus = SKSpriteNode(texture:Texture)
-                    bacteriaPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(bacteriaPlus)
-                    
-                    bacteriaLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    bacteriaLabel.fontSize = 20
-                    bacteriaLabel.fontColor = UIColor.black
-                    bacteriaLabel.text = String(numOfMold(mold: MoldType.bacteria))
-                    bacteriaLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(bacteriaLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    bacteriaMinus = SKSpriteNode(texture:Texture)
-                    bacteriaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(bacteriaMinus)
-                }
-                if mold.moldType == MoldType.virus && moldOwned(mold: MoldType.virus) {
-                    Texture = SKTexture(image: UIImage(named: "Virus Mold")!)
-                    virusButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    virusButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = virusButton.position
-                    page1ScrollView.addChild(virusButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    virusPlus = SKSpriteNode(texture:Texture)
-                    virusPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(virusPlus)
-                    
-                    virusLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    virusLabel.fontSize = 20
-                    virusLabel.fontColor = UIColor.black
-                    virusLabel.text = String(numOfMold(mold: MoldType.virus))
-                    virusLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(virusLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    virusMinus = SKSpriteNode(texture:Texture)
-                    virusMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(virusMinus)
-                }
-                if mold.moldType == MoldType.flower && moldOwned(mold: MoldType.flower) {
-                    Texture = SKTexture(image: UIImage(named: "Flower Mold")!)
-                    flowerButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    flowerButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 120)
-                    lastButton = flowerButton.position
-                    page1ScrollView.addChild(flowerButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    flowerPlus = SKSpriteNode(texture:Texture)
-                    flowerPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(flowerPlus)
-                    
-                    flowerLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    flowerLabel.fontSize = 20
-                    flowerLabel.fontColor = UIColor.black
-                    flowerLabel.text = String(numOfMold(mold: MoldType.flower))
-                    flowerLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(flowerLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    flowerMinus = SKSpriteNode(texture:Texture)
-                    flowerMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(flowerMinus)
-                    lastButton = CGPoint(x: lastButton.x, y: lastButton.y - 60)
-                }
-                if mold.moldType == MoldType.bee && moldOwned(mold: MoldType.bee) {
-                    Texture = SKTexture(image: UIImage(named: "Bee Mold")!)
-                    beeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    beeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = beeButton.position
-                    page1ScrollView.addChild(beeButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    beePlus = SKSpriteNode(texture:Texture)
-                    beePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(beePlus)
-                    
-                    beeLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    beeLabel.fontSize = 20
-                    beeLabel.fontColor = UIColor.black
-                    beeLabel.text = String(numOfMold(mold: MoldType.bee))
-                    beeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(beeLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    beeMinus = SKSpriteNode(texture:Texture)
-                    beeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(beeMinus)
-                }
-                if mold.moldType == MoldType.x && moldOwned(mold: MoldType.x) {
-                    Texture = SKTexture(image: UIImage(named: "X Mold")!)
-                    xButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    xButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = xButton.position
-                    page1ScrollView.addChild(xButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    xPlus = SKSpriteNode(texture:Texture)
-                    xPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(xPlus)
-                    
-                    xLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    xLabel.fontSize = 20
-                    xLabel.fontColor = UIColor.black
-                    xLabel.text = String(numOfMold(mold: MoldType.x))
-                    xLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(xLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    xMinus = SKSpriteNode(texture:Texture)
-                    xMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(xMinus)
-                }
-                if mold.moldType == MoldType.disaffected && moldOwned(mold: MoldType.disaffected) {
-                    Texture = SKTexture(image: UIImage(named: "Disaffected Mold")!)
-                    disaffectedButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    disaffectedButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = disaffectedButton.position
-                    page1ScrollView.addChild(disaffectedButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    disaffectedPlus = SKSpriteNode(texture:Texture)
-                    disaffectedPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(disaffectedPlus)
-                    
-                    disaffectedLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    disaffectedLabel.fontSize = 20
-                    disaffectedLabel.fontColor = UIColor.black
-                    disaffectedLabel.text = String(numOfMold(mold: MoldType.disaffected))
-                    disaffectedLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(disaffectedLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    disaffectedMinus = SKSpriteNode(texture:Texture)
-                    disaffectedMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(disaffectedMinus)
-                }
-                if mold.moldType == MoldType.olive && moldOwned(mold: MoldType.olive) {
-                    Texture = SKTexture(image: UIImage(named: "Olive Mold")!)
-                    oliveButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    oliveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = oliveButton.position
-                    page1ScrollView.addChild(oliveButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    olivePlus = SKSpriteNode(texture:Texture)
-                    olivePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(olivePlus)
-                    
-                    oliveLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    oliveLabel.fontSize = 20
-                    oliveLabel.fontColor = UIColor.black
-                    oliveLabel.text = String(numOfMold(mold: MoldType.olive))
-                    oliveLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(oliveLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    oliveMinus = SKSpriteNode(texture:Texture)
-                    oliveMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(oliveMinus)
-                }
-                if mold.moldType == MoldType.coconut && moldOwned(mold: MoldType.coconut) {
-                    Texture = SKTexture(image: UIImage(named: "Coconut Mold")!)
-                    coconutButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    coconutButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = coconutButton.position
-                    page1ScrollView.addChild(coconutButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    coconutPlus = SKSpriteNode(texture:Texture)
-                    coconutPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(coconutPlus)
-                    
-                    coconutLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    coconutLabel.fontSize = 20
-                    coconutLabel.fontColor = UIColor.black
-                    coconutLabel.text = String(numOfMold(mold: MoldType.coconut))
-                    coconutLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(coconutLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    coconutMinus = SKSpriteNode(texture:Texture)
-                    coconutMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(coconutMinus)
-                }
-                if mold.moldType == MoldType.sick && moldOwned(mold: MoldType.sick) {
-                    Texture = SKTexture(image: UIImage(named: "Sick Mold")!)
-                    sickButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    sickButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = sickButton.position
-                    page1ScrollView.addChild(sickButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    sickPlus = SKSpriteNode(texture:Texture)
-                    sickPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(sickPlus)
-                    
-                    sickLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    sickLabel.fontSize = 20
-                    sickLabel.fontColor = UIColor.black
-                    sickLabel.text = String(numOfMold(mold: MoldType.sick))
-                    sickLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(sickLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    sickMinus = SKSpriteNode(texture:Texture)
-                    sickMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(sickMinus)
-                }
-                if mold.moldType == MoldType.dead && moldOwned(mold: MoldType.dead) {
-                    Texture = SKTexture(image: UIImage(named: "Dead Mold")!)
-                    deadButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    deadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = deadButton.position
-                    page1ScrollView.addChild(deadButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    deadPlus = SKSpriteNode(texture:Texture)
-                    deadPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(deadPlus)
-                    
-                    deadLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    deadLabel.fontSize = 20
-                    deadLabel.fontColor = UIColor.black
-                    deadLabel.text = String(numOfMold(mold: MoldType.dead))
-                    deadLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(deadLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    deadMinus = SKSpriteNode(texture:Texture)
-                    deadMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(deadMinus)
-                }
-                if mold.moldType == MoldType.zombie && moldOwned(mold: MoldType.zombie) {
-                    Texture = SKTexture(image: UIImage(named: "Zombie Mold")!)
-                    zombieButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    zombieButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = zombieButton.position
-                    page1ScrollView.addChild(zombieButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    zombiePlus = SKSpriteNode(texture:Texture)
-                    zombiePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(zombiePlus)
-                    
-                    zombieLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    zombieLabel.fontSize = 20
-                    zombieLabel.fontColor = UIColor.black
-                    zombieLabel.text = String(numOfMold(mold: MoldType.zombie))
-                    zombieLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(zombieLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    zombieMinus = SKSpriteNode(texture:Texture)
-                    zombieMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(zombieMinus)
-                }
-                if mold.moldType == MoldType.rock && moldOwned(mold: MoldType.rock) {
-                    Texture = SKTexture(image: UIImage(named: "Rock Mold")!)
-                    rockButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    rockButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = rockButton.position
-                    page1ScrollView.addChild(rockButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    rockPlus = SKSpriteNode(texture:Texture)
-                    rockPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(rockPlus)
-                    
-                    rockLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    rockLabel.fontSize = 20
-                    rockLabel.fontColor = UIColor.black
-                    rockLabel.text = String(numOfMold(mold: MoldType.rock))
-                    rockLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(rockLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    rockMinus = SKSpriteNode(texture:Texture)
-                    rockMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(rockMinus)
-                }
-                if mold.moldType == MoldType.cloud && moldOwned(mold: MoldType.cloud) {
-                    Texture = SKTexture(image: UIImage(named: "Cloud Mold")!)
-                    cloudButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    cloudButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = cloudButton.position
-                    page1ScrollView.addChild(cloudButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    cloudPlus = SKSpriteNode(texture:Texture)
-                    cloudPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(cloudPlus)
-                    
-                    cloudLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    cloudLabel.fontSize = 20
-                    cloudLabel.fontColor = UIColor.black
-                    cloudLabel.text = String(numOfMold(mold: MoldType.cloud))
-                    cloudLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(cloudLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    cloudMinus = SKSpriteNode(texture:Texture)
-                    cloudMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(cloudMinus)
-                }
-                if mold.moldType == MoldType.water && moldOwned(mold: MoldType.water) {
-                    Texture = SKTexture(image: UIImage(named: "Water Mold")!)
-                    waterButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    waterButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = waterButton.position
-                    page1ScrollView.addChild(waterButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    waterPlus = SKSpriteNode(texture:Texture)
-                    waterPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(waterPlus)
-                    
-                    waterLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    waterLabel.fontSize = 20
-                    waterLabel.fontColor = UIColor.black
-                    waterLabel.text = String(numOfMold(mold: MoldType.water))
-                    waterLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(waterLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    waterMinus = SKSpriteNode(texture:Texture)
-                    waterMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(waterMinus)
-                }
-                if mold.moldType == MoldType.crystal && moldOwned(mold: MoldType.crystal) {
-                    Texture = SKTexture(image: UIImage(named: "Crystal Mold")!)
-                    crystalButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    crystalButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = crystalButton.position
-                    page1ScrollView.addChild(crystalButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    crystalPlus = SKSpriteNode(texture:Texture)
-                    crystalPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(crystalPlus)
-                    
-                    crystalLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    crystalLabel.fontSize = 20
-                    crystalLabel.fontColor = UIColor.black
-                    crystalLabel.text = String(numOfMold(mold: MoldType.crystal))
-                    crystalLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(crystalLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    crystalMinus = SKSpriteNode(texture:Texture)
-                    crystalMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(crystalMinus)
-                }
-                if mold.moldType == MoldType.nuclear && moldOwned(mold: MoldType.nuclear) {
-                    Texture = SKTexture(image: UIImage(named: "Nuclear Mold")!)
-                    nuclearButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    nuclearButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = nuclearButton.position
-                    page1ScrollView.addChild(nuclearButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    nuclearPlus = SKSpriteNode(texture:Texture)
-                    nuclearPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(nuclearPlus)
-                    
-                    nuclearLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    nuclearLabel.fontSize = 20
-                    nuclearLabel.fontColor = UIColor.black
-                    nuclearLabel.text = String(numOfMold(mold: MoldType.nuclear))
-                    nuclearLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(nuclearLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    nuclearMinus = SKSpriteNode(texture:Texture)
-                    nuclearMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(nuclearMinus)
-                }
-                if mold.moldType == MoldType.astronaut && moldOwned(mold: MoldType.astronaut) {
-                    Texture = SKTexture(image: UIImage(named: "Astronaut Mold")!)
-                    astronautButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    astronautButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = astronautButton.position
-                    page1ScrollView.addChild(astronautButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    astronautPlus = SKSpriteNode(texture:Texture)
-                    astronautPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(astronautPlus)
-                    
-                    astronautLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    astronautLabel.fontSize = 20
-                    astronautLabel.fontColor = UIColor.black
-                    astronautLabel.text = String(numOfMold(mold: MoldType.astronaut))
-                    astronautLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(astronautLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    astronautMinus = SKSpriteNode(texture:Texture)
-                    astronautMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(astronautMinus)
-                }
-                if mold.moldType == MoldType.sand && moldOwned(mold: MoldType.sand) {
-                    Texture = SKTexture(image: UIImage(named: "Sand Mold")!)
-                    sandButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    sandButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = sandButton.position
-                    page1ScrollView.addChild(sandButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    sandPlus = SKSpriteNode(texture:Texture)
-                    sandPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(sandPlus)
-                    
-                    sandLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    sandLabel.fontSize = 20
-                    sandLabel.fontColor = UIColor.black
-                    sandLabel.text = String(numOfMold(mold: MoldType.sand))
-                    sandLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(sandLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    sandMinus = SKSpriteNode(texture:Texture)
-                    sandMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(sandMinus)
-                }
-                if mold.moldType == MoldType.glass && moldOwned(mold: MoldType.glass) {
-                    Texture = SKTexture(image: UIImage(named: "Glass Mold")!)
-                    glassButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    glassButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = glassButton.position
-                    page1ScrollView.addChild(glassButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    glassPlus = SKSpriteNode(texture:Texture)
-                    glassPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(glassPlus)
-                    
-                    glassLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    glassLabel.fontSize = 20
-                    glassLabel.fontColor = UIColor.black
-                    glassLabel.text = String(numOfMold(mold: MoldType.glass))
-                    glassLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(glassLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    glassMinus = SKSpriteNode(texture:Texture)
-                    glassMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(glassMinus)
-                }
-                if mold.moldType == MoldType.coffee && moldOwned(mold: MoldType.coffee) {
-                    Texture = SKTexture(image: UIImage(named: "Coffee Mold")!)
-                    coffeeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    coffeeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = coffeeButton.position
-                    page1ScrollView.addChild(coffeeButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    coffeePlus = SKSpriteNode(texture:Texture)
-                    coffeePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(coffeePlus)
-                    
-                    coffeeLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    coffeeLabel.fontSize = 20
-                    coffeeLabel.fontColor = UIColor.black
-                    coffeeLabel.text = String(numOfMold(mold: MoldType.coffee))
-                    coffeeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(coffeeLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    coffeeMinus = SKSpriteNode(texture:Texture)
-                    coffeeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(coffeeMinus)
-                }
-                if mold.moldType == MoldType.slinky && moldOwned(mold: MoldType.slinky) {
-                    Texture = SKTexture(image: UIImage(named: "Slinky Mold")!)
-                    slinkyButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    slinkyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = slinkyButton.position
-                    page1ScrollView.addChild(slinkyButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    slinkyPlus = SKSpriteNode(texture:Texture)
-                    slinkyPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(slinkyPlus)
-                    
-                    slinkyLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    slinkyLabel.fontSize = 20
-                    slinkyLabel.fontColor = UIColor.black
-                    slinkyLabel.text = String(numOfMold(mold: MoldType.slinky))
-                    slinkyLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(slinkyLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    slinkyMinus = SKSpriteNode(texture:Texture)
-                    slinkyMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(slinkyMinus)
-                }
-                if mold.moldType == MoldType.magma && moldOwned(mold: MoldType.magma) {
-                    Texture = SKTexture(image: UIImage(named: "Magma Mold")!)
-                    magmaButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    magmaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = magmaButton.position
-                    page1ScrollView.addChild(magmaButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    magmaPlus = SKSpriteNode(texture:Texture)
-                    magmaPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(magmaPlus)
-                    
-                    magmaLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    magmaLabel.fontSize = 20
-                    magmaLabel.fontColor = UIColor.black
-                    magmaLabel.text = String(numOfMold(mold: MoldType.magma))
-                    magmaLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(magmaLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    magmaMinus = SKSpriteNode(texture:Texture)
-                    magmaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(magmaMinus)
-                }
-                if mold.moldType == MoldType.samurai && moldOwned(mold: MoldType.samurai) {
-                    Texture = SKTexture(image: UIImage(named: "Samurai Mold")!)
-                    samuraiButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    samuraiButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = samuraiButton.position
-                    page1ScrollView.addChild(samuraiButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    samuraiPlus = SKSpriteNode(texture:Texture)
-                    samuraiPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(samuraiPlus)
-                    
-                    samuraiLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    samuraiLabel.fontSize = 20
-                    samuraiLabel.fontColor = UIColor.black
-                    samuraiLabel.text = String(numOfMold(mold: MoldType.samurai))
-                    samuraiLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(samuraiLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    samuraiMinus = SKSpriteNode(texture:Texture)
-                    samuraiMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(samuraiMinus)
-                }
-                if mold.moldType == MoldType.orange && moldOwned(mold: MoldType.orange) {
-                    Texture = SKTexture(image: UIImage(named: "Orange Mold")!)
-                    orangeButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    orangeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = orangeButton.position
-                    page1ScrollView.addChild(orangeButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    orangePlus = SKSpriteNode(texture:Texture)
-                    orangePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(orangePlus)
-                    
-                    orangeLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    orangeLabel.fontSize = 20
-                    orangeLabel.fontColor = UIColor.black
-                    orangeLabel.text = String(numOfMold(mold: MoldType.orange))
-                    orangeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(orangeLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    orangeMinus = SKSpriteNode(texture:Texture)
-                    orangeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(orangeMinus)
-                }
-                if mold.moldType == MoldType.strawberry && moldOwned(mold: MoldType.strawberry) {
-                    Texture = SKTexture(image: UIImage(named: "Strawberry Mold")!)
-                    strawberryButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    strawberryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = strawberryButton.position
-                    page1ScrollView.addChild(strawberryButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    strawberryPlus = SKSpriteNode(texture:Texture)
-                    strawberryPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(strawberryPlus)
-                    
-                    strawberryLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    strawberryLabel.fontSize = 20
-                    strawberryLabel.fontColor = UIColor.black
-                    strawberryLabel.text = String(numOfMold(mold: MoldType.strawberry))
-                    strawberryLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(strawberryLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    strawberryMinus = SKSpriteNode(texture:Texture)
-                    strawberryMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(strawberryMinus)
-                }
-                if mold.moldType == MoldType.tshirt && moldOwned(mold: MoldType.tshirt) {
-                    Texture = SKTexture(image: UIImage(named: "TShirt Mold")!)
-                    tshirtButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    tshirtButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = tshirtButton.position
-                    page1ScrollView.addChild(tshirtButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    tshirtPlus = SKSpriteNode(texture:Texture)
-                    tshirtPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(tshirtPlus)
-                    
-                    tshirtLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    tshirtLabel.fontSize = 20
-                    tshirtLabel.fontColor = UIColor.black
-                    tshirtLabel.text = String(numOfMold(mold: MoldType.tshirt))
-                    tshirtLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(tshirtLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    tshirtMinus = SKSpriteNode(texture:Texture)
-                    tshirtMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(tshirtMinus)
-                }
-                if mold.moldType == MoldType.cryptid && moldOwned(mold: MoldType.cryptid) {
-                    Texture = SKTexture(image: UIImage(named: "Cryptid Mold")!)
-                    cryptidButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    cryptidButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = cryptidButton.position
-                    page1ScrollView.addChild(cryptidButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    cryptidPlus = SKSpriteNode(texture:Texture)
-                    cryptidPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(cryptidPlus)
-                    
-                    cryptidLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    cryptidLabel.fontSize = 20
-                    cryptidLabel.fontColor = UIColor.black
-                    cryptidLabel.text = String(numOfMold(mold: MoldType.cryptid))
-                    cryptidLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(cryptidLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    cryptidMinus = SKSpriteNode(texture:Texture)
-                    cryptidMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(cryptidMinus)
-                }
-                if mold.moldType == MoldType.angel && moldOwned(mold: MoldType.angel) {
-                    Texture = SKTexture(image: UIImage(named: "Angel Mold")!)
-                    angelButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    angelButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = angelButton.position
-                    page1ScrollView.addChild(angelButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    angelPlus = SKSpriteNode(texture:Texture)
-                    angelPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(angelPlus)
-                    
-                    angelLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    angelLabel.fontSize = 20
-                    angelLabel.fontColor = UIColor.black
-                    angelLabel.text = String(numOfMold(mold: MoldType.angel))
-                    angelLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(angelLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    angelMinus = SKSpriteNode(texture:Texture)
-                    angelMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(angelMinus)
-                }
-                if mold.moldType == MoldType.invisible && moldOwned(mold: MoldType.invisible) {
-                    Texture = SKTexture(image: UIImage(named: "Invisible Mold")!)
-                    invisibleButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    invisibleButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = invisibleButton.position
-                    page1ScrollView.addChild(invisibleButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    invisiblePlus = SKSpriteNode(texture:Texture)
-                    invisiblePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(invisiblePlus)
-                    
-                    invisibleLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    invisibleLabel.fontSize = 20
-                    invisibleLabel.fontColor = UIColor.black
-                    invisibleLabel.text = String(numOfMold(mold: MoldType.invisible))
-                    invisibleLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(invisibleLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    invisibleMinus = SKSpriteNode(texture:Texture)
-                    invisibleMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(invisibleMinus)
-                }
-                if mold.moldType == MoldType.star && moldOwned(mold: MoldType.star) {
-                    Texture = SKTexture(image: UIImage(named: "Star Mold small")!)
-                    starButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    starButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 120)
-                    lastButton = starButton.position
-                    page1ScrollView.addChild(starButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    starPlus = SKSpriteNode(texture:Texture)
-                    starPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(starPlus)
-                    
-                    starLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    starLabel.fontSize = 20
-                    starLabel.fontColor = UIColor.black
-                    starLabel.text = String(numOfMold(mold: MoldType.star))
-                    starLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(starLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    starMinus = SKSpriteNode(texture:Texture)
-                    starMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(starMinus)
-                }
-                if mold.moldType == MoldType.metaphase && moldOwned(mold: MoldType.metaphase) {
-                    Texture = SKTexture(image: UIImage(named: "Metaphase Mold")!)
-                    metaButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    metaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = metaButton.position
-                    page1ScrollView.addChild(metaButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    metaPlus = SKSpriteNode(texture:Texture)
-                    metaPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(metaPlus)
-                    
-                    metaLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    metaLabel.fontSize = 20
-                    metaLabel.fontColor = UIColor.black
-                    metaLabel.text = String(numOfMold(mold: MoldType.metaphase))
-                    metaLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(metaLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    metaMinus = SKSpriteNode(texture:Texture)
-                    metaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(metaMinus)
-                }
-                if mold.moldType == MoldType.god && moldOwned(mold: MoldType.god) {
-                    Texture = SKTexture(image: UIImage(named: "God Mold")!)
-                    godButton = SKSpriteNode(texture:Texture)
-                    // Place in scene
-                    godButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 150)
-                    lastButton = godButton.position
-                    page1ScrollView.addChild(godButton)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_plus")!)
-                    godPlus = SKSpriteNode(texture:Texture)
-                    godPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
-                    page1ScrollView.addChild(godPlus)
-                    
-                    godLabel = SKLabelNode(fontNamed: "Lemondrop")
-                    godLabel.fontSize = 20
-                    godLabel.fontColor = UIColor.black
-                    godLabel.text = String(numOfMold(mold: MoldType.god))
-                    godLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
-                    page1ScrollView.addChild(godLabel)
-                    
-                    Texture = SKTexture(image: UIImage(named: "clear_minus")!)
-                    godMinus = SKSpriteNode(texture:Texture)
-                    godMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
-                    page1ScrollView.addChild(godMinus)
-                    lastButton = CGPoint(x: lastButton.x, y: lastButton.y - 80)
-                }
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                cavePlus = SKSpriteNode(texture:Texture)
+                cavePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(cavePlus)
+                
+                caveLabel = SKLabelNode(fontNamed: "Lemondrop")
+                caveLabel.fontSize = 20
+                caveLabel.fontColor = UIColor.black
+                caveLabel.text = String(numOfMold(mold: MoldType.cave))
+                caveLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(caveLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                caveMinus = SKSpriteNode(texture:Texture)
+                caveMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(caveMinus)
+            }
+            
+            if mold.moldType == MoldType.sad {
+                // sad
+                Texture = SKTexture(image: UIImage(named: "Sad Mold")!)
+                sadButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                sadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = sadButton.position
+                page1ScrollView.addChild(sadButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                sadPlus = SKSpriteNode(texture:Texture)
+                sadPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(sadPlus)
+                
+                sadLabel = SKLabelNode(fontNamed: "Lemondrop")
+                sadLabel.fontSize = 20
+                sadLabel.fontColor = UIColor.black
+                sadLabel.text = String(numOfMold(mold: MoldType.sad))
+                sadLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(sadLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                sadMinus = SKSpriteNode(texture:Texture)
+                sadMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(sadMinus)
+            }
+            
+            if mold.moldType == MoldType.angry {
+                //angry
+                Texture = SKTexture(image: UIImage(named: "Angry Mold")!)
+                angryButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                angryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = angryButton.position
+                page1ScrollView.addChild(angryButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                angryPlus = SKSpriteNode(texture:Texture)
+                angryPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(angryPlus)
+                
+                angryLabel = SKLabelNode(fontNamed: "Lemondrop")
+                angryLabel.fontSize = 20
+                angryLabel.fontColor = UIColor.black
+                angryLabel.text = String(numOfMold(mold: MoldType.angry))
+                angryLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(angryLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                angryMinus = SKSpriteNode(texture:Texture)
+                angryMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(angryMinus)
+            }
+            
+            if mold.moldType == MoldType.alien {
+                //alien
+                Texture = SKTexture(image: UIImage(named: "Alien Mold")!)
+                alienButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                alienButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = alienButton.position
+                page1ScrollView.addChild(alienButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                alienPlus = SKSpriteNode(texture:Texture)
+                alienPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(alienPlus)
+                
+                alienLabel = SKLabelNode(fontNamed: "Lemondrop")
+                alienLabel.fontSize = 20
+                alienLabel.fontColor = UIColor.black
+                alienLabel.text = String(numOfMold(mold: MoldType.alien))
+                alienLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(alienLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                alienMinus = SKSpriteNode(texture:Texture)
+                alienMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(alienMinus)
+            }
+            if mold.moldType == MoldType.freckled {
+                //freckled
+                Texture = SKTexture(image: UIImage(named: "Freckled Mold")!)
+                freckledButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                freckledButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = freckledButton.position
+                page1ScrollView.addChild(freckledButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                freckledPlus = SKSpriteNode(texture:Texture)
+                freckledPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(freckledPlus)
+                
+                freckledLabel = SKLabelNode(fontNamed: "Lemondrop")
+                freckledLabel.fontSize = 20
+                freckledLabel.fontColor = UIColor.black
+                freckledLabel.text = String(numOfMold(mold: MoldType.freckled))
+                freckledLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(freckledLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                freckledMinus = SKSpriteNode(texture:Texture)
+                freckledMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(freckledMinus)
+            }
+            if mold.moldType == MoldType.hypno {
+                Texture = SKTexture(image: UIImage(named: "Hypno Mold")!)
+                hypnoButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                hypnoButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = hypnoButton.position
+                page1ScrollView.addChild(hypnoButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                hypnoPlus = SKSpriteNode(texture:Texture)
+                hypnoPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(hypnoPlus)
+                
+                hypnoLabel = SKLabelNode(fontNamed: "Lemondrop")
+                hypnoLabel.fontSize = 20
+                hypnoLabel.fontColor = UIColor.black
+                hypnoLabel.text = String(numOfMold(mold: MoldType.hypno))
+                hypnoLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(hypnoLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                hypnoMinus = SKSpriteNode(texture:Texture)
+                hypnoMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(hypnoMinus)
+            }
+            if mold.moldType == MoldType.pimply {
+                Texture = SKTexture(image: UIImage(named: "Pimply Mold")!)
+                pimplyButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                pimplyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = pimplyButton.position
+                page1ScrollView.addChild(pimplyButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                pimplyPlus = SKSpriteNode(texture:Texture)
+                pimplyPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(pimplyPlus)
+                
+                pimplyLabel = SKLabelNode(fontNamed: "Lemondrop")
+                pimplyLabel.fontSize = 20
+                pimplyLabel.fontColor = UIColor.black
+                pimplyLabel.text = String(numOfMold(mold: MoldType.pimply))
+                pimplyLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(pimplyLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                pimplyMinus = SKSpriteNode(texture:Texture)
+                pimplyMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(pimplyMinus)
+            }
+            if mold.moldType == MoldType.rainbow {
+                Texture = SKTexture(image: UIImage(named: "Rainbow Mold")!)
+                rainbowButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                rainbowButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = rainbowButton.position
+                page1ScrollView.addChild(rainbowButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                rainbowPlus = SKSpriteNode(texture:Texture)
+                rainbowPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(rainbowPlus)
+                
+                rainbowLabel = SKLabelNode(fontNamed: "Lemondrop")
+                rainbowLabel.fontSize = 20
+                rainbowLabel.fontColor = UIColor.black
+                rainbowLabel.text = String(numOfMold(mold: MoldType.rainbow))
+                rainbowLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(rainbowLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                rainbowMinus = SKSpriteNode(texture:Texture)
+                rainbowMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(rainbowMinus)
+            }
+            if mold.moldType == MoldType.aluminum {
+                Texture = SKTexture(image: UIImage(named: "Aluminum Mold")!)
+                aluminumButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                aluminumButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = aluminumButton.position
+                page1ScrollView.addChild(aluminumButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                aluminumPlus = SKSpriteNode(texture:Texture)
+                aluminumPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(aluminumPlus)
+                
+                aluminumLabel = SKLabelNode(fontNamed: "Lemondrop")
+                aluminumLabel.fontSize = 20
+                aluminumLabel.fontColor = UIColor.black
+                aluminumLabel.text = String(numOfMold(mold: MoldType.aluminum))
+                aluminumLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(aluminumLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                aluminumMinus = SKSpriteNode(texture:Texture)
+                aluminumMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(aluminumMinus)
+            }
+            if mold.moldType == MoldType.circuit {
+                Texture = SKTexture(image: UIImage(named: "Circuit Mold")!)
+                circuitButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                circuitButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = circuitButton.position
+                page1ScrollView.addChild(circuitButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                circuitPlus = SKSpriteNode(texture:Texture)
+                circuitPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(circuitPlus)
+                
+                circuitLabel = SKLabelNode(fontNamed: "Lemondrop")
+                circuitLabel.fontSize = 20
+                circuitLabel.fontColor = UIColor.black
+                circuitLabel.text = String(numOfMold(mold: MoldType.circuit))
+                circuitLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(circuitLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                circuitMinus = SKSpriteNode(texture:Texture)
+                circuitMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(circuitMinus)
+            }
+            if mold.moldType == MoldType.hologram {
+                Texture = SKTexture(image: UIImage(named: "Hologram Mold")!)
+                hologramButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                hologramButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = hologramButton.position
+                page1ScrollView.addChild(hologramButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                hologramPlus = SKSpriteNode(texture:Texture)
+                hologramPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(hologramPlus)
+                
+                hologramLabel = SKLabelNode(fontNamed: "Lemondrop")
+                hologramLabel.fontSize = 20
+                hologramLabel.fontColor = UIColor.black
+                hologramLabel.text = String(numOfMold(mold: MoldType.hologram))
+                hologramLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(hologramLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                hologramMinus = SKSpriteNode(texture:Texture)
+                hologramMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(hologramMinus)
+            }
+            if mold.moldType == MoldType.storm {
+                Texture = SKTexture(image: UIImage(named: "Storm Mold")!)
+                stormButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                stormButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = stormButton.position
+                page1ScrollView.addChild(stormButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                stormPlus = SKSpriteNode(texture:Texture)
+                stormPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(stormPlus)
+                
+                stormLabel = SKLabelNode(fontNamed: "Lemondrop")
+                stormLabel.fontSize = 20
+                stormLabel.fontColor = UIColor.black
+                stormLabel.text = String(numOfMold(mold: MoldType.storm))
+                stormLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(stormLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                stormMinus = SKSpriteNode(texture:Texture)
+                stormMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(stormMinus)
+            }
+            if mold.moldType == MoldType.bacteria {
+                Texture = SKTexture(image: UIImage(named: "Bacteria Mold")!)
+                bacteriaButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                bacteriaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = bacteriaButton.position
+                page1ScrollView.addChild(bacteriaButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                bacteriaPlus = SKSpriteNode(texture:Texture)
+                bacteriaPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(bacteriaPlus)
+                
+                bacteriaLabel = SKLabelNode(fontNamed: "Lemondrop")
+                bacteriaLabel.fontSize = 20
+                bacteriaLabel.fontColor = UIColor.black
+                bacteriaLabel.text = String(numOfMold(mold: MoldType.bacteria))
+                bacteriaLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(bacteriaLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                bacteriaMinus = SKSpriteNode(texture:Texture)
+                bacteriaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(bacteriaMinus)
+            }
+            if mold.moldType == MoldType.virus {
+                Texture = SKTexture(image: UIImage(named: "Virus Mold")!)
+                virusButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                virusButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = virusButton.position
+                page1ScrollView.addChild(virusButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                virusPlus = SKSpriteNode(texture:Texture)
+                virusPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(virusPlus)
+                
+                virusLabel = SKLabelNode(fontNamed: "Lemondrop")
+                virusLabel.fontSize = 20
+                virusLabel.fontColor = UIColor.black
+                virusLabel.text = String(numOfMold(mold: MoldType.virus))
+                virusLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(virusLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                virusMinus = SKSpriteNode(texture:Texture)
+                virusMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(virusMinus)
+            }
+            if mold.moldType == MoldType.flower {
+                Texture = SKTexture(image: UIImage(named: "Flower Mold")!)
+                flowerButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                flowerButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 120)
+                lastButton = flowerButton.position
+                page1ScrollView.addChild(flowerButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                flowerPlus = SKSpriteNode(texture:Texture)
+                flowerPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(flowerPlus)
+                
+                flowerLabel = SKLabelNode(fontNamed: "Lemondrop")
+                flowerLabel.fontSize = 20
+                flowerLabel.fontColor = UIColor.black
+                flowerLabel.text = String(numOfMold(mold: MoldType.flower))
+                flowerLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(flowerLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                flowerMinus = SKSpriteNode(texture:Texture)
+                flowerMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(flowerMinus)
+                lastButton = CGPoint(x: lastButton.x, y: lastButton.y - 60)
+            }
+            if mold.moldType == MoldType.bee {
+                Texture = SKTexture(image: UIImage(named: "Bee Mold")!)
+                beeButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                beeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = beeButton.position
+                page1ScrollView.addChild(beeButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                beePlus = SKSpriteNode(texture:Texture)
+                beePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(beePlus)
+                
+                beeLabel = SKLabelNode(fontNamed: "Lemondrop")
+                beeLabel.fontSize = 20
+                beeLabel.fontColor = UIColor.black
+                beeLabel.text = String(numOfMold(mold: MoldType.bee))
+                beeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(beeLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                beeMinus = SKSpriteNode(texture:Texture)
+                beeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(beeMinus)
+            }
+            if mold.moldType == MoldType.x {
+                Texture = SKTexture(image: UIImage(named: "X Mold")!)
+                xButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                xButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = xButton.position
+                page1ScrollView.addChild(xButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                xPlus = SKSpriteNode(texture:Texture)
+                xPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(xPlus)
+                
+                xLabel = SKLabelNode(fontNamed: "Lemondrop")
+                xLabel.fontSize = 20
+                xLabel.fontColor = UIColor.black
+                xLabel.text = String(numOfMold(mold: MoldType.x))
+                xLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(xLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                xMinus = SKSpriteNode(texture:Texture)
+                xMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(xMinus)
+            }
+            if mold.moldType == MoldType.disaffected {
+                Texture = SKTexture(image: UIImage(named: "Disaffected Mold")!)
+                disaffectedButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                disaffectedButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = disaffectedButton.position
+                page1ScrollView.addChild(disaffectedButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                disaffectedPlus = SKSpriteNode(texture:Texture)
+                disaffectedPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(disaffectedPlus)
+                
+                disaffectedLabel = SKLabelNode(fontNamed: "Lemondrop")
+                disaffectedLabel.fontSize = 20
+                disaffectedLabel.fontColor = UIColor.black
+                disaffectedLabel.text = String(numOfMold(mold: MoldType.disaffected))
+                disaffectedLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(disaffectedLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                disaffectedMinus = SKSpriteNode(texture:Texture)
+                disaffectedMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(disaffectedMinus)
+            }
+            if mold.moldType == MoldType.olive {
+                Texture = SKTexture(image: UIImage(named: "Olive Mold")!)
+                oliveButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                oliveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = oliveButton.position
+                page1ScrollView.addChild(oliveButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                olivePlus = SKSpriteNode(texture:Texture)
+                olivePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(olivePlus)
+                
+                oliveLabel = SKLabelNode(fontNamed: "Lemondrop")
+                oliveLabel.fontSize = 20
+                oliveLabel.fontColor = UIColor.black
+                oliveLabel.text = String(numOfMold(mold: MoldType.olive))
+                oliveLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(oliveLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                oliveMinus = SKSpriteNode(texture:Texture)
+                oliveMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(oliveMinus)
+            }
+            if mold.moldType == MoldType.coconut {
+                Texture = SKTexture(image: UIImage(named: "Coconut Mold")!)
+                coconutButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                coconutButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = coconutButton.position
+                page1ScrollView.addChild(coconutButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                coconutPlus = SKSpriteNode(texture:Texture)
+                coconutPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(coconutPlus)
+                
+                coconutLabel = SKLabelNode(fontNamed: "Lemondrop")
+                coconutLabel.fontSize = 20
+                coconutLabel.fontColor = UIColor.black
+                coconutLabel.text = String(numOfMold(mold: MoldType.coconut))
+                coconutLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(coconutLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                coconutMinus = SKSpriteNode(texture:Texture)
+                coconutMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(coconutMinus)
+            }
+            if mold.moldType == MoldType.sick {
+                Texture = SKTexture(image: UIImage(named: "Sick Mold")!)
+                sickButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                sickButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = sickButton.position
+                page1ScrollView.addChild(sickButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                sickPlus = SKSpriteNode(texture:Texture)
+                sickPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(sickPlus)
+                
+                sickLabel = SKLabelNode(fontNamed: "Lemondrop")
+                sickLabel.fontSize = 20
+                sickLabel.fontColor = UIColor.black
+                sickLabel.text = String(numOfMold(mold: MoldType.sick))
+                sickLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(sickLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                sickMinus = SKSpriteNode(texture:Texture)
+                sickMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(sickMinus)
+            }
+            if mold.moldType == MoldType.dead {
+                Texture = SKTexture(image: UIImage(named: "Dead Mold")!)
+                deadButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                deadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = deadButton.position
+                page1ScrollView.addChild(deadButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                deadPlus = SKSpriteNode(texture:Texture)
+                deadPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(deadPlus)
+                
+                deadLabel = SKLabelNode(fontNamed: "Lemondrop")
+                deadLabel.fontSize = 20
+                deadLabel.fontColor = UIColor.black
+                deadLabel.text = String(numOfMold(mold: MoldType.dead))
+                deadLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(deadLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                deadMinus = SKSpriteNode(texture:Texture)
+                deadMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(deadMinus)
+            }
+            if mold.moldType == MoldType.zombie {
+                Texture = SKTexture(image: UIImage(named: "Zombie Mold")!)
+                zombieButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                zombieButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = zombieButton.position
+                page1ScrollView.addChild(zombieButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                zombiePlus = SKSpriteNode(texture:Texture)
+                zombiePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(zombiePlus)
+                
+                zombieLabel = SKLabelNode(fontNamed: "Lemondrop")
+                zombieLabel.fontSize = 20
+                zombieLabel.fontColor = UIColor.black
+                zombieLabel.text = String(numOfMold(mold: MoldType.zombie))
+                zombieLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(zombieLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                zombieMinus = SKSpriteNode(texture:Texture)
+                zombieMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(zombieMinus)
+            }
+            if mold.moldType == MoldType.rock {
+                Texture = SKTexture(image: UIImage(named: "Rock Mold")!)
+                rockButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                rockButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = rockButton.position
+                page1ScrollView.addChild(rockButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                rockPlus = SKSpriteNode(texture:Texture)
+                rockPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(rockPlus)
+                
+                rockLabel = SKLabelNode(fontNamed: "Lemondrop")
+                rockLabel.fontSize = 20
+                rockLabel.fontColor = UIColor.black
+                rockLabel.text = String(numOfMold(mold: MoldType.rock))
+                rockLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(rockLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                rockMinus = SKSpriteNode(texture:Texture)
+                rockMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(rockMinus)
+            }
+            if mold.moldType == MoldType.cloud {
+                Texture = SKTexture(image: UIImage(named: "Cloud Mold")!)
+                cloudButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                cloudButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = cloudButton.position
+                page1ScrollView.addChild(cloudButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                cloudPlus = SKSpriteNode(texture:Texture)
+                cloudPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(cloudPlus)
+                
+                cloudLabel = SKLabelNode(fontNamed: "Lemondrop")
+                cloudLabel.fontSize = 20
+                cloudLabel.fontColor = UIColor.black
+                cloudLabel.text = String(numOfMold(mold: MoldType.cloud))
+                cloudLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(cloudLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                cloudMinus = SKSpriteNode(texture:Texture)
+                cloudMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(cloudMinus)
+            }
+            if mold.moldType == MoldType.water {
+                Texture = SKTexture(image: UIImage(named: "Water Mold")!)
+                waterButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                waterButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = waterButton.position
+                page1ScrollView.addChild(waterButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                waterPlus = SKSpriteNode(texture:Texture)
+                waterPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(waterPlus)
+                
+                waterLabel = SKLabelNode(fontNamed: "Lemondrop")
+                waterLabel.fontSize = 20
+                waterLabel.fontColor = UIColor.black
+                waterLabel.text = String(numOfMold(mold: MoldType.water))
+                waterLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(waterLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                waterMinus = SKSpriteNode(texture:Texture)
+                waterMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(waterMinus)
+            }
+            if mold.moldType == MoldType.crystal {
+                Texture = SKTexture(image: UIImage(named: "Crystal Mold")!)
+                crystalButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                crystalButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = crystalButton.position
+                page1ScrollView.addChild(crystalButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                crystalPlus = SKSpriteNode(texture:Texture)
+                crystalPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(crystalPlus)
+                
+                crystalLabel = SKLabelNode(fontNamed: "Lemondrop")
+                crystalLabel.fontSize = 20
+                crystalLabel.fontColor = UIColor.black
+                crystalLabel.text = String(numOfMold(mold: MoldType.crystal))
+                crystalLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(crystalLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                crystalMinus = SKSpriteNode(texture:Texture)
+                crystalMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(crystalMinus)
+            }
+            if mold.moldType == MoldType.nuclear {
+                Texture = SKTexture(image: UIImage(named: "Nuclear Mold")!)
+                nuclearButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                nuclearButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = nuclearButton.position
+                page1ScrollView.addChild(nuclearButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                nuclearPlus = SKSpriteNode(texture:Texture)
+                nuclearPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(nuclearPlus)
+                
+                nuclearLabel = SKLabelNode(fontNamed: "Lemondrop")
+                nuclearLabel.fontSize = 20
+                nuclearLabel.fontColor = UIColor.black
+                nuclearLabel.text = String(numOfMold(mold: MoldType.nuclear))
+                nuclearLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(nuclearLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                nuclearMinus = SKSpriteNode(texture:Texture)
+                nuclearMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(nuclearMinus)
+            }
+            if mold.moldType == MoldType.astronaut {
+                Texture = SKTexture(image: UIImage(named: "Astronaut Mold")!)
+                astronautButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                astronautButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = astronautButton.position
+                page1ScrollView.addChild(astronautButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                astronautPlus = SKSpriteNode(texture:Texture)
+                astronautPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(astronautPlus)
+                
+                astronautLabel = SKLabelNode(fontNamed: "Lemondrop")
+                astronautLabel.fontSize = 20
+                astronautLabel.fontColor = UIColor.black
+                astronautLabel.text = String(numOfMold(mold: MoldType.astronaut))
+                astronautLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(astronautLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                astronautMinus = SKSpriteNode(texture:Texture)
+                astronautMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(astronautMinus)
+            }
+            if mold.moldType == MoldType.sand {
+                Texture = SKTexture(image: UIImage(named: "Sand Mold")!)
+                sandButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                sandButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = sandButton.position
+                page1ScrollView.addChild(sandButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                sandPlus = SKSpriteNode(texture:Texture)
+                sandPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(sandPlus)
+                
+                sandLabel = SKLabelNode(fontNamed: "Lemondrop")
+                sandLabel.fontSize = 20
+                sandLabel.fontColor = UIColor.black
+                sandLabel.text = String(numOfMold(mold: MoldType.sand))
+                sandLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(sandLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                sandMinus = SKSpriteNode(texture:Texture)
+                sandMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(sandMinus)
+            }
+            if mold.moldType == MoldType.glass {
+                Texture = SKTexture(image: UIImage(named: "Glass Mold")!)
+                glassButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                glassButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = glassButton.position
+                page1ScrollView.addChild(glassButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                glassPlus = SKSpriteNode(texture:Texture)
+                glassPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(glassPlus)
+                
+                glassLabel = SKLabelNode(fontNamed: "Lemondrop")
+                glassLabel.fontSize = 20
+                glassLabel.fontColor = UIColor.black
+                glassLabel.text = String(numOfMold(mold: MoldType.glass))
+                glassLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(glassLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                glassMinus = SKSpriteNode(texture:Texture)
+                glassMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(glassMinus)
+            }
+            if mold.moldType == MoldType.coffee {
+                Texture = SKTexture(image: UIImage(named: "Coffee Mold")!)
+                coffeeButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                coffeeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = coffeeButton.position
+                page1ScrollView.addChild(coffeeButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                coffeePlus = SKSpriteNode(texture:Texture)
+                coffeePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(coffeePlus)
+                
+                coffeeLabel = SKLabelNode(fontNamed: "Lemondrop")
+                coffeeLabel.fontSize = 20
+                coffeeLabel.fontColor = UIColor.black
+                coffeeLabel.text = String(numOfMold(mold: MoldType.coffee))
+                coffeeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(coffeeLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                coffeeMinus = SKSpriteNode(texture:Texture)
+                coffeeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(coffeeMinus)
+            }
+            if mold.moldType == MoldType.slinky {
+                Texture = SKTexture(image: UIImage(named: "Slinky Mold")!)
+                slinkyButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                slinkyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = slinkyButton.position
+                page1ScrollView.addChild(slinkyButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                slinkyPlus = SKSpriteNode(texture:Texture)
+                slinkyPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(slinkyPlus)
+                
+                slinkyLabel = SKLabelNode(fontNamed: "Lemondrop")
+                slinkyLabel.fontSize = 20
+                slinkyLabel.fontColor = UIColor.black
+                slinkyLabel.text = String(numOfMold(mold: MoldType.slinky))
+                slinkyLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(slinkyLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                slinkyMinus = SKSpriteNode(texture:Texture)
+                slinkyMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(slinkyMinus)
+            }
+            if mold.moldType == MoldType.magma {
+                Texture = SKTexture(image: UIImage(named: "Magma Mold")!)
+                magmaButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                magmaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = magmaButton.position
+                page1ScrollView.addChild(magmaButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                magmaPlus = SKSpriteNode(texture:Texture)
+                magmaPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(magmaPlus)
+                
+                magmaLabel = SKLabelNode(fontNamed: "Lemondrop")
+                magmaLabel.fontSize = 20
+                magmaLabel.fontColor = UIColor.black
+                magmaLabel.text = String(numOfMold(mold: MoldType.magma))
+                magmaLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(magmaLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                magmaMinus = SKSpriteNode(texture:Texture)
+                magmaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(magmaMinus)
+            }
+            if mold.moldType == MoldType.samurai {
+                Texture = SKTexture(image: UIImage(named: "Samurai Mold")!)
+                samuraiButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                samuraiButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = samuraiButton.position
+                page1ScrollView.addChild(samuraiButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                samuraiPlus = SKSpriteNode(texture:Texture)
+                samuraiPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(samuraiPlus)
+                
+                samuraiLabel = SKLabelNode(fontNamed: "Lemondrop")
+                samuraiLabel.fontSize = 20
+                samuraiLabel.fontColor = UIColor.black
+                samuraiLabel.text = String(numOfMold(mold: MoldType.samurai))
+                samuraiLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(samuraiLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                samuraiMinus = SKSpriteNode(texture:Texture)
+                samuraiMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(samuraiMinus)
+            }
+            if mold.moldType == MoldType.orange {
+                Texture = SKTexture(image: UIImage(named: "Orange Mold")!)
+                orangeButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                orangeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = orangeButton.position
+                page1ScrollView.addChild(orangeButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                orangePlus = SKSpriteNode(texture:Texture)
+                orangePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(orangePlus)
+                
+                orangeLabel = SKLabelNode(fontNamed: "Lemondrop")
+                orangeLabel.fontSize = 20
+                orangeLabel.fontColor = UIColor.black
+                orangeLabel.text = String(numOfMold(mold: MoldType.orange))
+                orangeLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(orangeLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                orangeMinus = SKSpriteNode(texture:Texture)
+                orangeMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(orangeMinus)
+            }
+            if mold.moldType == MoldType.strawberry {
+                Texture = SKTexture(image: UIImage(named: "Strawberry Mold")!)
+                strawberryButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                strawberryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = strawberryButton.position
+                page1ScrollView.addChild(strawberryButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                strawberryPlus = SKSpriteNode(texture:Texture)
+                strawberryPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(strawberryPlus)
+                
+                strawberryLabel = SKLabelNode(fontNamed: "Lemondrop")
+                strawberryLabel.fontSize = 20
+                strawberryLabel.fontColor = UIColor.black
+                strawberryLabel.text = String(numOfMold(mold: MoldType.strawberry))
+                strawberryLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(strawberryLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                strawberryMinus = SKSpriteNode(texture:Texture)
+                strawberryMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(strawberryMinus)
+            }
+            if mold.moldType == MoldType.tshirt {
+                Texture = SKTexture(image: UIImage(named: "TShirt Mold")!)
+                tshirtButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                tshirtButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = tshirtButton.position
+                page1ScrollView.addChild(tshirtButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                tshirtPlus = SKSpriteNode(texture:Texture)
+                tshirtPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(tshirtPlus)
+                
+                tshirtLabel = SKLabelNode(fontNamed: "Lemondrop")
+                tshirtLabel.fontSize = 20
+                tshirtLabel.fontColor = UIColor.black
+                tshirtLabel.text = String(numOfMold(mold: MoldType.tshirt))
+                tshirtLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(tshirtLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                tshirtMinus = SKSpriteNode(texture:Texture)
+                tshirtMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(tshirtMinus)
+            }
+            if mold.moldType == MoldType.cryptid {
+                Texture = SKTexture(image: UIImage(named: "Cryptid Mold")!)
+                cryptidButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                cryptidButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = cryptidButton.position
+                page1ScrollView.addChild(cryptidButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                cryptidPlus = SKSpriteNode(texture:Texture)
+                cryptidPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(cryptidPlus)
+                
+                cryptidLabel = SKLabelNode(fontNamed: "Lemondrop")
+                cryptidLabel.fontSize = 20
+                cryptidLabel.fontColor = UIColor.black
+                cryptidLabel.text = String(numOfMold(mold: MoldType.cryptid))
+                cryptidLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(cryptidLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                cryptidMinus = SKSpriteNode(texture:Texture)
+                cryptidMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(cryptidMinus)
+            }
+            if mold.moldType == MoldType.angel {
+                Texture = SKTexture(image: UIImage(named: "Angel Mold")!)
+                angelButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                angelButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = angelButton.position
+                page1ScrollView.addChild(angelButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                angelPlus = SKSpriteNode(texture:Texture)
+                angelPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(angelPlus)
+                
+                angelLabel = SKLabelNode(fontNamed: "Lemondrop")
+                angelLabel.fontSize = 20
+                angelLabel.fontColor = UIColor.black
+                angelLabel.text = String(numOfMold(mold: MoldType.angel))
+                angelLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(angelLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                angelMinus = SKSpriteNode(texture:Texture)
+                angelMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(angelMinus)
+            }
+            if mold.moldType == MoldType.invisible {
+                Texture = SKTexture(image: UIImage(named: "Invisible Mold")!)
+                invisibleButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                invisibleButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = invisibleButton.position
+                page1ScrollView.addChild(invisibleButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                invisiblePlus = SKSpriteNode(texture:Texture)
+                invisiblePlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(invisiblePlus)
+                
+                invisibleLabel = SKLabelNode(fontNamed: "Lemondrop")
+                invisibleLabel.fontSize = 20
+                invisibleLabel.fontColor = UIColor.black
+                invisibleLabel.text = String(numOfMold(mold: MoldType.invisible))
+                invisibleLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(invisibleLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                invisibleMinus = SKSpriteNode(texture:Texture)
+                invisibleMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(invisibleMinus)
+            }
+            if mold.moldType == MoldType.star {
+                Texture = SKTexture(image: UIImage(named: "Star Mold small")!)
+                starButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                starButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 120)
+                lastButton = starButton.position
+                page1ScrollView.addChild(starButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                starPlus = SKSpriteNode(texture:Texture)
+                starPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(starPlus)
+                
+                starLabel = SKLabelNode(fontNamed: "Lemondrop")
+                starLabel.fontSize = 20
+                starLabel.fontColor = UIColor.black
+                starLabel.text = String(numOfMold(mold: MoldType.star))
+                starLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(starLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                starMinus = SKSpriteNode(texture:Texture)
+                starMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(starMinus)
+            }
+            if mold.moldType == MoldType.metaphase {
+                Texture = SKTexture(image: UIImage(named: "Metaphase Mold")!)
+                metaButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                metaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = metaButton.position
+                page1ScrollView.addChild(metaButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                metaPlus = SKSpriteNode(texture:Texture)
+                metaPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(metaPlus)
+                
+                metaLabel = SKLabelNode(fontNamed: "Lemondrop")
+                metaLabel.fontSize = 20
+                metaLabel.fontColor = UIColor.black
+                metaLabel.text = String(numOfMold(mold: MoldType.metaphase))
+                metaLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(metaLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                metaMinus = SKSpriteNode(texture:Texture)
+                metaMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(metaMinus)
+            }
+            if mold.moldType == MoldType.god {
+                Texture = SKTexture(image: UIImage(named: "God Mold")!)
+                godButton = SKSpriteNode(texture:Texture)
+                // Place in scene
+                godButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 150)
+                lastButton = godButton.position
+                page1ScrollView.addChild(godButton)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_plus")!)
+                godPlus = SKSpriteNode(texture:Texture)
+                godPlus.position = CGPoint(x: lastButton.x + 100, y: lastButton.y)
+                page1ScrollView.addChild(godPlus)
+                
+                godLabel = SKLabelNode(fontNamed: "Lemondrop")
+                godLabel.fontSize = 20
+                godLabel.fontColor = UIColor.black
+                godLabel.text = String(numOfMold(mold: MoldType.god))
+                godLabel.position = CGPoint(x: lastButton.x + 140, y: lastButton.y - 10)
+                page1ScrollView.addChild(godLabel)
+                
+                Texture = SKTexture(image: UIImage(named: "clear_minus")!)
+                godMinus = SKSpriteNode(texture:Texture)
+                godMinus.position = CGPoint(x: lastButton.x + 180, y: lastButton.y)
+                page1ScrollView.addChild(godMinus)
+                lastButton = CGPoint(x: lastButton.x, y: lastButton.y - 80)
             }
         }
         addChild(gameLayer)
@@ -1449,13 +1449,7 @@ class MoldInventory: SKScene {
     
     //get number of specific mold
     func numOfMold(mold: MoldType) -> Int {
-        var count = 0
-        for pMold in display {
-            if pMold.moldType == mold {
-                count += 1
-            }
-        }
-        return count
+        return moldCountDicc[mold.spriteName] ?? 0
     }
 
     func createButton()

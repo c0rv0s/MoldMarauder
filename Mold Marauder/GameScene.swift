@@ -2906,7 +2906,7 @@ class GameScene: SKScene {
                 }
                 
                 //small chance for a baby
-                if Int(arc4random_uniform(5)) <= 1 {
+                if Int(arc4random_uniform(8)) <= 1 {
                     if let handler = touchHandler {
                         handler("kiss baby")
                     }

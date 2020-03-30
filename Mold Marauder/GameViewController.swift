@@ -119,7 +119,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         
-//      TESTING - REMOVE
+//      TESTING - REMOVE BEFORE USE
 //      inventory = Inventory()
 //      inventory.tutorialProgress = 19
 //      inventory.autoTap = false
@@ -127,11 +127,11 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //      inventory.diamonds += 500
 //      inventory.level = 75
 //      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
-      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
-      inventory.molds.append(Mold(moldType: MoldType.invisible))
-      inventory.moldCountDicc["Invisible Mold"] = 1
-      inventory.reinvestmentCount = 3
-      inventory.freedFromTimePrison = [true,true,true,true,true,true,true,true,true]
+//      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
+//      inventory.molds.append(Mold(moldType: MoldType.invisible))
+//      inventory.moldCountDicc["Invisible Mold"] = 1
+//      inventory.reinvestmentCount = 3
+//      inventory.freedFromTimePrison = [true,true,true,true,true,true,true,true,true]
 //      inventory.molds.append(Mold(moldType: MoldType.metaphase))
 //      inventory.moldCountDicc["Metaphase Mold"] = 1
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))

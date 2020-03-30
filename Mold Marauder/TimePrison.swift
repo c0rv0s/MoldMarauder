@@ -161,66 +161,66 @@ class TimePrison: SKScene {
                     handler("back")
                 }
             }
-            if metaOne != nil && metaOne.contains(touchLocation) && !freedFromTimePrison[0] {
+            else if metaOne != nil && metaOne.contains(touchLocation) && !freedFromTimePrison[0] {
                 metaNum = 0
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if metaTwo != nil && metaTwo.contains(touchLocation) && !freedFromTimePrison[1] {
+            else if metaTwo != nil && metaTwo.contains(touchLocation) && !freedFromTimePrison[1] {
                 metaNum = 1
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if metaThree != nil && metaThree.contains(touchLocation) && !freedFromTimePrison[2] {
+            else if metaThree != nil && metaThree.contains(touchLocation) && !freedFromTimePrison[2] {
                 metaNum = 2
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if metaFour != nil && metaFour.contains(touchLocation) && !freedFromTimePrison[3] {
+            else if metaFour != nil && metaFour.contains(touchLocation) && !freedFromTimePrison[3] {
                 metaNum = 3
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if metaFive != nil && metaFive.contains(touchLocation) && !freedFromTimePrison[4] {
+            else if metaFive != nil && metaFive.contains(touchLocation) && !freedFromTimePrison[4] {
                 metaNum = 4
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if metaSix != nil && metaSix.contains(touchLocation) && !freedFromTimePrison[5] {
+            else if metaSix != nil && metaSix.contains(touchLocation) && !freedFromTimePrison[5] {
                 metaNum = 5
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if metaSeven != nil && metaSeven.contains(touchLocation) && !freedFromTimePrison[6] {
+            else if metaSeven != nil && metaSeven.contains(touchLocation) && !freedFromTimePrison[6] {
                 metaNum = 6
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if metaEight != nil && metaEight.contains(touchLocation) && !freedFromTimePrison[7] {
+            else if metaEight != nil && metaEight.contains(touchLocation) && !freedFromTimePrison[7] {
                 metaNum = 7
                 if let handler = touchHandler {
                     handler("meta")
                 }
             }
-            if godButton != nil && godButton.contains(touchLocation) && !freedFromTimePrison[8] {
+            else if godButton != nil && godButton.contains(touchLocation) && !freedFromTimePrison[8] {
                 metaNum = 8
                 if let handler = touchHandler {
                     handler("god")
                 }
             }
-            if yesButton != nil && yesButton.contains(touchLocation) {
+            else if yesButton != nil && yesButton.contains(touchLocation) {
                 if let handler = touchHandler {
                     handler("yes")
                 }
             }
-            if noButton != nil && noButton.contains(touchLocation) {
+            else if noButton != nil && noButton.contains(touchLocation) {
                 if let handler = touchHandler {
                     handler("no")
                 }

@@ -14,12 +14,6 @@ import StoreKit
 import AVFoundation
 import GameKit
 
-//facebook stuf for info/ads
-//import FBSDKCoreKit
-//import FBSDKLoginKit
-//import FBSDKShareKit
-//import FBSDKCoreKit.FBSDKAppEvents
-
 class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     var scene: GameScene!
     var ARgameScene: ARScene!
@@ -126,7 +120,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //      inventory.autoTapLevel = 0
 //      inventory.diamonds += 500
 //      inventory.level = 75
-      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
+//      incrementCash(pointsToAdd: BInt("9999999999999999999999999999")!)
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.invisible))
 //      inventory.molds.append(Mold(moldType: MoldType.invisible))
 //      inventory.moldCountDicc["Invisible Mold"] = 1
@@ -544,7 +538,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     // MARK: - QUEST
     func generateQuest() {
-        let questName = Int(arc4random_uniform(8))
+        let questName = Int(arc4random_uniform(6))
         switch questName {
         case 0:
             //make a number of taps
@@ -1435,7 +1429,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "level" {
             if (inventory.cash > inventory.levelUpCost) && inventory.level < 75 {
                 inventory.incrementLevel()
-                // FBSDKAppEvents.logEvent("level up")
                 updateLabels()
                 levelScene.cash = inventory.cash
                 levelScene.currentLevel = inventory.level
@@ -3750,7 +3743,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 inventory.moldCountDicc[mold.name]! += 1
                 moldShop.prices[mold.name]! += mold.price / BInt(10)
                 moldShop.updatePrice(mold: mold)
-                // FBSDKAppEvents.logEvent("new mold")
                 if inventory.displayMolds.count < 25 {
                     inventory.displayMolds.append(mold)
                 }
@@ -3901,7 +3893,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     inventory.unlockedMolds.append((newCombo?.child)!)
                     breedScene.unlockedMolds = inventory.unlockedMolds
                     
-                    // FBSDKAppEvents.logEvent("new breed")
                     breedScene.playSound(select: "awe")
                     save()
                     breedScene.showNewBreed(breed: (newCombo?.child.moldType)!)
@@ -3971,7 +3962,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                                 print(combo.child.name)
                                 breedScene.unlockedMolds = inventory.unlockedMolds
                                 breedScene.playSound(select: "awe")
-                                //    FBSDKAppEvents.logEvent("new breed")
                                 save()
                                 
                                 print("tutorial progress")

@@ -147,7 +147,24 @@ class RiftScene: SKScene {
             self.addChild(whiteOut)
             whiteOut.run( SKAction.sequence([.fadeIn(withDuration: 2.0)]) )
         }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 16.0) {
+        
+        let textString = "What a curious adventure..."
+        self.dialogueLabel = SKLabelNode(fontNamed: "Lemondrop")
+        self.dialogueLabel.text = textString
+        self.dialogueLabel.numberOfLines = (textString.count / self.charsPerLine) + 1
+        self.dialogueLabel.preferredMaxLayoutWidth = CGFloat(self.lineWidth)
+        self.dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+120)
+        self.dialogueLabel.fontSize = 24
+        self.dialogueLabel.fontColor = UIColor.black
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 16) {
+            self.addChild(self.dialogueLabel)
+            self.dialogueLabel.run( SKAction.sequence([.fadeIn(withDuration: 1.5)]) )
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 22) {
+            self.dialogueLabel.run( SKAction.sequence([.fadeOut(withDuration: 1.5), SKAction.removeFromParent()]) )
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 28.0) {
             if let handler = self.touchHandler {
                 handler("done")
             }

@@ -47,7 +47,7 @@ let subsequentDialogueArray = [
 let finalDialogueArray = [
     "Behold...",
     "The Rift!",
-    "Right through the center of OUR Space Time!",
+    "Right through the center of OUR Space Time Matrix!",
     "...",
     "Destroy it!!!",
     "All together!",

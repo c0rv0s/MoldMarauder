@@ -21,6 +21,8 @@
 		0F96D4642431290100F2EC43 /* DreamScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D4632431290100F2EC43 /* DreamScene.swift */; };
 		0F96D4662431344200F2EC43 /* Dialogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D4652431344200F2EC43 /* Dialogue.swift */; };
 		0F96D4682431910200F2EC43 /* RiftScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F96D4672431910200F2EC43 /* RiftScene.swift */; };
+		0F96D46B2431C06D00F2EC43 /* rift.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F96D4692431C06C00F2EC43 /* rift.wav */; };
+		0F96D4722431C30900F2EC43 /* rift2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F96D4712431C30900F2EC43 /* rift2.wav */; };
 		0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC242531F10BC56004A98A9 /* Reinvestments.swift */; };
 		0FC7D0A52411D02A0014A9BB /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A42411D02A0014A9BB /* Utils.swift */; };
 		0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC7D0A62411D4C60014A9BB /* CometLayer.swift */; };
@@ -107,6 +109,8 @@
 		0F96D4632431290100F2EC43 /* DreamScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DreamScene.swift; sourceTree = "<group>"; };
 		0F96D4652431344200F2EC43 /* Dialogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dialogue.swift; sourceTree = "<group>"; };
 		0F96D4672431910200F2EC43 /* RiftScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiftScene.swift; sourceTree = "<group>"; };
+		0F96D4692431C06C00F2EC43 /* rift.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = rift.wav; sourceTree = "<group>"; };
+		0F96D4712431C30900F2EC43 /* rift2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = rift2.wav; sourceTree = "<group>"; };
 		0FC242531F10BC56004A98A9 /* Reinvestments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reinvestments.swift; sourceTree = "<group>"; };
 		0FC7D0A42411D02A0014A9BB /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0FC7D0A62411D4C60014A9BB /* CometLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CometLayer.swift; sourceTree = "<group>"; };
@@ -214,7 +218,9 @@
 			children = (
 				0F7FED1E2418C7A400C3BABB /* apartment.wav */,
 				0F7FED222418D3B500C3BABB /* cave.wav */,
+				0F96D4692431C06C00F2EC43 /* rift.wav */,
 				0F7FED182418B76900C3BABB /* crystal forest.wav */,
+				0F96D4712431C30900F2EC43 /* rift2.wav */,
 				0F96D461242F32A900F2EC43 /* dream.wav */,
 				0F7FED242418D45800C3BABB /* menu.wav */,
 				0F7FED1C2418C65200C3BABB /* space.wav */,
@@ -456,6 +462,7 @@
 				210F06CE1E94407C006EA0D5 /* achieve.wav in Resources */,
 				21655E0C1E6410E8003F9DB5 /* Lemondrop.ttf in Resources */,
 				210F06D61E94407C006EA0D5 /* camera.wav in Resources */,
+				0F96D46B2431C06D00F2EC43 /* rift.wav in Resources */,
 				210F06E61E94407C006EA0D5 /* select.wav in Resources */,
 				210F06DC1E94407C006EA0D5 /* ding.wav in Resources */,
 				210F06D41E94407C006EA0D5 /* bubble.wav in Resources */,
@@ -475,6 +482,7 @@
 				21CB73431E412FD500DEAF4F /* Assets.xcassets in Resources */,
 				0F7FED252418D45800C3BABB /* menu.wav in Resources */,
 				210F06FC1E9445B0006EA0D5 /* kiss.wav in Resources */,
+				0F96D4722431C30900F2EC43 /* rift2.wav in Resources */,
 				0F7FED232418D3B500C3BABB /* cave.wav in Resources */,
 				0F7FED1B2418BCBD00C3BABB /* yurt.wav in Resources */,
 				210F06D11E94407C006EA0D5 /* bubble 2.wav in Resources */,

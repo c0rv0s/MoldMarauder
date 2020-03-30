@@ -787,7 +787,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             achievements.name = "achievements"
             achievements.scaleMode = .aspectFill
             achievements.touchHandler = achieveHandler
-            //achievmens progress
+            //achievments progress
             achievements.wormsKilled = inventory.wormsKilled
             achievements.moldsOwned = inventory.molds.count
             achievements.speciesBred = inventory.unlockedMolds.count

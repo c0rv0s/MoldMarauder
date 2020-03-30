@@ -160,303 +160,301 @@ class BreedScene: SKScene {
             break
         }
         //add each mold to the scene exactly one time
-        if ownedMolds.count > 0 {
-            for mold in unlockedMolds {
-                Texture = SKTexture(image: UIImage(named: mold.name)!)
-                if mold.moldType == MoldType.slime && moldOwned(mold: MoldType.slime) {
-                    slimeButton = SKSpriteNode(texture:Texture)
-                    slimeButton.name = mold.name
-                    slimeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = slimeButton.position
-                    page1ScrollView.addChild(slimeButton)
-                }
-                if mold.moldType == MoldType.cave && moldOwned(mold: MoldType.cave) {
-                    caveButton = SKSpriteNode(texture:Texture)
-                    caveButton.name = mold.name
-                    caveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = caveButton.position
-                    page1ScrollView.addChild(caveButton)
-                }
-                if mold.moldType == MoldType.sad && moldOwned(mold: MoldType.sad) {
-                    sadButton = SKSpriteNode(texture:Texture)
-                    sadButton.name = mold.name
-                    sadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = sadButton.position
-                    page1ScrollView.addChild(sadButton)
-                }
-                if mold.moldType == MoldType.angry && moldOwned(mold: MoldType.angry) {
-                    angryButton = SKSpriteNode(texture:Texture)
-                    angryButton.name = mold.name
-                    angryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = angryButton.position
-                    page1ScrollView.addChild(angryButton)
-                }
-                if mold.moldType == MoldType.alien && moldOwned(mold: MoldType.alien) {
-                    alienButton = SKSpriteNode(texture:Texture)
-                    alienButton.name = mold.name
-                    alienButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = alienButton.position
-                    page1ScrollView.addChild(alienButton)
-                }
-                if mold.moldType == MoldType.freckled && moldOwned(mold: MoldType.freckled) {
-                    freckledButton = SKSpriteNode(texture:Texture)
-                    freckledButton.name = mold.name
-                    freckledButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = freckledButton.position
-                    page1ScrollView.addChild(freckledButton)
-                }
-                if mold.moldType == MoldType.hypno && moldOwned(mold: MoldType.hypno) {
-                    hypnoButton = SKSpriteNode(texture:Texture)
-                    hypnoButton.name = mold.name
-                    hypnoButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = hypnoButton.position
-                    page1ScrollView.addChild(hypnoButton)
-                }
-                if mold.moldType == MoldType.pimply && moldOwned(mold: MoldType.pimply) {
-                    pimplyButton = SKSpriteNode(texture:Texture)
-                    pimplyButton.name = mold.name
-                    pimplyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = pimplyButton.position
-                    page1ScrollView.addChild(pimplyButton)
-                }
-                if mold.moldType == MoldType.rainbow && moldOwned(mold: MoldType.rainbow) {
-                    rainbowButton = SKSpriteNode(texture:Texture)
-                    rainbowButton.name = mold.name
-                    rainbowButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = rainbowButton.position
-                    page1ScrollView.addChild(rainbowButton)
-                }
-                if mold.moldType == MoldType.aluminum && moldOwned(mold: MoldType.aluminum) {
-                    aluminumButton = SKSpriteNode(texture:Texture)
-                    aluminumButton.name = mold.name
-                    aluminumButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = aluminumButton.position
-                    page1ScrollView.addChild(aluminumButton)
-                }
-                if mold.moldType == MoldType.circuit && moldOwned(mold: MoldType.circuit) {
-                    circuitButton = SKSpriteNode(texture:Texture)
-                    circuitButton.name = mold.name
-                    circuitButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = circuitButton.position
-                    page1ScrollView.addChild(circuitButton)
-                }
-                if mold.moldType == MoldType.hologram && moldOwned(mold: MoldType.hologram) {
-                    hologramButton = SKSpriteNode(texture:Texture)
-                    hologramButton.name = mold.name
-                    hologramButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = hologramButton.position
-                    page1ScrollView.addChild(hologramButton)
-                }
-                if mold.moldType == MoldType.storm && moldOwned(mold: MoldType.storm) {
-                    stormButton = SKSpriteNode(texture:Texture)
-                    stormButton.name = mold.name
-                    stormButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = stormButton.position
-                    page1ScrollView.addChild(stormButton)
-                }
-                if mold.moldType == MoldType.bacteria && moldOwned(mold: MoldType.bacteria) {
-                    bacteriaButton = SKSpriteNode(texture:Texture)
-                    bacteriaButton.name = mold.name
-                    bacteriaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = bacteriaButton.position
-                    page1ScrollView.addChild(bacteriaButton)
-                }
-                if mold.moldType == MoldType.virus && moldOwned(mold: MoldType.virus) {
-                    virusButton = SKSpriteNode(texture:Texture)
-                    virusButton.name = mold.name
-                    virusButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = virusButton.position
-                    page1ScrollView.addChild(virusButton)
-                }
-                if mold.moldType == MoldType.flower && moldOwned(mold: MoldType.flower) {
-                    flowerButton = SKSpriteNode(texture:Texture)
-                    flowerButton.name = mold.name
-                    flowerButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = flowerButton.position
-                    page1ScrollView.addChild(flowerButton)
-                }
-                if mold.moldType == MoldType.bee && moldOwned(mold: MoldType.bee) {
-                    beeButton = SKSpriteNode(texture:Texture)
-                    beeButton.name = mold.name
-                    beeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = beeButton.position
-                    page1ScrollView.addChild(beeButton)
-                }
-                if mold.moldType == MoldType.x && moldOwned(mold: MoldType.x) {
-                    xButton = SKSpriteNode(texture:Texture)
-                    xButton.name = mold.name
-                    xButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = xButton.position
-                    page1ScrollView.addChild(xButton)
-                }
-                if mold.moldType == MoldType.disaffected && moldOwned(mold: MoldType.disaffected) {
-                    disaffectedButton = SKSpriteNode(texture:Texture)
-                    disaffectedButton.name = mold.name
-                    disaffectedButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = disaffectedButton.position
-                    page1ScrollView.addChild(disaffectedButton)
-                }
-                if mold.moldType == MoldType.olive && moldOwned(mold: MoldType.olive) {
-                    oliveButton = SKSpriteNode(texture:Texture)
-                    oliveButton.name = mold.name
-                    oliveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = oliveButton.position
-                    page1ScrollView.addChild(oliveButton)
-                }
-                if mold.moldType == MoldType.coconut && moldOwned(mold: MoldType.coconut) {
-                    coconutButton = SKSpriteNode(texture:Texture)
-                    coconutButton.name = mold.name
-                    coconutButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = coconutButton.position
-                    page1ScrollView.addChild(coconutButton)
-                }
-                if mold.moldType == MoldType.sick && moldOwned(mold: MoldType.sick) {
-                    sickButton = SKSpriteNode(texture:Texture)
-                    sickButton.name = mold.name
-                    sickButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = sickButton.position
-                    page1ScrollView.addChild(sickButton)
-                }
-                if mold.moldType == MoldType.dead && moldOwned(mold: MoldType.dead) {
-                    deadButton = SKSpriteNode(texture:Texture)
-                    deadButton.name = mold.name
-                    deadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = deadButton.position
-                    page1ScrollView.addChild(deadButton)
-                }
-                if mold.moldType == MoldType.zombie && moldOwned(mold: MoldType.zombie) {
-                    zombieButton = SKSpriteNode(texture:Texture)
-                    zombieButton.name = mold.name
-                    zombieButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = zombieButton.position
-                    page1ScrollView.addChild(zombieButton)
-                }
-                if mold.moldType == MoldType.rock && moldOwned(mold: MoldType.rock) {
-                    rockButton = SKSpriteNode(texture:Texture)
-                    rockButton.name = mold.name
-                    rockButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = rockButton.position
-                    page1ScrollView.addChild(rockButton)
-                }
-                if mold.moldType == MoldType.cloud && moldOwned(mold: MoldType.cloud) {
-                    cloudButton = SKSpriteNode(texture:Texture)
-                    cloudButton.name = mold.name
-                    cloudButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = cloudButton.position
-                    page1ScrollView.addChild(cloudButton)
-                }
-                if mold.moldType == MoldType.water && moldOwned(mold: MoldType.water) {
-                    waterButton = SKSpriteNode(texture:Texture)
-                    waterButton.name = mold.name
-                    waterButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = waterButton.position
-                    page1ScrollView.addChild(waterButton)
-                }
-                if mold.moldType == MoldType.crystal && moldOwned(mold: MoldType.crystal) {
-                    crystalButton = SKSpriteNode(texture:Texture)
-                    crystalButton.name = mold.name
-                    crystalButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = crystalButton.position
-                    page1ScrollView.addChild(crystalButton)
-                }
-                if mold.moldType == MoldType.nuclear && moldOwned(mold: MoldType.nuclear) {
-                    nuclearButton = SKSpriteNode(texture:Texture)
-                    nuclearButton.name = mold.name
-                    nuclearButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = nuclearButton.position
-                    page1ScrollView.addChild(nuclearButton)
-                }
-                if mold.moldType == MoldType.astronaut && moldOwned(mold: MoldType.astronaut) {
-                    astronautButton = SKSpriteNode(texture:Texture)
-                    astronautButton.name = mold.name
-                    astronautButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = astronautButton.position
-                    page1ScrollView.addChild(astronautButton)
-                }
-                if mold.moldType == MoldType.sand && moldOwned(mold: MoldType.sand) {
-                    sandButton = SKSpriteNode(texture:Texture)
-                    sandButton.name = mold.name
-                    sandButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = sandButton.position
-                    page1ScrollView.addChild(sandButton)
-                }
-                if mold.moldType == MoldType.glass && moldOwned(mold: MoldType.glass) {
-                    glassButton = SKSpriteNode(texture:Texture)
-                    glassButton.name = mold.name
-                    glassButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = glassButton.position
-                    page1ScrollView.addChild(glassButton)
-                }
-                if mold.moldType == MoldType.coffee && moldOwned(mold: MoldType.coffee) {
-                    coffeeButton = SKSpriteNode(texture:Texture)
-                    coffeeButton.name = mold.name
-                    coffeeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = coffeeButton.position
-                    page1ScrollView.addChild(coffeeButton)
-                }
-                if mold.moldType == MoldType.slinky && moldOwned(mold: MoldType.slinky) {
-                    slinkyButton = SKSpriteNode(texture:Texture)
-                    slinkyButton.name = mold.name
-                    slinkyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = slinkyButton.position
-                    page1ScrollView.addChild(slinkyButton)
-                }
-                if mold.moldType == MoldType.magma && moldOwned(mold: MoldType.magma) {
-                    magmaButton = SKSpriteNode(texture:Texture)
-                    magmaButton.name = mold.name
-                    magmaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = magmaButton.position
-                    page1ScrollView.addChild(magmaButton)
-                }
-                if mold.moldType == MoldType.samurai && moldOwned(mold: MoldType.samurai) {
-                    samuraiButton = SKSpriteNode(texture:Texture)
-                    samuraiButton.name = mold.name
-                    samuraiButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = samuraiButton.position
-                    page1ScrollView.addChild(samuraiButton)
-                }
-                if mold.moldType == MoldType.orange && moldOwned(mold: MoldType.orange) {
-                    orangeButton = SKSpriteNode(texture:Texture)
-                    orangeButton.name = mold.name
-                    orangeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = orangeButton.position
-                    page1ScrollView.addChild(orangeButton)
-                }
-                if mold.moldType == MoldType.strawberry && moldOwned(mold: MoldType.strawberry) {
-                    strawberryButton = SKSpriteNode(texture:Texture)
-                    strawberryButton.name = mold.name
-                    strawberryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = strawberryButton.position
-                    page1ScrollView.addChild(strawberryButton)
-                }
-                if mold.moldType == MoldType.tshirt && moldOwned(mold: MoldType.tshirt) {
-                    tshirtButton = SKSpriteNode(texture:Texture)
-                    tshirtButton.name = mold.name
-                    tshirtButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = tshirtButton.position
-                    page1ScrollView.addChild(tshirtButton)
-                }
-                if mold.moldType == MoldType.cryptid && moldOwned(mold: MoldType.cryptid) {
-                    cryptidButton = SKSpriteNode(texture:Texture)
-                    cryptidButton.name = mold.name
-                    cryptidButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = cryptidButton.position
-                    page1ScrollView.addChild(cryptidButton)
-                }
-                if mold.moldType == MoldType.angel && moldOwned(mold: MoldType.angel) {
-                    angelButton = SKSpriteNode(texture:Texture)
-                    angelButton.name = mold.name
-                    angelButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = angelButton.position
-                    page1ScrollView.addChild(angelButton)
-                }
-                if mold.moldType == MoldType.invisible && moldOwned(mold: MoldType.invisible) {
-                    invisibleButton = SKSpriteNode(texture:Texture)
-                    invisibleButton.name = mold.name
-                    invisibleButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
-                    lastButton = invisibleButton.position
-                    page1ScrollView.addChild(invisibleButton)
-                }
+        for mold in ownedMolds {
+            Texture = SKTexture(image: UIImage(named: mold.name)!)
+            if mold.moldType == MoldType.slime {
+                slimeButton = SKSpriteNode(texture:Texture)
+                slimeButton.name = mold.name
+                slimeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = slimeButton.position
+                page1ScrollView.addChild(slimeButton)
+            }
+            if mold.moldType == MoldType.cave {
+                caveButton = SKSpriteNode(texture:Texture)
+                caveButton.name = mold.name
+                caveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = caveButton.position
+                page1ScrollView.addChild(caveButton)
+            }
+            if mold.moldType == MoldType.sad {
+                sadButton = SKSpriteNode(texture:Texture)
+                sadButton.name = mold.name
+                sadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = sadButton.position
+                page1ScrollView.addChild(sadButton)
+            }
+            if mold.moldType == MoldType.angry {
+                angryButton = SKSpriteNode(texture:Texture)
+                angryButton.name = mold.name
+                angryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = angryButton.position
+                page1ScrollView.addChild(angryButton)
+            }
+            if mold.moldType == MoldType.alien {
+                alienButton = SKSpriteNode(texture:Texture)
+                alienButton.name = mold.name
+                alienButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = alienButton.position
+                page1ScrollView.addChild(alienButton)
+            }
+            if mold.moldType == MoldType.freckled {
+                freckledButton = SKSpriteNode(texture:Texture)
+                freckledButton.name = mold.name
+                freckledButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = freckledButton.position
+                page1ScrollView.addChild(freckledButton)
+            }
+            if mold.moldType == MoldType.hypno {
+                hypnoButton = SKSpriteNode(texture:Texture)
+                hypnoButton.name = mold.name
+                hypnoButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = hypnoButton.position
+                page1ScrollView.addChild(hypnoButton)
+            }
+            if mold.moldType == MoldType.pimply {
+                pimplyButton = SKSpriteNode(texture:Texture)
+                pimplyButton.name = mold.name
+                pimplyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = pimplyButton.position
+                page1ScrollView.addChild(pimplyButton)
+            }
+            if mold.moldType == MoldType.rainbow {
+                rainbowButton = SKSpriteNode(texture:Texture)
+                rainbowButton.name = mold.name
+                rainbowButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = rainbowButton.position
+                page1ScrollView.addChild(rainbowButton)
+            }
+            if mold.moldType == MoldType.aluminum {
+                aluminumButton = SKSpriteNode(texture:Texture)
+                aluminumButton.name = mold.name
+                aluminumButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = aluminumButton.position
+                page1ScrollView.addChild(aluminumButton)
+            }
+            if mold.moldType == MoldType.circuit {
+                circuitButton = SKSpriteNode(texture:Texture)
+                circuitButton.name = mold.name
+                circuitButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = circuitButton.position
+                page1ScrollView.addChild(circuitButton)
+            }
+            if mold.moldType == MoldType.hologram {
+                hologramButton = SKSpriteNode(texture:Texture)
+                hologramButton.name = mold.name
+                hologramButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = hologramButton.position
+                page1ScrollView.addChild(hologramButton)
+            }
+            if mold.moldType == MoldType.storm {
+                stormButton = SKSpriteNode(texture:Texture)
+                stormButton.name = mold.name
+                stormButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = stormButton.position
+                page1ScrollView.addChild(stormButton)
+            }
+            if mold.moldType == MoldType.bacteria {
+                bacteriaButton = SKSpriteNode(texture:Texture)
+                bacteriaButton.name = mold.name
+                bacteriaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = bacteriaButton.position
+                page1ScrollView.addChild(bacteriaButton)
+            }
+            if mold.moldType == MoldType.virus {
+                virusButton = SKSpriteNode(texture:Texture)
+                virusButton.name = mold.name
+                virusButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = virusButton.position
+                page1ScrollView.addChild(virusButton)
+            }
+            if mold.moldType == MoldType.flower {
+                flowerButton = SKSpriteNode(texture:Texture)
+                flowerButton.name = mold.name
+                flowerButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = flowerButton.position
+                page1ScrollView.addChild(flowerButton)
+            }
+            if mold.moldType == MoldType.bee {
+                beeButton = SKSpriteNode(texture:Texture)
+                beeButton.name = mold.name
+                beeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = beeButton.position
+                page1ScrollView.addChild(beeButton)
+            }
+            if mold.moldType == MoldType.x {
+                xButton = SKSpriteNode(texture:Texture)
+                xButton.name = mold.name
+                xButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = xButton.position
+                page1ScrollView.addChild(xButton)
+            }
+            if mold.moldType == MoldType.disaffected {
+                disaffectedButton = SKSpriteNode(texture:Texture)
+                disaffectedButton.name = mold.name
+                disaffectedButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = disaffectedButton.position
+                page1ScrollView.addChild(disaffectedButton)
+            }
+            if mold.moldType == MoldType.olive {
+                oliveButton = SKSpriteNode(texture:Texture)
+                oliveButton.name = mold.name
+                oliveButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = oliveButton.position
+                page1ScrollView.addChild(oliveButton)
+            }
+            if mold.moldType == MoldType.coconut {
+                coconutButton = SKSpriteNode(texture:Texture)
+                coconutButton.name = mold.name
+                coconutButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = coconutButton.position
+                page1ScrollView.addChild(coconutButton)
+            }
+            if mold.moldType == MoldType.sick {
+                sickButton = SKSpriteNode(texture:Texture)
+                sickButton.name = mold.name
+                sickButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = sickButton.position
+                page1ScrollView.addChild(sickButton)
+            }
+            if mold.moldType == MoldType.dead {
+                deadButton = SKSpriteNode(texture:Texture)
+                deadButton.name = mold.name
+                deadButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = deadButton.position
+                page1ScrollView.addChild(deadButton)
+            }
+            if mold.moldType == MoldType.zombie {
+                zombieButton = SKSpriteNode(texture:Texture)
+                zombieButton.name = mold.name
+                zombieButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = zombieButton.position
+                page1ScrollView.addChild(zombieButton)
+            }
+            if mold.moldType == MoldType.rock {
+                rockButton = SKSpriteNode(texture:Texture)
+                rockButton.name = mold.name
+                rockButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = rockButton.position
+                page1ScrollView.addChild(rockButton)
+            }
+            if mold.moldType == MoldType.cloud {
+                cloudButton = SKSpriteNode(texture:Texture)
+                cloudButton.name = mold.name
+                cloudButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = cloudButton.position
+                page1ScrollView.addChild(cloudButton)
+            }
+            if mold.moldType == MoldType.water {
+                waterButton = SKSpriteNode(texture:Texture)
+                waterButton.name = mold.name
+                waterButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = waterButton.position
+                page1ScrollView.addChild(waterButton)
+            }
+            if mold.moldType == MoldType.crystal {
+                crystalButton = SKSpriteNode(texture:Texture)
+                crystalButton.name = mold.name
+                crystalButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = crystalButton.position
+                page1ScrollView.addChild(crystalButton)
+            }
+            if mold.moldType == MoldType.nuclear {
+                nuclearButton = SKSpriteNode(texture:Texture)
+                nuclearButton.name = mold.name
+                nuclearButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = nuclearButton.position
+                page1ScrollView.addChild(nuclearButton)
+            }
+            if mold.moldType == MoldType.astronaut {
+                astronautButton = SKSpriteNode(texture:Texture)
+                astronautButton.name = mold.name
+                astronautButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = astronautButton.position
+                page1ScrollView.addChild(astronautButton)
+            }
+            if mold.moldType == MoldType.sand {
+                sandButton = SKSpriteNode(texture:Texture)
+                sandButton.name = mold.name
+                sandButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = sandButton.position
+                page1ScrollView.addChild(sandButton)
+            }
+            if mold.moldType == MoldType.glass {
+                glassButton = SKSpriteNode(texture:Texture)
+                glassButton.name = mold.name
+                glassButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = glassButton.position
+                page1ScrollView.addChild(glassButton)
+            }
+            if mold.moldType == MoldType.coffee {
+                coffeeButton = SKSpriteNode(texture:Texture)
+                coffeeButton.name = mold.name
+                coffeeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = coffeeButton.position
+                page1ScrollView.addChild(coffeeButton)
+            }
+            if mold.moldType == MoldType.slinky {
+                slinkyButton = SKSpriteNode(texture:Texture)
+                slinkyButton.name = mold.name
+                slinkyButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = slinkyButton.position
+                page1ScrollView.addChild(slinkyButton)
+            }
+            if mold.moldType == MoldType.magma {
+                magmaButton = SKSpriteNode(texture:Texture)
+                magmaButton.name = mold.name
+                magmaButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = magmaButton.position
+                page1ScrollView.addChild(magmaButton)
+            }
+            if mold.moldType == MoldType.samurai {
+                samuraiButton = SKSpriteNode(texture:Texture)
+                samuraiButton.name = mold.name
+                samuraiButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = samuraiButton.position
+                page1ScrollView.addChild(samuraiButton)
+            }
+            if mold.moldType == MoldType.orange {
+                orangeButton = SKSpriteNode(texture:Texture)
+                orangeButton.name = mold.name
+                orangeButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = orangeButton.position
+                page1ScrollView.addChild(orangeButton)
+            }
+            if mold.moldType == MoldType.strawberry {
+                strawberryButton = SKSpriteNode(texture:Texture)
+                strawberryButton.name = mold.name
+                strawberryButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = strawberryButton.position
+                page1ScrollView.addChild(strawberryButton)
+            }
+            if mold.moldType == MoldType.tshirt {
+                tshirtButton = SKSpriteNode(texture:Texture)
+                tshirtButton.name = mold.name
+                tshirtButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = tshirtButton.position
+                page1ScrollView.addChild(tshirtButton)
+            }
+            if mold.moldType == MoldType.cryptid {
+                cryptidButton = SKSpriteNode(texture:Texture)
+                cryptidButton.name = mold.name
+                cryptidButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = cryptidButton.position
+                page1ScrollView.addChild(cryptidButton)
+            }
+            if mold.moldType == MoldType.angel {
+                angelButton = SKSpriteNode(texture:Texture)
+                angelButton.name = mold.name
+                angelButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = angelButton.position
+                page1ScrollView.addChild(angelButton)
+            }
+            if mold.moldType == MoldType.invisible {
+                invisibleButton = SKSpriteNode(texture:Texture)
+                invisibleButton.name = mold.name
+                invisibleButton.position = CGPoint(x: lastButton.x, y: lastButton.y - 90)
+                lastButton = invisibleButton.position
+                page1ScrollView.addChild(invisibleButton)
             }
         }
         addChild(gameLayer)

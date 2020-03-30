@@ -1326,7 +1326,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             
             if inventory.reinvestmentCount >= 4 {
                 inventory.reinvestmentCount = 0
-                if godCount > 0 {
+                if inventory.freedFromTimePrison.allSatisfy({$0 == true}) {
                     print("seal the rift")
                 }
                 else {

@@ -140,8 +140,8 @@ class TimePrison: SKScene {
         }
         if !freedFromTimePrison[8] {
             godButton = SKSpriteNode(texture: godTex)
-            godButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
-            godButton.setScale(0.4)
+            godButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY+10);
+            godButton.setScale(0.5)
             gameLayer.addChild(godButton)
         }
     }

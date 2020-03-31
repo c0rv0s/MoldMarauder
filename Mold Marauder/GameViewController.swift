@@ -42,7 +42,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     // Create a session configuration
     let configuration = ARWorldTrackingConfiguration()
     var backgroundMusicPlayer = AVAudioPlayer()
-    var APP_ID = "com.Spacey-Dreams.Mold-Marauder-by-Nathan"
+    var APP_ID = "com.Spacey-Dreams.Mold-Marauder-2"
     
     var combos: Combos!
     
@@ -57,10 +57,10 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 
     //IAP
     var available = false
-    let TINY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_99_cent_diamond"
-    let SMALL_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_299_cent_diamond"
-    let MEDIUM_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_999_cent_diamond"
-    let LARGE_PRODUCT_ID = "com.SpaceyDreams.MoldMarauderbyNathan.mold_4999_cent_diamond"
+    let TINY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_99_cent_diamond"
+    let SMALL_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_299_cent_diamond"
+    let MEDIUM_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_999_cent_diamond"
+    let LARGE_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_4999_cent_diamond"
     
     var productID = ""
     var productsRequest = SKProductsRequest()

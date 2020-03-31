@@ -19,6 +19,7 @@ class DreamScene: SKScene {
     var lineWidth = 400
     var dialogueStarted = false
     var dialogueIndex = 0
+    var yOffset = 240
     var mute = false
     
     //touch handler
@@ -37,6 +38,23 @@ class DreamScene: SKScene {
         
         dream = Dream(midY: self.frame.midY, maxY: self.frame.maxY, minX: self.frame.minX, maxX: self.frame.maxX)
         addChild(dream)
+        
+        switch UIDevice().screenType {
+        case .iPhone8:
+            lineWidth = 300
+            charsPerLine = 14
+            yOffset = 180
+            break
+        case .iPhone8Plus:
+            break
+        case .iPhoneX:
+            lineWidth = 300
+            charsPerLine = 14
+            yOffset = 180
+            break
+        default:
+            break
+        }
     }
     
     override func didMove(to view: SKView) {
@@ -131,7 +149,7 @@ class DreamScene: SKScene {
         dialogueLabel.text = textString
         dialogueLabel.numberOfLines = (textString.count / charsPerLine) + 1
         dialogueLabel.preferredMaxLayoutWidth = CGFloat(lineWidth)
-        dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+240)
+        dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+CGFloat(yOffset))
         dialogueLabel.fontSize = 18
         dialogueLabel.fontColor = UIColor.black
         self.addChild(dialogueLabel)

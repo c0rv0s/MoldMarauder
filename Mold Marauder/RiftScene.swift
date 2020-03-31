@@ -18,6 +18,7 @@ class RiftScene: SKScene {
     
     var charsPerLine = 18
     var lineWidth = 400
+    var yOffset = 240
     var dialogueStarted = false
     var dialogueIndex = 0
     var mute = false
@@ -37,6 +38,23 @@ class RiftScene: SKScene {
         addChild(background)
         addChild(riftLayer)
         addChild(moldLayer)
+        
+        switch UIDevice().screenType {
+        case .iPhone8:
+            lineWidth = 300
+            charsPerLine = 14
+            yOffset = 180
+            break
+        case .iPhone8Plus:
+            break
+        case .iPhoneX:
+            lineWidth = 300
+            charsPerLine = 14
+            yOffset = 180
+            break
+        default:
+            break
+        }
     }
     
     override func didMove(to view: SKView) {
@@ -100,7 +118,7 @@ class RiftScene: SKScene {
         dialogueLabel.text = textString
         dialogueLabel.numberOfLines = (textString.count / charsPerLine) + 1
         dialogueLabel.preferredMaxLayoutWidth = CGFloat(lineWidth)
-        dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+240)
+        dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+CGFloat(yOffset))
         dialogueLabel.fontSize = 24
         dialogueLabel.fontColor = UIColor.white
         self.addChild(dialogueLabel)
@@ -153,7 +171,7 @@ class RiftScene: SKScene {
         self.dialogueLabel.text = textString
         self.dialogueLabel.numberOfLines = (textString.count / self.charsPerLine) + 1
         self.dialogueLabel.preferredMaxLayoutWidth = CGFloat(self.lineWidth)
-        self.dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+120)
+        self.dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+CGFloat(yOffset/2))
         self.dialogueLabel.fontSize = 24
         self.dialogueLabel.fontColor = UIColor.black
         

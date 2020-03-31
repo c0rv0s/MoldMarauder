@@ -67,7 +67,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     var iapProducts = [SKProduct]()
     var nonConsumablePurchaseMade = UserDefaults.standard.bool(forKey: "nonConsumablePurchaseMade")
     var diamonds = UserDefaults.standard.integer(forKey: "diamonds")
-    let backgrounds: Set = ["cave", "crystal forest", "yurt", "apartment", "yacht", "space", "dream"]
+    let backgrounds: Set = ["cave", "crystal forest", "yurt", "apartment", "yacht", "space", "dream", "rift"]
     
     //    iclodu thing
     var iCloudKeyStore: NSUbiquitousKeyValueStore? = NSUbiquitousKeyValueStore()
@@ -299,6 +299,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         iCloudKeyStore?.set(String(describing: inventory.phaseCrystals), forKey: "phaseCrystals")
         iCloudKeyStore?.set(String(describing: inventory.newPhaseCrystals), forKey: "newPhaseCrystals")
         
+        iCloudKeyStore?.set(inventory.riftUnlocked, forKey: "riftUnlocked")
+        
         //now for achievmeents and molds
         var saveMolds = [Int]()
         for mold in inventory.molds {
@@ -385,6 +387,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         inventory.freedFromTimePrison = iCloudKeyStore?.object(forKey: "freedFromTimePrison") as! Array<Bool>
         inventory.phaseCrystals = BInt(iCloudKeyStore?.object(forKey: "phaseCrystals") as! String)!
         inventory.newPhaseCrystals = BInt(iCloudKeyStore?.object(forKey: "newPhaseCrystals") as! String)!
+        
+        inventory.riftUnlocked = iCloudKeyStore?.object(forKey: "riftUnlocked") as! Bool
         
         let saveMolds = iCloudKeyStore?.object(forKey: "molds") as! Array<Int>
         let saveDisplayMolds = iCloudKeyStore?.object(forKey: "displayMolds") as! Array<Int>
@@ -880,6 +884,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             levelScene.name = "levelScene"
             levelScene.scaleMode = .aspectFill
             levelScene.timePrisonEnabled = inventory.timePrisonEnabled
+            levelScene.riftUnlocked = inventory.riftUnlocked
             levelScene.touchHandler = levelHandler
             levelScene.currentLevel = inventory.level
             levelScene.currentScorePerTap = inventory.scorePerTap
@@ -1243,6 +1248,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             inventory.likedFB = tempFB
             inventory.muteSound = tempMuteS
             inventory.muteMusic = tempMuteM
+            inventory.riftUnlocked = true
             
             scene.updateMolds()
             scene.isActive = true
@@ -1303,6 +1309,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             let tempPhaseCrystals = inventory.phaseCrystals
             let tempTimePrisonEnabled = inventory.timePrisonEnabled
             let tempFreedFromTimePrison = inventory.freedFromTimePrison
+            let tempRiftUnlocked = inventory.riftUnlocked
             
             for i in 0..<inventory.moldCountDicc["Invisible Mold", default: 1]  {
                 if i < 4 {
@@ -1330,6 +1337,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             inventory.phaseCrystals = tempPhaseCrystals
             inventory.timePrisonEnabled = tempTimePrisonEnabled
             inventory.freedFromTimePrison = tempFreedFromTimePrison
+            inventory.riftUnlocked = tempRiftUnlocked
             if metaphaseCount > 0 {
                 inventory.moldCountDicc["Metaphase Mold"] = metaphaseCount
                 inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))

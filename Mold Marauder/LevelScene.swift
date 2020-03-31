@@ -44,8 +44,10 @@ class LevelScene: SKScene {
     var yurtButton:SKNode!
     var spaceButton: SKNode!
     var dreamButton: SKNode!
+    var riftButton: SKNode!
     
     var timePrisonEnabled = false
+    var riftUnlocked = false
     
     var checkmark: SKNode!
     var current: String!
@@ -313,6 +315,15 @@ class LevelScene: SKScene {
             lastButton = dreamButton.position
             page1ScrollView.addChild(dreamButton)
         }
+        if riftUnlocked {
+            Texture = SKTexture(image: UIImage(named: "rift button")!)
+            // slime
+            riftButton = SKSpriteNode(texture:Texture)
+            // Place in scene
+            riftButton.position = CGPoint(x: lastButton.x+120, y: lastButton.y)
+            lastButton = riftButton.position
+            page1ScrollView.addChild(riftButton)
+        }
         
         if checkmark != nil {
             checkmark.removeFromParent()
@@ -348,6 +359,10 @@ class LevelScene: SKScene {
             checkmark.position = dreamButton.position
             page1ScrollView.addChild(checkmark)
             break
+        case "rift":
+            checkmark.position = riftButton.position
+            page1ScrollView.addChild(checkmark)
+            break
         default:
             checkmark.position = caveButton.position
             page1ScrollView.addChild(checkmark)
@@ -374,6 +389,8 @@ class LevelScene: SKScene {
         apartmentButton = nil
         yurtButton = nil
         spaceButton = nil
+        dreamButton = nil
+        riftButton = nil
         checkmark = nil
     }
     
@@ -460,6 +477,14 @@ class LevelScene: SKScene {
                     checkmark.position = dreamButton.position
                     if let handler = touchHandler {
                         handler("dream")
+                    }
+                }
+            }
+            if riftButton != nil {
+                if node == riftButton {
+                    checkmark.position = riftButton.position
+                    if let handler = touchHandler {
+                        handler("rift")
                     }
                 }
             }

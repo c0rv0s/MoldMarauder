@@ -390,7 +390,7 @@
 				TargetAttributes = {
 					21CB73311E412FD400DEAF4F = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = TCL5NNKKA5;
+						DevelopmentTeam = PLNFCVNGS6;
 						LastSwiftMigration = 1130;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -663,8 +663,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = TCL5NNKKA5;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PLNFCVNGS6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
 					"$(PROJECT_DIR)",
@@ -672,9 +672,9 @@
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.0;
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder-by-Nathan";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Documents/Development/mold marauder/bridging-header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -688,8 +688,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
-				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = TCL5NNKKA5;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PLNFCVNGS6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
 					"$(PROJECT_DIR)",
@@ -697,9 +697,9 @@
 				INFOPLIST_FILE = "Mold Marauder/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.0;
 				NEW_SETTING = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder-by-Nathan";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Documents/Development/mold marauder/bridging-header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;

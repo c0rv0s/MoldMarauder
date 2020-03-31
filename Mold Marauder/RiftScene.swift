@@ -12,7 +12,6 @@ class RiftScene: SKScene {
 
     var background: SKSpriteNode!
     var dialogueLabel: SKLabelNode!
-    var scar: SKSpriteNode!
     var riftLayer = SKNode()
     var moldLayer = SKNode()
     
@@ -58,11 +57,6 @@ class RiftScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        scar = SKSpriteNode(texture: SKTexture(image: UIImage(named: "rift scar")!))
-        scar.size = self.size
-        scar.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
-        riftLayer.addChild(scar)
-        
         var y = 180
         for _ in 0..<4 {
             let meta1 = SKSpriteNode(texture: SKTexture(image: UIImage(named: "Metaphase Mold")!))
@@ -147,7 +141,6 @@ class RiftScene: SKScene {
         backframes.append(SKTexture(image: UIImage(named: "rift2")!))
         backframes.append(SKTexture(image: UIImage(named: "rift3")!))
         
-        scar.removeFromParent()
         background.run(SKAction.sequence([
             SKAction.animate(with: backframes,timePerFrame: 0.5,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.25,resize: false,restore: true),

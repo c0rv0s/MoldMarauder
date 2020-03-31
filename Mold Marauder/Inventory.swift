@@ -62,6 +62,7 @@ class Inventory: NSObject, NSCoding {
     
     var reinvestmentCount: Int
     var timePrisonEnabled: Bool
+    var riftUnlocked: Bool
     var freedFromTimePrison: Array<Bool>
     var phaseCrystals: BInt
     var newPhaseCrystals: BInt
@@ -112,6 +113,8 @@ class Inventory: NSObject, NSCoding {
         phaseCrystals = BInt("0")!
         newPhaseCrystals = BInt("0")!
         freedFromTimePrison = [false, false, false, false, false, false, false, false, false]
+        
+        riftUnlocked = false
         
         achievementsDicc = [
             "own 5" : false,
@@ -275,6 +278,8 @@ class Inventory: NSObject, NSCoding {
         phaseCrystals = BInt(aDecoder.decodeObject(forKey: "phaseCrystals") as! String)!
         newPhaseCrystals = BInt(aDecoder.decodeObject(forKey: "newPhaseCrystals") as! String)!
         freedFromTimePrison = aDecoder.decodeObject(forKey: "freedFromTimePrison") as! Array<Bool>
+        
+        riftUnlocked = aDecoder.decodeBool(forKey: "riftUnlocked")
         
         let saveMolds = aDecoder.decodeObject(forKey: "molds") as! Array<Int>
         let saveDisplayMolds = aDecoder.decodeObject(forKey: "displayMolds") as! Array<Int>
@@ -454,6 +459,7 @@ class Inventory: NSObject, NSCoding {
         aCoder.encode(String(describing: phaseCrystals), forKey: "phaseCrystals")
         aCoder.encode(String(describing: newPhaseCrystals), forKey: "newPhaseCrystals")
         aCoder.encode(freedFromTimePrison, forKey: "freedFromTimePrison")
+        aCoder.encode(riftUnlocked, forKey: "riftUnlocked")
         
         //now for achievmeents and molds
         var saveMolds = [Int]()

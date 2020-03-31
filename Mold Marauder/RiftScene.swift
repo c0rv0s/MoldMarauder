@@ -99,10 +99,7 @@ class RiftScene: SKScene {
             }
         }
         else {
-            if dialogueLabel != nil {
-                dialogueLabel.removeFromParent()
-                dialogueLabel = nil
-            }
+            dialogueLabel.removeFromParent()
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                 if let handler = self.touchHandler {
                     handler("explosion")
@@ -126,7 +123,22 @@ class RiftScene: SKScene {
     }
     
     func explosion() {
-        scar.removeFromParent()
+        let whiteOut = SKSpriteNode(texture: SKTexture(image: UIImage(named: "white out")!))
+        whiteOut.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
+        whiteOut.alpha = 0.0
+        addChild(whiteOut)
+        
+        let textString = "What a curious adventure..."
+        dialogueLabel = SKLabelNode(fontNamed: "Lemondrop")
+        dialogueLabel.text = textString
+        dialogueLabel.numberOfLines = (textString.count / self.charsPerLine) + 1
+        dialogueLabel.preferredMaxLayoutWidth = CGFloat(self.lineWidth)
+        dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+CGFloat(yOffset/2))
+        dialogueLabel.fontSize = 24
+        dialogueLabel.fontColor = UIColor.black
+        dialogueLabel.alpha = 0.0
+        addChild(dialogueLabel)
+        
         var backframes = [SKTexture]()
         backframes.append(SKTexture(image: UIImage(named: "rift1")!))
         backframes.append(SKTexture(image: UIImage(named: "rift2")!))
@@ -134,9 +146,12 @@ class RiftScene: SKScene {
         backframes.append(SKTexture(image: UIImage(named: "rift1")!))
         backframes.append(SKTexture(image: UIImage(named: "rift2")!))
         backframes.append(SKTexture(image: UIImage(named: "rift3")!))
+        
+        scar.removeFromParent()
         background.run(SKAction.sequence([
             SKAction.animate(with: backframes,timePerFrame: 0.5,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.25,resize: false,restore: true),
+            SKAction.animate(with: backframes,timePerFrame: 0.1,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.1,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.1,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.1,resize: false,restore: true),
@@ -155,28 +170,12 @@ class RiftScene: SKScene {
             SKAction.animate(with: backframes,timePerFrame: 0.05,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.05,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.05,resize: false,restore: true),
-            SKAction.animate(with: backframes,timePerFrame: 0.05,resize: false,restore: true),
-            SKAction.animate(with: backframes,timePerFrame: 0.05,resize: false,restore: true),
             SKAction.animate(with: backframes,timePerFrame: 0.05,resize: false,restore: true)
         ]))
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 10) {
-            let whiteOut = SKSpriteNode(texture: SKTexture(image: UIImage(named: "white out")!))
-            whiteOut.position = CGPoint(x:self.frame.midX, y:self.frame.midY);
-            self.addChild(whiteOut)
-            whiteOut.run( SKAction.sequence([.fadeIn(withDuration: 2.0)]) )
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 9) {
+            whiteOut.run( SKAction.sequence([.fadeIn(withDuration: 2.5)]) )
         }
-        
-        let textString = "What a curious adventure..."
-        self.dialogueLabel = SKLabelNode(fontNamed: "Lemondrop")
-        self.dialogueLabel.text = textString
-        self.dialogueLabel.numberOfLines = (textString.count / self.charsPerLine) + 1
-        self.dialogueLabel.preferredMaxLayoutWidth = CGFloat(self.lineWidth)
-        self.dialogueLabel.position = CGPoint(x: self.frame.midX, y: self.frame.midY+CGFloat(yOffset/2))
-        self.dialogueLabel.fontSize = 24
-        self.dialogueLabel.fontColor = UIColor.black
-        
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 16) {
-            self.addChild(self.dialogueLabel)
             self.dialogueLabel.run( SKAction.sequence([.fadeIn(withDuration: 1.5)]) )
         }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 22) {

@@ -144,6 +144,44 @@ class TimePrison: SKScene {
             godButton.setScale(0.5)
             gameLayer.addChild(godButton)
         }
+        
+        switch UIDevice().screenType {
+        case .iPhone8:
+            metaOne.position = CGPoint(x:metaOne.position.x+13, y:metaOne.position.y-48);
+            metaTwo.position = CGPoint(x:metaTwo.position.x+6, y:metaTwo.position.y-52);
+            metaThree.position = CGPoint(x:metaThree.position.x-6, y:metaThree.position.y-52);
+            metaFour.position = CGPoint(x:metaFour.position.x-13, y:metaFour.position.y-48);
+            metaFive.position = CGPoint(x:metaFive.position.x+13, y:metaFive.position.y+46);
+            metaSix.position = CGPoint(x:metaSix.position.x+6, y:metaSix.position.y+50);
+            metaSeven.position = CGPoint(x:metaSeven.position.x-6, y:metaSeven.position.y+50);
+            metaEight.position = CGPoint(x:metaEight.position.x-13, y:metaEight.position.y+46);
+            backButton.position.y -= 50
+            crystalLabel.position.y -= 50
+            crystalHeader.position.y -= 50
+            break
+        case .iPhone8Plus:
+            metaOne.position = CGPoint(x:metaOne.position.x, y:metaOne.position.y-30);
+            metaTwo.position = CGPoint(x:metaTwo.position.x, y:metaTwo.position.y-32);
+            metaThree.position = CGPoint(x:metaThree.position.x, y:metaThree.position.y-32);
+            metaFour.position = CGPoint(x:metaFour.position.x, y:metaFour.position.y-30);
+            metaFive.position = CGPoint(x:metaFive.position.x, y:metaFive.position.y+30);
+            metaSix.position = CGPoint(x:metaSix.position.x, y:metaSix.position.y+32);
+            metaSeven.position = CGPoint(x:metaSeven.position.x, y:metaSeven.position.y+32);
+            metaEight.position = CGPoint(x:metaEight.position.x, y:metaEight.position.y+30);
+            break
+        case .iPhoneX:
+            metaOne.position = CGPoint(x:metaOne.position.x+12, y:metaOne.position.y-20);
+            metaTwo.position = CGPoint(x:metaTwo.position.x+7, y:metaTwo.position.y-20);
+            metaThree.position = CGPoint(x:metaThree.position.x-7, y:metaThree.position.y-20);
+            metaFour.position = CGPoint(x:metaFour.position.x-12, y:metaFour.position.y-20);
+            metaFive.position = CGPoint(x:metaFive.position.x+12, y:metaFive.position.y+20);
+            metaSix.position = CGPoint(x:metaSix.position.x+7, y:metaSix.position.y+20);
+            metaSeven.position = CGPoint(x:metaSeven.position.x-7, y:metaSeven.position.y+20);
+            metaEight.position = CGPoint(x:metaEight.position.x-12, y:metaEight.position.y+20);
+            break
+        default:
+            break
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

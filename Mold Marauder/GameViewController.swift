@@ -129,7 +129,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
 //      inventory.molds.append(Mold(moldType: MoldType.metaphase))
 //      inventory.moldCountDicc["Metaphase Mold"] = 1
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.metaphase))
-//      inventory.timePrisonEnabled = false
+//      inventory.timePrisonEnabled = true
 //      inventory.background = "dream"
 //      inventory.molds.append(Mold(moldType: MoldType.god))
 //      inventory.unlockedMolds.append(Mold(moldType: MoldType.god))

@@ -6197,6 +6197,10 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         inventoryScene.unlockedMolds = inventory.unlockedMolds
         
         inventoryScene.moldCountDicc = inventory.moldCountDicc
+        inventoryScene.displayCountDicc = [:]
+        for mold in inventory.displayMolds {
+            inventoryScene.displayCountDicc[mold.name] = (inventoryScene.displayCountDicc[mold.name] ?? 0) + 1
+        }
         inventoryScene.totalNum = inventory.displayMolds.count
         inventoryScene.display = inventory.displayMolds
         //populate the owned molds array

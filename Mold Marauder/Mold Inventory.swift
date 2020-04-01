@@ -196,6 +196,7 @@ class MoldInventory: SKScene {
     var totalNum = 0
     
     var moldCountDicc: [String:Int]!
+    var displayCountDicc: [String:Int]!
     
     //other things
     var backButton: SKNode!
@@ -1449,7 +1450,7 @@ class MoldInventory: SKScene {
     
     //get number of specific mold
     func numOfMold(mold: MoldType) -> Int {
-        return moldCountDicc[mold.spriteName] ?? 0
+        return displayCountDicc[mold.spriteName] ?? 0
     }
 
     func createButton()

@@ -1561,12 +1561,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "slimePlus" {
             type = MoldType.slime
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1605,12 +1600,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "cavePlus" {
             type = MoldType.cave
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1649,12 +1639,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "sadPlus" {
             type = MoldType.sad
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1693,12 +1678,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "angryPlus" {
             type = MoldType.angry
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1737,12 +1717,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "alienPlus" {
             type = MoldType.alien
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1781,12 +1756,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "pimplyPlus" {
             type = MoldType.pimply
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1825,12 +1795,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "freckledPlus" {
             type = MoldType.freckled
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1869,12 +1834,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "hypnoPlus" {
             type = MoldType.hypno
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1913,12 +1873,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "rainbowPlus" {
             type = MoldType.rainbow
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -1957,12 +1912,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "aluminumPlus" {
             type = MoldType.aluminum
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2001,12 +1951,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "circuitPlus" {
             type = MoldType.circuit
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2045,12 +1990,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "hologramPlus" {
             type = MoldType.hologram
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2089,12 +2029,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "stormPlus" {
             type = MoldType.storm
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2133,12 +2068,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "bacteriaPlus" {
             type = MoldType.bacteria
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2177,12 +2107,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "virusPlus" {
             type = MoldType.virus
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2221,12 +2146,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "xPlus" {
             type = MoldType.x
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2265,12 +2185,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "flowerPlus" {
             type = MoldType.flower
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2309,12 +2224,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "beePlus" {
             type = MoldType.bee
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2353,12 +2263,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "disaffectedPlus" {
             type = MoldType.disaffected
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2397,12 +2302,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "olivePlus" {
             type = MoldType.olive
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2441,12 +2341,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "coconutPlus" {
             type = MoldType.coconut
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2485,12 +2380,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "sickPlus" {
             type = MoldType.sick
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2529,12 +2419,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "deadPlus" {
             type = MoldType.dead
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2573,12 +2458,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "zombiePlus" {
             type = MoldType.zombie
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2617,12 +2497,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "cloudPlus" {
             type = MoldType.cloud
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2661,12 +2536,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "rockPlus" {
             type = MoldType.rock
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2705,12 +2575,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "waterPlus" {
             type = MoldType.water
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2749,12 +2614,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "crystalPlus" {
             type = MoldType.crystal
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2793,12 +2653,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "nuclearPlus" {
             type = MoldType.nuclear
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2837,12 +2692,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "astronautPlus" {
             type = MoldType.astronaut
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2881,12 +2731,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "sandPlus" {
             type = MoldType.sand
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2925,12 +2770,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "glassPlus" {
             type = MoldType.glass
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -2969,12 +2809,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "coffeePlus" {
             type = MoldType.coffee
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3013,12 +2848,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "slinkyPlus" {
             type = MoldType.slinky
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3057,12 +2887,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "magmaPlus" {
             type = MoldType.magma
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3101,12 +2926,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "samuraiPlus" {
             type = MoldType.samurai
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3145,12 +2965,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "orangePlus" {
             type = MoldType.orange
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3189,12 +3004,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "strawberryPlus" {
             type = MoldType.strawberry
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3233,12 +3043,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "tshirtPlus" {
             type = MoldType.tshirt
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3277,12 +3082,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "cryptidPlus" {
             type = MoldType.cryptid
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3321,12 +3121,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "angelPlus" {
             type = MoldType.angel
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3365,12 +3160,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "invisiblePlus" {
             type = MoldType.invisible
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3409,12 +3199,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "starPlus" {
             type = MoldType.star
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3453,12 +3238,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "metaPlus" {
             type = MoldType.metaphase
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {
@@ -3497,12 +3277,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "godPlus" {
             type = MoldType.god
             if inventory.displayMolds.count < 25 {
-                var mCount = 0
-                for mMold in inventory.molds {
-                    if mMold.moldType == type {
-                        mCount += 1
-                    }
-                }
+                let mCount = inventory.moldCountDicc[type.spriteName]!
                 var count = 0
                 for pMold in inventory.displayMolds {
                     if pMold.moldType == type {

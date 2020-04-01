@@ -244,15 +244,15 @@ class MoldInventory: SKScene {
     }
     
     func erectScroll() {
-        var height = 100 + (ownedMolds.count * 95)
+        var height = 150 + (ownedMolds.count * 100)
         if ownedMolds.contains(where: {$0.name == MoldType.god.spriteName}) {
-            height += 160
+            height += 125
         }
         if ownedMolds.contains(where: {$0.name == MoldType.flower.spriteName}) {
-            height += 160
+            height += 75
         }
         if ownedMolds.contains(where: {$0.name == MoldType.star.spriteName}) {
-            height += 160
+            height += 110
         }
         //addNode
         addChild(moveableNode)

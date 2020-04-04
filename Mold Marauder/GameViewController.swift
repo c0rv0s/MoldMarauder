@@ -4858,8 +4858,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             // trigger the blak hole mold death
             let pick = randomInRange(lo: 0, hi: inventory.molds.count - 1)
             if inventory.molds.count > 0 {
-                if inventory.molds[pick].moldType != MoldType.star && inventory.molds[pick].moldType != MoldType.metaphase && inventory.molds[pick].moldType != MoldType.god {
-                    let moldData = inventory.molds[pick]
+                let moldData = inventory.molds[pick]
+                if moldData.moldType != MoldType.star && moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.god {
                     let fade = SKAction.scale(to: 0.0, duration: 0.75)
                     let imName = String(moldData.name)
                     let Image = UIImage(named: imName)
@@ -5000,7 +5000,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             
             var index = inventory.displayMolds.firstIndex(where: {$0.name == array[0].name})
             let moldData = inventory.displayMolds[index!]
-            
             if moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.star && moldData.moldType != MoldType.god {
                 if index != nil {
                     inventory.displayMolds.remove(at: index!)
@@ -5203,8 +5202,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 case 11:
                     if inventory.molds.count > 0 {
                         let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                        if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase && inventory.molds[indexToEat].moldType != MoldType.god {
-                            let moldData = inventory.molds[indexToEat]
+                        let moldData = inventory.molds[indexToEat]
+                        if moldData.moldType != MoldType.star && moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.god {
                             scene.playSound(select: "crunch")
                             inventory.molds.remove(at: indexToEat)
                             inventory.moldCountDicc[moldData.name]! -= 1
@@ -5242,8 +5241,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                         var runCount = 0
                         while (runCount < 3) {
                             let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                            if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase && inventory.molds[indexToEat].moldType != MoldType.god {
-                                let moldData = inventory.molds[indexToEat]
+                            let moldData = inventory.molds[indexToEat]
+                            if moldData.moldType != MoldType.star && moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.god {
                                 scene.playSound(select: "crunch")
                                 inventory.molds.remove(at: indexToEat)
                                 inventory.moldCountDicc[moldData.name]! -= 1
@@ -5381,8 +5380,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         if action == "eat_mold" {
             if inventory.molds.count > 0 {
                 let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
-                if inventory.molds[indexToEat].moldType != MoldType.star && inventory.molds[indexToEat].moldType != MoldType.metaphase && inventory.molds[indexToEat].moldType != MoldType.god {
-                    let moldData = inventory.molds[indexToEat]
+                let moldData = inventory.molds[indexToEat]
+                if moldData.moldType != MoldType.star && moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.god {
                     scene.playSound(select: "crunch")
                     inventory.molds.remove(at: indexToEat)
                     inventory.moldCountDicc[moldData.name]! -= 1

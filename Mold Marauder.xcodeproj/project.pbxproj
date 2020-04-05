@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F1EE98B227D291D0026BF88 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F1EE98A227D291D0026BF88 /* Bolts.framework */; };
 		0F41C973241AE7EE009254B0 /* yacht.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F41C972241AE7EE009254B0 /* yacht.wav */; };
 		0F7FED192418B76900C3BABB /* crystal forest.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED182418B76900C3BABB /* crystal forest.wav */; };
 		0F7FED1B2418BCBD00C3BABB /* yurt.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F7FED1A2418BCBD00C3BABB /* yurt.wav */; };
@@ -92,7 +91,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0F1EE98A227D291D0026BF88 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		0F41C972241AE7EE009254B0 /* yacht.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = yacht.wav; sourceTree = "<group>"; };
 		0F7FED182418B76900C3BABB /* crystal forest.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "crystal forest.wav"; sourceTree = "<group>"; };
 		0F7FED1A2418BCBD00C3BABB /* yurt.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = yurt.wav; sourceTree = "<group>"; };
@@ -149,7 +147,6 @@
 		210F06FB1E9445B0006EA0D5 /* kiss.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = kiss.wav; sourceTree = "<group>"; };
 		21305B461E615C0A006343A4 /* progress_Bar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = progress_Bar.swift; sourceTree = "<group>"; };
 		214A7D761E8E4F8000796E61 /* CircleFit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleFit.swift; sourceTree = "<group>"; };
-		214DF2C01EC6601E002063F3 /* bridging-header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "bridging-header.h"; sourceTree = "<group>"; };
 		214FB0FD1E7359A200E428AA /* LevelScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelScene.swift; sourceTree = "<group>"; };
 		215B49101E7BCA0D009107DF /* CreditsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditsScene.swift; sourceTree = "<group>"; };
 		21655E0B1E64105F003F9DB5 /* Lemondrop.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Lemondrop.ttf; sourceTree = "<group>"; };
@@ -185,7 +182,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0F1EE98B227D291D0026BF88 /* Bolts.framework in Frameworks */,
 				21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */,
 				21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */,
 			);
@@ -343,7 +339,6 @@
 				21C16EFB1E4401F4003D109A /* sounds */,
 				21CB73441E412FD500DEAF4F /* LaunchScreen.storyboard */,
 				21CB73471E412FD500DEAF4F /* Info.plist */,
-				214DF2C01EC6601E002063F3 /* bridging-header.h */,
 			);
 			path = "Mold Marauder";
 			sourceTree = "<group>";
@@ -351,7 +346,6 @@
 		5B1F86CC0EF7B2FFCA1530CB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0F1EE98A227D291D0026BF88 /* Bolts.framework */,
 				21D01DEA1E590E14008184C4 /* StoreKit.framework */,
 				21D01DE71E590D85008184C4 /* GameKit.framework */,
 			);
@@ -663,7 +657,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = PLNFCVNGS6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
@@ -676,7 +670,9 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder-2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Documents/Development/mold marauder/bridging-header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -688,7 +684,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "Mold Marauder/Mold Marauder.entitlements";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = PLNFCVNGS6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"/Users/nathanaelmueller/Documents/FacebookSDKs-iOS-4.22.0",
@@ -701,7 +697,9 @@
 				NEW_SETTING = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.Spacey-Dreams.Mold-Marauder-2";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/nathanaelmueller/Documents/Development/mold marauder/bridging-header.h";
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

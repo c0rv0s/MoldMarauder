@@ -5557,7 +5557,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             scene.playSound(select: "exit")
         }
         if action == "diamond_tiny" {
-            scene.playSound(select: "gem case")
             activateSleepTimer()
             if available {
                 purchaseMyProduct(product: iapProducts[3])
@@ -5571,7 +5570,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         if action == "diamond_small" {
-            scene.playSound(select: "gem case")
             activateSleepTimer()
             if available {
                 purchaseMyProduct(product: iapProducts[0])
@@ -5585,7 +5583,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         if action == "diamond_medium" {
-            scene.playSound(select: "gem case")
             activateSleepTimer()
             if available {
                 purchaseMyProduct(product: iapProducts[2])
@@ -5599,7 +5596,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         if action == "diamond_large" {
-            scene.playSound(select: "chest")
             activateSleepTimer()
             if available {
                 purchaseMyProduct(product: iapProducts[1])
@@ -6675,18 +6671,22 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
                     
                     if productID == TINY_PRODUCT_ID {
+                        scene.playSound(select: "gem case")
                         incrementDiamonds(newDiamonds: 11)
                         save()
                     }
                     else if productID == SMALL_PRODUCT_ID {
+                        scene.playSound(select: "gem case")
                         incrementDiamonds(newDiamonds: 55)
                         save()
                     }
                     else if productID == MEDIUM_PRODUCT_ID {
+                        scene.playSound(select: "gem case")
                         incrementDiamonds(newDiamonds: 200)
                         save()
                     }
                     else if productID == LARGE_PRODUCT_ID {
+                        scene.playSound(select: "chest")
                         incrementDiamonds(newDiamonds: 1200)
                         save()
                     }
@@ -6694,6 +6694,11 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     
                 case .failed:
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
+                    let alert = UIAlertController(title: "Uh-Oh!", message: "Transaction failed", preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
+                        // perhaps use action.title here
+                    })
+                    present(alert, animated: true)
                     break
                 case .restored:
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)

@@ -3882,7 +3882,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             if inventory.level < 3 {
                 scene.wormDifficulty = 4 - inventory.laser + 1
             }
-                
             else if inventory.level < 29 {
                 scene.wormDifficulty = 5 - inventory.laser
             }
@@ -4154,6 +4153,9 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 }
                 save()
             }
+            else {
+                premiumShop.addBuyDiamondsButton()
+            }
         }
         if action == "incubator" {
             if inventory.diamonds >= 6 {
@@ -4245,6 +4247,9 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                     break
                 }
             }
+            else {
+                premiumShop.addBuyDiamondsButton()
+            }
         }
         if action == "star" {
             if inventory.diamonds >= 30 {
@@ -4298,6 +4303,9 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 updateLabels()
                 save()
                 
+            }
+            else {
+                premiumShop.addBuyDiamondsButton()
             }
         }
     }

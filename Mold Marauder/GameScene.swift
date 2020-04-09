@@ -2401,7 +2401,7 @@ class GameScene: SKScene {
             //worm attak
             print(ran)
             if ran <= 40 {
-                if wormRepel == false {
+                if wormRepel == false && wormHP.count < 6 {
                     wormAttack(tutorial: false)
                     //vibrateWithHaptic()
                     if reinvestCount >= 1 {
@@ -2554,7 +2554,9 @@ class GameScene: SKScene {
                 while worms > 0 {
                     let when = DispatchTime.now() + TimeInterval(Double.random(in: 0.2 ..< 1.4))
                     DispatchQueue.main.asyncAfter(deadline: when) {
-                        self.wormAttack(tutorial: false)
+                        if self.wormHP.count < 6 {
+                            self.wormAttack(tutorial: false)
+                        }
                     }
                     worms -= 1
                 }

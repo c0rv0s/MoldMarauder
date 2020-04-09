@@ -81,7 +81,6 @@
 		21CB73411E412FD500DEAF4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21CB733F1E412FD500DEAF4F /* Main.storyboard */; };
 		21CB73431E412FD500DEAF4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21CB73421E412FD500DEAF4F /* Assets.xcassets */; };
 		21CB73461E412FD500DEAF4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21CB73441E412FD500DEAF4F /* LaunchScreen.storyboard */; };
-		21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D01DE71E590D85008184C4 /* GameKit.framework */; };
 		21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21D01DEA1E590E14008184C4 /* StoreKit.framework */; };
 		21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E339981E5EDB3600083261 /* AchievementsScene.swift */; };
 		21F134B71E7E710300627246 /* QuestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F134B61E7E710300627246 /* QuestScene.swift */; };
@@ -167,7 +166,6 @@
 		21CB73421E412FD500DEAF4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21CB73451E412FD500DEAF4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		21CB73471E412FD500DEAF4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		21D01DE71E590D85008184C4 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		21D01DE91E590D8B008184C4 /* Mold Marauder.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Mold Marauder.entitlements"; sourceTree = "<group>"; };
 		21D01DEA1E590E14008184C4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		21E339981E5EDB3600083261 /* AchievementsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsScene.swift; sourceTree = "<group>"; };
@@ -182,7 +180,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21D01DE81E590D86008184C4 /* GameKit.framework in Frameworks */,
 				21D01DEB1E590E14008184C4 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -347,7 +344,6 @@
 			isa = PBXGroup;
 			children = (
 				21D01DEA1E590E14008184C4 /* StoreKit.framework */,
-				21D01DE71E590D85008184C4 /* GameKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

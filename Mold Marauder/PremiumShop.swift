@@ -95,7 +95,7 @@ class PremiumShop: SKScene {
         let deathLabel = SKLabelNode(fontNamed: "Lemondrop")
         deathLabel.fontSize = 14
         deathLabel.fontColor = UIColor.black
-        deathLabel.text = "500 Diamonds"
+        deathLabel.text = "300 Diamonds"
         deathLabel.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY+106)
         addChild(deathLabel)
         
@@ -158,7 +158,7 @@ class PremiumShop: SKScene {
         let autoLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         autoLabel3.fontSize = 13
         autoLabel3.fontColor = UIColor.black
-        autoLabel3.text = "200 Diamonds"
+        autoLabel3.text = "90 Diamonds"
         autoLabel3.position = CGPoint(x:self.frame.midX+50, y:self.frame.midY-49)
         addChild(autoLabel3)
 

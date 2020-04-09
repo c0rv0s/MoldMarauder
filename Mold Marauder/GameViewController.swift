@@ -4136,8 +4136,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         if action == "death ray" {
-            if inventory.diamonds >= 500 {
-                incrementDiamonds(newDiamonds: -500)
+            if inventory.diamonds >= 300 {
+                incrementDiamonds(newDiamonds: -300)
                 inventory.deathRay = true
                 scene.deathRay = true
                 premiumShop.deathRayBought = true
@@ -4209,8 +4209,8 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             }
         }
         if action == "auto-tap" {
-            if inventory.autoTapLevel < 5 && inventory.diamonds >= 200 {
-                incrementDiamonds(newDiamonds: -200)
+            if inventory.autoTapLevel < 5 && inventory.diamonds >= 90 {
+                incrementDiamonds(newDiamonds: -90)
                 premiumShop.playSound(select: "cash register")
                 if inventory.autoTap == false {
                     inventory.autoTap = true

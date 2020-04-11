@@ -2750,32 +2750,36 @@ class GameScene: SKScene {
         if offline == false {
             gameLayer.addChild(scoreLabel)
             
-            let ranX = Int(arc4random_uniform(40)) - 20
+            let ranX = Int(arc4random_uniform(40))
             let ranY = Int(arc4random_uniform(25) + 1)
             let Y = ranY + 120
             let moveAction = SKAction.move(by: CGVector(dx: ranX, dy: Y), duration: 3)
             moveAction.timingMode = .easeOut
             scoreLabel.run(SKAction.sequence([moveAction, SKAction.removeFromParent()]))
-            
-            //coin
-            if tap {
-                var coinFrames = [SKTexture]()
-                coinFrames.append(SKTexture(image: UIImage(named: "coin")!))
-                coinFrames.append(SKTexture(image: UIImage(named: "coin 2")!))
-                coinFrames.append(SKTexture(image: UIImage(named: "coin 3")!))
-                //laser animation
-                let finalFrame = coinFrames[2]
-                let coinPic = SKSpriteNode(texture:finalFrame)
-                coinPic.position = CGPoint(x: scoreLabel.position.x + CGFloat(ranX), y: scoreLabel.position.y)
-                coinPic.zPosition = 200
-                gameLayer.addChild(coinPic)
-                coinPic.run(SKAction.repeatForever(SKAction.animate(with: coinFrames,
-                                                                    timePerFrame: 0.02,
-                                                                    resize: false,
-                                                                    restore: true)))
-                coinPic.run(SKAction.sequence([SKAction.move(to: CGPoint(x: frame.midX,y: frame.maxY - 90), duration:0.9),SKAction.removeFromParent()]))
-            }
         }
+    }
+    
+    func animateCoins(point: CGPoint) {
+        let ranX = Int(arc4random_uniform(40))
+        let centerPosition = CGPoint(
+                   x: (point.x),
+                   y: (point.y + 25))
+        var coinFrames = [SKTexture]()
+        coinFrames.append(SKTexture(image: UIImage(named: "coin")!))
+        coinFrames.append(SKTexture(image: UIImage(named: "coin 2")!))
+        coinFrames.append(SKTexture(image: UIImage(named: "coin 3")!))
+        //laser animation
+        let finalFrame = coinFrames[2]
+        let coinPic = SKSpriteNode(texture:finalFrame)
+        coinPic.position = CGPoint(x: centerPosition.x + CGFloat(ranX), y: centerPosition.y + CGFloat(ranX))
+        coinPic.zPosition = 200
+        gameLayer.addChild(coinPic)
+        coinPic.run(SKAction.repeatForever(SKAction.animate(with: coinFrames,
+                                                            timePerFrame: 0.02,
+                                                            resize: false,
+                                                            restore: true)))
+        coinPic.run(SKAction.sequence([SKAction.move(to: CGPoint(x: frame.midX,y: header.position.y - 50), duration:0.9),SKAction.removeFromParent()]))
+        coinPic.run(SKAction.fadeOut(withDuration: 0.9))
     }
     
     //CARD FLIP STUff
@@ -2832,6 +2836,8 @@ class GameScene: SKScene {
         claimQuestButton.position = CGPoint(x:self.frame.minX+65, y:self.frame.minY+60);
         
         switch UIDevice().screenType {
+        case .iPhone8:
+            claimQuestButton.position.y += 80
         case .iPhoneX:
             claimQuestButton.position = CGPoint(x:self.frame.minX+80, y:self.frame.minY+60);
             break

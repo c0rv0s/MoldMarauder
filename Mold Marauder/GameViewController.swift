@@ -105,7 +105,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         
 //      TESTING - REMOVE BEFORE USE
 //      inventory = Inventory()
-//      inventory.tutorialProgress = 19
+      inventory.tutorialProgress = 19
 //      inventory.autoTap = false
 //      inventory.autoTapLevel = 0
 //      inventory.diamonds += 500
@@ -203,7 +203,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             cashLabel.font = cashLabel.font.withSize(12)
             break
         case .iPhone8:
-            topMargin.constant += 15
+            topMargin.constant += 22
         case .iPhone8Plus:
             topMargin.constant += 30
         case .iPhoneX:
@@ -227,7 +227,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 
                 switch result {
                     case .success(let products): self.products = products
-                    case .failure(let error): self.showIAPRelatedError(error)
+                    case .failure(let error): print(error)
                 }
             }
         }
@@ -1491,6 +1491,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                         questAchieved()
                     }
                 }
+                save()
             }
         }
         if action == "offlinelevel" {
@@ -4956,6 +4957,13 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 autoTapTimer = nil
             }
             
+            //popup
+            let Texture = SKTexture(image: UIImage(named: "cyber_menu_glow")!)
+            scene.menuPopUp = SKSpriteNode(texture:Texture)
+            // Place in scene
+            scene.menuPopUp.position = CGPoint(x:scene.frame.midX, y:scene.frame.midY)
+            scene.menuPopUp.size = skView.bounds.size
+            
             scene.removeQuestButton()
             questScene = QuestScene(size: skView.bounds.size)
             questScene.name = "questScene"
@@ -5558,10 +5566,15 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             }
         }
         if action == "diamond_buy" {
-            activateSleepTimer()
-            scene.products = self.products
-            scene.doDiamondShop()
-            scene.playSound(select: "select")
+            if products.count > 0 {
+                activateSleepTimer()
+                scene.products = self.products
+                scene.doDiamondShop()
+                scene.playSound(select: "select")
+            }
+            else {
+                showSingleAlert(withMessage: "Diamond shop is not available at this time.")
+            }
         }
         if action == "diamond_exit" {
             activateSleepTimer()
@@ -5632,24 +5645,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         }
         
         if scene.diamondShop == false {
-            if inventory.xTapCount > 0 {
-                if inventory.reinvestmentCount >= 3 {
-                    scene.animateScore(point: scene.tapLoc, amount: (scene.tapPoint * BInt(inventory.xTapAmount))/2, tap: true, fairy: false, offline: false)
-                }
-                else{
-                    scene.animateScore(point: scene.tapLoc, amount: scene.tapPoint * BInt(inventory.xTapAmount), tap: true, fairy: false, offline: false)
-                }
-                
-            }
-            else {
-                if inventory.reinvestmentCount >= 3 {
-                    scene.animateScore(point: scene.tapLoc, amount: scene.tapPoint/2, tap: true, fairy: false, offline: false)
-                }
-                else{
-                    scene.animateScore(point: scene.tapLoc, amount: scene.tapPoint, tap: true, fairy: false, offline: false)
-                }
-                
-            }
+            scene.animateCoins(point: scene.tapLoc)
         }
         if inventory.currentQuest == "tap" {
             inventory.questAmount += 1

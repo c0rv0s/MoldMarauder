@@ -5497,7 +5497,16 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.menuPopUp.position = CGPoint(x:scene.frame.midX, y:scene.frame.midY)
                 scene.menuPopUp.size = skView.bounds.size
                 
-                let appear = SKAction.scale(to: 1, duration: 0.2)
+                var scaleToSize = 1.0
+                //    ui adjustment for screen size
+                switch UIDevice().screenType {
+                case .iPhone8:
+                    scaleToSize = 1.105
+                default:
+                    break
+                }
+                
+                let appear = SKAction.scale(to: CGFloat(scaleToSize), duration: 0.2)
                 scene.menuPopUp.setScale(0.01)
                 let action = SKAction.sequence([appear])
                 scene.menuPopUp.run(action)

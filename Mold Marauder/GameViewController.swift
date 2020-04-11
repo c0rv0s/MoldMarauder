@@ -105,7 +105,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         
 //      TESTING - REMOVE BEFORE USE
 //      inventory = Inventory()
-      inventory.tutorialProgress = 19
+//      inventory.tutorialProgress = 19
 //      inventory.autoTap = false
 //      inventory.autoTapLevel = 0
 //      inventory.diamonds += 500
@@ -4613,7 +4613,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             ARgameScene.menuPopUp.run(action)
             ARgameScene.addChild(ARgameScene.menuPopUp)
             autoTapTimer?.invalidate()
-            autoTapTimer = nil
             
             let when = DispatchTime.now() + 0.2
             DispatchQueue.main.asyncAfter(deadline: when) {
@@ -4635,7 +4634,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             ARgameScene.menuPopUp.run(action)
             ARgameScene.addChild(ARgameScene.menuPopUp)
             autoTapTimer?.invalidate()
-            autoTapTimer = nil
             
             ARgameScene.isPaused = true
             let when = DispatchTime.now() + 0.2
@@ -4919,7 +4917,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         if action == "reactivate timers" {
             print("tutorial ")
             print(inventory.tutorialProgress)
-            //inventory.tutorialProgress = 0
             if inventory.tutorialProgress == 0 {
                 scene.buyEnabled = false
                 scene.beginTut()
@@ -4930,7 +4927,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         }
         if action == "tap ended" {
             autoTapTimer?.invalidate()
-            autoTapTimer = nil
             if scene.isCircle {
                 print("CIRCLE")
                 findCircledView(scene.fitResult.center)
@@ -4954,7 +4950,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         if action == "claim quest" {
             if autoTapTimer != nil {
                 autoTapTimer?.invalidate()
-                autoTapTimer = nil
             }
             
             //popup
@@ -4980,7 +4975,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             self.view.isUserInteractionEnabled = false
             _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(enableTouch), userInfo: nil, repeats: true)
             autoTapTimer?.invalidate()
-            autoTapTimer = nil
         }
         if action == "kiss baby" {
             let moldData = Mold(moldType: MoldType.random())
@@ -5509,7 +5503,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.menuPopUp.run(action)
                 scene.addChild(scene.menuPopUp)
                 autoTapTimer?.invalidate()
-                autoTapTimer = nil
                 let when = DispatchTime.now() + 0.2
                 DispatchQueue.main.asyncAfter(deadline: when) {
                     self.showMenu()
@@ -5534,7 +5527,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             scene.menuPopUp.run(action)
             scene.addChild(scene.menuPopUp)
             autoTapTimer?.invalidate()
-            autoTapTimer = nil
             let when = DispatchTime.now() + 0.2
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.showInventory()
@@ -5559,7 +5551,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             cashLabel.isHidden = true
             cashHeader.isHidden = true
             autoTapTimer?.invalidate()
-            autoTapTimer = nil
             let when = DispatchTime.now() + 0.1
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.captureScreen()
@@ -6053,7 +6044,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                     shiftTimerLabels()
                 }
             }
-                //no spritz just add normal cash
+            //no spritz just add normal cash
             else {
                 let div = inventory.scorePerSecond * metaMult
                 if inventory.reinvestmentCount >= 2 {
@@ -6104,8 +6095,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                         shiftTimerLabels()
                     }
                 }
-                
-                
                 //xtap
                 if inventory.xTapCount > 0 {
                     inventory.xTapCount -= 1
@@ -6119,7 +6108,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 
             }
         }
-            // same thing for AR scene
+        // same thing for AR scene
         else {
             //adjust spritz counter
             if inventory.spritzCount > 0 {
@@ -6139,7 +6128,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                     shiftTimerLabels()
                 }
             }
-                //no spritz just add normal cash
+            //no spritz just add normal cash
             else {
                 let div = inventory.scorePerSecond * metaMult
                 if inventory.reinvestmentCount >= 2 {
@@ -6164,8 +6153,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                         shiftTimerLabels()
                     }
                 }
-                
-                
                 //xtap
                 if inventory.xTapCount > 0 {
                     inventory.xTapCount -= 1

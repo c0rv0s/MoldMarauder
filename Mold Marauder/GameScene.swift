@@ -382,9 +382,7 @@ class GameScene: SKScene {
         
         // now that the user has stopped touching, figure out if the path was a circle
         fitResult = fitCircle(touchedPoints)
-        
         isCircle = fitResult.error <= tolerance
-        //state = isCircle ? .ended : .failed
         
         // Stop node from moving to touch
         if let handler = touchHandler {

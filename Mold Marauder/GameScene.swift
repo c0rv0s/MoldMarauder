@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import StoreKit
 
 class GameScene: SKScene {
     var mute = false
@@ -30,6 +31,7 @@ class GameScene: SKScene {
     var diamondLarge: SKNode!
     var exitDiamond: SKNode!
     var diamondShelves: SKSpriteNode!
+    var products = [SKProduct]()
     
     var tinyButton: SKSpriteNode!
     var smallButton: SKSpriteNode!
@@ -896,18 +898,20 @@ class GameScene: SKScene {
         
         Texture = SKTexture(image: UIImage(named: "tiny diamonds")!)
         diamondTiny = SKSpriteNode(texture:Texture)
+        let diamondTinyProduct = products.first(where: { $0.productIdentifier.contains("_99_") })
+        guard let diamondTinyPrice = IAPManager.shared.getPriceFormatted(for: diamondTinyProduct ?? SKProduct()) else { return }
         // Place in scene
         diamondTiny.position = CGPoint(x: -90, y: 190)
         diamondLayer.addChild(diamondTiny)
         let diamondLabel = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel.fontSize = 20
-        diamondLabel.text = "11 Diamonds"
+        diamondLabel.text = diamondTinyProduct?.localizedDescription
         diamondLabel.position = CGPoint(x: 30, y: 190)
         diamondLabel.color = UIColor.black
         diamondLayer.addChild(diamondLabel)
         let priceLabel = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel.fontSize = 20
-        priceLabel.text = "0.99$"
+        priceLabel.text = diamondTinyPrice
         priceLabel.position = CGPoint(x: 30, y: 170)
         diamondLayer.addChild(priceLabel)
         priceLabel.fontColor = UIColor.black
@@ -920,18 +924,20 @@ class GameScene: SKScene {
         
         Texture = SKTexture(image: UIImage(named: "small diamonds")!)
         diamondSmall = SKSpriteNode(texture:Texture)
+        let diamondSmallProduct = products.first(where: { $0.productIdentifier.contains("_299_") })
+        guard let diamondSmallPrice = IAPManager.shared.getPriceFormatted(for: diamondSmallProduct ?? SKProduct()) else { return }
         // Place in scene
         diamondSmall.position = CGPoint(x: -90, y: 45)
         diamondLayer.addChild(diamondSmall)
         let diamondLabel2 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel2.fontSize = 20
-        diamondLabel2.text = "55 Diamonds"
+        diamondLabel2.text = diamondSmallProduct?.localizedDescription
         diamondLabel2.position = CGPoint(x: 30, y: 50)
         diamondLabel2.color = UIColor.black
         diamondLayer.addChild(diamondLabel2)
         let priceLabel2 = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel2.fontSize = 20
-        priceLabel2.text = "2.99$"
+        priceLabel2.text = diamondSmallPrice
         priceLabel2.position = CGPoint(x: 30, y: 25)
         diamondLayer.addChild(priceLabel2)
         priceLabel2.fontColor = UIColor.black
@@ -944,18 +950,20 @@ class GameScene: SKScene {
         
         Texture = SKTexture(image: UIImage(named: "medium diamonds")!)
         diamondMedium = SKSpriteNode(texture:Texture)
+        let diamondMediumProduct = products.first(where: { $0.productIdentifier.contains("_999_") })
+        guard let diamondMediumPrice = IAPManager.shared.getPriceFormatted(for: diamondMediumProduct ?? SKProduct()) else { return }
         // Place in scene
         diamondMedium.position = CGPoint(x: -90, y: -95)
         diamondLayer.addChild(diamondMedium)
         let diamondLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel3.fontSize = 20
-        diamondLabel3.text = "200 Diamonds"
+        diamondLabel3.text = diamondMediumProduct?.localizedDescription
         diamondLabel3.position = CGPoint(x: 30, y: -90)
         diamondLabel3.color = UIColor.black
         diamondLayer.addChild(diamondLabel3)
         let priceLabel3 = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel3.fontSize = 20
-        priceLabel3.text = "9.99$"
+        priceLabel3.text = diamondMediumPrice
         priceLabel3.position = CGPoint(x: 30, y: -115)
         diamondLayer.addChild(priceLabel3)
         priceLabel3.fontColor = UIColor.black
@@ -968,18 +976,20 @@ class GameScene: SKScene {
         
         Texture = SKTexture(image: UIImage(named: "big diamonds")!)
         diamondLarge = SKSpriteNode(texture:Texture)
+        let diamondLargeProduct = products.first(where: { $0.productIdentifier.contains("_4999_") })
+        guard let diamondLargePrice = IAPManager.shared.getPriceFormatted(for: diamondLargeProduct ?? SKProduct()) else { return }
         // Place in scene
         diamondLarge.position = CGPoint(x: -90, y: -240)
         diamondLayer.addChild(diamondLarge)
         let diamondLabel4 = SKLabelNode(fontNamed: "Lemondrop")
         diamondLabel4.fontSize = 16
-        diamondLabel4.text = "1200 Diamonds"
+        diamondLabel4.text = diamondLargeProduct?.localizedDescription
         diamondLabel4.position = CGPoint(x: 30, y: -235)
         diamondLabel4.color = UIColor.black
         diamondLayer.addChild(diamondLabel4)
         let priceLabel4 = SKLabelNode(fontNamed: "Lemondrop")
         priceLabel4.fontSize = 16
-        priceLabel4.text = "49.99$"
+        priceLabel4.text = diamondLargePrice
         priceLabel4.position = CGPoint(x: 30, y: -260)
         diamondLayer.addChild(priceLabel4)
         priceLabel4.fontColor = UIColor.black

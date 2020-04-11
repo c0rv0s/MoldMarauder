@@ -22,8 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        //Buglife.shared().start(withAPIKey: "hBSVyV8PE1iYAAo8aHKL3Qtt")
-        
+        IAPManager.shared.startObserving()
         return true
     }
 
@@ -50,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        IAPManager.shared.stopObserving()
     }
 
 

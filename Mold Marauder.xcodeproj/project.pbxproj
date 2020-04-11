@@ -32,6 +32,8 @@
 		0FCB1D511F85D059006CE351 /* black_hole_hi.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4E1F85D059006CE351 /* black_hole_hi.wav */; };
 		0FCB1D521F85D059006CE351 /* mold_succ.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0FCB1D4F1F85D059006CE351 /* mold_succ.wav */; };
 		0FCB1D531F85D059006CE351 /* black_hole_bye.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0FCB1D501F85D059006CE351 /* black_hole_bye.wav */; };
+		0FFD37F524415EB700CBE42B /* IAP_ProductIDs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FFD37F424415EB700CBE42B /* IAP_ProductIDs.plist */; };
+		0FFD37F72441602F00CBE42B /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FFD37F62441602F00CBE42B /* IAPManager.swift */; };
 		210F06CE1E94407C006EA0D5 /* achieve.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B21E94407C006EA0D5 /* achieve.wav */; };
 		210F06D01E94407C006EA0D5 /* bad card.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B41E94407C006EA0D5 /* bad card.wav */; };
 		210F06D11E94407C006EA0D5 /* bubble 2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 210F06B51E94407C006EA0D5 /* bubble 2.wav */; };
@@ -115,6 +117,8 @@
 		0FCB1D4E1F85D059006CE351 /* black_hole_hi.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = black_hole_hi.wav; sourceTree = "<group>"; };
 		0FCB1D4F1F85D059006CE351 /* mold_succ.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = mold_succ.wav; sourceTree = "<group>"; };
 		0FCB1D501F85D059006CE351 /* black_hole_bye.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = black_hole_bye.wav; sourceTree = "<group>"; };
+		0FFD37F424415EB700CBE42B /* IAP_ProductIDs.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = IAP_ProductIDs.plist; sourceTree = "<group>"; };
+		0FFD37F62441602F00CBE42B /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		210F06B21E94407C006EA0D5 /* achieve.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = achieve.wav; sourceTree = "<group>"; };
 		210F06B41E94407C006EA0D5 /* bad card.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bad card.wav"; sourceTree = "<group>"; };
 		210F06B51E94407C006EA0D5 /* bubble 2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "bubble 2.wav"; sourceTree = "<group>"; };
@@ -195,6 +199,15 @@
 				0FC7D0AA24122B2B0014A9BB /* Swift-Big-Number-Core.swift */,
 			);
 			name = "Outside Code";
+			sourceTree = "<group>";
+		};
+		0FFD37F324415E6300CBE42B /* IAP */ = {
+			isa = PBXGroup;
+			children = (
+				0FFD37F424415EB700CBE42B /* IAP_ProductIDs.plist */,
+				0FFD37F62441602F00CBE42B /* IAPManager.swift */,
+			);
+			name = IAP;
 			sourceTree = "<group>";
 		};
 		210F06EC1E9440E2006EA0D5 /* music */ = {
@@ -330,6 +343,7 @@
 				21C16F041E44F704003D109A /* Models */,
 				21C16F051E44F711003D109A /* Views */,
 				21CB733D1E412FD500DEAF4F /* GameViewController.swift */,
+				0FFD37F324415E6300CBE42B /* IAP */,
 				21CB733F1E412FD500DEAF4F /* Main.storyboard */,
 				21CB73421E412FD500DEAF4F /* Assets.xcassets */,
 				210F06EC1E9440E2006EA0D5 /* music */,
@@ -448,6 +462,7 @@
 				210F06F81E944496006EA0D5 /* card flip.wav in Resources */,
 				210F06D01E94407C006EA0D5 /* bad card.wav in Resources */,
 				21CB73411E412FD500DEAF4F /* Main.storyboard in Resources */,
+				0FFD37F524415EB700CBE42B /* IAP_ProductIDs.plist in Resources */,
 				0F7FED1D2418C65200C3BABB /* space.wav in Resources */,
 				0F96D462242F32A900F2EC43 /* dream.wav in Resources */,
 				210F06E31E94407C006EA0D5 /* lose.wav in Resources */,
@@ -504,6 +519,7 @@
 				0FC242541F10BC56004A98A9 /* Reinvestments.swift in Sources */,
 				21E339991E5EDB3600083261 /* AchievementsScene.swift in Sources */,
 				0FC7D0A72411D4C60014A9BB /* CometLayer.swift in Sources */,
+				0FFD37F72441602F00CBE42B /* IAPManager.swift in Sources */,
 				21CB733E1E412FD500DEAF4F /* GameViewController.swift in Sources */,
 				21FCFDD81E5CE6C90042D55A /* ItemShop.swift in Sources */,
 				0FCB1D4D1F85CCAE006CE351 /* BlackHole.swift in Sources */,

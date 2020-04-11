@@ -14,7 +14,7 @@ import StoreKit
 import AVFoundation
 import GameKit
 
-class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestDelegate, SKPaymentTransactionObserver {
+class GameViewController: UIViewController, ARSKViewDelegate {
     var scene: GameScene!
     var ARgameScene: ARScene!
     var moldShop: MoldShop!
@@ -55,22 +55,15 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     var cashTimer: Timer? = nil
     var autoTapTimer: Timer? = nil
 
-    //IAP
-    var available = false
-    let TINY_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_99_cent_diamond"
-    let SMALL_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_299_cent_diamond"
-    let MEDIUM_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_999_cent_diamond"
-    let LARGE_PRODUCT_ID = "com.SpaceyDreams.MoldMarauder2.mold_4999_cent_diamond"
-    
-    var productID = ""
-    var productsRequest = SKProductsRequest()
-    var iapProducts = [SKProduct]()
-    var nonConsumablePurchaseMade = UserDefaults.standard.bool(forKey: "nonConsumablePurchaseMade")
     var diamonds = UserDefaults.standard.integer(forKey: "diamonds")
+    
     let backgrounds: Set = ["cave", "crystal forest", "yurt", "apartment", "yacht", "space", "dream", "rift"]
     
     //    iclodu thing
     var iCloudKeyStore: NSUbiquitousKeyValueStore? = NSUbiquitousKeyValueStore()
+    
+    //IAP
+    var products = [SKProduct]()
     
     //    level molds
     //    after 400 just go by every 100 after that
@@ -90,9 +83,6 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //    get purchaseable products
-        fetchAvailableProducts()
-        
         let defaults = UserDefaults.standard
         
         //instantiate player inventory
@@ -213,7 +203,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             cashLabel.font = cashLabel.font.withSize(12)
             break
         case .iPhone8:
-            topMargin.constant += 25
+            topMargin.constant += 15
         case .iPhone8Plus:
             topMargin.constant += 30
         case .iPhoneX:
@@ -230,6 +220,17 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
         
         shiftTimerLabels()
+        
+        // fetch IAP info
+        IAPManager.shared.getProducts { (result) in
+            DispatchQueue.main.async {
+                
+                switch result {
+                    case .success(let products): self.products = products
+                    case .failure(let error): self.showIAPRelatedError(error)
+                }
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1547,6 +1548,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
+            scene.products = self.products
             scene.doDiamondShop()
         }
         if backgrounds.contains(action) {
@@ -3647,6 +3649,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
+            scene.products = self.products
             scene.doDiamondShop()
         }
         if (action == "back") {
@@ -3897,6 +3900,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
+            scene.products = self.products
             scene.doDiamondShop()
         }
         if action == "repel" {
@@ -4123,6 +4127,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
+            scene.products = self.products
             scene.doDiamondShop()
         }
         if action == "windfall" {
@@ -4544,6 +4549,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
+            scene.products = self.products
             scene.doDiamondShop()
         }
     }
@@ -4582,6 +4588,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
             scene.mute = inventory.muteSound
             scene.playSound(select: "exit")
             activateSleepTimer()
+            scene.products = self.products
             scene.doDiamondShop()
             scene.playSound(select: "select")
             aroff = true
@@ -5552,6 +5559,7 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
         if action == "diamond_buy" {
             activateSleepTimer()
+            scene.products = self.products
             scene.doDiamondShop()
             scene.playSound(select: "select")
         }
@@ -5566,54 +5574,30 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         }
         if action == "diamond_tiny" {
             activateSleepTimer()
-            if available {
-                purchaseMyProduct(product: iapProducts[3])
-            }
-            else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
-                    // perhaps use action.title here
-                })
-                present(alert, animated: true)
+            guard let product = products.first(where: { $0.productIdentifier.contains("_99_") }) else { return }
+            if !self.purchase(product: product) {
+                self.showSingleAlert(withMessage: "In-App Purchases are not allowed in this device.")
             }
         }
         if action == "diamond_small" {
             activateSleepTimer()
-            if available {
-                purchaseMyProduct(product: iapProducts[0])
-            }
-            else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
-                    // perhaps use action.title here
-                })
-                present(alert, animated: true)
+            guard let product = products.first(where: { $0.productIdentifier.contains("_299_") }) else { return }
+            if !self.purchase(product: product) {
+                self.showSingleAlert(withMessage: "In-App Purchases are not allowed in this device.")
             }
         }
         if action == "diamond_medium" {
             activateSleepTimer()
-            if available {
-                purchaseMyProduct(product: iapProducts[2])
-            }
-            else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
-                    // perhaps use action.title here
-                })
-                present(alert, animated: true)
+            guard let product = products.first(where: { $0.productIdentifier.contains("_999_") }) else { return }
+            if !self.purchase(product: product) {
+                self.showSingleAlert(withMessage: "In-App Purchases are not allowed in this device.")
             }
         }
         if action == "diamond_large" {
             activateSleepTimer()
-            if available {
-                purchaseMyProduct(product: iapProducts[1])
-            }
-            else {
-                let alert = UIAlertController(title: "Whoops!", message: "In-app purchases aren't available right now.", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
-                    // perhaps use action.title here
-                })
-                present(alert, animated: true)
+            guard let product = products.first(where: { $0.productIdentifier.contains("_4999_") }) else { return }
+            if !self.purchase(product: product) {
+                self.showSingleAlert(withMessage: "In-App Purchases are not allowed in this device.")
             }
         }
         if action == "increment tutorial worm congrats" {
@@ -6586,139 +6570,59 @@ class GameViewController: UIViewController, ARSKViewDelegate, SKProductsRequestD
         
     }
     
-    // MARK: - FETCH AVAILABLE IAP PRODUCTS
-    func fetchAvailableProducts()  {
-        print("fetching products")
-        // Put here your IAP Products ID's
-        let productIdentifiers = NSSet(objects:
-            TINY_PRODUCT_ID,
-            SMALL_PRODUCT_ID,
-            MEDIUM_PRODUCT_ID,
-            LARGE_PRODUCT_ID
-       )
-        
-        productsRequest = SKProductsRequest(productIdentifiers: productIdentifiers as! Set<String>)
-        productsRequest.delegate = self
-        productsRequest.start()
+    //MARK: - IAP
+    func showIAPRelatedError(_ error: Error) {
+        let message = error.localizedDescription
+        showSingleAlert(withMessage: message)
     }
     
-    // MARK: - REQUEST IAP PRODUCTS
-    func productsRequest (_ request:SKProductsRequest, didReceive response:SKProductsResponse) {
-        print("products request")
-        if (response.products.count > 0) {
-            iapProducts = response.products
-            
-            // 1st IAP Product (Consumable) ------------------------------------
-            let firstProduct = response.products[0] as SKProduct
-            
-            // Get its price from iTunes Connect
-            let numberFormatter = NumberFormatter()
-            numberFormatter.formatterBehavior = .behavior10_4
-            numberFormatter.numberStyle = .currency
-            numberFormatter.locale = firstProduct.priceLocale
-            _ = numberFormatter.string(from: firstProduct.price)
-
-            // 2nd IAP Product (Consumable) ------------------------------
-            let secondProd = response.products[1] as SKProduct
-            
-            // Get its price from iTunes Connect
-            numberFormatter.locale = secondProd.priceLocale
-            _ = numberFormatter.string(from: secondProd.price)
-            // 3rd IAP Product (Consumable) ------------------------------
-            
-            let thirdProd = response.products[2] as SKProduct
-            
-            // Get its price from iTunes Connect
-            numberFormatter.locale = thirdProd.priceLocale
-            _ = numberFormatter.string(from: thirdProd.price)
-            // 4th IAP Product (Consumable) ------------------------------
-            
-            let fourthProd = response.products[3] as SKProduct
-            
-            // Get its price from iTunes Connect
-            numberFormatter.locale = fourthProd.priceLocale
-            _ = numberFormatter.string(from: fourthProd.price)
+    func showSingleAlert(withMessage message: String) {
+        let alertController = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
     
-            //set the var
-            available = true
+    func showAlert(for product: SKProduct) {
+        print(product.description)
+        guard let price = IAPManager.shared.getPriceFormatted(for: product) else { return }
+        let alertController = UIAlertController(title: product.localizedTitle,
+                                                message: product.localizedDescription,
+                                                preferredStyle: .alert)
+     
+        alertController.addAction(UIAlertAction(title: "Buy now for \(price)", style: .default, handler: { (_) in
+            if !self.purchase(product: product) {
+                self.showSingleAlert(withMessage: "In-App Purchases are not allowed in this device.")
+            }
+        }))
+     
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func purchase(product: SKProduct) -> Bool {
+        if !IAPManager.shared.canMakePayments() {
+            return false
         }
         else {
-            available = false
+            IAPManager.shared.buy(product: product) { (result) in
+                switch result {
+                    case .success(_): self.updateGameDataWithPurchasedProduct(product)
+                    case .failure(let error): self.showIAPRelatedError(error)
+                }
+            }
         }
+     
+        return true
     }
     
-    // MARK: - MAKE PURCHASE OF A PRODUCT
-    func canMakePurchases() -> Bool {  return SKPaymentQueue.canMakePayments()  }
-    func purchaseMyProduct(product: SKProduct) {
-        if self.canMakePurchases() {
-            let payment = SKPayment(product: product)
-            SKPaymentQueue.default().add(self)
-            SKPaymentQueue.default().add(payment)
-            
-            print("PRODUCT TO PURCHASE: \(product.productIdentifier)")
-            productID = product.productIdentifier
-    
-            // IAP Purchases dsabled on the Device
-        } else {
-            
-            let alert = UIAlertController(title: "Uh-Oh!", message: "Purchases are disabled in your device!", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
-                // perhaps use action.title here
-            })
-            present(alert, animated: true)
+    func updateGameDataWithPurchasedProduct(_ product: SKProduct) {
+        if let newDiamonds = Int(product.localizedDescription.components(separatedBy: " ").first ?? "0") {
+            incrementDiamonds(newDiamonds: newDiamonds)
+            scene.playSound(select: "gem case")
         }
-    }
-    
-    // MARK:- IAP PAYMENT QUEUE
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        for transaction:AnyObject in transactions {
-            if let trans = transaction as? SKPaymentTransaction {
-                switch trans.transactionState {
-                    
-                case .purchased:
-                    SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
-                    
-                    if productID == TINY_PRODUCT_ID {
-                        scene.playSound(select: "gem case")
-                        incrementDiamonds(newDiamonds: 11)
-                        save()
-                    }
-                    else if productID == SMALL_PRODUCT_ID {
-                        scene.playSound(select: "gem case")
-                        incrementDiamonds(newDiamonds: 55)
-                        save()
-                    }
-                    else if productID == MEDIUM_PRODUCT_ID {
-                        scene.playSound(select: "gem case")
-                        incrementDiamonds(newDiamonds: 200)
-                        save()
-                    }
-                    else if productID == LARGE_PRODUCT_ID {
-                        scene.playSound(select: "chest")
-                        incrementDiamonds(newDiamonds: 1200)
-                        save()
-                    }
-                    break
-                    
-                case .failed:
-                    SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
-                    let alert = UIAlertController(title: "Uh-Oh!", message: "Transaction failed", preferredStyle: UIAlertController.Style.alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .default) { action in
-                        // perhaps use action.title here
-                    })
-                    present(alert, animated: true)
-                    break
-                case .restored:
-                    SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
-                    break
-                    
-                default: break
-                }}}
     }
     
     //MARK: - BACKGROUND MUSIC
-    
-    
     func playBackgroundMusic(filename: String) {
         let url = Bundle.main.url(forResource: filename, withExtension: nil)
         guard let newURL = url else {

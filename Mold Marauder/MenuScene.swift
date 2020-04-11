@@ -83,6 +83,8 @@ class MenuScene: SKScene {
             exitButton.position = CGPoint(x:self.frame.midX+140, y:self.frame.midY+190)
             exitButton.setScale(0.75)
             break
+        case .iPhone8:
+            exitButton.position.x -= 30
         default:
             break
         }

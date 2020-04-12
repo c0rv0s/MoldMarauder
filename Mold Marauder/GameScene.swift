@@ -395,9 +395,6 @@ class GameScene: SKScene {
         guard let touch = touches.first else { return }
         tapLoc = touch.location(in: gameLayer)
 
-        if let handler = touchHandler {
-            handler("tap")
-        }
         if tutorial == 1 {
             if let handler = touchHandler {
                 handler("tutorial next")
@@ -434,7 +431,39 @@ class GameScene: SKScene {
                     }
                 }
             }
-            if claimQuestButton != nil {
+            else if node == buyButton {
+                if eventTimer != nil {
+                    eventTimer.invalidate()
+                }
+                eventTimer = nil
+                if let handler = touchHandler {
+                    handler("game_scene_buy")
+                }
+            }
+            else if node == inventoryButton {
+                if eventTimer != nil {
+                    eventTimer.invalidate()
+                }
+                eventTimer = nil
+                if let handler = touchHandler {
+                    handler("game_scene_inventory")
+                }
+            }
+            else if node == cameraButton {
+                if let handler = touchHandler {
+                    handler("game_scene_camera")
+                }
+            }
+            else if node == diamondBuy {
+                if eventTimer != nil {
+                    eventTimer.invalidate()
+                }
+                eventTimer = nil
+                if let handler = touchHandler {
+                    handler("diamond_buy")
+                }
+            }
+            else if claimQuestButton != nil {
                 if node == claimQuestButton {
                     
                     if eventTimer != nil {
@@ -447,7 +476,7 @@ class GameScene: SKScene {
                 }
             }
 // hadnel the cards
-            if cardsActive {
+            else if cardsActive {
                 if cardSelected == false{
                     if card1 != nil {
                         if node == card1 {
@@ -501,6 +530,10 @@ class GameScene: SKScene {
                 }
             }
             else {
+                // tap for point and coins
+                if let handler = touchHandler {
+                    handler("tap")
+                }
                 //Boop the worms
                 let wormBoop = touch.location(in: wormLayer)
                 let boopedWorm = wormLayer.atPoint(wormBoop)
@@ -600,42 +633,6 @@ class GameScene: SKScene {
                         }
                     }
                 }
-                
-                
-// more buttons
-                if node == buyButton {
-                    if eventTimer != nil {
-                        eventTimer.invalidate()
-                    }
-                    eventTimer = nil
-                    if let handler = touchHandler {
-                        handler("game_scene_buy")
-                    }
-                }
-                if node == inventoryButton {
-                    if eventTimer != nil {
-                        eventTimer.invalidate()
-                    }
-                    eventTimer = nil
-                    if let handler = touchHandler {
-                        handler("game_scene_inventory")
-                    }
-                }
-                if node == cameraButton {
-                    if let handler = touchHandler {
-                        handler("game_scene_camera")
-                    }
-                }
-                if node == diamondBuy {
-                    if eventTimer != nil {
-                        eventTimer.invalidate()
-                    }
-                    eventTimer = nil
-                    if let handler = touchHandler {
-                        handler("diamond_buy")
-                    }
-                }
-                
 // diamonds purchase in the shop
                 if diamondShop {
                     if exitDiamond != nil {
@@ -2758,10 +2755,7 @@ class GameScene: SKScene {
     }
     
     func animateCoins(point: CGPoint) {
-        let ranX = Int(arc4random_uniform(40))
-        let centerPosition = CGPoint(
-                   x: (point.x),
-                   y: (point.y + 25))
+        let ran = CGFloat(arc4random_uniform(40)) - 20
         var coinFrames = [SKTexture]()
         coinFrames.append(SKTexture(image: UIImage(named: "coin")!))
         coinFrames.append(SKTexture(image: UIImage(named: "coin 2")!))
@@ -2769,7 +2763,7 @@ class GameScene: SKScene {
         //laser animation
         let finalFrame = coinFrames[2]
         let coinPic = SKSpriteNode(texture:finalFrame)
-        coinPic.position = CGPoint(x: centerPosition.x + CGFloat(ranX), y: centerPosition.y + CGFloat(ranX))
+        coinPic.position = CGPoint(x: point.x + ran, y: point.y + ran)
         coinPic.zPosition = 200
         gameLayer.addChild(coinPic)
         coinPic.run(SKAction.repeatForever(SKAction.animate(with: coinFrames,

@@ -4612,7 +4612,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             let action = SKAction.sequence([appear])
             ARgameScene.menuPopUp.run(action)
             ARgameScene.addChild(ARgameScene.menuPopUp)
-            autoTapTimer?.invalidate()
+            stopAutoTap()
             
             let when = DispatchTime.now() + 0.2
             DispatchQueue.main.asyncAfter(deadline: when) {
@@ -4633,7 +4633,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             let action = SKAction.sequence([appear])
             ARgameScene.menuPopUp.run(action)
             ARgameScene.addChild(ARgameScene.menuPopUp)
-            autoTapTimer?.invalidate()
+            stopAutoTap()
             
             ARgameScene.isPaused = true
             let when = DispatchTime.now() + 0.2
@@ -4926,7 +4926,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             }
         }
         if action == "tap ended" {
-            autoTapTimer?.invalidate()
+            stopAutoTap()
             if scene.isCircle {
                 print("CIRCLE")
                 findCircledView(scene.fitResult.center)
@@ -4948,9 +4948,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             cashTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(GameViewController.addCash), userInfo: nil, repeats: true)
         }
         if action == "claim quest" {
-            if autoTapTimer != nil {
-                autoTapTimer?.invalidate()
-            }
+            stopAutoTap()
             
             //popup
             let Texture = SKTexture(image: UIImage(named: "cyber_menu_glow")!)
@@ -4974,7 +4972,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         if action == "touchOFF" {
             self.view.isUserInteractionEnabled = false
             _ = Timer.scheduledTimer(timeInterval: 1.5, target: self, selector: #selector(enableTouch), userInfo: nil, repeats: true)
-            autoTapTimer?.invalidate()
+            stopAutoTap()
         }
         if action == "kiss baby" {
             let moldData = Mold(moldType: MoldType.random())
@@ -5062,7 +5060,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         }
         if scene.diamondShop == false && action == "tap" {
             tapHelper()
-            if inventory.autoTap {
+            if inventory.autoTap && autoTapTimer == nil {
                 let intervals = [0.06, 0.03, 0.02, 0.013, 0.01]
                 autoTapTimer = Timer.scheduledTimer(timeInterval: intervals[inventory.autoTapLevel-1], target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
             }
@@ -5511,7 +5509,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 let action = SKAction.sequence([appear])
                 scene.menuPopUp.run(action)
                 scene.addChild(scene.menuPopUp)
-                autoTapTimer?.invalidate()
+                stopAutoTap()
                 let when = DispatchTime.now() + 0.2
                 DispatchQueue.main.asyncAfter(deadline: when) {
                     self.showMenu()
@@ -5544,7 +5542,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             let action = SKAction.sequence([appear])
             scene.menuPopUp.run(action)
             scene.addChild(scene.menuPopUp)
-            autoTapTimer?.invalidate()
+            stopAutoTap()
             let when = DispatchTime.now() + 0.2
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.showInventory()
@@ -5568,7 +5566,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             scene.xTapLabel.removeFromParent()
             cashLabel.isHidden = true
             cashHeader.isHidden = true
-            autoTapTimer?.invalidate()
+            stopAutoTap()
             let when = DispatchTime.now() + 0.1
             DispatchQueue.main.asyncAfter(deadline: when) {
                 self.captureScreen()
@@ -5898,7 +5896,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     }
     
     func showMenu() {
-        
+        stopAutoTap()
         if aroff {
             menu = MenuScene(size: skView.bounds.size)
         }
@@ -5943,6 +5941,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     }
     
     func showInventory() {
+        stopAutoTap()
         if aroff {
             inventoryScene = MoldInventory(size: skView.bounds.size)
             inventoryScene.mute = inventory.muteSound
@@ -6336,6 +6335,14 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             }
         }
         updateLabels()
+    }
+    
+    func stopAutoTap()
+    {
+      if autoTapTimer != nil {
+        autoTapTimer!.invalidate()
+        autoTapTimer = nil
+      }
     }
     
     // MARK: - AR STUFF

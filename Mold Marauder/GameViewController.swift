@@ -5670,7 +5670,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         }
         if inventory.xTapCount > 0 {
             if inventory.reinvestmentCount >= 3 {
-                div = div * BInt(inventory.xTapAmount)
+                div *= BInt(inventory.xTapAmount)
                 incrementCash(pointsToAdd: div / 2)
             }
             else{
@@ -5692,7 +5692,12 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             scene.animateCoins(point: scene.tapLoc)
         }
         if inventory.currentQuest == "tap" {
-            inventory.questAmount += 1
+            if inventory.autoTap {
+                inventory.questAmount += inventory.autoTapLevel
+            }
+            else {
+                inventory.questAmount += 1
+            }
             if inventory.questAmount == inventory.questGoal {
                 questAchieved()
             }

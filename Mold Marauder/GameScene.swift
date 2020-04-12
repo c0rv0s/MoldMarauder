@@ -1056,6 +1056,8 @@ class GameScene: SKScene {
             for child in diamondLayer.children {
                 child.setScale(0.9)
             }
+            exitDiamond.position.y -= 20
+            exitDiamond.position.x -= 5
             diamondTiny.position.y -= 15
             diamondLabel.position.y -= 15
             priceLabel.position.y -= 15

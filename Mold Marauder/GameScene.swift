@@ -90,6 +90,9 @@ class GameScene: SKScene {
     //sleep
     var sleepButton: SKNode!
     
+    //taps per second label
+    var tapsPerSecondLabel: SKLabelNode!
+    
     //spritz and xtap
     var spritzLabel: SKLabelNode!
     var xTapLabel: SKLabelNode!
@@ -313,39 +316,47 @@ class GameScene: SKScene {
         self.addChild(inventoryButton)
         
         wormRepelLabel = SKLabelNode(fontNamed: "Lemondrop")
-        wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+250)
+        wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+220)
         self.addChild(wormRepelLabel)
         
         spritzLabel = SKLabelNode(fontNamed: "Lemondrop")
-        spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+250)
+        spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+220)
         spritzLabel.fontColor = UIColor.yellow
         self.addChild(spritzLabel)
         
         xTapLabel = SKLabelNode(fontNamed: "Lemondrop")
-        xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+250)
+        xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+220)
         xTapLabel.fontColor = UIColor.green
         self.addChild(xTapLabel)
+        
+        tapsPerSecondLabel = SKLabelNode(fontNamed: "Lemondrop")
+        tapsPerSecondLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+260)
+        tapsPerSecondLabel.fontColor = UIColor.white
+        tapsPerSecondLabel.fontSize = 16
+        self.addChild(tapsPerSecondLabel)
         
         switch UIDevice().screenType {
         case .iPhone4:
             //iPhone 4
             cameraButton.position = CGPoint(x:self.frame.maxX - 40, y:self.frame.minY + 140);
             inventoryButton.position = CGPoint(x:self.frame.maxX - 40, y:self.frame.minY + 80);
-            wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+130)
-            spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+130)
-            xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+130)
+            wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+100)
+            spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+100)
+            xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+100)
             wormRepelLabel.setScale(0.75)
             spritzLabel.setScale(0.75)
             xTapLabel.setScale(0.75)
+            tapsPerSecondLabel.setScale(0.75)
             break
         case .iPhone5:
             //iPhone 5
-            wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+170)
-            spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+170)
-            xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+170)
+            wormRepelLabel.position = CGPoint(x:self.frame.midX, y:self.frame.midY+140)
+            spritzLabel.position = CGPoint(x:self.frame.midX-65, y:self.frame.midY+140)
+            xTapLabel.position = CGPoint(x:self.frame.midX+65, y:self.frame.midY+140)
             wormRepelLabel.setScale(0.75)
             spritzLabel.setScale(0.75)
             xTapLabel.setScale(0.75)
+            tapsPerSecondLabel.setScale(0.75)
             break
         case .iPhone8:
             cameraButton.position.y += 80
@@ -361,6 +372,7 @@ class GameScene: SKScene {
             wormRepelLabel.position.y -= 20
             spritzLabel.position.y -= 20
             xTapLabel.position.y -= 20
+            tapsPerSecondLabel.position.y -= 20
             break
         case .iPhone8Plus:
             cameraButton.position.y += 80
@@ -368,6 +380,7 @@ class GameScene: SKScene {
             wormRepelLabel.position.y -= 20
             spritzLabel.position.y -= 20
             xTapLabel.position.y -= 20
+            tapsPerSecondLabel.position.y -= 20
             break
         default:
             break
@@ -2772,7 +2785,7 @@ class GameScene: SKScene {
                                                             timePerFrame: 0.02,
                                                             resize: false,
                                                             restore: true)))
-        coinPic.run(SKAction.sequence([SKAction.move(to: CGPoint(x: frame.midX,y: header.position.y - 50), duration:0.9),SKAction.removeFromParent()]))
+        coinPic.run(SKAction.sequence([SKAction.move(to: CGPoint(x: frame.midX,y: header.position.y - 80), duration:0.9),SKAction.removeFromParent()]))
         coinPic.run(SKAction.fadeOut(withDuration: 0.9))
     }
     

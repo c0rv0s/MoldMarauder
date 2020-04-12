@@ -69,6 +69,8 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     //    after 400 just go by every 100 after that
     let moldLevCounts = [10,20,40,65,90,125,165,210,265,320,370,425]
     
+    var tapsPerSecond = 0
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -5061,8 +5063,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         if scene.diamondShop == false && action == "tap" {
             tapHelper()
             if inventory.autoTap && autoTapTimer == nil {
-                let intervals = [0.06, 0.03, 0.02, 0.013, 0.01]
-                autoTapTimer = Timer.scheduledTimer(timeInterval: intervals[inventory.autoTapLevel-1], target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
+                autoTapTimer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(tapHelper), userInfo: nil, repeats: true)
             }
             if inventory.tutorialProgress == 16 {
                 scene.tutorialLayer.removeAllChildren()
@@ -5629,25 +5630,34 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     @objc func tapHelper() {
         activateSleepTimer()
         scene.tapPoint = inventory.scorePerTap
-        
+
+        var div = inventory.scorePerTap
+        if inventory.autoTap {
+            //0.05 seconds
+            // 20, 40, 60, 80, 100 per/seconds
+            tapsPerSecond += inventory.autoTapLevel
+            div *= inventory.autoTapLevel
+        }
+        else {
+            tapsPerSecond += 1
+        }
         if inventory.xTapCount > 0 {
             if inventory.reinvestmentCount >= 3 {
-                let div = (inventory.scorePerTap * BInt(inventory.xTapAmount))
+                div = div * BInt(inventory.xTapAmount)
                 incrementCash(pointsToAdd: div / 2)
             }
             else{
-                incrementCash(pointsToAdd: (inventory.scorePerTap * BInt(inventory.xTapAmount)))
+                incrementCash(pointsToAdd: div * BInt(inventory.xTapAmount))
             }
             
         }
         else {
             scene.xTap = false
             if inventory.reinvestmentCount >= 3 {
-                let div = inventory.scorePerTap
                 incrementCash(pointsToAdd: div / 2)
             }
             else{
-                incrementCash(pointsToAdd: inventory.scorePerTap)
+                incrementCash(pointsToAdd: div)
             }
         }
         
@@ -6027,6 +6037,8 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     
     //per second function
     @objc func addCash() {
+        scene.tapsPerSecondLabel.text = String(tapsPerSecond) + " taps/sec"
+        tapsPerSecond = 0
         let metaMult = 1 + inventory.moldCountDicc["Metaphase Mold"]!
         //hotpatch: delete extra worms
         if scene.wormLayer.children.count > 0 && scene.wormHP.count == 0 {  

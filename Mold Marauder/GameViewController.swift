@@ -223,16 +223,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         
         shiftTimerLabels()
         
-        // fetch IAP info
-        IAPManager.shared.getProducts { (result) in
-            DispatchQueue.main.async {
-                
-                switch result {
-                    case .success(let products): self.products = products
-                    case .failure(let error): print(error)
-                }
-            }
-        }
+        fetchIAP(sendMessage: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1551,8 +1542,14 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
-            scene.products = self.products
-            scene.doDiamondShop()
+            if products.count > 0 {
+                activateSleepTimer()
+                scene.products = self.products
+                scene.doDiamondShop()
+            }
+            else {
+                fetchIAP()
+            }
         }
         if backgrounds.contains(action) {
             inventory.background = action
@@ -3652,8 +3649,14 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
-            scene.products = self.products
-            scene.doDiamondShop()
+            if products.count > 0 {
+                activateSleepTimer()
+                scene.products = self.products
+                scene.doDiamondShop()
+            }
+            else {
+                fetchIAP()
+            }
         }
         if (action == "back") {
             breedScene.cometLayer.removeAllChildren()
@@ -3903,8 +3906,14 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
-            scene.products = self.products
-            scene.doDiamondShop()
+            if products.count > 0 {
+                activateSleepTimer()
+                scene.products = self.products
+                scene.doDiamondShop()
+            }
+            else {
+                fetchIAP()
+            }
         }
         if action == "repel" {
             if inventory.level < 3 {
@@ -4130,8 +4139,14 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
-            scene.products = self.products
-            scene.doDiamondShop()
+            if products.count > 0 {
+                activateSleepTimer()
+                scene.products = self.products
+                scene.doDiamondShop()
+            }
+            else {
+                fetchIAP()
+            }
         }
         if action == "windfall" {
             if inventory.diamonds >= 25 {
@@ -4552,8 +4567,14 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.backgroundName = inventory.background
                 scene.setBackground()
             }
-            scene.products = self.products
-            scene.doDiamondShop()
+            if products.count > 0 {
+                activateSleepTimer()
+                scene.products = self.products
+                scene.doDiamondShop()
+            }
+            else {
+                fetchIAP()
+            }
         }
     }
     
@@ -4591,8 +4612,14 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             scene.mute = inventory.muteSound
             scene.playSound(select: "exit")
             activateSleepTimer()
-            scene.products = self.products
-            scene.doDiamondShop()
+            if products.count > 0 {
+                activateSleepTimer()
+                scene.products = self.products
+                scene.doDiamondShop()
+            }
+            else {
+                fetchIAP()
+            }
             scene.playSound(select: "select")
             aroff = true
         }
@@ -5581,7 +5608,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 scene.playSound(select: "select")
             }
             else {
-                showSingleAlert(withMessage: "Diamond shop is not available at this time.")
+                fetchIAP()
             }
         }
         if action == "diamond_exit" {
@@ -6591,6 +6618,24 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     }
     
     //MARK: - IAP
+    func fetchIAP(sendMessage: Bool=true) {
+        IAPManager.shared.getProducts { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                    case .success(let products):
+                        self.products = products
+                        self.scene.products = products
+                        self.scene.doDiamondShop()
+                    case .failure(let error):
+                        print(error)
+                        if sendMessage {
+                            self.showSingleAlert(withMessage: "Diamond shop is not available at this time.")
+                        }
+                }
+            }
+        }
+    }
+    
     func showIAPRelatedError(_ error: Error) {
         let message = error.localizedDescription
         showSingleAlert(withMessage: message)

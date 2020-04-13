@@ -60,7 +60,7 @@ class Dream: SKNode {
     func addStars(starsHigher: Bool) {
         for _ in 0..<15 {
             let star = SKSpriteNode(texture: SKTexture(image: UIImage(named: "star")!))
-            star.setScale(CGFloat(Float.random(in: 0.3 ..< 0.8)))
+            star.setScale(CGFloat(Float.random(in: 0.3 ... 0.8)))
             var yConstant = -140
             if starsHigher {
                 yConstant = 100
@@ -68,6 +68,13 @@ class Dream: SKNode {
             let y = randomInRange(lo: Int(midY) + yConstant, hi: Int(maxY) - 25)
             let x = randomInRange(lo: Int(minX) - 20, hi: Int(maxX) - 20)
             star.position = CGPoint(x: x, y: y)
+            
+            let duration = Double.random(in: 0.3 ... 1.2)
+            let fadeOut = SKAction.fadeAlpha(to: CGFloat.random(in: 0.2 ... 0.8), duration: duration)
+            let fadeIn = SKAction.fadeAlpha(to: 1.0, duration: duration)
+
+            star.run(SKAction.repeatForever(SKAction.sequence([fadeOut, fadeIn])))
+            
             starLayer.addChild(star)
         }
     }

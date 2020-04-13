@@ -4282,18 +4282,12 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                 inventory.molds.append(mold)
                 inventory.scorePerSecond += mold.PPS
                 
-                var added = false
-                unlockLoop: for pMold in inventory.unlockedMolds {
-                    if pMold.moldType == mold.moldType {
-                        added = true
-                        break unlockLoop
-                    }
-                }
-                if added == false {
+                if !inventory.unlockedMolds.contains(where: {$0.name == mold.name}) {
                     inventory.unlockedMolds.append(mold)
                 }
                 
                 inventory.molds.append(mold)
+                inventory.moldCountDicc[mold.name]! += 1
                 if inventory.displayMolds.count < 25 {
                     inventory.displayMolds.append(mold)
                 }
@@ -6630,7 +6624,9 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                     case .success(let products):
                         self.products = products
                         self.scene.products = products
-                        self.scene.doDiamondShop()
+                        if sendMessage {
+                            self.scene.doDiamondShop()
+                        }
                     case .failure(let error):
                         print(error)
                         if sendMessage {

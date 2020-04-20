@@ -131,9 +131,9 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         
         
         // Configure the view.
-        ARgameScene = ARScene(size: arskView.bounds.size)
-        // Tell the session to automatically detect horizontal planes
-        configuration.planeDetection = .horizontal
+//        ARgameScene = ARScene(size: arskView.bounds.size)
+//        // Tell the session to automatically detect horizontal planes
+//        configuration.planeDetection = .horizontal
         
         // Create and configure the scene.
         scene = GameScene(size: skView.bounds.size)

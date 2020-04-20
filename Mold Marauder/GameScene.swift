@@ -436,7 +436,7 @@ class GameScene: SKScene {
             let location = touch.location(in: self)
             let node = atPoint(location)
             
-// do te buttons
+            // do te buttons
             if sleepButton != nil {
                 if node == sleepButton {
                     if let handler = touchHandler {
@@ -488,7 +488,7 @@ class GameScene: SKScene {
                     }
                 }
             }
-// hadnel the cards
+            // hadnel the cards
             else if cardsActive {
                 if cardSelected == false{
                     if card1 != nil {
@@ -556,7 +556,7 @@ class GameScene: SKScene {
                     let rotation = Int(arc4random_uniform(15)) * 24
                     let finalLaserFrame = laserFrames[3]
                     let laserPic = SKSpriteNode(texture:finalLaserFrame)
-                    laserPic.position = boopedWorm.position
+                    laserPic.position = wormBoop
                     let rotateR = SKAction.rotate(byAngle: CGFloat(rotation), duration: 0.01)
                     let actionST = SKAction.sequence([rotateR])
                     laserPic.run(actionST)
@@ -690,7 +690,7 @@ class GameScene: SKScene {
                 }
             }
             // if its a mold animate the heart
-            if node.name != nil {
+            if node.name?.contains("Mold") ?? false {
                 if node.name!.count > 5 {
                     //animate heart
                     var Texture = SKTexture(image: UIImage(named: "heart_emoji")!)
@@ -2608,6 +2608,7 @@ class GameScene: SKScene {
         
         let finalFrame = wormFrames[4]
         let wormPic = SKSpriteNode(texture:finalFrame)
+        wormPic.name = "worm\(wormHP.count)"
         let timterval = Double.random(in: 1.8 ..< 3.6)
         wormChompTimers.append(Timer.scheduledTimer(timeInterval: TimeInterval(timterval), target: self, selector: #selector(GameScene.eatMold), userInfo: nil, repeats: true))
         wormHP.append(wormDifficulty)

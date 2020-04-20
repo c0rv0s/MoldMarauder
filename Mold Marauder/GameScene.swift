@@ -401,6 +401,7 @@ class GameScene: SKScene {
         if let handler = touchHandler {
             handler("tap ended")
         }
+        selectedNode = SKNode()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -435,7 +436,6 @@ class GameScene: SKScene {
             let location = touch.location(in: self)
             let node = atPoint(location)
             
-
 // do te buttons
             if sleepButton != nil {
                 if node == sleepButton {
@@ -3017,10 +3017,8 @@ class GameScene: SKScene {
     //MARK: - MOVE SPRITES
     //these next four methods are for moving molds around, nothing more
     func selectNodeForTouch(touchLocation: CGPoint) {
-        // 1
-        let touchedNode = self.atPoint(touchLocation)
+        let touchedNode = moldLayer.atPoint(touchLocation)
         if touchedNode is SKSpriteNode {
-            // 2
             if !selectedNode.isEqual(touchedNode) {
                 selectedNode = touchedNode as! SKSpriteNode
             }

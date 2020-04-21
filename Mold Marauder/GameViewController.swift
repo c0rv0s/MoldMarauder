@@ -5242,7 +5242,6 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                         let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
                         let moldData = inventory.molds[indexToEat]
                         if moldData.moldType != MoldType.star && moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.god {
-                            scene.playSound(select: "crunch")
                             inventory.molds.remove(at: indexToEat)
                             inventory.moldCountDicc[moldData.name]! -= 1
                             
@@ -5276,12 +5275,12 @@ class GameViewController: UIViewController, ARSKViewDelegate {
                     break
                 case 12:
                     if inventory.molds.count > 3 {
+                        scene.playSound(select: "bad card")
                         var runCount = 0
                         while (runCount < 3) {
                             let indexToEat = randomInRange(lo: 0, hi: inventory.molds.count - 1)
                             let moldData = inventory.molds[indexToEat]
                             if moldData.moldType != MoldType.star && moldData.moldType != MoldType.metaphase && moldData.moldType != MoldType.god {
-                                scene.playSound(select: "crunch")
                                 inventory.molds.remove(at: indexToEat)
                                 inventory.moldCountDicc[moldData.name]! -= 1
                                 

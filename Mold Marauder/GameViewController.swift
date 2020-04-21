@@ -4467,9 +4467,9 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             questAchieved()
         }
         if action == "skip quest" {
-            if inventory.diamonds >= 3 {
+            if inventory.diamonds >= 5 {
                 questScene.playSound(select: "select")
-                incrementDiamonds(newDiamonds: -3)
+                incrementDiamonds(newDiamonds: -5)
                 generateQuest()
                 questScene.currentQuest = inventory.currentQuest
                 questScene.questGoal = inventory.questGoal

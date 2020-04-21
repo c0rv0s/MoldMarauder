@@ -1721,7 +1721,7 @@ class GameScene: SKScene {
             var frames = [SKTexture]()
             
             var i = 1
-            let numFrames = 11
+            let numFrames = 13
             while(i<numFrames) {
                 frames.append(SKTexture(image: UIImage(named: "Rainbow Mold F\(i)")!))
                 i += 1

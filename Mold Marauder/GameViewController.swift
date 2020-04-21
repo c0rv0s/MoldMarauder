@@ -161,7 +161,11 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         //instaniate the combos
         combos = Combos()
         
+        //diamond label
+        scene.diamondCLabel.text = String(inventory.diamonds)
         
+        //  reinvest count
+        scene.reinvestCount = inventory.reinvestmentCount
         //load the saved data if there is any
         if inventory.displayMolds.count > 0 {
             scene.molds = inventory.displayMolds
@@ -179,10 +183,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             scene.setBackground()
         }
         playBackgroundMusic(filename: "\(inventory.background).wav")
-        scene.diamondCLabel.text = String(inventory.diamonds)
         
-        //  reinvest count
-        scene.reinvestCount = inventory.reinvestmentCount
         //  add save game observer
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.myObserverMethod(notification:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         //    check quests

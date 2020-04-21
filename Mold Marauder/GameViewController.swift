@@ -536,7 +536,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     
     // MARK: - QUEST
     func generateQuest() {
-        let questName = Int(arc4random_uniform(6))
+        let questName = Int(arc4random_uniform(8))
         switch questName {
         case 0:
             //make a number of taps
@@ -5586,6 +5586,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             scene.wormRepelLabel.removeFromParent()
             scene.spritzLabel.removeFromParent()
             scene.xTapLabel.removeFromParent()
+            scene.tapsPerSecondLabel.removeFromParent()
             cashLabel.isHidden = true
             cashHeader.isHidden = true
             stopAutoTap()

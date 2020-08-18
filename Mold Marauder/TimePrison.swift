@@ -45,6 +45,9 @@ class TimePrison: SKScene {
         super.init(size: size)
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         background = SKSpriteNode(imageNamed: "time prison")
+        if UIDevice().screenType == .iPhone8 {
+            background = SKSpriteNode(imageNamed: "time prison small")
+        }
         background.size = size
         addChild(background)
         addChild(gameLayer)
@@ -147,17 +150,17 @@ class TimePrison: SKScene {
         
         switch UIDevice().screenType {
         case .iPhone8:
-            metaOne.position = CGPoint(x:metaOne.position.x+13, y:metaOne.position.y-48);
-            metaTwo.position = CGPoint(x:metaTwo.position.x+6, y:metaTwo.position.y-52);
-            metaThree.position = CGPoint(x:metaThree.position.x-6, y:metaThree.position.y-52);
-            metaFour.position = CGPoint(x:metaFour.position.x-13, y:metaFour.position.y-48);
-            metaFive.position = CGPoint(x:metaFive.position.x+13, y:metaFive.position.y+46);
-            metaSix.position = CGPoint(x:metaSix.position.x+6, y:metaSix.position.y+50);
-            metaSeven.position = CGPoint(x:metaSeven.position.x-6, y:metaSeven.position.y+50);
-            metaEight.position = CGPoint(x:metaEight.position.x-13, y:metaEight.position.y+46);
-            backButton.position.y -= 50
-            crystalLabel.position.y -= 50
-            crystalHeader.position.y -= 50
+            metaOne.position = CGPoint(x:metaOne.position.x+13, y:metaOne.position.y-12);
+            metaTwo.position = CGPoint(x:metaTwo.position.x+6, y:metaTwo.position.y-12);
+            metaThree.position = CGPoint(x:metaThree.position.x-6, y:metaThree.position.y-12);
+            metaFour.position = CGPoint(x:metaFour.position.x-13, y:metaFour.position.y-12);
+            metaFive.position = CGPoint(x:metaFive.position.x+13, y:metaFive.position.y+12);
+            metaSix.position = CGPoint(x:metaSix.position.x+6, y:metaSix.position.y+12);
+            metaSeven.position = CGPoint(x:metaSeven.position.x-6, y:metaSeven.position.y+12);
+            metaEight.position = CGPoint(x:metaEight.position.x-13, y:metaEight.position.y+12);
+            backButton.position.y -= 30
+            crystalLabel.position.y -= 30
+            crystalHeader.position.y -= 30
             break
         case .iPhone8Plus:
             metaOne.position = CGPoint(x:metaOne.position.x, y:metaOne.position.y-30);

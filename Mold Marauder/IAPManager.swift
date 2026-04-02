@@ -15,6 +15,7 @@ class IAPManager: NSObject {
     var onReceiveProductsHandler: ((Result<[SKProduct], IAPManagerError>) -> Void)?
     var onBuyProductHandler: ((Result<Bool, Error>) -> Void)?
     var totalRestoredPurchases = 0
+    private var productsRequest: SKProductsRequest?
     
     enum IAPManagerError: Error {
         case noProductIDsFound
@@ -72,7 +73,9 @@ class IAPManager: NSObject {
         }
      
         // Initialize a product request.
+        productsRequest?.cancel()
         let request = SKProductsRequest(productIdentifiers: Set(productIDs))
+        productsRequest = request
      
         // Set self as the its delegate.
         request.delegate = self
@@ -152,6 +155,7 @@ extension IAPManager: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         // Get the available products contained in the response.
         let products = response.products
+        productsRequest = nil
 
         // Check if there are any products available.
         if products.count > 0 {
@@ -165,6 +169,7 @@ extension IAPManager: SKProductsRequestDelegate {
     
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
+        productsRequest = nil
         onReceiveProductsHandler?(.failure(.productRequestFailed))
     }
     
@@ -172,6 +177,7 @@ extension IAPManager: SKProductsRequestDelegate {
     func requestDidFinish(_ request: SKRequest) {
         // Implement this method OPTIONALLY and add any custom logic
         // you want to apply when a product request is finished.
+        productsRequest = nil
     }
 }
 

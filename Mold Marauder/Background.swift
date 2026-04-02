@@ -14,7 +14,13 @@ class Background: SKNode {
     var background = SKSpriteNode(texture: SKTexture(image: UIImage(named: "cyber_menu_glow")!))
     
     func start(size: CGSize) {
-        self.background.size = size
+        let verticalOffset: CGFloat = -20
+        let overscan: CGFloat = 40
+        let scale = (size.height + overscan) / size.height
+
+        background.size = CGSize(width: size.width * scale, height: size.height * scale)
+        background.position = CGPoint(x: 0, y: verticalOffset)
+        backframes.removeAll(keepingCapacity: true)
         
         backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow")!))
         backframes.append(SKTexture(image: UIImage(named: "cyber_menu_glow F2")!))

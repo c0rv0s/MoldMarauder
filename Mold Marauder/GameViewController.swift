@@ -42,7 +42,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     // Create a session configuration
     let configuration = ARWorldTrackingConfiguration()
     var backgroundMusicPlayer = AVAudioPlayer()
-    var APP_ID = "com.Spacey-Dreams.Mold-Marauder-2"
+    let appStoreID = "1505605329"
     
     var combos: Combos!
     
@@ -90,7 +90,11 @@ class GameViewController: UIViewController, ARSKViewDelegate {
         //instantiate player inventory
         if let savedInventory = defaults.object(forKey: "inventory") as? Data {
             do {
-                if let loadedInventory = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedInventory) as? Inventory {
+                let unarchiver = try NSKeyedUnarchiver(forReadingFrom: savedInventory)
+                unarchiver.requiresSecureCoding = false
+                defer { unarchiver.finishDecoding() }
+
+                if let loadedInventory = unarchiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as? Inventory {
                     inventory = loadedInventory
                 }
             } catch {
@@ -4382,7 +4386,7 @@ class GameViewController: UIViewController, ARSKViewDelegate {
             menu.playSound(select: "exit")
         }
         if action == "review" {
-            rateApp(appId: APP_ID) { success in
+            rateApp(appStoreID: appStoreID) { success in
                 print("RateApp \(success)")
             }
         }
@@ -6683,10 +6687,13 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     }
     
     func updateGameDataWithPurchasedProduct(_ product: SKProduct) {
-        if let newDiamonds = Int(product.localizedDescription.components(separatedBy: " ").first ?? "0") {
-            incrementDiamonds(newDiamonds: newDiamonds)
-            scene.playSound(select: "gem case")
+        guard let newDiamonds = purchasedDiamondCount(for: product) else {
+            showSingleAlert(withMessage: "Your purchase completed, but the diamond amount could not be determined.")
+            return
         }
+
+        incrementDiamonds(newDiamonds: newDiamonds)
+        scene.playSound(select: "gem case")
     }
     
     //MARK: - BACKGROUND MUSIC
@@ -6709,16 +6716,20 @@ class GameViewController: UIViewController, ARSKViewDelegate {
     }
     
     // MARK: - RATE APP
-    func rateApp(appId: String, completion: @escaping ((_ success: Bool)->())) {
-        guard let url = URL(string : "itms-apps://itunes.apple.com/app/" + appId) else {
+    func rateApp(appStoreID: String, completion: @escaping ((_ success: Bool)->())) {
+        guard let url = URL(string: "itms-apps://itunes.apple.com/app/id\(appStoreID)?action=write-review") else {
             completion(false)
             return
         }
-        guard #available(iOS 10, *) else {
-            completion(UIApplication.shared.openURL(url))
-            return
-        }
-        UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: completion)
+        UIApplication.shared.open(url, options: [:], completionHandler: completion)
+    }
+
+    func purchasedDiamondCount(for product: SKProduct) -> Int? {
+        let digits = product.localizedDescription.unicodeScalars
+            .filter(CharacterSet.decimalDigits.contains)
+            .map(String.init)
+            .joined()
+        return Int(digits)
     }
 }
 
@@ -6770,9 +6781,4 @@ public extension UIDevice {
             return .iPad
         }
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
-    return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

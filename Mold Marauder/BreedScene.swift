@@ -89,6 +89,8 @@ class BreedScene: SKScene {
     var scrollView: SwiftySKScrollView?
     var page1ScrollView: SKSpriteNode!
     let moveableNode = SKNode()
+    let scrollCropNode = SKCropNode()
+    let scrollMaskNode = SKSpriteNode(color: .white, size: .zero)
     
     //for background animations
     var background = Background()
@@ -112,6 +114,31 @@ class BreedScene: SKScene {
         createButton()
         erectScroll()
     }
+
+    private func scrollViewportTopInset() -> CGFloat {
+        let safeTop = view?.safeAreaInsets.top ?? 20
+        return safeTop + 68
+    }
+
+    private func configureScrollViewport() -> CGRect {
+        let topInset = scrollViewportTopInset()
+        let viewportFrame = CGRect(x: 0, y: topInset, width: frame.width, height: frame.height - topInset)
+
+        scrollMaskNode.size = CGSize(width: frame.width, height: viewportFrame.height)
+        scrollMaskNode.position = CGPoint(x: 0, y: -topInset / 2)
+        scrollCropNode.maskNode = scrollMaskNode
+
+        if scrollCropNode.parent == nil {
+            addChild(scrollCropNode)
+        }
+
+        scrollCropNode.removeAllChildren()
+        moveableNode.removeFromParent()
+        moveableNode.position = .zero
+        scrollCropNode.addChild(moveableNode)
+
+        return viewportFrame
+    }
     
     func reloadScroll() {
         self.removeAllChildren()
@@ -131,10 +158,10 @@ class BreedScene: SKScene {
     func erectScroll() {
         bubbleLayer.removeFromParent()
         let height = 150 + (ownedMolds.count * 100)
-        //addNode
-        addChild(moveableNode)
+        let viewportFrame = configureScrollViewport()
+
         //set up the scrollView
-        scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), moveableNode: moveableNode, direction: .vertical)
+        scrollView = SwiftySKScrollView(frame: viewportFrame, moveableNode: moveableNode, direction: .vertical)
         //scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: scrollView!.frame.height * CGFloat(pages)) // makes it 2 times the height
         scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(height))
         view?.addSubview(scrollView!)

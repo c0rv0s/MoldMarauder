@@ -65,6 +65,8 @@ class MoldShop: SKScene {
     //scrollView
     var scrollView: SwiftySKScrollView?
     let moveableNode = SKNode()
+    let scrollCropNode = SKCropNode()
+    let scrollMaskNode = SKSpriteNode(color: .white, size: .zero)
     
     //for loading buttons without blank space
     var lastButton : CGPoint!
@@ -110,6 +112,31 @@ class MoldShop: SKScene {
         cometLayer.start(menu: false)
         erectScroll()
     }
+
+    private func scrollViewportTopInset() -> CGFloat {
+        let safeTop = view?.safeAreaInsets.top ?? 20
+        return safeTop + 68
+    }
+
+    private func configureScrollViewport() -> CGRect {
+        let topInset = scrollViewportTopInset()
+        let viewportFrame = CGRect(x: 0, y: topInset, width: frame.width, height: frame.height - topInset)
+
+        scrollMaskNode.size = CGSize(width: frame.width, height: viewportFrame.height)
+        scrollMaskNode.position = CGPoint(x: 0, y: -topInset / 2)
+        scrollCropNode.maskNode = scrollMaskNode
+
+        if scrollCropNode.parent == nil {
+            addChild(scrollCropNode)
+        }
+
+        scrollCropNode.removeAllChildren()
+        moveableNode.removeFromParent()
+        moveableNode.position = .zero
+        scrollCropNode.addChild(moveableNode)
+
+        return viewportFrame
+    }
     
     func ppsAmount(mold: MoldType) -> BInt {
         //  check level to see how much more to add
@@ -134,10 +161,10 @@ class MoldShop: SKScene {
         //let height = ceil(Double(unlockedMolds.count) * 250)
         let height = 42 * 95
         createButton()
-        //addNode
-        addChild(moveableNode)
+        let viewportFrame = configureScrollViewport()
+
         //set up the scrollView
-        scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), moveableNode: moveableNode, direction: .vertical)
+        scrollView = SwiftySKScrollView(frame: viewportFrame, moveableNode: moveableNode, direction: .vertical)
         scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(height)) // makes it 2 times the height
         view?.addSubview(scrollView!)
         

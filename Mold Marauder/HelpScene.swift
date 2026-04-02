@@ -23,6 +23,8 @@ class HelpScene: SKScene {
     //scrollView
     var scrollView: SwiftySKScrollView?
     let moveableNode = SKNode()
+    let scrollCropNode = SKCropNode()
+    let scrollMaskNode = SKSpriteNode(color: .white, size: .zero)
     
     //touch handler
     var touchHandler: ((String) -> ())?
@@ -48,6 +50,31 @@ class HelpScene: SKScene {
         cometLayer.start(menu: false)
         createButton()
     }
+
+    private func scrollViewportTopInset() -> CGFloat {
+        let safeTop = view?.safeAreaInsets.top ?? 20
+        return safeTop + 68
+    }
+
+    private func configureScrollViewport() -> CGRect {
+        let topInset = scrollViewportTopInset()
+        let viewportFrame = CGRect(x: 0, y: topInset, width: frame.width, height: frame.height - topInset)
+
+        scrollMaskNode.size = CGSize(width: frame.width, height: viewportFrame.height)
+        scrollMaskNode.position = CGPoint(x: 0, y: -topInset / 2)
+        scrollCropNode.maskNode = scrollMaskNode
+
+        if scrollCropNode.parent == nil {
+            addChild(scrollCropNode)
+        }
+
+        scrollCropNode.removeAllChildren()
+        moveableNode.removeFromParent()
+        moveableNode.position = .zero
+        scrollCropNode.addChild(moveableNode)
+
+        return viewportFrame
+    }
     
     func createButton()
     {
@@ -59,10 +86,10 @@ class HelpScene: SKScene {
         
         self.addChild(backButton)
         
-        //addNode
-        addChild(moveableNode)
+        let viewportFrame = configureScrollViewport()
+
         //set up the scrollView
-        scrollView = SwiftySKScrollView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height), moveableNode: moveableNode, direction: .vertical)
+        scrollView = SwiftySKScrollView(frame: viewportFrame, moveableNode: moveableNode, direction: .vertical)
         scrollView?.contentSize = CGSize(width: scrollView!.frame.width, height: CGFloat(2100)) // makes it 2 times the height
         view?.addSubview(scrollView!)
         
